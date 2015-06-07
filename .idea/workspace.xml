@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="d6b43948-43ac-423b-8ec8-60bf14a9bf40" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/template/boostack/content_index_out.phtml" afterPath="$PROJECT_DIR$/template/boostack/content_index_out.phtml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="init2.iws" />
     <ignored path=".idea/workspace.xml" />
