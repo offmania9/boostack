@@ -17,11 +17,11 @@ $boostack->renderOpenHtmlHeadTags();
     $user = new User($objSession->GetUserID());
 }*/
 
-    require("template/boostack/header.phtml");
+    #require("template/boostack/header.phtml");
 
     require("template/boostack/content_index_out.phtml");
 
-    require("template/boostack/footer.phtml");
+    #require("template/boostack/footer.phtml");
 
 ########################
 $boostack->renderCloseHtmlTag();
