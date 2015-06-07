@@ -1,0 +1,16 @@
+php_value zlib.output_compression off
+
+ErrorDocument 400 http://localhost/boostack/error.php
+ErrorDocument 401 http://localhost/boostack/error.php
+ErrorDocument 403 http://localhost/boostack/error.php
+ErrorDocument 404 http://localhost/boostack/error.php
+ErrorDocument 500 http://localhost/boostack/error.php
+
+###### RULES
+RewriteEngine on
+#RewriteBase /boostack/
+RewriteRule ^home$ index.php [L]
+RewriteRule ^docs/([a-zA-Z0-9_-]+)$ documentation.php?docpath=$1 [L]
+#RewriteRule ^docs documentation.php [L]
+RewriteRule ^download$ download.php [L]
+RewriteRule ^downloadLatest$ downloadlatest.php [L]
