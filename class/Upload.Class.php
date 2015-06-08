@@ -1,5 +1,4 @@
 <?php
-require_once("extension_mimetypes.inc.php");
 /**
  * Boostack: Upload.Class.php
  * ========================================================================
@@ -9,6 +8,9 @@ require_once("extension_mimetypes.inc.php");
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
  * @version 2
  */
+
+require_once("extension_mimetypes.inc.php");
+
 class Upload{
 	 
 	private $name;

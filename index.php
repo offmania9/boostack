@@ -11,7 +11,7 @@
 
 ########################
 require_once("core/environment_init.php");
-$boostack->renderOpenHtmlHeadTags();
+$boostack->renderOpenHtmlHeadTags("Home");
 ########################
 /*if($boostack->session_on && $objSession->IsLoggedIn()){
     $user = new User($objSession->GetUserID());

@@ -9,7 +9,7 @@
  * @version 2
  */ 
 class Boostack{
-
+    protected $developmentMode = false;
     protected $publicUrl = "http://boostack.com/";
     protected $privateUrl = "http://localhost/boostack/";
     protected $url;
@@ -20,7 +20,7 @@ class Boostack{
     protected $mail_admin = "info@boostack.com";
     protected $mail_noreply = "no-reply@boostack.com";
     protected $html_lang = "en";
-    protected $project_mission = "Boostack.com - Boost your dev";
+    protected $project_mission = "Boostack.com - Improve your development and build a modern website in minutes";
     protected $facebookMetaTag = true;
     protected $og_type = "product";
     protected $og_title = "";
@@ -40,16 +40,15 @@ class Boostack{
     protected $log_on = true; #true need database_on=true
 
     protected $viewport = "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0";
-    protected $site_title = "";
-    protected $site_keywords = "";//comma separated
-    protected $site_description = "";
-    protected $site_author = "";
+    protected $site_title = "Boostack - a full stack web layer for PHP";
+    protected $site_keywords = "boostack, php, framework, website, productive, simplicity, seo, secure, mysql, open-source";//comma separated
+    protected $site_description = "Improve your development and build a modern website in minutes";
+    protected $site_author = "stefano spagnolo";
     protected $site_shortcuticon = "img/favicon.ico";
     protected $appletouchicon_144 = "img/apple-touch-icon-144-precomposed.png";
     protected $appletouchicon_114 = "img/apple-touch-icon-114-precomposed.png";
     protected $appletouchicon_72  = "img/apple-touch-icon-72-precomposed.png";
     protected $appletouchicon_def = "img/apple-touch-icon-57-precomposed.png";
-    protected $developmentMode = false;
 
 	public function __construct($developmentMode = false){
         $this->cookieexpire = 60*60*24*59;
@@ -84,11 +83,11 @@ class Boostack{
 
     }
 
-    public function renderOpenHtmlHeadTags() {
+    public function renderOpenHtmlHeadTags($titlePrepend="") {
         ?>
         <!DOCTYPE html><html lang="<?=$this->html_lang?>" xmlns:og="http://opengraphprotocol.org/schema/" xmlns:fb="http://www.facebook.com/2008/fbml"><head>
             <?
-            $this->registerAllDefaultMetaTags();
+            $this->registerAllDefaultMetaTags($titlePrepend);
             $this->registerAllDefaultCssFiles();
             ?>
         </head>
@@ -150,7 +149,7 @@ class Boostack{
         $this->registerCssFile("custom_in".$minified.".css");
     }
 
-    public function registerAllDefaultMetaTags(){?>
+    public function registerAllDefaultMetaTags($titlePrepend=""){?>
         <meta charset="utf-8">
         <meta name="viewport" content="<?=$this->viewport?>">
         <? if($this->facebookMetaTag){?>
@@ -162,7 +161,7 @@ class Boostack{
             <meta property="fb:app_id" content="<?=$this->fb_app_id?>" />
             <meta property="fb:admins" content="<?=$this->fb_admins?>" />
         <? }?>
-        <title><?=(!isset($this->title))?$this->site_title:$this->title ?> | <?=$this->project_name?></title>
+        <title><?=($titlePrepend!="")?$titlePrepend." | ":""?><?=$this->site_title;?> | <?=$this->project_sitename?></title>
         <meta name="description" content="<?=$this->site_description?>"><meta name="author" content="<?=$this->site_author?>"><meta content="<?=$this->site_keywords;?>" name="Keywords" /><meta content="INDEX, FOLLOW" name="ROBOTS" />
         <link rel="shortcut icon" href="<?=$this->site_shortcuticon;?>" /><link rel="image_src" href="<?=$this->url_logo;?>" /><link rel="apple-touch-icon" sizes="144x144" href="<?=$this->appletouchicon_144;?>">
         <link rel="apple-touch-icon" sizes="114x114" href="<?=$this->appletouchicon_114;?>">
