@@ -15,7 +15,6 @@ require_once("class/User.Class.php");
 if($boostack->database_on) require_once("lib/database.lib.php");
 if($boostack->session_on && $boostack->database_on) require_once("lib/session.lib.php");
 if($boostack->checklanguage) require_once("lib/check_language.lib.php");
-
 if($boostack->checkMobile){
 	require_once 'class/Mobile_Detect.php';
 	$detect = new Mobile_Detect;

@@ -85,7 +85,7 @@ section.disclaimer h1{ color: #ffffff;padding: 60px;
 section.disclaimer.sectionTitle h1{
     padding: 10px;
 }
-section.disclaimer h1>.title{
+section.disclaimer h1 .title{
     color: #6f6f6f;
     text-shadow: 0 2px 4px rgba(251, 247, 255, 0.26);
 }
