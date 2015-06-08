@@ -40,10 +40,10 @@ class Boostack{
     protected $log_on = true; #true need database_on=true
 
     protected $viewport = "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0";
-    protected $site_title = "";
+    protected $site_title = "Boostack - ";
     protected $site_keywords = "";//comma separated
     protected $site_description = "";
-    protected $site_author = "";
+    protected $site_author = "stefano spagnolo";
     protected $site_shortcuticon = "img/favicon.ico";
     protected $appletouchicon_144 = "img/apple-touch-icon-144-precomposed.png";
     protected $appletouchicon_114 = "img/apple-touch-icon-114-precomposed.png";
