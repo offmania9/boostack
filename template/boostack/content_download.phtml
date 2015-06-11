@@ -3,7 +3,7 @@
     <div class="line">
         <div class="container">
             <div class="row">
-                <h1>Download</h1>
+                <h1><?=$boostack->getLabel("navigation.download");?></h1>
             </div>
         </div>
     </div>
@@ -12,28 +12,20 @@
 <section class="download centerContent">
     <div class="container">
         <div class="row description centerContent">
-            <h2>How to get Boostack</h2>
-
-            <p>Boostack is available open-source under the <a href="https://github.com/offmania9/Boostack/blob/master/LICENSE" target="_blank">MIT</a> license.<br/>
-                We recommend using the latest version of PHP and Mysql (Boostack allows you to develop even without using Mysql).
-            </p>
-
-            <h2>Download it!</h2>
-
+            <h2><?=$boostack->getLabel("download.howto");?></h2>
             <p>
-                <b>Option 1: Get the latest official version</b><br/>
-                    You can download <b><a href="<?=$boostack->getFriendlyUrl("downloadLatest")?>">HERE</a></b> a zipped file of the development version.
-                <br/><br/>
-                <b>Option 2: Get the latest development version</b><br/>
-                    The latest and greatest Boostack version is the one that’s in our Git repository (<a href="https://github.com/offmania9/Boostack" target="_blank">https://github.com/offmania9/Boostack</a>).
-                    This is only for experienced users who want to try incoming changes and help identify bugs before an official release.<br/>
-                    Get it using this shell command, which requires Git:
-                    <code>git clone https://github.com/offmania9/Boostack.git</code>
+                <?=$boostack->getLabel("download.howtoDescription");?>
             </p>
-            <h2>After you get it</h2>
-                <p>See the <a href="<?=$boostack->getFriendlyUrl("Documentation")?>">Documentation</a> for further instructions.
-                And be sure to sign up for mailing list to receive all Boostack updates.
-                </p>
+
+            <h2><?=$boostack->getLabel("download.downloadit");?></h2>
+            <p>
+                <?=$boostack->getLabel("download.downloaditDescription");?>
+            </p>
+
+            <h2><?=$boostack->getLabel("download.after");?></h2>
+            <p>
+                <?=$boostack->getLabel("download.afterDescription");?>
+            </p>
         </div>
     </div>
 </section>

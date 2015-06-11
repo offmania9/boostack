@@ -8,32 +8,45 @@
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
  * @version 2
  */
-
+    $l;$language;
 	if (!isset($_GET['lang'])) { # if isn't set by user from url
-		if($objSession->SESS_LANGUAGE !== ""){ # if is set in the user session
-			if(is_file("language/".$objSession->SESS_LANGUAGE.".inc.php")) #if the translation file exists
-				include("language/".$objSession->SESS_LANGUAGE.".inc.php");
-			else{ # default lang
-				include("language/it.inc.php");
-				$objSession->SESS_LANGUAGE = "it";
-			}
+		if($boostack->session_on && $objSession->SESS_LANGUAGE !== "") { # if is set in the user session
+            if (is_file("lang/" . $objSession->SESS_LANGUAGE . ".inc.php")){ #if the translation file exists
+                include("lang/" . $objSession->SESS_LANGUAGE . ".inc.php");
+                $l = $objSession->SESS_LANGUAGE;
+            }
+			else { # default lang
+                include("lang/" . $boostack->defaultlanguage . ".inc.php");
+                $l = $boostack->defaultlanguage;
+            }
 		}
 		else{  # if isn't set in the user session, fetch it from browser
 			$language = explode(',',sanitizeInput($_SERVER['HTTP_ACCEPT_LANGUAGE'])); 
-			$language = strtolower(substr(chop($language[0]),0,2)); 
-			include("language/".$language.".inc.php"); 
-			$objSession->SESS_LANGUAGE = $language;
+			$language = strtolower(substr(chop($language[0]),0,2));
+            if(is_file("lang/".$language.".inc.php")) { #if the translation file exists
+                include("lang/" . $language . ".inc.php");
+                $l = $language;
+            }
+            else {
+                include("lang/" . $boostack->defaultlanguage . ".inc.php");
+                $l = $boostack->defaultlanguage;
+            }
 		}
 	}
 	else{ # if is set by user from url
-		if(is_file("language/".sanitizeInput($_GET['lang']).".inc.php")){ #if the translation file exists
-			include("language/".sanitizeInput($_GET['lang']).".inc.php");
-			$objSession->SESS_LANGUAGE = sanitizeInput($_GET['lang']);
+        $language = sanitizeInput($_GET['lang']);
+		if(is_file("lang/".$language.".inc.php")){ #if the translation file exists
+			include("lang/".$language.".inc.php");
+            $l = $language;
 		}
 		else{ # default lang
-			include("language/it.inc.php");
-			$objSession->SESS_LANGUAGE = "it";
+            include("lang/". $boostack->defaultlanguage .".inc.php");
+            $l = $boostack->defaultlanguage;
 		}
 	}
+    $boostack->labels = $boostack_labels_strings;
 
+    if($boostack->session_on)
+        $objSession->SESS_LANGUAGE = $l;
+    unset($l,$language);
 ?>

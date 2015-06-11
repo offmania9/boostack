@@ -13,9 +13,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 -- Database: `boostack`
 --
-
 -- --------------------------------------------------------
-
 --
 -- Table `http_session`
 --
@@ -35,10 +33,7 @@ CREATE TABLE `http_session` (
 --
 -- Data dump for `http_session`
 --
-
-
 -- --------------------------------------------------------
-
 --
 -- Table `log`
 --
@@ -58,10 +53,7 @@ CREATE TABLE `log` (
 --
 -- Data dump for `log`
 --
-
-
 -- --------------------------------------------------------
-
 --
 -- Table `session_variable`
 --
@@ -78,10 +70,7 @@ CREATE TABLE `session_variable` (
 --
 -- Data dump for `session_variable`
 --
-
-
 -- --------------------------------------------------------
-
 --
 -- Table `user`
 --
@@ -102,11 +91,8 @@ CREATE TABLE `user` (
 --
 -- Data dump for `user`
 --
-
 INSERT INTO `user` VALUES(0, '0', 3, 'boostack', 'a8e2e732c47373c952834ae5d1e416fa9a699b7861c2189c887df400eaa12b20babba10f475debe5c2cb4a0c2a8d8edbeb953c4c47fff4689eb1ce32a2a20155', '@', '', 1381977584, '');
-
 -- --------------------------------------------------------
-
 --
 -- Table `user_info`
 --
@@ -140,10 +126,7 @@ CREATE TABLE `user_info` (
 --
 -- Data dump for `user_info`
 --
-
-
 -- --------------------------------------------------------
-
 --
 -- Table `user_registration`
 --
@@ -161,10 +144,7 @@ CREATE TABLE `user_registration` (
 --
 -- Data dump for `user_registration`
 --
-
-
 -- --------------------------------------------------------
-
 --
 -- Table `user_social`
 --
@@ -186,12 +166,9 @@ CREATE TABLE `user_social` (
 --
 -- Data dump for `user_social`
 --
-
-
 --
--- Limiti per le tabelle scaricate
+-- Constraints
 --
-
 --
 -- Constraints`http_session`
 --

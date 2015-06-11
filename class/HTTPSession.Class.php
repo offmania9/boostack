@@ -111,7 +111,7 @@ class HTTPSession {
       return($this->php_session_id);
     }
 
-    public function Login($strUsername, $strPlainPassword, $md5_psw="") {
+    public function Login($strUsername, $strPlainPassword, $hashed_psw="") {
 	  if($md5_psw !== "")
 	  	$strMD5Password = $md5_psw;
 	  else

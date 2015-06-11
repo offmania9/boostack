@@ -1,14 +1,15 @@
 <div class="container">
     <div class="row header">
         <div class="col-md-4">
-            <a class="brandlink" href="<?=$boostack->url;?>"><h1><img alt="" src="img/boostack_logo_xs2.png"/> Boostack</h1></a>
+            <a class="brandlink" href="<?=$boostack->url;?>"><h1><img alt="" src="img/boostack_logo_xs2.png"/> <?=$boostack->getLabel("projectName");?></h1></a>
         </div>
         <div class="col-md-8 text-right">
             <? require("template/boostack/nav.phtml");?>
         </div>
     </div>
 </div>
-
+<?
+/*
 <!--
 <div class="navbar navbar-fixed-top" style="background-color:#FFF;">
   <div class="container">
@@ -24,8 +25,10 @@
           }
           else{
             echo "<a href=\"".$url."signon\">Login/Register</a>";
-          }*/?>
+          }?>
       </nav>
     </div>
   </div>
 </div>-->
+*/
+?>

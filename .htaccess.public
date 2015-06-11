@@ -9,6 +9,7 @@ RewriteEngine on
 #RewriteRule ^home$ index.php [L]
 #RewriteRule ^download$ download.php [L]
 #RewriteRule ^documentation$ documentation.php [L]
+RewriteRule ^downloadLatest$ downloadlatest.php [L]
 
 ErrorDocument 400 http://boostack.com/error.php
 ErrorDocument 401 http://boostack.com/error.php
@@ -16,8 +17,7 @@ ErrorDocument 403 http://boostack.com/error.php
 ErrorDocument 404 http://boostack.com/error.php
 ErrorDocument 500 http://boostack.com/error.php
 
-#tutto il traffico proveniente stefanospagnolo.com 
-#viene ridirezionato all’indirizzo con il www.
+#from sitename.com to www.sitename.com
 RewriteCond %{HTTP_HOST} ^http://www.boostack.com [NC]
 RewriteRule ^(.*)$ boostack.com/$1 [L,R=301]
 
@@ -106,45 +106,43 @@ ExpiresByType text/html A1
 </IfModule>
 
 
-# SECURITY
+############## SECURITY
 
 <FilesMatch "\.(htaccess|htpasswd|ini|phps|fla|psd|log|sh|sql|inc|inc.php|Class.php)$">
 Order Allow,Deny
 Deny from all
 </FilesMatch>
+
 # proc/self/environ? no!
 RewriteCond %{QUERY_STRING} proc/self/environ [OR]
-
-#Blocca le richeiste che hanno all'interno il tag <script> nell URL
-#RewriteCond %{QUERY_STRING} (\< |%3C).*script.*(\>|%3E) [NC,OR]</script>
 
 #Blocca ogni script che cerca di settare un valore mosConfig attraverso l'URL
 RewriteCond %{QUERY_STRING} mosConfig_[a-zA-Z_]{1,21}(=|\%3D) [OR]
 
-# Blocca ogni script base64_encode crap
+# Block all script: base64_encode crap
 RewriteCond %{QUERY_STRING} base64_encode.*(.*) [OR]
 
-#Blocca ogni script che contiene un tag <script> nell'URL
+# Block all requests that contains <script> tag in the URL
 RewriteCond %{QUERY_STRING} (<|%3C).*script.*(>|%3E) [NC,OR]
 
-# Blocca ogni script che cerca di settare una variabile globale PHP via URL
+# block all requests trying to set the PHP global variable via URL
 RewriteCond %{QUERY_STRING} GLOBALS(=|[|\%[0-9A-Z]{0,2}) [OR]
 
-# Blocca ogni script che cerca di modificare una variabile a _REQUEST via URL
+# block all requests trying to set the PHP _Request variable via URL
 RewriteCond %{QUERY_STRING} _REQUEST(=|[|\%[0-9A-Z]{0,2})[OR]
 
-# blocca i visitatori provenienti dai domini indicati
+# Block all requests from
 RewriteCond %{HTTP_REFERER} scumbag.com [NC,OR]
 RewriteCond %{HTTP_REFERER} wormhole.com [NC,OR]
 
-# Invia tutte le richieste bloccate alla pagina di errore 403!
+# Redirect all blocked request to error page
 RewriteRule ^(.*)$ error.php [F,L]
 
-# proteggi le cartelle disabilitando l'esecuzione di script
+# disable folder script execution
 #AddHandler cgi-script .pl .py .jsp .asp .htm .shtml .sh .cgi
 #Options -ExecCGI
 
-#RewriteBase /
+
 RewriteCond %{HTTP_USER_AGENT} ^Anarchie [OR]
 RewriteCond %{HTTP_USER_AGENT} ^ASPSeek [OR]
 RewriteCond %{HTTP_USER_AGENT} ^attach [OR]
@@ -239,12 +237,11 @@ RewriteCond %{HTTP_USER_AGENT} ^Ezooms [OR]
 RewriteCond %{HTTP_USER_AGENT} ^Ezooms/1.0
 RewriteRule ^.* - [F,L]
 
-# blocca i visitatori indicati
+# Block request from user-agent
 <IfModule mod_rewrite.c>
 SetEnvIfNoCase ^User-Agent$ .*(craftbot|download|extract|stripper|sucker|ninja|clshttp|webspider|leacher|collector|grabber|webpictures) HTTP_SAFE_BADBOT
 SetEnvIfNoCase ^User-Agent$ .*(libwww-perl|aesop_com_spiderman) HTTP_SAFE_BADBOT
 Deny from env=HTTP_SAFE_BADBOT
-
 SetEnvIfNoCase User-Agent .*Twiceler.* bad_bot
 SetEnvIfNoCase User-Agent .*Java.* bad_bot
 SetEnvIfNoCase User-Agent .*Sogou web spider.* bad_bot
@@ -294,7 +291,6 @@ allow from all
     Header set Cache-Control "max-age=1, private, must-revalidate"
   </filesMatch>
 </ifModule>
-
 <ifModule mod_headers.c>
   Header unset Last-Modified
 </ifModule>
@@ -313,7 +309,7 @@ allow from all
 #php_flag zlib.output_compression On
 
 
-# Comincia compressione
+# Start compression
 SetOutputFilter DEFLATE
 AddOutputFilter DEFLATE text/plain
 AddOutputFilter DEFLATE text/html

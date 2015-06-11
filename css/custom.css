@@ -1,3 +1,13 @@
+/**
+ * Boostack: custom.css
+ * ========================================================================
+ * Copyright 2015 Spagnolo Stefano
+ * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
+ * ========================================================================
+ * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
+ * @version 2
+ */
+
 @charset "utf-8";
 
 body {
@@ -75,12 +85,12 @@ section.disclaimer h1{ color: #ffffff;padding: 60px;
 section.disclaimer.sectionTitle h1{
     padding: 10px;
 }
-section.disclaimer h1>.title{
+section.disclaimer h1 .title{
     color: #6f6f6f;
     text-shadow: 0 2px 4px rgba(251, 247, 255, 0.26);
 }
 section.disclaimer h1>.smaller{ font-size: 35px}
-section.disclaimer .download{
+section.disclaimer .download,section.features .download{
     margin-top: -25px;
     padding: 15px;
     font-weight: 200;
@@ -89,6 +99,21 @@ section.disclaimer .download{
     border-color: #fbf7ff;
     margin-bottom: 50px
 }
+section.features .download{
+    margin-top: 5px;
+    padding: 15px;
+    font-weight: 200;
+    color: #000;
+    background-color: #fff;
+    border-color: #cccccc;
+    margin-bottom: 30px;
+}
+section.features .download:hover{
+    background-color: #84c441;
+    color: #ffffff;
+    border-color: #fbf7ff;
+}
+
 section.disclaimer .download:hover{
     background-color: #ffffff;
     color: #84c441;

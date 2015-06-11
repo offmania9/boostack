@@ -1,6 +1,6 @@
 <?
 /**
- * Boostack: logout.php
+ * Boostack: downloadlatest.php
  * ========================================================================
  * Copyright 2015 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
