@@ -1,9 +1,8 @@
-
 <section class="disclaimer sectionTitle">
     <div class="line">
         <div class="container">
             <div class="row">
-                <h1>Documentation</h1>
+                <h1><?=$boostack->getLabel("navigation.documentation");?></h1>
             </div>
         </div>
     </div>
@@ -15,14 +14,15 @@
             <div class="col-md-3">
                 <ul class="list-unstyled documentationMenu">
                     <li><a href="<?=$boostack->getFriendlyUrl("docs/introduction")?>">Introduction</a>
-                        <ul>
-                            <li><a href="<?=$boostack->getFriendlyUrl("docs/introduction")?>">Install</a></li>
-                        </ul>
+                        <!--<ul>
+                            <li><a href="<?#$boostack->getFriendlyUrl("docs/introduction")?>">Install</a></li>
+                        </ul>-->
                     </li>
                     <li><a href="<?=$boostack->getFriendlyUrl("docs/database")?>">Database</a></li>
                     <li><a href="<?=$boostack->getFriendlyUrl("docs/logging")?>">Logging</a></li>
                     <li><a href="<?=$boostack->getFriendlyUrl("docs/users")?>">Users</a></li>
                     <li><a href="<?=$boostack->getFriendlyUrl("docs/sessions")?>">Sessions</a></li>
+                    <li><a href="<?=$boostack->getFriendlyUrl("docs/languages")?>">Languages</a></li>
                     <li><a href="<?=$boostack->getFriendlyUrl("docs/emails")?>">Emails</a></li>
                     <li><a href="<?=$boostack->getFriendlyUrl("docs/mobile")?>">Mobile</a></li>
                     <li><a href="<?=$boostack->getFriendlyUrl("docs/upload")?>">Upload</a></li>
@@ -54,6 +54,10 @@
                     }
                     case "emails":{
                         require("template/boostack/documentation/emails.phtml");
+                        break;
+                    }
+                    case "languages":{
+                        require("template/boostack/documentation/languages.phtml");
                         break;
                     }
                     case "mobile":{

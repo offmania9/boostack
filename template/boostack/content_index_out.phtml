@@ -1,15 +1,14 @@
-
 <section class="disclaimer">
     <div class="line">
         <div class="container">
             <div class="row">
                 <h1>
-                    <span class="fadeInLeft animated"><span class="title">BOOSTACK</span> is a full stack web layer for PHP.</span><br/>
-                    <span class="animated fadeInDown smaller">Improve your development and build a modern website in minutes</span>
+                    <span class="fadeInLeft animated"><span class="title"><?=$boostack->getLabel("projectName");?></span> <?=$boostack->getLabel("mainDescription");?></span><br/>
+                    <span class="animated fadeInDown smaller"><?=$boostack->getLabel("mission");?></span>
                 </h1>
             </div>
             <div class="row text-center animated fadeInUp">
-                <a href="<?=$boostack->url?>download" class="btn btn-lg download">Download Boostack</a>
+                <a href="<?=$boostack->getFriendlyUrl("download")?>" class="btn btn-lg download"><?=$boostack->getLabel("downloadBoostack");?></a>
             </div>
         </div>
     </div>
@@ -19,55 +18,50 @@
     <div class="container animated fadeIn">
         <div class="row">
             <div class="col-md-4">
-                <h2><span>Fast and Productive</span></h2>
+                <h2><span><?=$boostack->getLabel("featuresTitles.fast");?></span></h2>
                 <p>
-                    Boostack is a full stack web layer for PHP <b>built for developers</b> who need a simple layer to create
-                    modern website in minutes.
+                    <?=$boostack->getLabel("featuresDescriptions.fast");?>
                 </p>
             </div>
             <div class="col-md-4">
-                <h2><span>Freedom</span></h2>
+                <h2><span><?=$boostack->getLabel("featuresTitles.freedom");?></span></h2>
                 <p>
-                    No framework, no naming conventions, <b>use your own coding and naming</b>.
-                    Boostack is a minimal layer of code that lets you use your creativity.
+                    <?=$boostack->getLabel("featuresDescriptions.freedom");?>
                 </p>
             </div>
             <div class="col-md-4">
-                <h2><span>Simplicity</span></h2>
+                <h2><span><?=$boostack->getLabel("featuresTitles.simplicity");?></span></h2>
                 <p>
-                    Boostack is a lightweight and flexible layer that provides a robust set of features
-                    for <b>web and mobile applications</b>.
+                    <?=$boostack->getLabel("featuresDescriptions.simplicity");?>
                 </p>
             </div>
         </div>
         <hr/>
         <div class="row">
             <div class="col-md-4">
-                <h2><span>SEO Ready</span></h2>
+                <h2><span><?=$boostack->getLabel("featuresTitles.seo");?></span></h2>
                 <p>
-                    Boostack <b>integrate SEO features</b> for meta data: rich snippets, openGraph, internal linking,
-                    schema markup, social media and more.
+                    <?=$boostack->getLabel("featuresDescriptions.seo");?>
                 </p>
             </div>
             <div class="col-md-4">
-                <h2><span>Extensible</span></h2>
+                <h2><span><?=$boostack->getLabel("featuresTitles.extensible");?></span></h2>
                 <p>
-                    Create your project with Boostack and start coding. Extend all php classes and <b>build quickly</b>
-                    simple or complex web-based apps.
+                    <?=$boostack->getLabel("featuresDescriptions.extensible");?>
                 </p>
             </div>
             <div class="col-md-4">
-                <h2><span>Secure</span></h2>
+                <h2><span><?=$boostack->getLabel("featuresTitles.secure");?></span></h2>
                 <p>
-                    Built on PHP - MySql - HTML5 - CSS3 - JQuery Boostack runs on secure and fast-loading code for <b>optimal performance</b>.
+                    <?=$boostack->getLabel("featuresDescriptions.secure");?>
                 </p>
             </div>
         </div>
 
         <div class="row text-center">
             <p>&nbsp;</p><p>&nbsp;</p>
-            <h4>Simple to configure it. It contains JQuery, JQuery TE, Animate.css and Bootstrap.</h4>
-            <a href="http://localhost/boostack/download" class="btn btn-lg download">Download Boostack</a>
+            <h4><?=$boostack->getLabel("inclusions")?></h4>
+            <a href="<?=$boostack->getFriendlyUrl("download")?>" class="btn btn-lg download"><?=$boostack->getLabel("downloadBoostack");?></a>
         </div>
     </div>
 </section>

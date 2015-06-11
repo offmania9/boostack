@@ -33,9 +33,10 @@ class Boostack{
     protected $database_on = true;
     protected $session_on = false;  #true need database_on=true
     protected $checkcookie=false;  #true need database_on=true AND session_on=true
-    protected $cookieexpire= 0; //59days
+    protected $cookieexpire= 3600; //1 hour
     protected $cookiename= ""; //md5 key
-    protected $checklanguage = false;
+    protected $checklanguage = true;
+    protected $defaultlanguage = "en"; #must exists file: lang/[$defaultlanguage].inc.php   es:lang/en.inc.php
     protected $checkMobile = false;
     protected $log_on = true; #true need database_on=true
 
@@ -50,6 +51,8 @@ class Boostack{
     protected $appletouchicon_72  = "img/apple-touch-icon-72-precomposed.png";
     protected $appletouchicon_def = "img/apple-touch-icon-57-precomposed.png";
 
+    protected $labels;
+
 	public function __construct($developmentMode = false){
         $this->cookieexpire = 60*60*24*59;
         if($developmentMode){
@@ -63,6 +66,23 @@ class Boostack{
 
         $this->developmentMode = $developmentMode;
 	}
+
+    public function getLabel($key){
+        $k = explode(".",$key);
+        $lenght = count($k);
+        if(is_array(($this->labels)))
+            if($lenght == 1) {
+                if (isset($this->labels[$k[0]]))
+                    return $this->labels[$k[0]];
+            }
+            else{
+                if($lenght == 2) {
+                    if (isset($this->labels[$k[0]][$k[1]]))
+                        return $this->labels[$k[0]][$k[1]];
+                }
+            }
+    }
+
     public function registerScriptFile($fileName) {
         ?>
         <script type="text/javascript" src="<?=$this->url?>js/<?=$fileName?>"></script>
