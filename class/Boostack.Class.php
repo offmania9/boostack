@@ -41,15 +41,9 @@ class Boostack{
     protected $log_on = true; #true need database_on=true
 
     protected $viewport = "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0";
-<<<<<<< HEAD
-    protected $site_title = "Boostack - ";
-    protected $site_keywords = "";//comma separated
-    protected $site_description = "";
-=======
     protected $site_title = "Boostack - a full stack web layer for PHP";
     protected $site_keywords = "boostack, php, framework, website, productive, simplicity, seo, secure, mysql, open-source";//comma separated
     protected $site_description = "Improve your development and build a modern website in minutes";
->>>>>>> website
     protected $site_author = "stefano spagnolo";
     protected $site_shortcuticon = "img/favicon.ico";
     protected $appletouchicon_144 = "img/apple-touch-icon-144-precomposed.png";
