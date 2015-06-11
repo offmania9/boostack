@@ -14,7 +14,11 @@
         <div class="row description">
             <div class="col-md-3">
                 <ul class="list-unstyled documentationMenu">
-                    <li><a href="<?=$boostack->getFriendlyUrl("docs/introduction")?>">Introduction</a></li>
+                    <li><a href="<?=$boostack->getFriendlyUrl("docs/introduction")?>">Introduction</a>
+                        <ul>
+                            <li><a href="<?=$boostack->getFriendlyUrl("docs/introduction")?>">Install</a></li>
+                        </ul>
+                    </li>
                     <li><a href="<?=$boostack->getFriendlyUrl("docs/database")?>">Database</a></li>
                     <li><a href="<?=$boostack->getFriendlyUrl("docs/logging")?>">Logging</a></li>
                     <li><a href="<?=$boostack->getFriendlyUrl("docs/users")?>">Users</a></li>
@@ -22,6 +26,7 @@
                     <li><a href="<?=$boostack->getFriendlyUrl("docs/emails")?>">Emails</a></li>
                     <li><a href="<?=$boostack->getFriendlyUrl("docs/mobile")?>">Mobile</a></li>
                     <li><a href="<?=$boostack->getFriendlyUrl("docs/upload")?>">Upload</a></li>
+                    <li><a href="<?=$boostack->getFriendlyUrl("docs/social")?>">Social</a></li>
                 </ul>
             </div>
             <div class="col-md-9 documentationInnerContent">
@@ -57,6 +62,10 @@
                     }
                     case "upload":{
                         require("template/boostack/documentation/upload.phtml");
+                        break;
+                    }
+                    case "social":{
+                        require("template/boostack/documentation/social.phtml");
                         break;
                     }
                     default:{
