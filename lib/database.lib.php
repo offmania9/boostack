@@ -19,4 +19,5 @@ if($boostack->log_on)
 include_once("class/DBMySqlDatabase.Class.php");
 $db = DBFactory::CreateDatabaseObject("MySqlDatabase");
 $db->Connect($host, $data_name, $username, $password);
+unset($data_name,$host,$username,$password);
 ?>
