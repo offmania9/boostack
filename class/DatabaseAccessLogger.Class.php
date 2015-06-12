@@ -20,7 +20,7 @@ class DatabaseAccessLogger{
 	private $time;
 	
 	static private $instance = NULL;
-  	const TABLENAME = "log";
+  	const TABLENAME = "boostack_log";
   
   
   	private function __construct($db = NULL, $objSession) {

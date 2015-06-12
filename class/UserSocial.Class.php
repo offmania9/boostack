@@ -21,7 +21,7 @@ class UserSocial extends User{
 
 	private $excluse_from_update = array();
 
-	const TABLENAME = "user_social";
+	const TABLENAME = "boostack_user_social";
 
 	public function __construct($id_u=-1,$type=""){		 
 		if($id_u !== -1 && $type!==""){

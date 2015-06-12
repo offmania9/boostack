@@ -19,7 +19,7 @@ class Notify{
 	private $join_date;
 	private $visited;
 	
-	const TABLENAME = "notify";
+	const TABLENAME = "boostack_notify";
 		
 	public function __construct($id=-1){		 
 		if($id != -1){

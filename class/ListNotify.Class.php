@@ -10,7 +10,7 @@
  */
 require_once("class/Email.Class.php");
 class ListNotify{
-	const TABLENAME = "notify";
+	const TABLENAME = "boostack_notify";
 
 	public function __construct(){
 	

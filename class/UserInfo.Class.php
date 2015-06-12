@@ -34,7 +34,7 @@ class UserInfo extends User{
 
 	private $excluse_from_update = array("id");
 
-	const TABLENAME = "user_info";
+	const TABLENAME = "boostack_user_info";
 
 	public function __construct($id=-1){
 		if($id != -1){

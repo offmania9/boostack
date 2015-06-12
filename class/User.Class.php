@@ -23,7 +23,7 @@ class User{
 
 	private $excluse_from_update = array("id", "active","username","email","last_access","session_cookie" );
 
-	const TABLENAME = "user";
+	const TABLENAME = "boostack_user";
 
 	public function __construct($id=-1,$init=true){
 		if($id != -1){

@@ -18,8 +18,8 @@ class UserRegistration extends UserInfo{
 
 	#private $excluse_from_update = array("id", "active","oauth_provider","oauth_uid","oauth_token","oauth_secret","activation_date","username","email","wall_count","ip","join_date","join_idconfirm","last_access","session_cookie","privacy" );
 
-	const TABLENAME = "user_registration";
-	const TABLENAME2 = "user";
+	const TABLENAME = "boostack_user_registration";
+	const TABLENAME2 = "boostack_user";
 
 	public function __construct($id=-1){
 		if($id != -1){

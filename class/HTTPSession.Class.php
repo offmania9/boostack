@@ -18,6 +18,8 @@ class HTTPSession {
     private $user_id;
     private $session_timeout = 600;      # 10 minute inactivity timeout
     private $session_lifespan = 3600;    # 1 hour session duration
+    private $http_session_table = "boostack_http_session";
+    private $session_variable = "boostack_session_variable";
 
     public function __construct($timeout=3600,$lifespan=4600) {
       $this->session_timeout = $timeout;
@@ -36,13 +38,13 @@ class HTTPSession {
        $this->php_session_id = addslashes(htmlspecialchars($_COOKIE["PHPSESSID"]));
        $datetime_now = $this->get_datetime_now();
 		$sql = "SELECT created,last_impression
-		FROM http_session WHERE ascii_session_id ='".$this->php_session_id."' ";
+		FROM ".$this->http_session_table." WHERE ascii_session_id ='".$this->php_session_id."' ";
 		$lease = mysql_query($sql)or die (mysql_error().": $sql");
 		$lease2 = mysql_fetch_array($lease);
 		$interval_created = strtotime($datetime_now)- strtotime($lease2[0]);
 		$interval_last_impression = strtotime($datetime_now) - strtotime($lease2[1]);   
 
-       $stmt = "select id from http_session 
+       $stmt = "select id from ".$this->http_session_table."
            WHERE ascii_session_id = '".$this->php_session_id."'
            AND $interval_created < ".$this->session_lifespan."
            AND user_agent='".$strUserAgent."'
@@ -53,9 +55,9 @@ class HTTPSession {
        if (mysql_num_rows($result)==0) {
          $failed = 1;
          $maxlifetime = $this->session_lifespan;
-		 $sql ="DELETE FROM http_session WHERE (ascii_session_id = '". $this->php_session_id . "') OR (now() - created > '$maxlifetime seconds')";
+		 $sql ="DELETE FROM ".$this->http_session_table." WHERE (ascii_session_id = '". $this->php_session_id . "') OR (now() - created > '$maxlifetime seconds')";
          $result = mysql_query($sql) or die (mysql_error().": $sql");
-		 $sql ="DELETE FROM session_variable WHERE session_id NOT IN (SELECT id FROM http_session)";
+		 $sql ="DELETE FROM ".$this->session_variable." WHERE session_id NOT IN (SELECT id FROM ".$this->http_session_table.")";
          $result = mysql_query($sql) or die (mysql_error().": $sql");
          unset($_COOKIE["PHPSESSID"]);
        };
@@ -69,7 +71,7 @@ class HTTPSession {
 
     public function Impress() {
       if ($this->native_session_id) {
-		$sql = "UPDATE http_session SET last_impression = '".$this->get_datetime_now()."' WHERE id = '" . $this->native_session_id ."'";
+		$sql = "UPDATE ".$this->http_session_table." SET last_impression = '".$this->get_datetime_now()."' WHERE id = '" . $this->native_session_id ."'";
         $result = mysql_query($sql) or die (mysql_error().": $sql");
       };
     }
@@ -79,7 +81,7 @@ class HTTPSession {
     }
 
     public function IsFBSync() {
-      $stmt = "select id FROM user WHERE id = '".$this->user_id."' AND oauth_uid = '-1'";
+      $stmt = "select id FROM boostack_user WHERE id = '".$this->user_id."' AND oauth_uid = '-1'";
       $result = mysql_query($stmt) or die (mysql_error().": $stmt");
 	  if (mysql_num_rows($result)>0)
 	  	return false;
@@ -117,16 +119,16 @@ class HTTPSession {
 	  else
       	$strMD5Password = hash("sha512",$strPlainPassword);
 		
-      $stmt = "SELECT id FROM user WHERE username = '$strUsername' 
+      $stmt = "SELECT id FROM boostack_user WHERE username = '$strUsername'
 	  AND pwd = '$strMD5Password' AND active='1'";
       $result = mysql_query($stmt) or die (mysql_error().": $stmt");
       if (mysql_num_rows($result)>0) {
         $row = mysql_fetch_array($result);
         $this->user_id = $row["id"];
         $this->logged_in = true;
-		$sql = "UPDATE http_session SET logged_in = 't', user_id = '".$this->user_id."' WHERE id='".$this->native_session_id."'";
+		$sql = "UPDATE ".$this->http_session_table." SET logged_in = 't', user_id = '".$this->user_id."' WHERE id='".$this->native_session_id."'";
         $result = mysql_query($sql) or die (mysql_error().": $sql");
-		mysql_query("UPDATE user SET last_access='".time()."' where id='".$row["id"]."'") or die ("error set access");				
+		mysql_query("UPDATE boostack_user SET last_access='".time()."' where id='".$row["id"]."'") or die ("error set access");
         return(true);
       }
       else {
@@ -136,7 +138,7 @@ class HTTPSession {
 
     public function LogOut() {
       if ($this->logged_in == true) {
-		$sql = "UPDATE http_session SET logged_in = 'f', user_id = '0' WHERE id = " . $this->native_session_id;
+		$sql = "UPDATE ".$this->http_session_table." SET logged_in = 'f', user_id = '0' WHERE id = " . $this->native_session_id;
         $result = mysql_query($sql) or die (mysql_error().": $sql");
         $this->logged_in = false;
         $this->user_id = 0;
@@ -148,7 +150,7 @@ class HTTPSession {
     }
 
     public function __get($nm) {
-		$sql = "SELECT variable_value FROM session_variable 
+		$sql = "SELECT variable_value FROM ".$this->session_variable."
 							WHERE session_id = '".$this->native_session_id."'
 							AND variable_name ='".$nm."' ORDER BY id DESC"; # aggiunta SS: ORDER BY 'id' DESC"
       $result = mysql_query($sql) or die (mysql_error().": $sql");
@@ -165,7 +167,7 @@ class HTTPSession {
       $strSer = serialize($val);
 	  #$this->native_session_id = $this->php_session_id;
 	  $this->native_session_id = ($this->native_session_id == "")?0:$this->native_session_id;
-      $stmt = "INSERT INTO session_variable(session_id, variable_name, variable_value)
+      $stmt = "INSERT INTO ".$this->session_variable."(session_id, variable_name, variable_value)
                VALUES(".$this->native_session_id.", '$nm', '$strSer')";
       $result = mysql_query($stmt)  or die (mysql_error().":** $stmt");
     }
@@ -183,7 +185,7 @@ class HTTPSession {
       $strUserAgent = addslashes(htmlspecialchars($_SERVER["HTTP_USER_AGENT"]));
       $this->php_session_id = $id;
       $failed = 1;
-	  $sql = "select id, logged_in, user_id from http_session where ascii_session_id = '$id'";
+	  $sql = "select id, logged_in, user_id from ".$this->http_session_table." where ascii_session_id = '$id'";
       $result = mysql_query($sql) or die (mysql_error().": $sql");
       if (mysql_num_rows($result)>0) {
        $row = mysql_fetch_array($result);
@@ -198,10 +200,10 @@ class HTTPSession {
       }
       else {
         $this->logged_in = false;
-		$sql="INSERT INTO http_session(id,ascii_session_id, logged_in,user_id, created, user_agent) 
+		$sql="INSERT INTO ".$this->http_session_table."(id,ascii_session_id, logged_in,user_id, created, user_agent)
 							VALUES (NULL,'$id','f',0,'".$this->get_datetime_now()."','$strUserAgent')";
         $result = mysql_query($sql)or die (mysql_error().": $sql");
-		$sql = "select id from http_session where ascii_session_id = '$id'";
+		$sql = "select id from ".$this->http_session_table." where ascii_session_id = '$id'";
         $result = mysql_query($sql) or die (mysql_error().": $sql");
         $row = mysql_fetch_array($result);
         $this->native_session_id = $row["id"];
@@ -214,7 +216,7 @@ class HTTPSession {
     }
 
     private function _session_destroy_method($id) {
-		$sql = "DELETE FROM http_session WHERE ascii_session_id = '$id'" ;
+		$sql = "DELETE FROM ".$this->http_session_table." WHERE ascii_session_id = '$id'" ;
       $result = mysql_query($sql) or die (mysql_error().": $sql");
       return($result);
     }

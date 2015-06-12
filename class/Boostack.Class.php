@@ -192,4 +192,166 @@ class Boostack{
     <?
     }
 }
+### DATABASE SCHEMA
+
+/*
+ *
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*
+-- Database: `boostack`
+-- --------------------------------------------------------
+-- Table `boostack_http_session`
+
+CREATE TABLE `boostack_http_session` (
+`id` int(11) NOT NULL auto_increment,
+  `ascii_session_id` varchar(32) NOT NULL,
+  `logged_in` varchar(1) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `last_impression` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  `created` timestamp NOT NULL default '0000-00-00 00:00:00',
+  `user_agent` varchar(256) NOT NULL,
+  PRIMARY KEY  (`id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- Data dump for `boostack_http_session`
+                 -- --------------------------------------------------------
+-- Table `boostack_log`
+
+CREATE TABLE `boostack_log` (
+`id` int(11) NOT NULL auto_increment,
+  `datetime` int(11) NOT NULL,
+  `username` varchar(60) NOT NULL,
+  `ip` varchar(16) NOT NULL,
+  `useragent` varchar(255) NOT NULL,
+  `referrer` varchar(255) NOT NULL,
+  `query` varchar(255) NOT NULL,
+  `message` text NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- Data dump for `boostack_log`
+                 -- --------------------------------------------------------
+-- Table `boostack_session_variable`
+
+CREATE TABLE `boostack_session_variable` (
+`id` int(11) NOT NULL auto_increment,
+  `session_id` int(11) NOT NULL,
+  `variable_name` varchar(64) collate utf8_unicode_ci NOT NULL,
+  `variable_value` text collate utf8_unicode_ci NOT NULL,
+  PRIMARY KEY  (`id`),
+  KEY `session_id` (`session_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+-- Data dump for `boostack_session_variable`
+                 -- --------------------------------------------------------
+-- Table `boostack_user`
+
+CREATE TABLE `boostack_user` (
+`id` int(11) NOT NULL auto_increment,
+  `active` varchar(1) NOT NULL,
+  `privilege` int(11) NOT NULL,
+  `username` text,
+  `pwd` varchar(128) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `pic_square` varchar(255) NOT NULL,
+  `last_access` int(11) NOT NULL default '0',
+  `session_cookie` varchar(32) NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
+
+-- Data dump for `boostack_user`  username:boostack  password: boostackAdm1n
+INSERT INTO `boostack_user` VALUES(0, '0', 3, 'boostack', 'fbd5ee51bd4f9f23201396c9d9d58117d20fdb82c63f9ca8574b67461a1110ad03e3a0a1d9e000371ceb9211fb5676e1688ea060c47f31573465615e73039ab2', '@', '', 522720000, '');
+-- --------------------------------------------------------
+-- Table `boostack_user_info`
+CREATE TABLE `boostack_user_info` (
+    `id` int(11) NOT NULL,
+  `first_name` varchar(70) NOT NULL,
+  `last_name` varchar(70) default NULL,
+  `name` varchar(255) default NULL,
+  `locale` varchar(255) default NULL,
+  `city` varchar(200) default NULL,
+  `state` varchar(100) default NULL,
+  `country` varchar(100) default NULL,
+  `zip` varchar(10) default NULL,
+  `about_me` text,
+  `tel` varchar(20) default NULL,
+  `cell` varchar(20) default NULL,
+  `profession` varchar(25) default NULL,
+  `birthday` varchar(30) default NULL,
+  `movies` varchar(300) default NULL,
+  `music` varchar(300) default NULL,
+  `political` varchar(300) default NULL,
+  `interests` varchar(300) default NULL,
+  `tv` varchar(300) default NULL,
+  `religion` varchar(300) default NULL,
+  `pic_big` varchar(255) default NULL,
+  `sex` varchar(10) default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Data dump for `boostack_user_info`
+                 -- --------------------------------------------------------
+-- Table `boostack_user_registration`
+
+CREATE TABLE `boostack_user_registration` (
+    `id` int(11) NOT NULL,
+  `activation_date` int(11) NOT NULL default '0',
+  `access_code` varchar(10) default NULL,
+  `ip` varchar(16) NOT NULL,
+  `join_date` int(11) NOT NULL,
+  `join_idconfirm` varchar(32) NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Data dump for `boostack_user_registration`
+                 -- --------------------------------------------------------
+-- Table `boostack_user_social`
+
+CREATE TABLE `boostack_user_social` (
+    `id` int(11) NOT NULL,
+  `type` varchar(2) NOT NULL,
+  `uid` varchar(90) NOT NULL,
+  `uid_token` varchar(90) NOT NULL,
+  `uid_token_secret` varchar(90) NOT NULL,
+  `autosharing` varchar(1) NOT NULL default '1',
+  `website` varchar(255) NOT NULL,
+  `extra` varchar(10) NOT NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `uid` (`uid`,`type`),
+  KEY `id` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+-- Data dump for `boostack_user_social`
+
+                 -- Constraints
+
+                 -- Constraints`boostack_http_session`
+    --
+ALTER TABLE `boostack_http_session`
+  ADD CONSTRAINT `http_session_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `boostack_user` (`id`) ON DELETE CASCADE;
+--
+-- Constraints`boostack_session_variable`
+    --
+ALTER TABLE `boostack_session_variable`
+  ADD CONSTRAINT `session_variable_ibfk_1` FOREIGN KEY (`session_id`) REFERENCES `boostack_http_session` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+--
+-- Constraints`boostack_user_info`
+    --
+ALTER TABLE `boostack_user_info`
+  ADD CONSTRAINT `user_info_ibfk_1` FOREIGN KEY (`id`) REFERENCES `boostack_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+--
+-- Constraints`boostack_user_registration`
+    --
+ALTER TABLE `boostack_user_registration`
+  ADD CONSTRAINT `user_registration_ibfk_1` FOREIGN KEY (`id`) REFERENCES `boostack_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+--
+-- Constraints`boostack_user_social`
+    --
+ALTER TABLE `boostack_user_social`
+  ADD CONSTRAINT `user_social_ibfk_1` FOREIGN KEY (`id`) REFERENCES `boostack_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ * */
 ?>
