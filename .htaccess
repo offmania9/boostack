@@ -19,6 +19,14 @@ RewriteRule ^docs documentation.php [L]
 RewriteRule ^download$ download.php [L]
 RewriteRule ^downloadLatest$ downloadlatest.php [L]
 
+
+ErrorDocument 400 http://localhost/boostack/error.php
+ErrorDocument 401 http://localhost/boostack/error.php
+ErrorDocument 403 http://localhost/boostack/error.php
+ErrorDocument 404 http://localhost/boostack/error.php
+ErrorDocument 500 http://localhost/boostack/error.php
+
+
 ############## SECURITY
 #php_value error_reporting 1
 #php_flag display_errors 1
