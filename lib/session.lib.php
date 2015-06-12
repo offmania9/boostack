@@ -17,7 +17,7 @@ $objSession->Impress();
 if($checkcookie && isset($_COOKIE[''.$cookiename])){
 	$c = sanitizeInput($_COOKIE[''.$cookiename]);
 	if(!$objSession->IsLoggedIn() && $c!==""){
-		$info_user = mysql_query("SELECT username,pwd FROM user WHERE session_cookie ='".$c."'");
+		$info_user = mysql_query("SELECT username,pwd FROM boostack_user WHERE session_cookie ='".$c."'");
 		if(mysql_num_rows($info_user) == 1){
 			$user_info = mysql_fetch_array($info_user);
 			$objSession->Login($user_info['username'],"",$user_info['pwd']);

@@ -34,7 +34,7 @@ class Boostack{
     protected $session_on = false;  #true need database_on=true
     protected $checkcookie=false;  #true need database_on=true AND session_on=true
     protected $cookieexpire= 3600; //1 hour
-    protected $cookiename= ""; //md5 key
+    protected $cookiename= "5acab12450d76d792903b3569340da14"; //md5 key
     protected $checklanguage = true;
     protected $defaultlanguage = "en"; #must exists file: lang/[$defaultlanguage].inc.php   es:lang/en.inc.php
     protected $checkMobile = false;

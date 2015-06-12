@@ -51,5 +51,9 @@ $boostack_labels_strings =  array(
         "afterDescription" => 'See the <a href="'.$boostack->getFriendlyUrl("docs/introduction").'">Documentation</a> for further instructions.'.
                               'And be sure to sign up for mailing list to receive all Boostack updates.'
     ),
+    'error' => array(
+        "attention" => "Attention!",
+        "urlnotfound" => "The requested URL was not found on this server."
+    ),
     'license' => 'is licensed under <a href="https://github.com/offmania9/Boostack/blob/master/LICENSE" target="_blank">MIT</a>.'
 );
