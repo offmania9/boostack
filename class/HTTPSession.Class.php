@@ -112,8 +112,8 @@ class HTTPSession {
     }
 
     public function Login($strUsername, $strPlainPassword, $hashed_psw="") {
-	  if($md5_psw !== "")
-	  	$strMD5Password = $md5_psw;
+	  if($hashed_psw !== "")
+	  	$strMD5Password = $hashed_psw;
 	  else
       	$strMD5Password = hash("sha512",$strPlainPassword);
 		

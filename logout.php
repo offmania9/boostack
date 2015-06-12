@@ -10,13 +10,18 @@
  */
 
 require_once("core/environment_init.php");
-$boostack->renderOpenHtmlHeadTags();
+if($boostack->database_on) {
+    $boostack->renderOpenHtmlHeadTags();
 
-if(isset($objSession) && $objSession->IsLoggedIn())
-	$objSession->LogOut();
-setcookie(''.$cookiename,false, time() - $cookieexpire);
-setcookie(''.$cookiename,false, time() - $cookieexpire,"/");
-$boostack->renderCloseHtmlTag();
-header("location: ".$url."");
+    if ($boostack->session_on && isset($objSession) && $objSession->IsLoggedIn())
+        $objSession->LogOut();
+
+    if($boostack->checkcookie) {
+        setcookie('' . $cookiename, false, time() - $cookieexpire);
+        setcookie('' . $cookiename, false, time() - $cookieexpire, "/");
+    }
+    $boostack->renderCloseHtmlTag();
+}
+header("location: ".$boostack->url."");
 exit();
 ?>

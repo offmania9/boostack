@@ -1,4 +1,4 @@
-php_value zlib.output_compression off
+php_value zlib.output_compression on
 
 # disable the server signature
 ServerSignature Off

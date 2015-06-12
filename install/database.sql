@@ -1,22 +1,13 @@
--- phpMyAdmin SQL Dump
--- version 2.11.11.3
--- http://www.phpmyadmin.net
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-
-
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
 
---
 -- Database: `boostack`
---
 -- --------------------------------------------------------
---
 -- Table `http_session`
---
 
 CREATE TABLE `http_session` (
   `id` int(11) NOT NULL auto_increment,
@@ -30,13 +21,9 @@ CREATE TABLE `http_session` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
---
 -- Data dump for `http_session`
---
 -- --------------------------------------------------------
---
 -- Table `log`
---
 
 CREATE TABLE `log` (
   `id` int(11) NOT NULL auto_increment,
@@ -50,13 +37,9 @@ CREATE TABLE `log` (
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
---
 -- Data dump for `log`
---
 -- --------------------------------------------------------
---
 -- Table `session_variable`
---
 
 CREATE TABLE `session_variable` (
   `id` int(11) NOT NULL auto_increment,
@@ -67,13 +50,9 @@ CREATE TABLE `session_variable` (
   KEY `session_id` (`session_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
---
 -- Data dump for `session_variable`
---
 -- --------------------------------------------------------
---
 -- Table `user`
---
 
 CREATE TABLE `user` (
   `id` int(11) NOT NULL auto_increment,
@@ -88,15 +67,10 @@ CREATE TABLE `user` (
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
 
---
--- Data dump for `user`
---
-INSERT INTO `user` VALUES(0, '0', 3, 'boostack', 'a8e2e732c47373c952834ae5d1e416fa9a699b7861c2189c887df400eaa12b20babba10f475debe5c2cb4a0c2a8d8edbeb953c4c47fff4689eb1ce32a2a20155', '@', '', 1381977584, '');
+-- Data dump for `user`  username:boostack  password: boostackAdm1n
+INSERT INTO `user` VALUES(0, '0', 3, 'boostack', 'fbd5ee51bd4f9f23201396c9d9d58117d20fdb82c63f9ca8574b67461a1110ad03e3a0a1d9e000371ceb9211fb5676e1688ea060c47f31573465615e73039ab2', '@', '', 522720000, '');
 -- --------------------------------------------------------
---
 -- Table `user_info`
---
-
 CREATE TABLE `user_info` (
   `id` int(11) NOT NULL,
   `first_name` varchar(70) NOT NULL,
@@ -123,13 +97,9 @@ CREATE TABLE `user_info` (
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
 -- Data dump for `user_info`
---
 -- --------------------------------------------------------
---
 -- Table `user_registration`
---
 
 CREATE TABLE `user_registration` (
   `id` int(11) NOT NULL,
@@ -141,13 +111,9 @@ CREATE TABLE `user_registration` (
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
 -- Data dump for `user_registration`
---
 -- --------------------------------------------------------
---
 -- Table `user_social`
---
 
 CREATE TABLE `user_social` (
   `id` int(11) NOT NULL,
@@ -162,37 +128,29 @@ CREATE TABLE `user_social` (
   UNIQUE KEY `uid` (`uid`,`type`),
   KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
 -- Data dump for `user_social`
---
---
+
 -- Constraints
---
---
+
 -- Constraints`http_session`
 --
 ALTER TABLE `http_session`
   ADD CONSTRAINT `http_session_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE;
-
 --
 -- Constraints`session_variable`
 --
 ALTER TABLE `session_variable`
   ADD CONSTRAINT `session_variable_ibfk_1` FOREIGN KEY (`session_id`) REFERENCES `http_session` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
 --
 -- Constraints`user_info`
 --
 ALTER TABLE `user_info`
   ADD CONSTRAINT `user_info_ibfk_1` FOREIGN KEY (`id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
 --
 -- Constraints`user_registration`
 --
 ALTER TABLE `user_registration`
   ADD CONSTRAINT `user_registration_ibfk_1` FOREIGN KEY (`id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
 --
 -- Constraints`user_social`
 --
