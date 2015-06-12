@@ -7,13 +7,13 @@
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
  * @version 2
- */ 
+ */
 class Boostack{
     protected $developmentMode = false;
     protected $publicUrl = "http://boostack.com/";
     protected $privateUrl = "http://localhost/boostack/";
     protected $url;
-    protected $url_logo = "img/spendime_logo_x200.png";
+    protected $url_logo = "img/boostack_logo_x210.png";
     protected $sitename = "Boostack.com";
     protected $project_name = "Boostack";
     protected $project_sitename = "Boostack.com";
@@ -23,12 +23,12 @@ class Boostack{
     protected $project_mission = "Boostack.com - Improve your development and build a modern website in minutes";
     protected $facebookMetaTag = true;
     protected $og_type = "product";
-    protected $og_title = "";
+    protected $og_title = "Boostack.com - Improve your development and build a modern website in minutes";
     protected $fb_app_id = "";
     protected $fb_app_secret = "";
     protected $fb_admins = "";
-    protected $twitter = "@";
-    protected $gplus = "https://plus.google.com/+Boostack/";
+    protected $twitter = "@getBoostack";
+    protected $gplus = "https://plus.google.com/+BoostackFramework/";
 
     protected $database_on = true;
     protected $session_on = false;  #true need database_on=true
@@ -53,7 +53,7 @@ class Boostack{
 
     protected $labels;
 
-	public function __construct($developmentMode = false){
+    public function __construct($developmentMode = false){
         $this->cookieexpire = 60*60*24*59;
         if($developmentMode){
             $this->url = $this->privateUrl;
@@ -65,7 +65,7 @@ class Boostack{
             $this->url = $this->publicUrl;
 
         $this->developmentMode = $developmentMode;
-	}
+    }
 
     public function getLabel($key){
         $k = explode(".",$key);
@@ -87,12 +87,12 @@ class Boostack{
         ?>
         <script type="text/javascript" src="<?=$this->url?>js/<?=$fileName?>"></script>
     <?
-	}
+    }
 
     public function registerCssFile($fileName) {
         ?>
-            <link href="<?=$this->url?>css/<?=$fileName?>" rel="stylesheet">
-        <?
+        <link href="<?=$this->url?>css/<?=$fileName?>" rel="stylesheet">
+    <?
     }
     public function registerCoreServerFile($fileName) {
         #require_once(dirname(__FILE__)."/../core/".$fileName);
@@ -116,8 +116,8 @@ class Boostack{
     }
 
     public function getFriendlyUrl($virtualPath){
-{       return $this->url.$virtualPath;
-}   }
+        {       return $this->url.$virtualPath;
+        }   }
 
 
     public function renderCloseHtmlTag($logMesg="") {
@@ -176,10 +176,10 @@ class Boostack{
             <meta property="og:title" content="<?=$this->og_title?>" />
             <meta property="og:type" content="<?=$this->og_type?>" />
             <meta property="og:url" content="<?=$this->url?>"/>
-            <meta property="og:image" content="<?=$this->logo_210;?>"/>
+            <meta property="og:image" content="<?=$this->url_logo;?>"/>
             <meta property="og:description" content="<?=$this->site_description;?>" />
-            <meta property="fb:app_id" content="<?=$this->fb_app_id?>" />
-            <meta property="fb:admins" content="<?=$this->fb_admins?>" />
+            <? if($this->fb_app_id!=""){?><meta property="fb:app_id" content="<?=$this->fb_app_id?>" /><? }?>
+            <? if($this->fb_app_id!=""){?><meta property="fb:admins" content="<?=$this->fb_admins?>" /><? }?>
         <? }?>
         <title><?=($titlePrepend!="")?$titlePrepend." | ":""?><?=$this->site_title;?> | <?=$this->project_sitename?></title>
         <meta name="description" content="<?=$this->site_description?>"><meta name="author" content="<?=$this->site_author?>"><meta content="<?=$this->site_keywords;?>" name="Keywords" /><meta content="INDEX, FOLLOW" name="ROBOTS" />
@@ -189,7 +189,7 @@ class Boostack{
         <link rel="apple-touch-icon" href="<?=$this->appletouchicon_def;?>">
         <meta name="apple-mobile-web-app-title" content="<?=$this->sitename?>">
         <base href="<?=$this->url?>" /><meta name="apple-mobile-web-app-capable" content="yes" />
-        <?
+    <?
     }
 }
 ?>
