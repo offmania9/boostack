@@ -21,7 +21,7 @@ class Session_HTTP {
     private $session_variable = "boostack_session_variable";
 
     public function __construct($timeout=3600,$lifespan=4600) {
-      $this->dbhandle = DBMySqlPDO::getInstance();
+      $this->dbhandle = Database_PDO::getInstance();
       $this->session_timeout = $timeout;
       $this->session_lifespan = $lifespan;
 

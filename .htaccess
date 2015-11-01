@@ -1,5 +1,8 @@
 php_value zlib.output_compression on
 
+###### TIME
+SetEnv TZ Europe/Rome
+
 # disable the server signature
 ServerSignature Off
 
@@ -11,6 +14,7 @@ SetEnv SERVER_ADMIN info@boostack.com
 #RewriteRule ^(.*)$ boostack.com/$1 [L,R=301]
 
 ###### RULES
+Options -MultiViews
 RewriteEngine on
 #RewriteBase /boostack/
 RewriteRule ^home$ index.php [L]
@@ -20,11 +24,11 @@ RewriteRule ^download$ download.php [L]
 RewriteRule ^downloadLatest$ downloadlatest.php [L]
 
 
-ErrorDocument 400 http://localhost/boostack/error.php
-ErrorDocument 401 http://localhost/boostack/error.php
-ErrorDocument 403 http://localhost/boostack/error.php
-ErrorDocument 404 http://localhost/boostack/error.php
-ErrorDocument 500 http://localhost/boostack/error.php
+ErrorDocument 400 http://boostack.com/error.php
+ErrorDocument 401 http://boostack.com/error.php
+ErrorDocument 403 http://boostack.com/error.php
+ErrorDocument 404 http://boostack.com/error.php
+ErrorDocument 500 http://boostack.com/error.php
 
 
 ############## SECURITY
@@ -113,7 +117,7 @@ ExpiresByType text/html A1
 </IfModule>
 
 
-<FilesMatch "\.(htaccess|htpasswd|ini|phps|fla|psd|log|sh|sql|inc|inc.php|Class.php)$">
+<FilesMatch "\.(htaccess|htpasswd|ini|phps|fla|psd|log|sh|sql|inc|inc.php|phtml|Class.php)$">
 Order Allow,Deny
 Deny from all
 </FilesMatch>

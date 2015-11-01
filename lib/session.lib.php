@@ -9,23 +9,18 @@
  * @version 2
  */
 
-require_once("class/User.Class.php");
-require_once("class/HTTPSession.Class.php");
-$objSession = new HTTPSession();
-$objSession->dbhandle=$db;
+#require_once("class/User.Class.php");
+#require_once("class/HTTPSession.Class.php");
+$objSession = new Session_HTTP();
 $objSession->Impress();
-if($checkcookie && isset($_COOKIE[''.$cookiename])){
-	$c = sanitizeInput($_COOKIE[''.$cookiename]);
+if($config['cookie_on'] && isset($_COOKIE[''.$cookiename])){
+	$c = sanitizeInput($_COOKIE[''.$config['cookie_name']]);
 	if(!$objSession->IsLoggedIn() && $c!==""){
-		$info_user = mysql_query("SELECT username,pwd FROM boostack_user WHERE session_cookie ='".$c."'");
-		if(mysql_num_rows($info_user) == 1){
-			$user_info = mysql_fetch_array($info_user);
-			$objSession->Login($user_info['username'],"",$user_info['pwd']);
-		}
-		else{// cookie is set but wrong (manually edited)
-			header("Location: logout.php");
-            exit();
+		if (!$objSession->loginByCookie($c)) {// cookie is set but wrong (manually edited)
+			$boostack->logout();
+			header("Location: ".$boostack->url);
 		}
 	}	
 }
+define('CURRENTUSER',$objSession->GetUserObject());
 ?>

@@ -8,7 +8,7 @@
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
  * @version 2
  */
-class UserSocial extends User{
+class User_Social extends User{
 	 
 	private $id;
 	private $type;

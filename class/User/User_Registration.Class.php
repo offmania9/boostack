@@ -8,7 +8,7 @@
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
  * @version 2
  */
-class UserRegistration extends UserInfo{
+class User_Registration extends UserInfo{
 	 
 	private $activation_date;
 	private $access_code;

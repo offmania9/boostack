@@ -1,6 +1,6 @@
 <?php
 
-class Database_DBMySqlPDO {
+class Database_PDO {
 
     private static $instance = null;
 

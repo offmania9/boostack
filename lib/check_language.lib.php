@@ -10,14 +10,14 @@
  */
     $l;$language;
 	if (!isset($_GET['lang'])) { # if isn't set by user from url
-		if($boostack->session_on && $objSession->SESS_LANGUAGE !== "") { # if is set in the user session
+		if($config['session_on'] && $objSession->SESS_LANGUAGE !== "") { # if is set in the user session
             if (is_file("lang/" . $objSession->SESS_LANGUAGE . ".inc.php")){ #if the translation file exists
                 include("lang/" . $objSession->SESS_LANGUAGE . ".inc.php");
                 $l = $objSession->SESS_LANGUAGE;
             }
 			else { # default lang
-                include("lang/" . $boostack->defaultlanguage . ".inc.php");
-                $l = $boostack->defaultlanguage;
+                include("lang/" . $config["language_default"] . ".inc.php");
+                $l = $config["language_default"];
             }
 		}
 		else{  # if isn't set in the user session, fetch it from browser
@@ -28,8 +28,8 @@
                 $l = $language;
             }
             else {
-                include("lang/" . $boostack->defaultlanguage . ".inc.php");
-                $l = $boostack->defaultlanguage;
+                include("lang/" . $config["language_default"] . ".inc.php");
+                $l = $config["language_default"];
             }
 		}
 	}
@@ -40,13 +40,13 @@
             $l = $language;
 		}
 		else{ # default lang
-            include("lang/". $boostack->defaultlanguage .".inc.php");
-            $l = $boostack->defaultlanguage;
+            include("lang/". $config["language_default"] .".inc.php");
+            $l = $config["language_default"];
 		}
 	}
     $boostack->labels = $boostack_labels_strings;
 
-    if($boostack->session_on)
+    if($config['session_on'])
         $objSession->SESS_LANGUAGE = $l;
     unset($l,$language);
 ?>

@@ -8,7 +8,7 @@
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
  * @version 2.1
  */
-class DatabaseAccessLogger{
+class Database_AccessLogger{
 
   	private $username;
 	private $ip;
@@ -29,7 +29,7 @@ class DatabaseAccessLogger{
 			$this->username = (!is_null($objSession))? $objSession->GetUserID(): "Anonymous";
 			$this->ip = getIpAddress();;
 			$this->useragent = sanitizeInput(getenv('HTTP_USER_AGENT'));
-			$this->referrer = sanitizeInput($_SERVER["HTTP_REFERER"]);
+			$this->referrer = isset($_SERVER["HTTP_REFERER"])?sanitizeInput($_SERVER["HTTP_REFERER"]):"";
 			$this->query = sanitizeInput(getenv('REQUEST_URI'));
   	}
 
@@ -47,7 +47,7 @@ class DatabaseAccessLogger{
   
 	static function getInstance($objSession = NULL){
 		if(self::$instance == NULL)
-			self::$instance = new DatabaseAccessLogger($objSession);
+			self::$instance = new Database_AccessLogger($objSession);
 		
 		return self::$instance;
 	}

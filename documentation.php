@@ -12,7 +12,7 @@
 require_once("core/environment_init.php");
 $boostack->renderOpenHtmlHeadTags("Documentation");
 ########################
-/*if($boostack->session_on && $objSession->IsLoggedIn()){
+/*if($config['session_on'] && $objSession->IsLoggedIn()){
     $user = new User($objSession->GetUserID());
 }*/
 
