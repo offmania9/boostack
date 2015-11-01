@@ -1,6 +1,6 @@
 <?php
 /**
- * Boostack: UserInfo.Class.php
+ * Boostack: User_Info.Class.php
  * ========================================================================
  * Copyright 2015 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
@@ -8,7 +8,7 @@
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
  * @version 2
  */
-class UserInfo extends User{
+class User_Info extends User{
 	#private $id;#
 	private $first_name;#
 	private $last_name;

@@ -1,6 +1,6 @@
 <?php
 /**
- * Boostack: UserSocial.Class.php
+ * Boostack: User_Social.Class.php
  * ========================================================================
  * Copyright 2015 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)

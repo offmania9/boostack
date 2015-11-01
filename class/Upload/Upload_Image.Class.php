@@ -1,6 +1,6 @@
 <?php
 /**
- * Boostack: UploadImage.Class.php
+ * Boostack: Upload_Image.Class.php
  * ========================================================================
  * Copyright 2015 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
@@ -8,7 +8,7 @@
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
  * @version 2
  */
-class UploadImage{
+class Upload_Image{
 	 
 	private $source;
 	private $name;

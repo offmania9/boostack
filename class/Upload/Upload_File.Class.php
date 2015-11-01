@@ -1,6 +1,6 @@
 <?php
 /**
- * Boostack: Upload.Class.php
+ * Boostack: Upload_File.Class.php
  * ========================================================================
  * Copyright 2015 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
@@ -11,7 +11,7 @@
 
 require_once("extension_mimetypes.inc.php");
 
-class Upload{
+class Upload_File{
 	 
 	private $name;
 	private $visual_name;

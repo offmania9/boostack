@@ -1,12 +1,12 @@
 <?php
 /**
- * Boostack: DatabaseAccessLogger.Class.php
+ * Boostack: Database_AccessLogger.Class.php
  * ========================================================================
  * Copyright 2015 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 2
+ * @version 2.1
  */
 class DatabaseAccessLogger{
 
@@ -15,42 +15,39 @@ class DatabaseAccessLogger{
 	private $useragent;
 	private $referrer;
 	private $query;
-	private $message;
-	private $date;
-	private $time;
+	#private $message;
+	#private $date;
+	#private $time;
+	#private $pdo;
 	
 	static private $instance = NULL;
+
   	const TABLENAME = "boostack_log";
   
   
-  	private function __construct($db = NULL, $objSession) {
-		if($db instanceof Database) {
-			$this->_db = $db;
+  	private function __construct($objSession=NULL) {
 			$this->username = (!is_null($objSession))? $objSession->GetUserID(): "Anonymous";
-			$this->ip = getenv('REMOTE_ADDR');
-			$this->useragent = addslashes(htmlspecialchars(getenv('HTTP_USER_AGENT')));
-			$this->referrer = addslashes(htmlspecialchars(getenv('HTTP_REFERER')));
-			$this->query = addslashes(htmlspecialchars(getenv('REQUEST_URI')));
-		}
-		else throw new Exception(__METHOD__ . ' requires an object of type Database');
+			$this->ip = getIpAddress();;
+			$this->useragent = sanitizeInput(getenv('HTTP_USER_AGENT'));
+			$this->referrer = sanitizeInput($_SERVER["HTTP_REFERER"]);
+			$this->query = sanitizeInput(getenv('REQUEST_URI'));
   	}
 
   	public function Log($message = NULL) {
-		#if(!is_null($message) && $message != '') 
 			$message = str_replace(array("\r\n","\n","\r"), "", $message);
 			$message = addslashes($message);
 			$this->query = str_replace(array("\r\n","\n","\r"), "", $this->query);
 			$this->query = addslashes($this->query);
-				
-			$this->_db->Execute("INSERT INTO ".self::TABLENAME."  (id ,datetime , username, ip ,useragent ,referrer ,query ,message) 
-			VALUES(NULL,'".time()."','".$this->username."','".$this->ip."','".$this->useragent."','".$this->useragent."','".$this->query."','".$message."')");
+			$sql = "INSERT INTO ".self::TABLENAME."  (id ,datetime , username, ip ,useragent ,referrer ,query ,message)
+				VALUES(NULL,'".time()."','".$this->username."','".$this->ip."','".$this->useragent."','".$this->referrer."','".$this->query."','".$message."')";
+			Database_PDO::getInstance()->prepare($sql)->execute();
   	}
 
   	private function __clone(){}
   
-	static function getInstance($db,$objSession = NULL){
+	static function getInstance($objSession = NULL){
 		if(self::$instance == NULL)
-			self::$instance = new DatabaseAccessLogger($db,$objSession);
+			self::$instance = new DatabaseAccessLogger($objSession);
 		
 		return self::$instance;
 	}
@@ -58,8 +55,8 @@ class DatabaseAccessLogger{
 
   	public function get() {
 			$sql = "SELECT * FROM ".self::TABLENAME." ORDER BY datetime DESC";
-			$f = mysql_query($sql) or die(mysql_error());
-			while($res = mysql_fetch_array($f)) 
+			$q = Database_PDO::getInstance()->prepare($sql)->execute();
+			while($res = $q->fetch(PDO::FETCH_ASSOC))
 				$res2[] = $res['datetime']." - ".$res['username']." - ".$res['message']." - ".$res['ip']." - ".substr($res['useragent'],0,10)." - ".$res['query'];
 			
 			return $res2;
