@@ -15,7 +15,7 @@ $config['developmentMode'] = true;
 
 // ====== database
 # enable or disable Mysql database
-$config['database_on'] = true;
+$config['database_on'] = false;
 $database['host'] = '127.0.0.1';
 $database['name'] = 'boostack';
 $database['username'] = 'root';
@@ -23,7 +23,7 @@ $database['password'] = 'root';
 
 // ====== sessions
 # enable or disable Sessions (true need $database_on=true)
-$config['session_on'] = true;
+$config['session_on'] = false;
 
 // ====== cookie
 # enable or disable Cookies (true need $database_on=true AND $session_on=true)
@@ -39,7 +39,7 @@ $config['geolocation_on'] = false;
 
 // ====== language
 # enable or disable language check for Multilanguage features (see Language documentation)
-$config["language_on"] = true;
+$config["language_on"] = false;
 # allows the import of files of labels in this language (It must contain a value of language)
 $config["language_default"] = "en"; #must exists file: lang/[$defaultlanguage].inc.php   es:lang/en.inc.php
 
@@ -49,7 +49,7 @@ $config['checkMobile'] = false;
 
 // ====== log
 # enable or disable boostack Log (#true need $database_on=true)
-$config['log_on'] = true;
+$config['log_on'] = false;
 
 // ====== email
 # enable or disable send mail
