@@ -39,7 +39,7 @@ $config['geolocation_on'] = false;
 
 // ====== language
 # enable or disable language check for Multilanguage features (see Language documentation)
-$config["language_on"] = false;
+$config["language_on"] = true;
 # allows the import of files of labels in this language (It must contain a value of language)
 $config["language_default"] = "en"; #must exists file: lang/[$defaultlanguage].inc.php   es:lang/en.inc.php
 
