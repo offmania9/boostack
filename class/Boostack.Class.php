@@ -213,5 +213,5 @@ class Boostack {
     <?
     }
 }
-### DATABASE SCHEM
+
 ?>

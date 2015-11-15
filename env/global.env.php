@@ -34,7 +34,7 @@ $config["appletouchicon_def"] = "img/apple-touch-icon-57-precomposed.png";
 $config["html_lang"] = "en";
 
 # Facebook Metatags. OpenGraph
-$config["facebookMetaTag"] = true; # enable or disable Facebook meta tags
+$config["facebookMetaTag"] = TRUE; # enable or disable Facebook meta tags
 $config["og_type"] = "product";
 $config["og_title"] = "Boostack.com - Improve your development and build a modern website in minutes";
 $config["fb_app_id"] = "";

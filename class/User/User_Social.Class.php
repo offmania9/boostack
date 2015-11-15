@@ -25,10 +25,8 @@ class User_Social extends User{
 
 	public function __construct($id_u=-1,$type=""){		 
 		if($id_u !== -1 && $type!==""){
-			
 			$sql = "SELECT * FROM ".self::TABLENAME." WHERE id ='".$id_u."' AND type='".$type."' ";
-			$fields2 = mysql_query($sql)or die (mysql_error().": $sql");
-			$fields = mysql_fetch_array($fields2);	  
+			$fields = $this->pdo->query($sql)->fetchAll();
 			$this->id = $fields["id"];
 			$this->type = $fields["type"];
 			$this->uid = $fields["uid"];
@@ -47,18 +45,15 @@ class User_Social extends User{
 			$fields["autosharing"] = $post_array["autosharing"];
 			$fields["website"] = $post_array["website"];
 			$fields["extra"] = (isset($post_array["extra"]))?$post_array["extra"]:"";
-			
+
 		foreach($fields as $key => $value){
 			$this->$key = $value; #OBJECT UPDATE
 		}
-		
 		return $fields;
 	}
 	
     public function insert($post_array,$id_u) {
-
 		$fields = self::prepare($post_array);
-		
 		$sql_1 = "INSERT INTO ".self::TABLENAME." (id";
 	     $sql_2 = "VALUES('".$id_u."'";
 		foreach($fields as $key => $value){
@@ -70,16 +65,13 @@ class User_Social extends User{
 		}
 		$sql_1 .= ") ";
 		$sql_2 .= ")";
-		
 		$sql = $sql_1.$sql_2;
-		mysql_query($sql) or die ("QUERY: $sql <br /><br />".mysql_error());
-		$this->id = mysql_insert_id();
-		
+		$this->pdo->query($sql);
+		$this->id = $this->pdo->lastInsertId();
 		return true;	
 	}
 
 	public function update($post_array, $excluse=NULL){
-		
 		$fields = self::prepare($post_array);
 		$sql = "UPDATE ".self::TABLENAME." SET ";
 		foreach($fields as $key => $value){
@@ -89,15 +81,15 @@ class User_Social extends User{
 			#$this->$key = $value;  #OBJECT UPDATE
 		}
 		$sql = substr($sql, 0, -1);
-		$sql .= " WHERE id='".$this->id."'"; 
-		mysql_query($sql) or die ("QUERY: $sql <br /><br />".mysql_error());
+		$sql .= " WHERE id='".$this->id."'";
+		$this->pdo->query($sql);
 		return true;
 	}
 		
 	public function delete(){
 		$sql = "DELETE FROM ".self::TABLENAME." WHERE id='".$this->id."'";  
-		$resurce = mysql_query($sql) or die ("QUERY: $sql <br /><br />".mysql_error());  
-		if(mysql_affected_rows() == 0)
+		$resurce = $this->pdo->query($sql);
+		if($resurce->rowCount() == 0)
 			return false;
 		return true;
 	}
@@ -114,7 +106,7 @@ class User_Social extends User{
 		if(isset($this->$property_name)) { 
 			$this->$property_name = $val;
 			$sql = "UPDATE ".self::TABLENAME." SET $property_name='".$val."'  WHERE id ='".$this->id."' ";
-			mysql_query($sql)or die (mysql_error().": $sql");
+			$this->pdo->query($sql);
 		}
 		else
 			parent::__set($property_name, $val);
@@ -123,16 +115,14 @@ class User_Social extends User{
 	public function isSynchronized($type) {
 		$sql = "SELECT id FROM `".self::TABLENAME."` 
 		WHERE id ='".$this->id."' AND type ='".$type."'";
-		$q = mysql_query($sql)or die (mysql_error().": $sql"); 
-		return (mysql_num_rows($q)>0)?true:false;
+		$q = $this->pdo->query($sql);
+		return ($q->rowCount()>0)?true:false;
     }	
-	
-	public function getIdByUid($uid){		 
-			
+	/*
+	public function getIdByUid($uid){
 		$sql = "SELECT id FROM ".self::TABLENAME." WHERE uid ='".$uid."' AND type='fb' ";
-		$q = mysql_query($sql)or die (mysql_error().": $sql");
-		$q2 = mysql_fetch_array($q);
-		return (mysql_num_rows($q) == 0)?NULL:$q2[0];
-	}
+		$q = $this->pdo->query($sql)->fetch();
+		return ($q->rowCount()>9 == 0)?NULL:$q[0];
+	}*/
 }
 ?>

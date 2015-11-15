@@ -105,10 +105,9 @@ class Email_Basic{
     }
 
     public function __set($property_name, $val) {
-
 		$this->$property_name = $val;
-		#$sql = "UPDATE ".self::TABLENAME." SET $property_name='".$val."'  WHERE id ='".$this->id."' ";
-		#mysql_query($sql)or die (mysql_error().": $sql");
+		$sql = "UPDATE ".self::TABLENAME." SET $property_name='".$val."'  WHERE id ='".$this->id."' ";
+		Database_PDO::getInstance()->query($sql);
     }
 	
 }

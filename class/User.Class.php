@@ -9,7 +9,7 @@
  * @version 2
  */
 class User{
-	 
+	private $dbfield;
 	private $id;
 	private $active;
 	private $privilege;
@@ -20,6 +20,7 @@ class User{
 	private $last_access;
 	private $session_cookie;
 	private $pic_square;
+	private $pdo;
 
 	private $excluse_from_update = array("id", "active","username","email","last_access","session_cookie" );
 
@@ -27,10 +28,12 @@ class User{
 
 	public function __construct($id=-1,$init=true){
 		if($id != -1){
+			$this->pdo = Database_PDO::getInstance();
 			if($init){
 				$sql = "SELECT * FROM ".self::TABLENAME." WHERE id ='".$id."' ";
-				$fields2 = mysql_query($sql)or die (mysql_error().": $sql");
-				$fields = mysql_fetch_array($fields2);	 
+				$fields = $this->pdo->query($sql)->fetchAll();
+				if(get_class($this) != __CLASS__)
+					$this->dbfield = $fields;
 				$this->id = $fields["id"];
 				$this->active = $fields["active"];
 				$this->privilege = $fields["privilege"];
@@ -44,8 +47,7 @@ class User{
 			}
 			else{
 				$sql = "SELECT id FROM ".self::TABLENAME." WHERE id ='".$id."' ";
-				$fields2 = mysql_query($sql)or die (mysql_error().": $sql");
-				$fields = mysql_fetch_array($fields2);	 
+				$fields = $this->pdo->query($sql)->fetch();
 				$this->id = $fields["id"];				
 			}
 		}
@@ -89,8 +91,8 @@ class User{
 		$sql_2 .= ")";
 		
 		$sql = $sql_1.$sql_2;
-		mysql_query($sql) or die ("QUERY: $sql <br /><br />".mysql_error());
-		$this->id = mysql_insert_id();
+		$this->pdo->query($sql);
+		$this->id = $this->pdo->lastInsertId();
 		return true;	
 	}
 
@@ -105,17 +107,15 @@ class User{
 			#$this->$key = $value; #OBJECT UPDATE
 		}
 		$sql = substr($sql, 0, -1);
-		$sql .= " WHERE id='".$this->id."'"; 
-		mysql_query($sql) or die ("QUERY: $sql <br /><br />".mysql_error());
+		$sql .= " WHERE id='".$this->id."'";
+		$this->pdo->query($sql);
 		return true;
 	}
 	
 	public function delete(){
-		$sql = "DELETE FROM ".self::TABLENAME." WHERE id='".$this->id."'";  
-		$resurce = mysql_query($sql) or die ("QUERY: $sql <br /><br />".mysql_error());  
-		if(mysql_affected_rows() == 0)
-			return false;
-		return true;
+		$sql = "DELETE FROM ".self::TABLENAME." WHERE id='".$this->id."'";
+		$q = $this->pdo->query($sql);
+		return ($q->rowCount() == 0);
 	}
 				
 	public function __get($property_name) {
@@ -129,28 +129,28 @@ class User{
     public function __set($property_name, $val) {
 		$this->$property_name = $val;
 		$sql = "UPDATE ".self::TABLENAME." SET $property_name='".$val."'  WHERE id ='".$this->id."' ";
-		mysql_query($sql)or die (mysql_error().": $sql");
+		$this->pdo->query($sql);
     }
 														
 	public function isRegisterbyUsername($username) {
 		$sql = "SELECT id FROM ".self::TABLENAME." WHERE username ='".$username."' ";
-		$q = mysql_query($sql)or die (mysql_error().": $sql");
-		$q2 = mysql_fetch_array($q);
-		return (mysql_num_rows($q) == 0)?NULL:$q2[0];
+		$q = $this->pdo->query($sql);
+		$q2 = $q->fetch();
+		return ($q->rowCount() == 0)?NULL:$q2[0];
     }
 	
 	public function isUsernameRegistered($username) {
 		$sql = "SELECT id FROM ".self::TABLENAME." WHERE username ='".$username."' ";
-		$q = mysql_query($sql)or die (mysql_error().": $sql");
-		$q2 = mysql_fetch_array($q);
-		return (mysql_num_rows($q) == 0)?NULL:$q2[0];
+		$q = $this->pdo->query($sql);
+		$q2 = $q->fetch();
+		return ($q->rowCount() == 0)?NULL:$q2[0];
     }
 	
 	public function getUsernameByEmail($email) {
 		$sql = "SELECT username FROM ".self::TABLENAME." WHERE email ='".$email."' ";
-		$q = mysql_query($sql)or die (mysql_error().": $sql");
-		$q2 = mysql_fetch_array($q);
-		return (mysql_num_rows($q) == 0)?NULL:$q2[0];
+		$q = $this->pdo->query($sql);
+		$q2 = $q->fetch();
+		return ($q->rowCount() == 0)?NULL:$q2[0];
     }	
 }
 ?>

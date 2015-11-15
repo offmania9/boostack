@@ -40,22 +40,25 @@ function date_format_string_to_slashedformat($date_sql){
 }
 
 function getDateTime(){
-        $date = mysql_query("SELECT CURDATE() as datas");
-        $data = mysql_fetch_array($date);
-        $times = mysql_query("SELECT CURTIME() as tempo");
-        $time = mysql_fetch_array($times);
+        $pdo = Database_PDO::getInstance();
+        $date = $pdo->query("SELECT CURDATE() as datas");
+        $data = $date->fetch();
+        $times = $pdo->query("SELECT CURTIME() as tempo");
+        $time = $times->fetch();
         $datetime_now = "$data[datas] $time[tempo]";
         return $datetime_now;
 }
 function getDateN(){
-        $date = mysql_query("SELECT CURDATE() as datas");
-        $data = mysql_fetch_array($date);
+        $pdo = Database_PDO::getInstance();
+        $date = $pdo->query("SELECT CURDATE() as datas");
+        $data = $date->fetch();
         $datetime_now = "$data[datas]";
         return $datetime_now;
 }
 function getTimeN(){
-        $times = mysql_query("SELECT CURTIME() as tempo");
-        $time = mysql_fetch_array($times);
+        $pdo = Database_PDO::getInstance();
+        $times = $pdo->query("SELECT CURTIME() as tempo");
+        $time = $times->fetch();
         $datetime_now = "$time[tempo]";
         return $datetime_now;
 }
@@ -79,7 +82,7 @@ function getDateTimeTimestamp($datetime_sql){
     $timestamp = @mktime($hour, $minute, $second, $month, $day, $year);
     return $timestamp;
 }
-/*
+
 function getElapsedTime($datetime_timestamp){ #echo"datetima:".getDateTimeTimestamp(getDateTime())."<br>";
     $et = getDateTimeTimestamp(getDateTime()) - $datetime_timestamp;
     $len = strlen("".$et);
@@ -102,37 +105,14 @@ function getElapsedTime($datetime_timestamp){ #echo"datetima:".getDateTimeTimest
     return $res;
 }
 
-function sanitizeBadWords($str){
-    global $words,$exten;
-    $string = explode(' ',strtolower($str));
-    $res = "";
-    foreach($string as $s){
-       if(!in_array($s, $words))
-          $res .= " ".$s;
-       else
-          $res .= " ****";
-    }
-    return $res;
-}
-*/		
-
-###########################################  FUNCTIONS	|| (!preg_match("^[a-zA-Z0-9_@.-]+$", $email))
-
 function check_email($email){
-    global $lang_register_form;
     $regexp="/^[a-z0-9]+([_\\.-][a-z0-9]+)*@([a-z0-9]+([\.-][a-z0-9]+)*)+\\.[a-z]{2,}$/i";
-
-    if ($email == "" || !preg_match($regexp, $email)  || strlen($email >= 255)){
-        return "<span class=\"message_form_error\">".$lang_register_form["email_error"]."</span>";
-    }
-    elseif(mysql_num_rows(mysql_query("SELECT id FROM user WHERE email = '".$email."'")) > 0){
-        return  "<span class=\"message_form_error\">".$lang_register_form["email_notavailable_error"]."</span>
-                <input type=\"hidden\" name=\"mailerr\" id=\"mailerr\" value=\"ok\" />";
-    }
-    else{
-        return "<span class=\"message_form_ok\">".$lang_register_form["email_ok"]."</span>
-        <input type=\"hidden\" name=\"mailerr\" id=\"mailerr\" value=\"no\" />";
-    }
+    if ($email == "" || !preg_match($regexp, $email)  || strlen($email >= 255))
+        return -1;
+    elseif(Database_PDO::getInstance()->query("SELECT id FROM user WHERE email = '".$email."'")->rowCount() > 0)
+        return  0;
+    else
+        return 1;
 }
 
 function passwordGenerator($length=9, $strength=0) {
@@ -150,7 +130,6 @@ function passwordGenerator($length=9, $strength=0) {
 	if ($strength & 8) {
 		$consonants .= '@#$%';
 	}
- 
 	$password = '';
 	$alt = time() % 2;
 	for ($i = 0; $i < $length; $i++) {
@@ -165,58 +144,24 @@ function passwordGenerator($length=9, $strength=0) {
 	return $password;
 }
 
-/*
-
-		
 function check_password($password){
-
-    global $lang_register_form;
-            if (strlen($password) < 6){
-                return  "<span class=\"message_form_error\">".$lang_register_form["password_toosmall_error"]."</span>";
-            }
-            elseif (strlen($password) > 25){
-                return  "<span class=\"message_form_error\">".$lang_register_form["password_toobig_error"]."</span>";
-            }
-            else{
-                return "<span class=\"message_form_ok\">".$lang_register_form["password_ok"]."</span>";
-            }
+    $len = strlen($password);
+    if ($len < 6 || $len > 25)
+        return  0;
+    else
+        return 1;
 }
-		
-		
+
 function check_username($username){
-
-    $resource = mysql_query("SELECT id FROM user WHERE username = '".$username."'") or die (mysql_error());
-
-    global $lang_register_form;
-    if (strlen($username) < 3){
-        return  "<span class=\"message_form_error\">".$lang_register_form["username_toosmall_error"]."</span>";
-    }
-    elseif (strlen($username) > 50){
-        return  "<span class=\"message_form_error\">".$lang_register_form["username_toobig_error"]."</span>";
-    }
-    elseif(mysql_num_rows(mysql_query("SELECT id FROM user WHERE username = '".$username."'")) > 0){
-        return  "<span class=\"message_form_error\">".$lang_register_form["username_notavailable_error"]."</span>";
-    }
-    else{
-        return "<span class=\"message_form_ok\">".$lang_register_form["username_ok"]."</span>";
-    }
+    $len = strlen($username);
+    if ($len < 3 || $len > 50)
+        return  -1;
+    elseif(Database_PDO::getInstance()->query("SELECT id FROM user WHERE username = '".$username."'")->rowCount() > 0)
+        return  0;
+    else
+        return 1;
 }
-
-		
-function check_firstlast($firstlast){
-
-    global $lang_register_form;
-    if (strlen($firstlast) < 3){
-        return  "<span class=\"message_form_error\">".$lang_register_form["name_toosmall_error"]."</span>";
-    }
-    elseif (strlen($firstlast) > 50){
-        return  "<span class=\"message_form_error\">".$lang_register_form["name_toobig_error"]."</span>";
-    }
-    else{
-        return "<span class=\"message_form_ok\">".$lang_register_form["name_ok"]."</span>";
-    }
-}
-
+/*
 function isMobileBrowser(){
     global $_SERVER;
     $mobile_browser = '0';
@@ -260,6 +205,20 @@ function isMobileBrowser(){
     else
         return false;
 }
+*/
 
+/*
+function sanitizeBadWords($str){
+    global $words,$exten;
+    $string = explode(' ',strtolower($str));
+    $res = "";
+    foreach($string as $s){
+       if(!in_array($s, $words))
+          $res .= " ".$s;
+       else
+          $res .= " ****";
+    }
+    return $res;
+}
 */
 ?>

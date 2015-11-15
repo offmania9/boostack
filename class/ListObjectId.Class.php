@@ -22,7 +22,6 @@ class ListObjectId{
     public function getList() {
 		return $this->oid_list;
     }
-/*	
     public function __get($property_name) {
 	  if(isset($this->$property_name)) {
 		  return($this->$property_name);
@@ -30,13 +29,8 @@ class ListObjectId{
 		  return(NULL);
 		} 
     }
-
     public function __set($property_name, $val) {
 		$this->$property_name = $val;
     }
-
-    public function __toString() {
-    }
-*/
 }
 ?>

@@ -9,8 +9,6 @@
  * @version 2
  */
 
-#require_once("class/User.Class.php");
-#require_once("class/HTTPSession.Class.php");
 $objSession = new Session_HTTP();
 $objSession->Impress();
 if($config['cookie_on'] && isset($_COOKIE[''.$cookiename])){
@@ -22,5 +20,4 @@ if($config['cookie_on'] && isset($_COOKIE[''.$cookiename])){
 		}
 	}	
 }
-define('CURRENTUSER',$objSession->GetUserObject());
 ?>

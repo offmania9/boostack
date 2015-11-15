@@ -13,9 +13,6 @@
 require_once("core/environment_init.php");
 $boostack->renderOpenHtmlHeadTags();
 ########################
-/*if($config['session_on'] && $objSession->IsLoggedIn()){
-    $user = new User($objSession->GetUserID());
-}*/
 
 require("template/boostack/header.phtml");?>
 
@@ -39,6 +36,7 @@ require("template/boostack/header.phtml");?>
         </div>
     </section>
 <?
+
 require("template/boostack/footer.phtml");
 
 ########################
