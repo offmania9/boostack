@@ -17,12 +17,13 @@ function textescaping($text,$minlenght,$maxlenght,$newlinereplace){
     $text = addslashes($text);
     return $text;
 }
+/*
 function datetime_format_string($datetime_sql){
     $array_data = explode(" ",$datetime_sql);
     return date_format_string($array_data[0])." - ".$array_data[1];
 
 }
-
+*/
 function datetime_format_string_to_sqlformat($string_with_slash){
     $array_data = explode("/",$string_with_slash);
     return $array_data[2]."-".$array_data[1]."-".$array_data[0];

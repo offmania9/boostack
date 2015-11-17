@@ -9,6 +9,11 @@
  * @version 2
  */
 
+/**
+ * Template to display a node.
+ *
+ * @defined $database DBVAR
+ */
 $pdo = Database_PDO::getInstance(
     $database['host'],
     $database['name'],

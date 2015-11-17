@@ -36,7 +36,7 @@ class User_Registration extends UserInfo{
 		$fields["access_code"] =(isset($post_array["access_code"]))? $post_array["access_code"] : "";
 		$fields["ip"] = getIpAddress();
 		$fields["join_date"] = time();
-		$fields["join_idconfirm"] = md5($this->$fields["ip"].$fields["join_date"]);
+		$fields["join_idconfirm"] = md5(fields["ip"].$fields["join_date"]);
 		foreach($fields as $key => $value)
 			$this->$key = $value; #OBJECT UPDATE
 		return $fields;
