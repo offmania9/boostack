@@ -21,6 +21,12 @@ class Boostack
 
     protected $labels;
 
+    const cssUrl = "assets/css/";
+
+    const jsUrl = "assets/js/";
+    
+    const imgUrl = "assets/img/";
+
     private static $instance = NULL;
     // #############################################################
     private function __construct()
@@ -74,9 +80,17 @@ class Boostack
         $minified = $this->developmentMode ? "" : ".min";
         $fileName = str_replace(".js", $minified . ".js", $fileName);
         ?><script type="text/javascript"
-	src="<?=$this->url?>js/<?=$fileName;?>"></script><?
+	src="<?=$this->url.self::jsUrl.$fileName;?>"></script><?
     }
 
+    /*
+     *
+     */
+    public function registerImgFile($fileName)
+    {
+    	return $this->url.self::imgUrl.$fileName;
+    }
+        
     /*
      *
      */
@@ -92,7 +106,7 @@ class Boostack
     {
         $minified = $this->developmentMode ? "" : ".min";
         $fileName = str_replace(".css", $minified . ".css", $fileName);
-        ?><link href="<?=$this->url?>css/<?=$fileName;?>"
+        ?><link href="<?=$this->url.self::cssUrl.$fileName;?>"
 	rel="stylesheet" type="text/css"><?
     }
 
@@ -121,16 +135,16 @@ class Boostack
     public function renderOpenHtmlHeadTags($titlePrepend = "")
     {
         ?>
-<!DOCTYPE html>
-<html lang="<?=$this->config['html_lang']?>"
-	xmlns:og="http://opengraphprotocol.org/schema/"
-	xmlns:fb="http://www.facebook.com/2008/fbml">
-<head><?
-        $this->registerAllDefaultMetaTags($titlePrepend);
-        $this->registerAllDefaultCssFiles();
-        ?></head>
-<body>
-    <?
+            <!DOCTYPE html>
+            <html lang="<?=$this->config['html_lang']?>"
+            	xmlns:og="http://opengraphprotocol.org/schema/"
+            	xmlns:fb="http://www.facebook.com/2008/fbml">
+            <head><?
+                    $this->registerAllDefaultMetaTags($titlePrepend);
+                    $this->registerAllDefaultCssFiles();
+                    ?></head>
+            <body>
+        <?
     }
 
     /*
@@ -156,11 +170,13 @@ class Boostack
         $this->registerScriptFile("lib/html5shiv.js");
         $this->registerScriptFile("lib/respond.js");
         echo "<![endif]-->";
-        ?><div id="fb-root"></div>
-	<div class="overlay"></div>
-	<div class="loading"></div>
-</body>
-</html><?
+        ?>
+        <div id="fb-root"></div>
+    	<div class="overlay"></div>
+    	<div class="loading"></div>
+        </body>
+        </html>
+		<?
     }
 
     /*
@@ -184,11 +200,7 @@ class Boostack
      */
     public function __get($property_name)
     {
-        if (isset($this->$property_name)) {
-            return ($this->$property_name);
-        } else {
-            return (NULL);
-        }
+        return isset($this->$property_name)?:NULL;
     }
 
     /*
@@ -225,8 +237,7 @@ class Boostack
      */
     public function registerAllDefaultMetaTags($titlePrepend = "")
     {
-        ?><meta
-	charset="utf-8">
+        ?><meta charset="utf-8">
 <meta name="viewport" content="<?=$this->config['viewport']?>"><?
         if ($this->facebookMetaTag) {
             ?>
@@ -238,18 +249,16 @@ class Boostack
 <meta property="og:description"
 	content="<?=$this->config['site_description'];?>" /><?
             if ($this->config['fb_app_id'] != "") {
-                ?><meta
-	property="fb:app_id" content="<?=$this->config['fb_app_id']?>" /><?
-            
-}
+                ?><meta property="fb:app_id"
+	content="<?=$this->config['fb_app_id']?>" /><?
+            }
             ?><?
 
             if ($this->config['fb_app_id'] != "") {
-                ?><meta
-	property="fb:admins" content="<?=$this->config['fb_admins']?>" /><? }?>
+                ?><meta property="fb:admins"
+	content="<?=$this->config['fb_admins']?>" /><? }?>
         <?
-        
-}
+        }
         ?><title><?=($titlePrepend!="")?$titlePrepend." | ":""?><?=$this->config['site_title'];?> | <?=$this->config['project_sitename']?></title>
 <meta name="description"
 	content="<?=$this->config['site_description']?>">

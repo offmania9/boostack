@@ -25,6 +25,24 @@ function sanitizeInput($array)
         return addslashes(htmlspecialchars($array));
 }
 
+// AUTOLOAD
+function autoloadClass($className)
+{
+    $cn = explode("_", $className);
+    $filename = ROOTPATH . "class/";
+    $cnt = count($cn);
+    if ($cnt == 1)
+        $filename .= $className . ".Class.php";
+        else {
+            $i = 0;
+            for ($i; $i < $cnt - 1; $i ++)
+                $filename .= $cn[$i] . "/";
+                $filename .= $className . ".Class.php";
+        }
+        if (is_readable($filename))
+            require_once ($filename);
+}
+
 function getIpAddress()
 {
     if (! empty($_SERVER['HTTP_CLIENT_IP'])) // check ip from share internet

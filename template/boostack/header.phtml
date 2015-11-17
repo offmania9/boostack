@@ -3,7 +3,7 @@
 		<div class="col-md-4 col-xs-12">
 			<a class="brandlink" href="<?=$boostack->url;?>">
 				<h1>
-					<img alt="" src="img/boostack_logo_xs2.png" /> <?=$boostack->getLabel("projectName");?>
+					<img alt="" src="<?=$boostack->registerImgFile('boostack_logo_xs2.png');?>" /> <?=$boostack->getLabel("projectName");?>
             	</h1>
 			</a>
 		</div>
@@ -12,27 +12,3 @@
         </div>
 	</div>
 </div>
-<?
-/*
- * <!--
- * <div class="navbar navbar-fixed-top" style="background-color:#FFF;">
- * <div class="container">
- * <div class="navbar-header">
- * <a class="navbar-brand" style="margin: 0;padding: 0;" href=""> <img src="img/logo_text.png" itemprop="image" alt="" class="img-responsive" style=";"></a> </div>
- * <div class="hidden-xs hidden-sm" >
- * <nav class="nav navbar-nav ph-line-nav nav-pills" style="margin-top: 15px;float: right;">
- * <?/*
- * if($objSession->IsLoggedIn()){
- * $user = new User($objSession->GetUserID());
- * echo "<a href=\"".$url."my\">".$user->username;
- * echo "</a> | <a href=\"".$url."logoff\">logout</a> ";
- * }
- * else{
- * echo "<a href=\"".$url."signon\">Login/Register</a>";
- * }?>
- * </nav>
- * </div>
- * </div>
- * </div>-->
- */
-?>
