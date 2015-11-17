@@ -9,17 +9,18 @@
  * @version 2
  */
 // #######################
-require_once ("core/environment_init.php");
+require_once "core/environment_init.php";
 $boostack->renderOpenHtmlHeadTags("Download");
 // #######################
 
-require ("template/boostack/header.phtml");
+require_once $boostack->registerTemplateFile("boostack/header.phtml");
 
-require ("template/boostack/content_download.phtml");
+require_once $boostack->registerTemplateFile("boostack/content_download.phtml");
 
-require ("template/boostack/footer.phtml");
+require_once $boostack->registerTemplateFile("boostack/footer.phtml");
 
 // #######################
 $boostack->renderCloseHtmlTag();
+$boostack->writeLog("Download Page");
 // #######################
 ?>

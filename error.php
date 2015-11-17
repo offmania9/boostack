@@ -8,41 +8,18 @@
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
  * @version 2
  */
-
 // #######################
-require_once ("core/environment_init.php");
-$boostack->renderOpenHtmlHeadTags();
+require_once "core/environment_init.php";
 // #######################
 
-require ("template/boostack/header.phtml");
-?>
+require_once $boostack->registerTemplateFile("boostack/header.phtml");
 
-<!-- Example: Inline HTML code -->
-<section class="disclaimer sectionTitle">
-	<div class="line">
-		<div class="container">
-			<div class="row">
-				<h1><?=$boostack->getLabel("error.attention")?></h1>
-			</div>
-		</div>
-	</div>
-</section>
+require_once $boostack->registerTemplateFile("boostack/content_error.phtml");
 
-<section class="download centerContent">
-	<div class="container">
-		<div class="row description">
-			<h2><?=$boostack->getLabel("error.urlnotfound")?></h2>
-			<p>
-				<a href="<?=$boostack->url?>"><?=$boostack->url?></a>
-			</p>
-		</div>
-	</div>
-</section>
-<?
-
-require ("template/boostack/footer.phtml");
+require_once $boostack->registerTemplateFile("boostack/footer.phtml");
 
 // #######################
 $boostack->renderCloseHtmlTag();
+$boostack->writeLog("Error Page");
 // #######################
 ?>

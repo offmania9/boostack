@@ -8,7 +8,7 @@
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
  * @version 2
  */
-require_once ("core/environment_init.php");
+require_once "core/environment_init.php";
 $boostack->logout();
 header("location: " . $boostack->url);
 exit();

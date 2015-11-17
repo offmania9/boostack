@@ -26,6 +26,8 @@ class Boostack
     const jsUrl = "assets/js/";
     
     const imgUrl = "assets/img/";
+    
+    const templateUrl = "template/";
 
     private static $instance = NULL;
     // #############################################################
@@ -79,10 +81,17 @@ class Boostack
     {
         $minified = $this->developmentMode ? "" : ".min";
         $fileName = str_replace(".js", $minified . ".js", $fileName);
-        ?><script type="text/javascript"
-	src="<?=$this->url.self::jsUrl.$fileName;?>"></script><?
+        ?><script type="text/javascript" src="<?=$this->url.self::jsUrl.$fileName;?>"></script><?
     }
 
+    /*
+     *
+     */
+    public function registerTemplateFile($fileName)
+    {
+        return ROOTPATH.self::templateUrl.$fileName;
+    }
+        
     /*
      *
      */

@@ -10,18 +10,18 @@
  */
 
 // #######################
-require_once ("core/environment_init.php");
+require_once "core/environment_init.php";
 $boostack->renderOpenHtmlHeadTags("Home");
 // #######################
 
-require ("template/boostack/header.phtml");
+require_once $boostack->registerTemplateFile("boostack/header.phtml");
 
-require ("template/boostack/content_index_out.phtml");
+require_once $boostack->registerTemplateFile("boostack/content_index_out.phtml");
 
-require ("template/boostack/footer.phtml");
+require_once $boostack->registerTemplateFile("boostack/footer.phtml");
 
 // #######################
 $boostack->renderCloseHtmlTag();
-$boostack->writeLog("Homepage");
+$boostack->writeLog("Homepage Page");
 // #######################
 ?>
