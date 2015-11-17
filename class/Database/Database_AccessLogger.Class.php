@@ -33,7 +33,6 @@ class Database_AccessLogger
     {
         $this->username = (! is_null($objSession)) ? $objSession->GetUserID() : "Anonymous";
         $this->ip = getIpAddress();
-        ;
         $this->useragent = sanitizeInput(getenv('HTTP_USER_AGENT'));
         $this->referrer = isset($_SERVER["HTTP_REFERER"]) ? sanitizeInput($_SERVER["HTTP_REFERER"]) : "";
         $this->query = sanitizeInput(getenv('REQUEST_URI'));

@@ -15,11 +15,11 @@ $config['developmentMode'] = TRUE;
 
 // ====== database
 // enable or disable Mysql database
-$config['database_on'] = FALSE;
-$database['host'] = 'localhost';
+$config['database_on'] = TRUE;
+$database['host'] = '127.0.0.1';
 $database['name'] = 'boostack';
 $database['username'] = 'root';
-$database['password'] = 'boostack';
+$database['password'] = 'root';
 
 // ====== sessions
 // enable or disable Sessions (TRUE need $database_on=TRUE)
@@ -49,7 +49,7 @@ $config['checkMobile'] = FALSE;
 
 // ====== log
 // enable or disable boostack Log (#TRUE need $database_on=TRUE)
-$config['log_on'] = FALSE;
+$config['log_on'] = TRUE;
 
 // ====== email
 // enable or disable send mail

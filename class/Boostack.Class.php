@@ -209,7 +209,7 @@ class Boostack
      */
     public function __get($property_name)
     {
-        return isset($this->$property_name)?:NULL;
+        return isset($this->$property_name)?$this->$property_name:NULL;
     }
 
     /*

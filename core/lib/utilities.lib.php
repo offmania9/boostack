@@ -45,14 +45,13 @@ function autoloadClass($className)
 
 function getIpAddress()
 {
-    if (! empty($_SERVER['HTTP_CLIENT_IP'])) // check ip from share internet
-        $ip = $_SERVER['HTTP_CLIENT_IP'];
-    elseif (! empty($_SERVER['HTTP_X_FORWARDED_FOR'])) // to check ip is pass from proxy
-        $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-    else
-        $ip = $_SERVER['REMOTE_ADDR'];
-    
-    return sanitizeInput($ip);
+    $ip = getenv('HTTP_CLIENT_IP')?:
+    getenv('HTTP_X_FORWARDED_FOR')?:
+    getenv('HTTP_X_FORWARDED')?:
+    getenv('HTTP_FORWARDED_FOR')?:
+    getenv('HTTP_FORWARDED')?:
+    getenv('REMOTE_ADDR');
+    return $ip;
 }
 
 function getUserAgent()
