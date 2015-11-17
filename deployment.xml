@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<package xmlns="http://www.zend.com/server/deployment-descriptor/1.0"
+	version="1.0">
+	<name>boostack</name>
+	<version>
+		<release>1.0.0</release>
+	</version>
+	<icon>img/favicon.ico</icon>
+	<eula>LICENSE</eula>
+	<appdir>data</appdir>
+</package>

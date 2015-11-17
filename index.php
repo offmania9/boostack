@@ -9,19 +9,19 @@
  * @version 2
  */
 
-########################
-require_once("core/environment_init.php");
+// #######################
+require_once ("core/environment_init.php");
 $boostack->renderOpenHtmlHeadTags("Home");
-########################
+// #######################
 
-    require("template/boostack/header.phtml");
+require ("template/boostack/header.phtml");
 
-    require("template/boostack/content_index_out.phtml");
+require ("template/boostack/content_index_out.phtml");
 
-    require("template/boostack/footer.phtml");
+require ("template/boostack/footer.phtml");
 
-########################
+// #######################
 $boostack->renderCloseHtmlTag();
 $boostack->writeLog("Homepage");
-########################
+// #######################
 ?>

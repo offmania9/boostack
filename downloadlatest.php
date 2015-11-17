@@ -8,8 +8,7 @@
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
  * @version 2
  */
-
-require_once("core/environment_init.php");
+require_once ("core/environment_init.php");
 
 $boostack->writeLog("Zip Download");
 header("location: https://github.com/offmania9/Boostack/archive/master.zip");

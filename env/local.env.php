@@ -10,11 +10,11 @@
  */
 // ====== ENVIRONMEN local ======
 $config['url'] = "http://localhost/boostack/";
-$config['path'] = $_SERVER['DOCUMENT_ROOT']."/boostack/";
+$config['path'] = $_SERVER['DOCUMENT_ROOT'] . "/boostack/";
 $config['developmentMode'] = TRUE;
 
 // ====== database
-# enable or disable Mysql database
+// enable or disable Mysql database
 $config['database_on'] = FALSE;
 $database['host'] = '127.0.0.1';
 $database['name'] = 'boostack';
@@ -22,37 +22,37 @@ $database['username'] = 'root';
 $database['password'] = 'root';
 
 // ====== sessions
-# enable or disable Sessions (TRUE need $database_on=TRUE)
+// enable or disable Sessions (TRUE need $database_on=TRUE)
 $config['session_on'] = FALSE;
 
 // ====== cookie
-# enable or disable Cookies (TRUE need $database_on=TRUE AND $session_on=TRUE)
+// enable or disable Cookies (TRUE need $database_on=TRUE AND $session_on=TRUE)
 $config['cookie_on'] = FALSE;
-# Cookies expire
-$config['cookie_expire'] = 2505600;  //60*60*24*29 = 29days
-# This key is used to generate custom cookie names
+// Cookies expire
+$config['cookie_expire'] = 2505600; // 60*60*24*29 = 29days
+                                    // This key is used to generate custom cookie names
 $config['cookie_name'] = "5asmbstk_16";
 
 // ====== geolocalization
-# enable or disable Geolocalization
+// enable or disable Geolocalization
 $config['geolocation_on'] = FALSE;
 
 // ====== language
-# enable or disable language check for Multilanguage features (see Language documentation)
+// enable or disable language check for Multilanguage features (see Language documentation)
 $config["language_on"] = TRUE;
-# allows the import of files of labels in this language (It must contain a value of language)
-$config["language_default"] = "en"; #must exists file: lang/[$defaultlanguage].inc.php   es:lang/en.inc.php
-
+// allows the import of files of labels in this language (It must contain a value of language)
+$config["language_default"] = "en"; // must exists file: lang/[$defaultlanguage].inc.php es:lang/en.inc.php
+                                    
 // ====== mobile
-# enable or disable Mobile devices Checker
+                                    // enable or disable Mobile devices Checker
 $config['checkMobile'] = FALSE;
 
 // ====== log
-# enable or disable boostack Log (#TRUE need $database_on=TRUE)
+// enable or disable boostack Log (#TRUE need $database_on=TRUE)
 $config['log_on'] = FALSE;
 
 // ====== email
-# enable or disable send mail
+// enable or disable send mail
 $config['mail_on'] = FALSE;
 $config["mail_admin"] = "info@boostack.com";
 $config["mail_noreply"] = "no-reply@boostack.com";
@@ -62,8 +62,8 @@ $config["mail_maintenance"] = "mntn@boostack.com";
 $config["default_images_path"] = "img/";
 $MAX_UPLOAD_IMAGE_SIZE = 2097152; // 2 MB
 $MAX_UPLOAD_NAMEFILE_LENGTH = 100;
-$MAX_UPLOAD_GENERALFILE_SIZE = 4194304; //4 MB
-
+$MAX_UPLOAD_GENERALFILE_SIZE = 4194304; // 4 MB
+                                        
 // ====== date/time
 date_default_timezone_set('UTC');
 $CURRENT_DATETIME_FORMAT = "d-m-Y H:s";

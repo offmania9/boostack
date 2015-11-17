@@ -8,10 +8,10 @@
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
  * @version 2
  */
-require_once (ROOTPATH."class/Mobile_Detect.php");
-$detect = new Mobile_Detect;
-if($detect->isMobile()){
-	header("location: ".$boostack->mobileurl);
-	exit();
+require_once (ROOTPATH . "class/Mobile_Detect.php");
+$detect = new Mobile_Detect();
+if ($detect->isMobile()) {
+    header("location: " . $boostack->mobileurl);
+    exit();
 }
 ?>

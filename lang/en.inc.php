@@ -8,8 +8,7 @@
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
  * @version 2
  */
-
-$boostack_labels_strings =  array(
+$boostack_labels_strings = array(
     'projectName' => 'BOOSTACK',
     'mainDescription' => 'is a full stack web layer for PHP',
     'mission' => 'Improve your development and build a modern website in minutes',
@@ -38,18 +37,11 @@ $boostack_labels_strings =  array(
     'inclusions' => 'Simple to configure it. It contains JQuery, JQuery TE, Animate.css and Bootstrap.',
     'download' => array(
         "howto" => "How to get Boostack",
-        "howtoDescription" => 'Boostack is available open-source under the <a href="https://github.com/offmania9/Boostack/blob/master/LICENSE" target="_blank">MIT</a> license.<br/>'.
-                              'We recommend using the latest version of PHP and Mysql (Boostack allows you to develop even without using Mysql).',
+        "howtoDescription" => 'Boostack is available open-source under the <a href="https://github.com/offmania9/Boostack/blob/master/LICENSE" target="_blank">MIT</a> license.<br/>' . 'We recommend using the latest version of PHP and Mysql (Boostack allows you to develop even without using Mysql).',
         "downloadit" => "Download it!",
-        "downloaditDescription" => '<b>Option 1: Get the latest official version</b><br/>'.
-                    'You can download <b><a href="'.$boostack->getFriendlyUrl("downloadLatest").'">HERE</a></b> a zipped file of the development version.<br/><br/>'.
-                    '<b>Option 2: Get the latest development version</b><br/>'.
-                    'The latest and greatest Boostack version is the one that’s in our Git repository (<a href="https://github.com/offmania9/Boostack" target="_blank">https://github.com/offmania9/Boostack</a>).'.
-                    'This is only for experienced users who want to try incoming changes and help identify bugs before an official release.<br/>'.
-                    'Get it using this shell command, which requires Git: <code>git clone https://github.com/offmania9/Boostack.git</code>',
+        "downloaditDescription" => '<b>Option 1: Get the latest official version</b><br/>' . 'You can download <b><a href="' . $boostack->getFriendlyUrl("downloadLatest") . '">HERE</a></b> a zipped file of the development version.<br/><br/>' . '<b>Option 2: Get the latest development version</b><br/>' . 'The latest and greatest Boostack version is the one that’s in our Git repository (<a href="https://github.com/offmania9/Boostack" target="_blank">https://github.com/offmania9/Boostack</a>).' . 'This is only for experienced users who want to try incoming changes and help identify bugs before an official release.<br/>' . 'Get it using this shell command, which requires Git: <code>git clone https://github.com/offmania9/Boostack.git</code>',
         "after" => "After you get it",
-        "afterDescription" => 'See the <a href="'.$boostack->getFriendlyUrl("docs/introduction").'">Documentation</a> for further instructions.'.
-                              'And be sure to sign up for mailing list to receive all Boostack updates.'
+        "afterDescription" => 'See the <a href="' . $boostack->getFriendlyUrl("docs/introduction") . '">Documentation</a> for further instructions.' . 'And be sure to sign up for mailing list to receive all Boostack updates.'
     ),
     'error' => array(
         "attention" => "Attention!",

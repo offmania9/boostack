@@ -1,5 +1,6 @@
-nav{-webkit-box-shadow: 0 5px 4px -6px black;
--moz-box-shadow: 0 5px 4px -6px black;
-box-shadow: 0 5px 4px -6px black;
-height: 30px;
+nav {
+	-webkit-box-shadow: 0 5px 4px -6px black;
+	-moz-box-shadow: 0 5px 4px -6px black;
+	box-shadow: 0 5px 4px -6px black;
+	height: 30px;
 }

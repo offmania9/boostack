@@ -1,84 +1,94 @@
 <section class="disclaimer sectionTitle">
-    <div class="line">
-        <div class="container">
-            <div class="row">
-                <h1><?=$boostack->getLabel("navigation.documentation");?></h1>
-            </div>
-        </div>
-    </div>
+	<div class="line">
+		<div class="container">
+			<div class="row">
+				<h1><?=$boostack->getLabel("navigation.documentation");?></h1>
+			</div>
+		</div>
+	</div>
 </section>
 
 <section class="documentation centerContent">
-    <div class="container">
-        <div class="row description">
-            <div class="col-md-3">
-                <ul class="list-unstyled documentationMenu">
-                    <li><a href="<?=$boostack->getFriendlyUrl("docs/introduction")?>">Introduction</a>
-                        <!--<ul>
+	<div class="container">
+		<div class="row description">
+			<div class="col-md-3">
+				<ul class="list-unstyled documentationMenu">
+					<li><a href="<?=$boostack->getFriendlyUrl("docs/introduction")?>">Introduction</a>
+						<!--<ul>
                             <li><a href="<?#$boostack->getFriendlyUrl("docs/introduction")?>">Install</a></li>
-                        </ul>-->
-                    </li>
-                    <li><a href="<?=$boostack->getFriendlyUrl("docs/database")?>">Database</a></li>
-                    <li><a href="<?=$boostack->getFriendlyUrl("docs/logging")?>">Logging</a></li>
-                    <li><a href="<?=$boostack->getFriendlyUrl("docs/users")?>">Users</a></li>
-                    <li><a href="<?=$boostack->getFriendlyUrl("docs/sessions")?>">Sessions</a></li>
-                    <li><a href="<?=$boostack->getFriendlyUrl("docs/languages")?>">Languages</a></li>
-                    <li><a href="<?=$boostack->getFriendlyUrl("docs/emails")?>">Emails</a></li>
-                    <li><a href="<?=$boostack->getFriendlyUrl("docs/mobile")?>">Mobile</a></li>
-                    <li><a href="<?=$boostack->getFriendlyUrl("docs/upload")?>">Upload</a></li>
-                    <li><a href="<?=$boostack->getFriendlyUrl("docs/social")?>">Social</a></li>
-                </ul>
-            </div>
-            <div class="col-md-9 documentationInnerContent">
+                        </ul>--></li>
+					<li><a href="<?=$boostack->getFriendlyUrl("docs/database")?>">Database</a></li>
+					<li><a href="<?=$boostack->getFriendlyUrl("docs/logging")?>">Logging</a></li>
+					<li><a href="<?=$boostack->getFriendlyUrl("docs/users")?>">Users</a></li>
+					<li><a href="<?=$boostack->getFriendlyUrl("docs/sessions")?>">Sessions</a></li>
+					<li><a href="<?=$boostack->getFriendlyUrl("docs/languages")?>">Languages</a></li>
+					<li><a href="<?=$boostack->getFriendlyUrl("docs/emails")?>">Emails</a></li>
+					<li><a href="<?=$boostack->getFriendlyUrl("docs/mobile")?>">Mobile</a></li>
+					<li><a href="<?=$boostack->getFriendlyUrl("docs/upload")?>">Upload</a></li>
+					<li><a href="<?=$boostack->getFriendlyUrl("docs/social")?>">Social</a></li>
+				</ul>
+			</div>
+			<div class="col-md-9 documentationInnerContent">
                 <?
-                switch(sanitizeInput($_GET["docpath"])){
-                    case "introduction":{
-                        require("template/boostack/documentation/introduction.phtml");
-                        break;
-                    }
-                    case "database":{
-                        require("template/boostack/documentation/database.phtml");
-                        break;
-                    }
-                    case "logging":{
-                        require("template/boostack/documentation/logging.phtml");
-                        break;
-                    }
-                    case "users":{
-                        require("template/boostack/documentation/users.phtml");
-                        break;
-                    }
-                    case "sessions":{
-                        require("template/boostack/documentation/sessions.phtml");
-                        break;
-                    }
-                    case "emails":{
-                        require("template/boostack/documentation/emails.phtml");
-                        break;
-                    }
-                    case "languages":{
-                        require("template/boostack/documentation/languages.phtml");
-                        break;
-                    }
-                    case "mobile":{
-                        require("template/boostack/documentation/mobile.phtml");
-                        break;
-                    }
-                    case "upload":{
-                        require("template/boostack/documentation/upload.phtml");
-                        break;
-                    }
-                    case "social":{
-                        require("template/boostack/documentation/social.phtml");
-                        break;
-                    }
-                    default:{
-                        require("template/boostack/documentation/introduction.phtml");
-                        break;
-                    }
+                switch (sanitizeInput($_GET["docpath"])) {
+                    case "introduction":
+                        {
+                            require ("template/boostack/documentation/introduction.phtml");
+                            break;
+                        }
+                    case "database":
+                        {
+                            require ("template/boostack/documentation/database.phtml");
+                            break;
+                        }
+                    case "logging":
+                        {
+                            require ("template/boostack/documentation/logging.phtml");
+                            break;
+                        }
+                    case "users":
+                        {
+                            require ("template/boostack/documentation/users.phtml");
+                            break;
+                        }
+                    case "sessions":
+                        {
+                            require ("template/boostack/documentation/sessions.phtml");
+                            break;
+                        }
+                    case "emails":
+                        {
+                            require ("template/boostack/documentation/emails.phtml");
+                            break;
+                        }
+                    case "languages":
+                        {
+                            require ("template/boostack/documentation/languages.phtml");
+                            break;
+                        }
+                    case "mobile":
+                        {
+                            require ("template/boostack/documentation/mobile.phtml");
+                            break;
+                        }
+                    case "upload":
+                        {
+                            require ("template/boostack/documentation/upload.phtml");
+                            break;
+                        }
+                    case "social":
+                        {
+                            require ("template/boostack/documentation/social.phtml");
+                            break;
+                        }
+                    default:
+                        {
+                            require ("template/boostack/documentation/introduction.phtml");
+                            break;
+                        }
                 }
                 ?>
             </div>
-        </div>
-    </div>
+		</div>
+	</div>
 </section>

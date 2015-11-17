@@ -1,4 +1,5 @@
 <?
+
 /**
  * Boostack: ListObjectId.Class.php
  * ========================================================================
@@ -8,29 +9,38 @@
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
  * @version 2
  */
-class ListObjectId{
-	
-	private $oid_list;
+class ListObjectId
+{
 
-	public function __construct($array_objid=null){
-		$this->oid_list = $array_objid; 
-	}
+    private $oid_list;
 
-    public function Add($val) {
-		$this->oid_list[] = $val;
+    public function __construct($array_objid = null)
+    {
+        $this->oid_list = $array_objid;
     }
-    public function getList() {
-		return $this->oid_list;
+
+    public function Add($val)
+    {
+        $this->oid_list[] = $val;
     }
-    public function __get($property_name) {
-	  if(isset($this->$property_name)) {
-		  return($this->$property_name);
-		} else {
-		  return(NULL);
-		} 
+
+    public function getList()
+    {
+        return $this->oid_list;
     }
-    public function __set($property_name, $val) {
-		$this->$property_name = $val;
+
+    public function __get($property_name)
+    {
+        if (isset($this->$property_name)) {
+            return ($this->$property_name);
+        } else {
+            return (NULL);
+        }
+    }
+
+    public function __set($property_name, $val)
+    {
+        $this->$property_name = $val;
     }
 }
 ?>
