@@ -8,12 +8,12 @@
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
  * @version 2
  */
-$objSession = new Session_HTTP();
+$objSession = ($config['csrf_on']) ? new Session_CSRF(): new Session_HTTP();
 $objSession->Impress();
 if ($config['cookie_on'] && isset($_COOKIE['' . $cookiename])) {
     $c = sanitizeInput($_COOKIE['' . $config['cookie_name']]);
     if (! $objSession->IsLoggedIn() && $c !== "") {
-        if (! $objSession->loginByCookie($c)) { // cookie is set but wrong (manually edited)
+        if (!$objSession->loginByCookie($c)) { // cookie is set but wrong (manually edited)
             $boostack->logout();
             header("Location: " . $boostack->url);
         }

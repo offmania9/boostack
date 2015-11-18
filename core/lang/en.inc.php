@@ -16,7 +16,8 @@ $boostack_labels_strings = array(
     'navigation' => array(
         "home" => "Home",
         "download" => "Download",
-        "documentation" => "Documentation"
+        "documentation" => "Documentation",
+        "login" => "Login"
     ),
     'featuresTitles' => array(
         "fast" => "Fast and Productive",
@@ -42,6 +43,15 @@ $boostack_labels_strings = array(
         "downloaditDescription" => '<b>Option 1: Get the latest official version</b><br/>' . 'You can download <b><a href="' . $boostack->getFriendlyUrl("downloadLatest") . '">HERE</a></b> a zipped file of the development version.<br/><br/>' . '<b>Option 2: Get the latest development version</b><br/>' . 'The latest and greatest Boostack version is the one that’s in our Git repository (<a href="https://github.com/offmania9/Boostack" target="_blank">https://github.com/offmania9/Boostack</a>).' . 'This is only for experienced users who want to try incoming changes and help identify bugs before an official release.<br/>' . 'Get it using this shell command, which requires Git: <code>git clone https://github.com/offmania9/Boostack.git</code>',
         "after" => "After you get it",
         "afterDescription" => 'See the <a href="' . $boostack->getFriendlyUrl("docs/introduction") . '">Documentation</a> for further instructions.' . 'And be sure to sign up for mailing list to receive all Boostack updates.'
+    ),
+    'login' => array(
+        "signin" => "Sign In",
+        "forgotpwd" => 'Forgot password?',
+        "rememberme" => " Remember me",
+        "login" => 'Login',
+        "donthaveaccount" => "Don't have an account! ",
+        "loggedin" => "You're logged in! ",
+        "signup" => 'Sign Up Here'
     ),
     'error' => array(
         "attention" => "Attention!",

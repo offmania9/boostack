@@ -21,8 +21,8 @@ RewriteRule ^home$ index.php [L]
 RewriteRule ^docs/([a-zA-Z0-9_-]+)$ documentation.php?docpath=$1 [L]
 RewriteRule ^docs documentation.php [L]
 RewriteRule ^download$ download.php [L]
-RewriteRule ^downloadLatest$ downloadlatest.php [L]
-
+RewriteRule ^login$ login.php [L]
+RewriteRule ^logout$ logout.php [L]
 
 ErrorDocument 400 http://boostack.com/error.php
 ErrorDocument 401 http://boostack.com/error.php

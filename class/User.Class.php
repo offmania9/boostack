@@ -49,11 +49,11 @@ class User
 
     public function __construct($id = -1, $init = true)
     {
+        $this->pdo = Database_PDO::getInstance();
         if ($id != - 1) {
-            $this->pdo = Database_PDO::getInstance();
             if ($init) {
                 $sql = "SELECT * FROM " . self::TABLENAME . " WHERE id ='" . $id . "' ";
-                $fields = $this->pdo->query($sql)->fetchAll();
+                $fields = $this->pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
                 if (get_class($this) != __CLASS__)
                     $this->dbfield = $fields;
                 $this->id = $fields["id"];
@@ -174,12 +174,83 @@ class User
         return ($q->rowCount() == 0) ? NULL : $q2[0];
     }
 
-    public function getUsernameByEmail($email)
+    public function getUserIDByEmail($email, $throwException = true)
     {
-        $sql = "SELECT username FROM " . self::TABLENAME . " WHERE email ='" . $email . "' ";
+        $sql = "SELECT id FROM " . self::TABLENAME . " WHERE email ='" . $email . "' ";
         $q = $this->pdo->query($sql);
         $q2 = $q->fetch();
-        return ($q->rowCount() == 0) ? NULL : $q2[0];
+        if ($q->rowCount() == 0)
+            if ($throwException)
+                throw new Exception("Attention! User or Email not found.");
+        return false;
+        
+        return $q2[0];
+    }
+
+    public function checkUserExistsByEmail($email, $throwException = true)
+    {
+        $sql = "SELECT id FROM " . self::TABLENAME . " WHERE email ='" . $email . "' ";
+        $q = $this->pdo->query($sql);
+        $q2 = $q->fetch();
+        if ($q->rowCount() == 0){
+            if ($throwException)
+                throw new Exception("Attention! User or Email not found.");
+            return false;
+        }
+        return true;
+    }
+
+    public function checkEmailFormat($email, $throwException = true)
+    {
+        $regexp = "/^[a-z0-9]+([_\\.-][a-z0-9]+)*@([a-z0-9]+([\.-][a-z0-9]+)*)+\\.[a-z]{2,}$/i";
+        if ($email == "" || ! preg_match($regexp, $email) || strlen($email >= 255)){
+            if ($throwException)
+                throw new Exception("This E-mail address is wrong.");
+        return false;
+        }
+        return true;
+    }
+
+    public function checkEmailIntoDB($email, $throwException = true)
+    {
+        if ($this->pdo->query("SELECT id FROM " . self::TABLENAME . " WHERE email = '" . $email . "'")->rowCount() == 0){
+            if ($throwException)
+                throw new Exception("It looks like we don't have an account with that email address, try another?");
+        return false;
+        }
+        return true;
+    }
+
+    public function checkPasswordFormat($password, $throwException = true)
+    {
+        if ($password == "" || strlen($password) < 6){
+            if ($throwException)
+                throw new Exception("Attention! Password value is wrong.");
+            return false;
+        }
+        return true;
+    }
+
+    public function tryLogin($email, $password, $cookieRememberMe, $throwException = true)
+    {
+        global $objSession,$boostack;
+        if (!self::checkUserExistsByEmail($email))
+            return false;
+            
+            $objSession->LogOut(); 
+            $objSession->Login($email, $password);
+            if (!$objSession->IsLoggedIn()){
+                if ($throwException)
+                    throw new Exception("Password is incorrect, try another?");
+                return false;
+            }
+            
+            if ($cookieRememberMe) {
+                $md5 = md5(time() . getIpAddress() . getUserAgent());
+                setcookie($boostack->cookiename, $md5, time() + $boostack->cookieexpire, '/');
+                mysql_query("UPDATE " . self::TABLENAME . " SET session_cookie = '$md5' WHERE id = '" . $objSession->GetUserID() . "'");
+            }
+            return true;
     }
 }
 ?>

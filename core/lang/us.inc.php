@@ -43,6 +43,15 @@ $boostack_labels_strings = array(
         "after" => "After you get it",
         "afterDescription" => 'See the <a href="' . $boostack->getFriendlyUrl("docs/introduction") . '">Documentation</a> for further instructions.' . 'And be sure to sign up for mailing list to receive all Boostack updates.'
     ),
+    'login' => array(
+        "signin" => "Sign In",
+        "forgotpwd" => 'Forgot password?',
+        "rememberme" => " Remember me",
+        "login" => 'Login',
+        "donthaveaccount" => "Don't have an account! ",
+        "loggedin" => "You're logged in! ",
+        "signup" => 'Sign Up Here'
+    ),
     'error' => array(
         "attention" => "Attention!",
         "urlnotfound" => "The requested URL was not found on this server."
