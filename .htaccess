@@ -23,6 +23,9 @@ RewriteRule ^docs documentation.php [L]
 RewriteRule ^download$ download.php [L]
 RewriteRule ^login$ login.php [L]
 RewriteRule ^logout$ logout.php [L]
+RewriteRule ^api/([^\.]+)$ api.php?request=$1 [L]
+
+
 
 ErrorDocument 400 http://boostack.com/error.php
 ErrorDocument 401 http://boostack.com/error.php
