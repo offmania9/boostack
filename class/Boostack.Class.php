@@ -77,6 +77,13 @@ class Boostack
     /*
      *
      */
+    public function getConfig($key)
+    {
+        return (isset($this->config[$key]))?$this->config[$key]:"";
+    }
+    /*
+     *
+     */
     public function registerScriptFile($fileName)
     {
         $minified = $this->developmentMode ? "" : ".min";
