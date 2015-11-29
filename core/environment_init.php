@@ -33,7 +33,6 @@ if ($config['session_on'] && $config['database_on']) {
 
 if ($config['language_on'])
     require_once (ROOTPATH . "core/lib/check_language.lib.php");
-if ($config['checkMobile'])
+if ($config['mobile_on'])
     require_once (ROOTPATH . "core/lib/check_mobile.lib.php");
-
 ?>

@@ -14,5 +14,5 @@
  *
  * @defined $database DBVAR
  */
-$pdo = Database_PDO::getInstance($database['host'], $database['name'], $database['username'], $database['password']);
+//$pdo = Database_PDO::getInstance($database['host'], $database['name'], $database['username'], $database['password']);
 ?>

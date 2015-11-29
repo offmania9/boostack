@@ -247,8 +247,8 @@ class User
             
             if ($cookieRememberMe) {
                 $md5 = md5(time() . getIpAddress() . getUserAgent());
-                setcookie($boostack->cookiename, $md5, time() + $boostack->cookieexpire, '/');
-                mysql_query("UPDATE " . self::TABLENAME . " SET session_cookie = '$md5' WHERE id = '" . $objSession->GetUserID() . "'");
+                setcookie($boostack->getConfig("cookie_name"), $md5, time() + $boostack->getConfig("cookie_expire"), '/');
+                $this->pdo->query("UPDATE " . self::TABLENAME . " SET session_cookie = '$md5' WHERE id = '" . $objSession->GetUserID() . "'");
             }
             return true;
     }
