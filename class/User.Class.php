@@ -84,7 +84,7 @@ class User
         if ($post_array["pth"] == "")
             $this->excluse_from_update[] = "pwd";
         else
-            $fields["pwd"] = hash("sha512", $post_array["pth"]);
+            $fields["pwd"] = password_hash($post_array["pth"]);
         
         $fields["email"] = $post_array["email"];
         $fields["last_access"] = "0";

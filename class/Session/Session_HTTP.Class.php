@@ -169,7 +169,7 @@ class Session_HTTP
         if ($hashed_psw !== "")
             $strMD5Password = $hashed_psw;
         else
-            $strMD5Password = hash("sha512", $strPlainPassword);
+            $strMD5Password = password_hash($strPlainPassword);
        
             
         $stmt = "SELECT id FROM boostack_user WHERE username = '$strUsername' AND pwd = '$strMD5Password' AND active='1'";
