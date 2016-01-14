@@ -7,33 +7,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 
-# Dump of table boostack_customer_bi
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `boostack_customer_bi`;
-
-CREATE TABLE `boostack_customer_bi` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `customer_id` int(11) NOT NULL,
-  `fname` varchar(200) DEFAULT NULL,
-  `lname` varchar(200) DEFAULT NULL,
-  `customer_email` varchar(255) DEFAULT NULL,
-  `customer_group_id` int(255) DEFAULT NULL,
-  `customer_group_code` varchar(255) DEFAULT NULL,
-  `customer_date_join` timestamp NULL DEFAULT NULL,
-  `customer_date_last_access` timestamp NULL DEFAULT NULL,
-  `customer_days_from_last_access` int(11) DEFAULT NULL,
-  `newsletter_subscriber_status` int(11) DEFAULT NULL,
-  `wine_preference` varchar(30) DEFAULT NULL,
-  `totalAmount` float DEFAULT NULL,
-  `totalOrders` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `customer_email` (`customer_email`),
-  KEY `id_user_magento` (`customer_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-
-
 # Dump of table boostack_http_session
 # ------------------------------------------------------------
 
