@@ -1,5 +1,4 @@
 <?
-
 /**
  * Boostack: utilities.lib.php
  * ========================================================================
@@ -9,7 +8,7 @@
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
  * @version 2
  */
-function sanitizeInput($array)
+function sanitizeInput($array,$encoding='UTF-8')
 {
     if (is_array($array)) {
         $res = array();
@@ -18,11 +17,11 @@ function sanitizeInput($array)
                 $res[$key] = sanitizeInput($value);
                 continue;
             }
-            $res[$key] = addslashes(htmlspecialchars($value));
+            $res[$key] = htmlspecialchars($value,ENT_QUOTES | ENT_HTML401,$encoding);
         }
         return $res;
     } else
-        return addslashes(htmlspecialchars($array));
+        return htmlspecialchars($array,ENT_QUOTES | ENT_HTML401,$encoding);
 }
 
 // AUTOLOAD
@@ -249,7 +248,7 @@ function timestampToDate($timestamp)
 }
 
 function getElapsedTime($datetime_timestamp)
-{ // echo"datetima:".getDateTimeTimestamp(getDateTime())."<br>";
+{ 
     $et = getDateTimeTimestamp(getDateTime()) - $datetime_timestamp;
     $len = strlen("" . $et);
     if ($et <= 60) {

@@ -48,7 +48,7 @@ $config["language_on"] = TRUE;
 $config["language_default"] = "en"; // must exists file: lang/[$defaultlanguage].inc.php es:lang/en.inc.php
                                     
 // ====== mobile
-                                    // enable or disable Mobile devices Checker
+// enable or disable Mobile devices Checker
 $config['mobile_on'] = FALSE;
 $config['mobile_url'] = NULL;
 
