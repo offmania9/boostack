@@ -10,7 +10,7 @@
  */
 
 // ====== CHOOSE THE ENVIRONMENT ======
-define('CURRENT_ENVIRONMENT', "staging"); // [local] | [staging] | [production] | {[create custom env]}
+define('CURRENT_ENVIRONMENT', "local"); // [local] | [staging] | [production] | {[create custom env]}
 define('ROOTPATH', $_SERVER['DOCUMENT_ROOT'] . "/boostack/");
                                         
 // ====== DO NOT EDIT BELOW THIS LINE

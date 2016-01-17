@@ -27,7 +27,7 @@ $config['session_on'] = FALSE;
 
 // ====== Cross Site Request Forgery validation
 // enable or disable CSRF validation (TRUE need $database_on=TRUE AND $session_on=TRUE)
-$config['csrf_on'] = TRUE;
+$config['csrf_on'] = FALSE;
 
 // ====== cookie
 // enable or disable Cookies (TRUE need $database_on=TRUE AND $session_on=TRUE)
