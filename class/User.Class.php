@@ -78,18 +78,19 @@ class User
     {
         global $default_profilepic;
         $fields["active"] = (! isset($post_array["active"])) ? "0" : $post_array["active"];
-        $fields["privilege"] = ($post_array["privilege"] == "") ? "0" : $post_array["privilege"];
-        $fields["name"] = ($post_array["name"] == "") ? "" : $post_array["name"];
+        $fields["privilege"] = (!isset($post_array["privilege"]) || $post_array["privilege"] == "") ? "0" : $post_array["privilege"];
+        $fields["name"] = (!isset($post_array["name"]) || $post_array["name"] == "") ? "" : $post_array["name"];
         $fields["username"] = $post_array["username"];
-        if ($post_array["pth"] == "")
+        if (!isset($post_array["pwd"]) || $post_array["pwd"] == "")
             $this->excluse_from_update[] = "pwd";
         else
-            $fields["pwd"] = password_hash($post_array["pth"]);
+            $fields["pwd"] = password_hash($post_array["pwd"],PASSWORD_DEFAULT);
+            //$fields["pwd"] = hash("sha512", $post_array["pwd"]);
         
         $fields["email"] = $post_array["email"];
         $fields["last_access"] = "0";
         $fields["session_cookie"] = (! isset($post_array["session_cookie"])) ? "" : $post_array["session_cookie"];
-        $fields["pic_square"] = ($post_array["pic_square"] == "") ? $default_profilepic : $post_array["pic_square"];
+        $fields["pic_square"] = (!isset($post_array["pic_square"]) || $post_array["pic_square"] == "") ? $default_profilepic : $post_array["pic_square"];
         
         foreach ($fields as $key => $value)
             $this->$key = $value; // OBJECT UPDATE
@@ -215,7 +216,7 @@ class User
     {
         if ($this->pdo->query("SELECT id FROM " . self::TABLENAME . " WHERE email = '" . $email . "'")->rowCount() == 0){
             if ($throwException)
-                throw new Exception("It looks like we don't have an account with that email address, try another?");
+                throw new Exception("Username or password not valid.");
         return false;
         }
         return true;
@@ -231,26 +232,47 @@ class User
         return true;
     }
 
+    /*
+     *  Effettua il login
+     */
     public function tryLogin($email, $password, $cookieRememberMe, $throwException = true)
     {
         global $objSession,$boostack;
         if (!self::checkUserExistsByEmail($email))
             return false;
             
-            $objSession->LogOut(); 
-            $objSession->Login($email, $password);
-            if (!$objSession->IsLoggedIn()){
-                if ($throwException)
-                    throw new Exception("Password is incorrect, try another?");
-                return false;
-            }
-            
-            if ($cookieRememberMe) {
-                $md5 = md5(time() . getIpAddress() . getUserAgent());
-                setcookie($boostack->getConfig("cookie_name"), $md5, time() + $boostack->getConfig("cookie_expire"), '/');
-                $this->pdo->query("UPDATE " . self::TABLENAME . " SET session_cookie = '$md5' WHERE id = '" . $objSession->GetUserID() . "'");
-            }
-            return true;
+        $objSession->LogOut();
+        $objSession->Login($email, $password);
+        if (!$objSession->IsLoggedIn()){
+            if ($throwException)
+                throw new Exception("Username or password not valid.");
+            return false;
+        }
+
+        if ($cookieRememberMe) {
+            $user = $objSession->GetUserObject();
+            $user->refreshRememberMeCookie();
+        }
+        return true;
     }
+
+    /*
+     *  Genera il valore del remember-me cookie
+     */
+    public function generateCookieHash(){
+        return  md5(time()).md5(getIpAddress() . getUserAgent());
+    }
+
+    /*
+     *  Aggiorna il valore del remember-me cookie
+     *  dopo un login
+     */
+    public function refreshRememberMeCookie() {
+        global $boostack;
+        $cookieHash = $this->generateCookieHash();
+        setcookie($boostack->getConfig("cookie_name"), $cookieHash, time() + $boostack->getConfig("cookie_expire"), '/');
+        $this->pdo->query("UPDATE " . self::TABLENAME . " SET session_cookie = '$cookieHash' WHERE id = '" . $this->id . "'");
+    }
+
 }
 ?>

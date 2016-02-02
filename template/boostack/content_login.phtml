@@ -22,7 +22,7 @@
 						action="<?=$boostack->getFriendlyUrl("login");?>" name="loginform"
 						class="form-horizontal" method="post" role="form">
 
-<div class="form-group">
+						<div class="form-group">
 							<div class="col-md-12 control">
 								<div style=" padding-top: 10px;">
 									<small>Email: <b>testing@testing.com</b> - Password: <b>testing</b></a>
@@ -65,7 +65,8 @@
 						<div class="form-group">
 							<div class="col-md-12 control">
 								<div style="border-top: 1px solid #888; padding-top: 15px;">
-									<small> <a href="<?=$boostack->getFriendlyUrl("login");?>"><?=$boostack->getLabel("login.donthaveaccount");?></a>
+									<small>
+										<a href="<?=$boostack->getFriendlyUrl("registration");?>"><?=$boostack->getLabel("login.donthaveaccount");?></a>
 									</small>
 								</div>
 							</div>

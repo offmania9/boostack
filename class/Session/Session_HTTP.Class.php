@@ -164,8 +164,8 @@ class Session_HTTP
         return ($this->php_session_id);
     }
 
-    public function Login($strUsername, $strPlainPassword, $hashed_psw = "")
-    {
+    // old method
+    /*public function Login($strUsername, $strPlainPassword, $hashed_psw = "") {
         if ($hashed_psw !== "")
             $strMD5Password = $hashed_psw;
         else
@@ -186,6 +186,64 @@ class Session_HTTP
         } else {
             return false;
         }
+    }*/
+
+
+    /*  Esegue il login
+     *
+     * @param $strUsername          username
+     * @param $strPlainPassword     password in chiaro (utilizzata durante il login da form)
+     * @param $hashedPassword       password in hash (utilizzata durante il login da cookie)
+     *
+     * @need PHP>5.5 per password_verify
+     *
+     */
+    public function Login($strUsername, $strPlainPassword, $hashedPassword = "") {
+        $stmt = "SELECT id,pwd FROM boostack_user WHERE username = '$strUsername' AND active='1'";
+        $result = $this->dbhandle->query($stmt);
+        if ($result->rowCount() > 0) {
+            $row = $result->fetch(PDO::FETCH_ASSOC);
+            if($hashedPassword == "" && password_verify($strPlainPassword, $row['pwd']) || $hashedPassword != "" && $hashedPassword == $row['pwd']) {
+                $this->user_id = $row["id"];
+                $this->logged_in = true;
+                $sql = "UPDATE " . $this->http_session_table . " SET logged_in = 't', user_id = '" . $this->user_id . "' WHERE id='" . $this->native_session_id . "'";
+                $result = $this->dbhandle->prepare($sql)->execute();
+                $sql = "UPDATE boostack_user SET last_access='" . time() . "' WHERE id='" . $row["id"] . "'";
+                $result = $this->dbhandle->prepare($sql)->execute();
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    /*  Esegue il login se è presente il "Remember Me" cookie
+     *
+     *  @param $cookieValue valore del cookie
+     */
+    public function loginByCookie($cookieValue){
+        global $boostack;
+        $q = $this->dbhandle->prepare("SELECT username,pwd FROM boostack_user WHERE session_cookie = :cookie ");
+        $q->bindParam(":cookie",$cookieValue);
+        $q->execute();
+        $res = $q->fetchAll(PDO::FETCH_ASSOC);
+        if(count($res) == 1) {
+            if($this->checkCookieHashValidity($cookieValue)){
+                $this->Login($res[0]['username'],"",$res[0]['pwd']);
+                debug($this->logged_in);
+                $this->GetUserObject()->refreshRememberMeCookie();
+                return true;
+            }
+            else {
+                $boostack->writeLog("checkCookieHashValidity(".$cookieValue."): false - IP:".getIpAddress());
+            }
+        }
+        return false;
+    }
+
+    public function checkCookieHashValidity($cookieValue){
+        //return substr($cookieValue,32) == substr(md5(getIpAddress() . getUserAgent()), 32);
+        return substr($cookieValue,32) == md5(getIpAddress().getUserAgent());
     }
 
     public function LogOut()
@@ -248,7 +306,7 @@ class Session_HTTP
     private function _session_gc_method($maxlifetime)
     {
         $old = time() - $maxlifetime;
-        $sql = 'DELETE * FROM ' . $this->http_session_table . ' WHERE last_impression < $old';
+        $sql = 'DELETE FROM ' . $this->http_session_table . ' WHERE last_impression < $old';
         if ($this->dbhandle->prepare($sql)->execute())
             return true;
         return false;

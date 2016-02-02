@@ -107,7 +107,7 @@ function debug($var)
 {
     ini_set('display_errors', 1);
     echo '<pre>';
-    print_r($var);
+    var_dump($var);
     echo '</pre>';
 }
 
@@ -265,6 +265,14 @@ function getElapsedTime($datetime_timestamp)
     }
     
     return $res;
+}
+
+function checkEmailFormat($email) {
+    $regexp = "/^[a-z0-9]+([_\\.-][a-z0-9]+)*@([a-z0-9]+([\.-][a-z0-9]+)*)+\\.[a-z]{2,}$/i";
+    if ($email == "" || ! preg_match($regexp, $email) || strlen($email >= 255)){
+        return false;
+    }
+    return true;
 }
 
 ?>

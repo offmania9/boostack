@@ -87,7 +87,7 @@ CREATE TABLE `boostack_user` (
   `email` varchar(255) NOT NULL,
   `pic_square` varchar(255) NOT NULL,
   `last_access` int(11) NOT NULL DEFAULT '0',
-  `session_cookie` varchar(32) NOT NULL,
+  `session_cookie` varchar(64) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

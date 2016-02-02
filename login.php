@@ -22,11 +22,12 @@ if($config['session_on']){
 	            $objSession->CSRFCheckTokenValidity($_POST);
 	            $email = sanitizeInput($_POST["btk_usr"]);
 	            $password = sanitizeInput($_POST["btk_pwd"]);
+				$rememberMe = (isset($_POST['rememberme']) && $_POST['rememberme'] == '1') ? true : false;
 	            $anonymousUser = new User();
 	            $anonymousUser->checkEmailFormat($email);
 	            $anonymousUser->checkPasswordFormat($password);
 	            $anonymousUser->checkEmailIntoDB($email);
-	            if ($anonymousUser->tryLogin($email, $password, $config['cookie_on'] && isset($_POST['rememberme']))) {
+	            if ($anonymousUser->tryLogin($email, $password, $config['cookie_on'] && $rememberMe)) {
 	                header("Location: " . $boostack->getFriendlyUrl("login"));
 	                exit();
 	            }
