@@ -230,7 +230,6 @@ class Session_HTTP
         if(count($res) == 1) {
             if($this->checkCookieHashValidity($cookieValue)){
                 $this->Login($res[0]['username'],"",$res[0]['pwd']);
-                debug($this->logged_in);
                 $this->GetUserObject()->refreshRememberMeCookie();
                 return true;
             }

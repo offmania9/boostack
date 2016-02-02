@@ -95,12 +95,12 @@ function goToLogout()
     exit();
 }
 
-function timeAcceptedFromLastRequest($timeLastRequest)
+function checkAcceptedTimeFromLastRequest($timeLastRequest)
 {
-    global $boostack;
-    if ($timeLastRequest - time() > $boostack->TIME_ELAPSED_ACCEPTED)
-        return false;
-    return true;
+    global $TIME_ELAPSED_ACCEPTED;
+    if (empty($timeLastRequest) || !($timeLastRequest == null) && (time() - $timeLastRequest  > $TIME_ELAPSED_ACCEPTED))
+        return true;
+    return false;
 }
 
 function debug($var)
