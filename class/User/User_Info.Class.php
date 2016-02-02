@@ -60,8 +60,8 @@ class User_Info extends User
 
     public function __construct($id = -1)
     {
+        parent::__construct($id);
         if ($id != - 1) {
-            parent::__construct($id);
             $fields = $this->dbfield;
             $this->first_name = $fields["first_name"];
             $this->last_name = $fields["last_name"];
@@ -89,8 +89,8 @@ class User_Info extends User
     public function prepare($post_array)
     {
         global $default_profilepic;
-        $fields["first_name"] = addslashes($post_array["first_name"]);
-        $fields["last_name"] = addslashes($post_array["last_name"]);
+        $fields["first_name"] = isset($post_array["first_name"]) ? addslashes($post_array["first_name"]) : "";
+        $fields["last_name"] = isset($post_array["last_name"]) ? addslashes($post_array["last_name"]) : "";
         $fields["locale"] = (isset($post_array["locale"])) ? $post_array["locale"] : "";
         $fields["city"] = (isset($post_array["city"])) ? addslashes($post_array["city"]) : "";
         $fields["state"] = (isset($post_array["state"])) ? $post_array["state"] : "";

@@ -9,7 +9,7 @@
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
  * @version 2
  */
-class User_Registration extends UserInfo
+class User_Registration extends User_Info
 {
 
     private $activation_date;
@@ -29,8 +29,8 @@ class User_Registration extends UserInfo
 
     public function __construct($id = -1)
     {
+        parent::__construct($id);
         if ($id != - 1) {
-            parent::__construct($id);
             $fields = $this->dbfield;
             $this->activation_date = $fields["activation_date"];
             $this->access_code = $fields["access_code"];

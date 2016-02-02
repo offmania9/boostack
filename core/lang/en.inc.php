@@ -17,7 +17,8 @@ $boostack_labels_strings = array(
         "home" => "Home",
         "download" => "Download",
         "documentation" => "Documentation",
-        "login" => "Login"
+        "login" => "Login",
+        "registration" => "Registration"
     ),
     'featuresTitles' => array(
         "fast" => "Fast and Productive",
