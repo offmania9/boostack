@@ -10,7 +10,6 @@
  */
 // ====== ENVIRONMEN local ======
 $config['url'] = "http://localhost/boostack/";
-$config['path'] = $_SERVER['DOCUMENT_ROOT'] . "/boostack/";
 $config['developmentMode'] = TRUE;
 
 // ====== database
