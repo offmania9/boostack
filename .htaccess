@@ -1,7 +1,7 @@
 php_value zlib.output_compression on
 
 ###### TIME
-xSetEnv TZ Europe/Rome
+SetEnv TZ Europe/Rome
 php_value date.timezone Europe/Rome
 
 # disable the Server response header totally
