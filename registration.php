@@ -1,6 +1,6 @@
 <?
 /**
- * Boostack: index.php
+ * Boostack: registration.php
  * ========================================================================
  * Copyright 2015-2016 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
@@ -28,6 +28,8 @@ if(isset($_POST["email"]) && isset($_POST["psw1"]) && isset($_POST["psw2"])) {
         $user->insert($arr);
         require_once $boostack->registerTemplateFile("boostack/content_login_logged.phtml");
     }
+    else
+        require_once $boostack->registerTemplateFile("boostack/content_registration.phtml");
 }
 else {
     require_once $boostack->registerTemplateFile("boostack/content_registration.phtml");

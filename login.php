@@ -1,6 +1,6 @@
 <?
 /**
- * Boostack: index.php
+ * Boostack: login.php
  * ========================================================================
  * Copyright 2015-2016 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
@@ -41,9 +41,10 @@ if($config['session_on']) {
     } else $error = "Too much request. Wait some seconds";
 }
 
-// da rivedere la logica
-if($objSession->IsLoggedIn()) require_once $boostack->registerTemplateFile("boostack/content_login_logged.phtml");
-else require_once $boostack->registerTemplateFile("boostack/content_login.phtml");
+if($config['session_on'] && $objSession->IsLoggedIn())
+    require_once $boostack->registerTemplateFile("boostack/content_login_logged.phtml");
+else
+    require_once $boostack->registerTemplateFile("boostack/content_login.phtml");
 
 require_once $boostack->registerTemplateFile("boostack/footer.phtml");
 

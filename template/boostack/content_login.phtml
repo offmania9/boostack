@@ -1,4 +1,13 @@
-
+<section class="disclaimer sectionTitle">
+	<div class="line">
+		<div class="container">
+			<div class="row">
+				<h1><?=$boostack->getLabel("navigation.login");?></h1>
+			</div>
+		</div>
+	</div>
+</section>
+<p>&nbsp;</p>
 <section class="login centerContent">
 	<div class="container">
 		<div id="loginbox"
@@ -72,7 +81,8 @@
 							</div>
 						</div>    
 					
-                        <?=$objSession->CSRFRenderHiddenField(); ?> 
+                        <? if($config['session_on'])
+							echo $objSession->CSRFRenderHiddenField(); ?>
                       </form>
 				</div>
 			</div>

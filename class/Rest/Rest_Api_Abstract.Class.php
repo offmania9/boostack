@@ -1,7 +1,6 @@
 <?php
 abstract class Rest_Api_Abstract
 {
-
     protected $method = '';
 
     /**
@@ -59,7 +58,7 @@ abstract class Rest_Api_Abstract
 
     public function processAPI()
     {
-        if ((int) method_exists($this, $this->endpoint) > 0) {
+        if ((int)method_exists($this, $this->endpoint) > 0) {
             return $this->_response($this->{$this->endpoint}($this->args));
         }
         return $this->_response("No Endpoint: " . $this->endpoint, 404);
