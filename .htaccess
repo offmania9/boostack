@@ -36,47 +36,13 @@ Options -MultiViews
 RewriteEngine on
 #RewriteBase /boostack/
 RewriteRule ^home$ index.php [L]
-RewriteRule ^my$ index.php [L]
-RewriteRule ^blog$ index.php [L]
-RewriteRule ^my/([a-zA-Z0-9_-]+)$ my.php?sect=$1 [L,QSA]
-RewriteRule ^my/([a-zA-Z0-9_-]+)/([a-zA-Z0-9_-]+)$ my.php?sect=$1&&page=$2 [L,QSA]
-RewriteRule ^my/([a-zA-Z0-9_-]+)/([a-zA-Z0-9_-]+)/([a-zA-Z0-9_-]+)$ my.php?sect=$1&&page=$2&&type=$3 [L,QSA]
-RewriteRule ^my/([a-zA-Z0-9_-]+)/([a-zA-Z0-9_-]+)/([a-zA-Z0-9_-]+)/([a-zA-Z0-9_-]+)$ my.php?sect=$1&&page=$2&&type=$3&&text=$4 [L,QSA]
-RewriteRule ^my/([a-zA-Z0-9_-]+)/([a-zA-Z0-9_-]+)/([a-zA-Z0-9_-]+)/([a-zA-Z0-9_-]+)/([a-zA-Z0-9_-]+)$ my.php?sect=$1&&page=$2&&type=$3&&text=$4&&ord=$5 [L,QSA]
-RewriteRule ^confirm/([a-zA-Z0-9_-]+)$ confirm.php?kid=$1 [L]
-RewriteRule ^signon$ signup.php [L]
-RewriteRule ^check$ check.php [L]
-RewriteRule ^business/([0-9]+)$ business_detail.php?id=$1 [L]
+RewriteRule ^docs/([a-zA-Z0-9_-]+)$ documentation.php?docpath=$1 [L]
+RewriteRule ^docs documentation.php [L]
+RewriteRule ^download$ download.php [L]
+RewriteRule ^login$ login.php [L]
+RewriteRule ^registration$ registration.php [L]
 RewriteRule ^logout$ logout.php [L]
-RewriteRule ^cose-foodraising$ index.php [L]
-RewriteRule ^search$ search_result.php [L]
-RewriteRule ^log$ log.php [L]
 RewriteRule ^api/([^\.]+)$ api.php?request=$1 [L]
-#RewriteRule ^csvupload$ backoffice_uploadCsv.php [L]
-RewriteRule ^geocoding$ backoffice_geocoding.php [L]
-RewriteRule ^profile$ profile.php [L]
-RewriteRule ^password-recovery$ lostpassword.php [L]
-RewriteRule ^password-recovery/([a-zA-Z0-9_-]+)$ lostpassword.php?code=$1 [L]
-RewriteRule ^prodotti/([a-zA-Z0-9_-]+)$ getProductFromFriendlyUrl.php?productname=$1
-RewriteRule ^error$ error.php [L]
-RewriteRule ^maintenance$ maintenance.php [L]
-RewriteRule ^sei-un-buongustaio$ staticpage_buongustaio.php [L]
-RewriteRule ^sei-un-negozio$ staticpage_negozio.php [L]
-RewriteRule ^sei-un-produttore$ staticpage_produttore.php [L]
-RewriteRule ^sei-un-ristorante$ staticpage_ristorante.php [L]
-RewriteRule ^privacy$ privacy.php [L]
-RewriteRule ^suggestion-sent$ suggestion_sent.php [L]
-RewriteRule ^([a-zA-Z0-9_-]+)$ getBusinessFromFriendlyUrl.php?businessname=$1
-
-
-#RewriteRule ^adminrequest$ backoffice_request.php [L]
-#RewriteRule ^adminproduct$ backoffice_product.php [L]
-#RewriteRule ^adminbusiness$ backoffice_business.php [L]
-#RewriteRule ^adminuser$ backoffice_user.php [L]
-
-
-
-RewriteRule ^businessmodify$ ./template/user_backend/content_my_business_modify.php [L]
 
 ErrorDocument 400 http://boostack.com/error.php
 ErrorDocument 401 http://boostack.com/error.php
