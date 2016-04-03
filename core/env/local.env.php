@@ -2,14 +2,15 @@
 /**
  * Boostack: local.env.php
  * ========================================================================
- * Copyright 2015 Spagnolo Stefano
+ * Copyright 2015-2016 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
  * @version 2.1
  */
 // ====== ENVIRONMEN local ======
-$config['url'] = "http://localhost/boostack/";
+$config['protocol'] = isset($_SERVER['HTTPS']) === true ? 'https://' : 'http://';
+$config['url'] = $config['protocol']."localhost/boostack/";
 $config['developmentMode'] = TRUE;
 
 // ====== database

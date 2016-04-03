@@ -3,7 +3,7 @@
 /**
  * Boostack: Boostack.Class.php
  * ========================================================================
- * Copyright 2015 Spagnolo Stefano
+ * Copyright 2015-2016 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
@@ -122,8 +122,7 @@ class Boostack
     {
         $minified = $this->developmentMode ? "" : ".min";
         $fileName = str_replace(".css", $minified . ".css", $fileName);
-        ?><link href="<?=$this->url.self::cssUrl.$fileName;?>"
-	rel="stylesheet" type="text/css"><?
+        echo '<link href="'.$this->url.self::cssUrl.$fileName.'" rel="stylesheet" type="text/css"/>';
     }
 
     /*
@@ -151,15 +150,13 @@ class Boostack
     public function renderOpenHtmlHeadTags($titlePrepend = "")
     {
         ?>
-            <!DOCTYPE html>
-            <html lang="<?=$this->config['html_lang']?>"
-            	xmlns:og="http://opengraphprotocol.org/schema/"
-            	xmlns:fb="http://www.facebook.com/2008/fbml">
-            <head><?
-                    $this->registerAllDefaultMetaTags($titlePrepend);
-                    $this->registerAllDefaultCssFiles();
-                    ?></head>
-            <body>
+<!DOCTYPE html>
+<html lang="<?=$this->config['html_lang']?>" xmlns:og="https://opengraphprotocol.org/schema/" xmlns:fb="https://www.facebook.com/2008/fbml">
+<head><?
+$this->registerAllDefaultMetaTags($titlePrepend);
+$this->registerAllDefaultCssFiles();
+?></head>
+<body>
         <?
     }
 
@@ -176,9 +173,7 @@ class Boostack
      */
     public function renderCloseHtmlTag()
     {
-        global $db;
-        echo '<script type="text/javascript"> var rootUrl = "' . $this->url . '"</script>';
-        echo '<script type="text/javascript"> var developmentMode = "' . $this->developmentMode . '"</script>';
+        echo '<script type="text/javascript"> var rootUrl = "' . $this->url . '";var developmentMode = "' . $this->developmentMode . '";</script>';
         $this->registerScriptFile("lib/jquery.js");
         $this->registerScriptFile("lib/bootstrap.js");
         $this->registerScriptFile("custom.js");
@@ -187,11 +182,7 @@ class Boostack
         $this->registerScriptFile("lib/respond.js");
         echo "<![endif]-->";
         ?>
-        <div id="fb-root"></div>
-    	<div class="overlay"></div>
-    	<div class="loading"></div>
-        </body>
-        </html>
+        <div id="fb-root"></div><div class="overlay"></div><div class="loading"></div></body></html>
 		<?
     }
 
@@ -252,52 +243,44 @@ class Boostack
      *
      */
     public function registerAllDefaultMetaTags($titlePrepend = "")
-    {
-        ?><meta charset="utf-8">
-<meta name="viewport" content="<?=$this->config['viewport']?>"><?
-        if ($this->facebookMetaTag) {
-            ?>
-<meta property="og:title" content="<?=$this->config['og_title']?>" />
-<meta property="og:type" content="<?=$this->config['og_type']?>" />
-<meta property="og:url" content="<?=$this->url?>" />
-<meta property="og:image"
-	content="<?=$this->url.$this->config["url_logo"];?>" />
-<meta property="og:description"
-	content="<?=$this->config['site_description'];?>" /><?
-            if ($this->config['fb_app_id'] != "") {
-                ?><meta property="fb:app_id"
-	content="<?=$this->config['fb_app_id']?>" /><?
-            }
-            ?><?
-
-            if ($this->config['fb_app_id'] != "") {
-                ?><meta property="fb:admins"
-	content="<?=$this->config['fb_admins']?>" /><? }?>
-        <?
-        }
-        ?><title><?=($titlePrepend!="")?$titlePrepend." | ":""?><?=$this->config['site_title'];?> | <?=$this->config['project_sitename']?></title>
-<meta name="description"
-	content="<?=$this->config['site_description']?>">
-<meta name="author" content="<?=$this->config['site_author']?>">
+{   ?>
+<meta charset="utf-8"/><meta name="viewport" content="<?=$this->config['viewport']?>"/>
+<?
+if ($this->facebookMetaTag) {
+    ?>
+    <meta property="og:title" content="<?=$this->config['og_title']?>" />
+    <meta property="og:type" content="<?=$this->config['og_type']?>" />
+    <meta property="og:url" content="<?=$this->url?>" />
+    <meta property="og:image" content="<?=$this->url.$this->config["url_logo"];?>" />
+    <meta property="og:description" content="<?=$this->config['site_description'];?>" />
+    <?
+if ($this->config['fb_app_id'] != "") {
+?>
+    <meta property="fb:app_id" content="<?=$this->config['fb_app_id']?>" /><?
+}
+?><?
+if ($this->config['fb_app_id'] != "") {
+?>
+    <meta property="fb:admins" content="<?=$this->config['fb_admins']?>" /><? }?>
+<?
+}
+?>
+<title><?=($titlePrepend!="")?$titlePrepend." | ":""?><?=$this->config['site_title'];?> | <?=$this->config['project_sitename']?></title>
+<meta name="description" content="<?=$this->config['site_description']?>"/>
+<meta name="author" content="<?=$this->config['site_author']?>"/>
 <meta content="<?=$this->config['site_keywords'];?>" name="Keywords" />
 <meta content="INDEX, FOLLOW" name="ROBOTS" />
-<link rel="shortcut icon"
-	href="<?=$this->url.$this->config['site_shortcuticon'];?>" />
+<link rel="shortcut icon" href="<?=$this->url.$this->config['site_shortcuticon'];?>" />
 <link rel="image_src" href="<?=$this->url.$this->config['url_logo'];?>" />
-<link rel="apple-touch-icon" sizes="144x144"
-	href="<?=$this->url.$this->config['appletouchicon_144'];?>">
-<link rel="apple-touch-icon" sizes="114x114"
-	href="<?=$this->url.$this->config['appletouchicon_114'];?>">
-<link rel="apple-touch-icon" sizes="72x72"
-	href="<?=$this->url.$this->config['appletouchicon_72'];?>">
-<link rel="apple-touch-icon"
-	href="<?=$this->url.$this->config['appletouchicon_def'];?>">
-<meta name="apple-mobile-web-app-title"
-	content="<?=$this->url.$this->config['sitename']?>">
+<link rel="apple-touch-icon" sizes="144x144" href="<?=$this->url.$this->config['appletouchicon_144'];?>"/>
+<link rel="apple-touch-icon" sizes="114x114" href="<?=$this->url.$this->config['appletouchicon_114'];?>"/>
+<link rel="apple-touch-icon" sizes="72x72" href="<?=$this->url.$this->config['appletouchicon_72'];?>"/>
+<link rel="apple-touch-icon" href="<?=$this->url.$this->config['appletouchicon_def'];?>"/>
+<meta name="apple-mobile-web-app-title" content="<?=$this->url.$this->config['sitename']?>"/>
 <base href="<?=$this->url?>" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <?
-    }
+}
 }
 
 ?>

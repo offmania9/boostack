@@ -1,11 +1,11 @@
 /**
  * Boostack: custom.css
  * ========================================================================
- * Copyright 2015 Spagnolo Stefano
+ * Copyright 2015-2016 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 2
+ * @version 2.1
  */
 @charset "utf-8";
 
@@ -20,7 +20,7 @@ body {
 	font-style: normal;
 	font-weight: 300;
 	src: local('Open Sans Light'), local(OpenSans-Light),
-		url(http://themes.googleusercontent.com/static/fonts/opensans/v6/DXI1ORHCpsQm3Vp6mXoaTXhCUOGz7vYGh680lGh-uXM.woff)
+		url(https://themes.googleusercontent.com/static/fonts/opensans/v6/DXI1ORHCpsQm3Vp6mXoaTXhCUOGz7vYGh680lGh-uXM.woff)
 		format(woff)
 }
 

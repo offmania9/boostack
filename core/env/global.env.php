@@ -2,7 +2,7 @@
 /**
  * Boostack: global.env.php
  * ========================================================================
- * Copyright 2015 Spagnolo Stefano
+ * Copyright 2015-2016 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>

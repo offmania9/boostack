@@ -2,15 +2,15 @@
 /**
  * Boostack: staging.env.php
  * ========================================================================
- * Copyright 2015 Spagnolo Stefano
+ * Copyright 2015-2016 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 2.2
+ * @version 2.1.2
  */
 // ====== ENVIRONMEN staging ======
-$config['url'] = "http://localhost/boostack/";
-$config['path'] = $_SERVER['DOCUMENT_ROOT'] . "/boostack/";
+$config['protocol'] = isset($_SERVER['HTTPS']) === true ? 'https://' : 'http://';
+$config['url'] = $config['protocol']."localhost/boostack/";
 $config['developmentMode'] = TRUE;
 
 // ====== database

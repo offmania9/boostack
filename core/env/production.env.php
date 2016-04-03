@@ -2,16 +2,16 @@
 /**
  * Boostack: production.env.php
  * ========================================================================
- * Copyright 2015 Spagnolo Stefano
+ * Copyright 2015-2016 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
  * @version 2.1
  */
 // ====== ENVIRONMEN production ======
-$config['url'] = "http://localhost/boostack/";
-$config['path'] = $_SERVER['DOCUMENT_ROOT'] . "/boostack/";
-$config['developmentMode'] = TRUE;
+$config['protocol'] = isset($_SERVER['HTTPS']) === true ? 'https://' : 'http://';
+$config['url'] = $config['protocol']."localhost/boostack/";
+$config['developmentMode'] = FALSE;
 
 // ====== database
 // enable or disable Mysql database

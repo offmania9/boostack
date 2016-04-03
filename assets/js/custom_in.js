@@ -1,3 +1,1 @@
-$(document).ready(function() {	
-
-});
+/* javascript adjustment for logged in users */
