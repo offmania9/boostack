@@ -17,7 +17,7 @@ class ExampleConcreteClass extends BaseClass {
     ];
 
     public function __construct() {
-        $this->pdo = Database_PDO::getInstance();
+        parent::init();
     }
 
 

@@ -17,6 +17,10 @@ abstract class BaseClass {
 
     /*** CONCRETE FUNCTIONS ***/
 
+    protected function init() {
+        $this->pdo = Database_PDO::getInstance();
+    }
+
     public function fill($array) {
         self::prepare($array);
         return true;
