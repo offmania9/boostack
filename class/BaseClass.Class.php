@@ -2,8 +2,6 @@
 
 abstract class BaseClass {
 
-    /*** CLASS VARIABLES ***/
-
     protected $id;
     protected $pdo; // TODO: static? Find a way to automatically inject db instance into this field?
     protected $default_values = [];
@@ -11,21 +9,35 @@ abstract class BaseClass {
     protected $custom_excluded = [];
     const TABLENAME = "";
 
-    /*** ABSTRACT FUNCTIONS ***/
 
-    //
-
-    /*** CONCRETE FUNCTIONS ***/
-
+    /**
+     * Init method: creates the PDO object.
+     * Call this in your __construct() function with parent::init()
+     */
     protected function init() {
         $this->pdo = Database_PDO::getInstance();
+        self::prepare();
     }
 
+    /**
+     * Fill the object
+     *
+     * @param $array
+     * @return bool
+     * @throws Exception
+     */
     public function fill($array) {
         self::prepare($array);
         return true;
     }
 
+    /**
+     * Load the object from the database
+     *
+     * @param $id
+     * @return bool
+     * @throws Exception
+     */
     public function load($id) {
         $sql = "SELECT * FROM " . static::TABLENAME . " WHERE id = :id";
         $q = $this->pdo->prepare($sql);
@@ -40,6 +52,11 @@ abstract class BaseClass {
         return true;
     }
 
+    /**
+     * Save the object into the database
+     *
+     * @return bool
+     */
     public function save() {
         if(empty($this->id)) {
             return $this->insert();
@@ -48,13 +65,58 @@ abstract class BaseClass {
         }
     }
 
-    private function prepare($array) {
+    /**
+     * Delete the object from the database
+     *
+     * @return bool
+     */
+    public function delete() {
+        $sql = "DELETE FROM " . static::TABLENAME . " WHERE id = :id";
+        $q = $this->pdo->prepare($sql);
+        $q->bindValue(':id', $this->id);
+        $q->execute();
+        return ($q->rowCount() == 0);
+    }
+
+    /**
+     * Getter
+     *
+     * @param $property_name
+     * @return mixed
+     * @throws Exception_FieldNotFound
+     */
+    public function __get($property_name) {
+        if (isset($this->$property_name)) {
+            return ($this->$property_name);
+        } else {
+            //throw new Exception_FieldNotFound("Field $property_name not found");
+            return '';
+        }
+    }
+
+    /**
+     * Setter
+     *
+     * @param $property_name
+     * @param $val
+     * @throws Exception_FieldNotFound
+     */
+    public function __set($property_name, $val) {
+        if (isset($this->$property_name)) {
+            $this->$property_name = $val;
+        } else {
+            throw new Exception_FieldNotFound("Field $property_name not found");
+        }
+    }
+
+    private function prepare($array = array()) {
         $defaultValuesKeys = array_keys($this->default_values);
         $inputKeys = array_keys($array);
         $fieldsNotPresent = array_diff($inputKeys,$defaultValuesKeys,$this->system_excluded,$this->custom_excluded);
         if(count($fieldsNotPresent) > 0) {
             throw new Exception(implode(",",$fieldsNotPresent)." are not found in object");
         }
+        if(!empty($array['id'])) $this->id = $array['id'];
         foreach($defaultValuesKeys as $defaultField) {
             if(in_array($defaultField,$inputKeys)) {
                 $this->$defaultField = $array[$defaultField];
@@ -97,27 +159,5 @@ abstract class BaseClass {
         return true;
     }
 
-    public function delete() {
-        $sql = "DELETE FROM " . static::TABLENAME . " WHERE id = :id";
-        $q = $this->pdo->prepare($sql);
-        $q->bindValue(':id', $this->id);
-        $q->execute();
-        return ($q->rowCount() == 0);
-    }
-
-    public function __get($property_name) {
-        // TODO: throw exception if property is not present?
-        if (isset($this->$property_name)) {
-            return ($this->$property_name);
-        } else {
-            return (NULL);
-        }
-    }
-
-    public function __set($property_name, $val) {
-        // TODO: throw exception if property is not present?
-        $this->$property_name = $val;
-    }
-
-
 }
+?>
