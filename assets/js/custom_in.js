@@ -1,1 +1,0 @@
-/* javascript adjustment for logged in users */

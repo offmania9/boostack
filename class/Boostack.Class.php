@@ -174,9 +174,9 @@ $this->registerAllDefaultCssFiles();
     public function renderCloseHtmlTag()
     {
         echo '<script type="text/javascript"> var rootUrl = "' . $this->url . '";var developmentMode = "' . $this->developmentMode . '";</script>';
-        $this->registerScriptFile("lib/jquery.js");
-        $this->registerScriptFile("lib/bootstrap.js");
-        $this->registerScriptFile("custom.js");
+        $this->registerScriptFile("lib/require.js");
+        $this->registerScriptFile("helpers.js");
+        $this->registerScriptFile("init.js");
         echo "<!--[if lt IE 9]>";
         $this->registerScriptFile("lib/html5shiv.js");
         $this->registerScriptFile("lib/respond.js");
