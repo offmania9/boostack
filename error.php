@@ -10,6 +10,7 @@
  */
 // #######################
 require_once "core/environment_init.php";
+$boostack->renderOpenHtmlHeadTags("Error");
 // #######################
 
 require_once $boostack->registerTemplateFile("boostack/header.phtml");
