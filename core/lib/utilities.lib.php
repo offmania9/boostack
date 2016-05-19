@@ -275,4 +275,10 @@ function checkEmailFormat($email) {
     return true;
 }
 
+function goToMaintenance() {
+    global $boostack;
+    header("Location: " . $boostack->url . $boostack->getConfig("url_maintenance"));
+    exit();
+}
+
 ?>
