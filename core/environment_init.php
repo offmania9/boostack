@@ -1,25 +1,18 @@
-<?
-/**
- * Boostack: environment_init.php
- * ========================================================================
- * Copyright 2015-2016 Spagnolo Stefano
- * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
- * ========================================================================
- * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 2.1.2
- */
+<?php
 
-// ====== CHOOSE THE ENVIRONMENT ======
-define('CURRENT_ENVIRONMENT', "local"); // [local] | [staging] | [production] | {[create custom env]}
-define('ROOTPATH', $_SERVER['DOCUMENT_ROOT'] . "/boostack/");
-                                        
-// ====== DO NOT EDIT BELOW THIS LINE
-require_once (ROOTPATH . "core/env/" . CURRENT_ENVIRONMENT . ".env.php");
-require_once (ROOTPATH . "core/env/global.env.php"); // import global environment
+$envPath = realpath(__DIR__."/env/env.php");
+if($envPath && is_file($envPath)) {
+    require_once $envPath;
+} else {
+    echo "Environment file not found";
+    exit();
+}
+
+require_once (ROOTPATH . "core/env/global.env.php");
 require_once (ROOTPATH . "core/lib/utilities.lib.php");
 
 spl_autoload_register('autoloadClass');
-$boostack = Boostack::getInstance(); //define('BOOSTACK',Boostack::getInstance());
+$boostack = Boostack::getInstance();
 if ($config['developmentMode']) {
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
@@ -35,4 +28,5 @@ if ($config['language_on'])
     require_once (ROOTPATH . "core/lib/check_language.lib.php");
 if ($config['mobile_on'])
     require_once (ROOTPATH . "core/lib/check_mobile.lib.php");
+
 ?>
