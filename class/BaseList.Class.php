@@ -21,6 +21,30 @@ abstract class BaseList implements IteratorAggregate {
         $this->items[] = $element;
     }
 
+    protected function exist($key) {
+        // TODO
+        return true;
+    }
+
+    protected function length() {
+        return count($this->items);
+    }
+
+    protected function remove($key, $shift = true) {
+        // TODO
+        return true;
+    }
+
+    protected function get($key) {
+        return $this->items[$key];
+    }
+
+    protected function find($field,$value) {
+        // TODO
+        return true;
+    }
+
+
 }
 
 ?>

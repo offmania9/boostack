@@ -4,11 +4,10 @@ abstract class BaseClass {
 
     protected $id;
     protected $pdo; // TODO: static? Find a way to automatically inject db instance into this field?
-    protected $default_values = [];
-    protected $system_excluded = ['id','default_values','system_excluded','custom_excluded','pdo'];
-    protected $custom_excluded = [];
+    protected $default_values = array();
+    protected $system_excluded = array('id','default_values','system_excluded','custom_excluded','pdo');
+    protected $custom_excluded = array();
     const TABLENAME = "";
-
 
     /**
      * Init method: creates the PDO object.
@@ -54,7 +53,6 @@ abstract class BaseClass {
 
     /**
      * Save the object into the database
-     *
      * @return bool
      */
     public function save() {
@@ -93,7 +91,6 @@ abstract class BaseClass {
             return '';
         }
     }
-
     /**
      * Setter
      *
@@ -147,17 +144,23 @@ abstract class BaseClass {
 
     private function update() {
         $objVars = get_object_vars($this);
-        // TODO: add prepared statement to update query
-        $sql = "UPDATE " . static::TABLENAME . " SET ";
-        foreach ($objVars as $key => $value) {
-            if(in_array($key,$this->system_excluded) || in_array($key,$this->custom_excluded)) continue;
-            $sql .= "$key='" . $value . "',";
+        if($objVars !== null && count($objVars)>0){
+            $sql = "UPDATE " . static::TABLENAME . " SET ";
+            foreach ($objVars as $key => $value) {
+                if(in_array($key,$this->system_excluded) || in_array($key,$this->custom_excluded)) continue;
+                $sql .= "$key='" . $value . "',";
+            }
+            $sql = substr($sql, 0, - 1);
+            $sql .= " WHERE id='" . $this->id . "'";
+            try{
+                $this->pdo->query($sql);
+            }
+            catch (Exception $e){
+                Boostack::getInstance()->writeLog("Class -> BaseClass -> update : " + $e->getMessage());
+            }
+            return true;
         }
-        $sql = substr($sql, 0, - 1);
-        $sql .= " WHERE id='" . $this->id . "'";
-        $this->pdo->query($sql);
-        return true;
+        return false;
     }
-
 }
 ?>
