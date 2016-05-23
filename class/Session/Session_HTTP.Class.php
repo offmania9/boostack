@@ -305,7 +305,7 @@ class Session_HTTP
     private function _session_gc_method($maxlifetime)
     {
         $old = time() - $maxlifetime;
-        $sql = 'DELETE FROM ' . $this->http_session_table . ' WHERE last_impression < $old';
+        $sql = 'DELETE FROM ' . $this->http_session_table . ' WHERE last_impression < '.$old;
         if ($this->dbhandle->prepare($sql)->execute())
             return true;
         return false;
