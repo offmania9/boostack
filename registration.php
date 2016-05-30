@@ -11,7 +11,7 @@
 
 // #######################
 require_once "core/environment_init.php";
-$boostack->renderOpenHtmlHeadTags("Home");
+$boostack->renderOpenHtmlHeadTags("Registration");
 // #######################
 
 require_once $boostack->registerTemplateFile("boostack/header.phtml");
@@ -39,6 +39,6 @@ require_once $boostack->registerTemplateFile("boostack/footer.phtml");
 
 // #######################
 $boostack->renderCloseHtmlTag();
-$boostack->writeLog("Homepage Page");
+$boostack->writeLog("Registration Page");
 // #######################
 ?>

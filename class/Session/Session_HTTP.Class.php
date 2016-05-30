@@ -95,7 +95,7 @@ class Session_HTTP
 
     public function _session_close_method()
     {
-        $this->dbhandle = null;
+        $this->dbhandle = NULL;
         return true;
     }
 
@@ -156,7 +156,7 @@ class Session_HTTP
                 return ($objUser);
             }
         }
-        return null;
+        return NULL;
     }
 
     public function GetSessionIdentifier()
