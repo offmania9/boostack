@@ -149,15 +149,13 @@ class Boostack
      */
     public function renderOpenHtmlHeadTags($titlePrepend = "")
     {
-        ?>
-<!DOCTYPE html>
-<html lang="<?=$this->config['html_lang']?>" xmlns:og="https://opengraphprotocol.org/schema/" xmlns:fb="https://www.facebook.com/2008/fbml">
-<head><?
-$this->registerAllDefaultMetaTags($titlePrepend);
-$this->registerAllDefaultCssFiles();
-?></head>
-<body>
-        <?
+        echo '<!DOCTYPE html>'
+             .'<html lang="'.$this->config['html_lang'].'"'
+             .'xmlns:og="https://opengraphprotocol.org/schema/" xmlns:fb="https://www.facebook.com/2008/fbml">'
+             .'<head>';
+        $this->registerAllDefaultMetaTags($titlePrepend);
+        $this->registerAllDefaultCssFiles();
+        echo '</head><body>';
     }
 
     /*
@@ -191,15 +189,9 @@ $this->registerAllDefaultCssFiles();
      */
     public function writeLog($logMesg = "")
     {
-        global $objSession;
-        if ($this->config['database_on']) {
-            if ($this->config['log_on']) {
-                if ($this->config['session_on'])
-                    Database_AccessLogger::getInstance($objSession)->Log($logMesg);
-                else
-                    Database_AccessLogger::getInstance()->Log($logMesg);
-            }
-        }
+        global $CURRENTUSER;
+        if ($this->config['database_on'] && $this->config['log_on'])
+            Database_AccessLogger::getInstance($CURRENTUSER)->Log($logMesg);
     }
 
     /*
@@ -264,8 +256,7 @@ if ($this->config['fb_app_id'] != "") {
     <meta property="fb:admins" content="<?=$this->config['fb_admins']?>" /><? }?>
 <?
 }
-?>
-<title><?=($titlePrepend!="")?$titlePrepend." | ":""?><?=$this->config['site_title'];?> | <?=$this->config['project_sitename']?></title>
+?><title><?=($titlePrepend!="")?$titlePrepend." | ":""?><?=$this->config['site_title'];?> | <?=$this->config['project_sitename']?></title>
 <meta name="description" content="<?=$this->config['site_description']?>"/>
 <meta name="author" content="<?=$this->config['site_author']?>"/>
 <meta content="<?=$this->config['site_keywords'];?>" name="Keywords" />

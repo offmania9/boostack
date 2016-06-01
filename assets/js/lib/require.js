@@ -53,7 +53,5 @@ require.config({
 if (typeof base_url == "undefined")
 {
     var base_url = '',
-        market = 'it',
-        lang = 'it',
         lang = 'it';
 }
