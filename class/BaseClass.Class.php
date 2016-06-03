@@ -4,18 +4,23 @@ abstract class BaseClass {
 
     protected $id;
     protected $pdo; // TODO: static? Find a way to automatically inject db instance into this field?
-    protected $default_values = array();
-    protected $system_excluded = array('id','default_values','system_excluded','custom_excluded','pdo');
-    protected $custom_excluded = array();
+    protected $default_values = [];
+    protected $system_excluded = ['id','default_values','system_excluded','custom_excluded','pdo'];
+    protected $custom_excluded = [];
     const TABLENAME = "";
+
 
     /**
      * Init method: creates the PDO object.
      * Call this in your __construct() function with parent::init()
      */
-    protected function init() {
+    protected function init($id = NULL) {
         $this->pdo = Database_PDO::getInstance();
-        self::prepare();
+        if($id !== NULL) {
+            $this->load($id);
+        } else {
+            self::prepare();
+        }
     }
 
     /**
@@ -53,6 +58,7 @@ abstract class BaseClass {
 
     /**
      * Save the object into the database
+     *
      * @return bool
      */
     public function save() {
@@ -73,7 +79,7 @@ abstract class BaseClass {
         $q = $this->pdo->prepare($sql);
         $q->bindValue(':id', $this->id);
         $q->execute();
-        return ($q->rowCount() == 0);
+        return ($q->rowCount() > 0);
     }
 
     /**
@@ -84,13 +90,13 @@ abstract class BaseClass {
      * @throws Exception_FieldNotFound
      */
     public function __get($property_name) {
-        if (isset($this->$property_name)) {
-            return ($this->$property_name);
+        if (property_exists($this, $property_name)) {
+            return $this->$property_name;
         } else {
-            //throw new Exception_FieldNotFound("Field $property_name not found");
-            return '';
+            throw new Exception_FieldNotFound("Field $property_name not found");
         }
     }
+
     /**
      * Setter
      *
@@ -99,11 +105,41 @@ abstract class BaseClass {
      * @throws Exception_FieldNotFound
      */
     public function __set($property_name, $val) {
-        if (isset($this->$property_name)) {
+        if (property_exists($this, $property_name)) {
             $this->$property_name = $val;
         } else {
             throw new Exception_FieldNotFound("Field $property_name not found");
         }
+    }
+
+    /**
+     * Magic method used for isset() and empty() methods invoked outside the object on a protected/private field
+     */
+    public function __isset($property_name) {
+        return isset($this->$property_name);
+    }
+
+    /**
+     * Get the object vars used in serialize() method
+     *
+     * @return array
+     */
+    public function __sleep() {
+        $objVars = get_object_vars($this);
+        $objVarsExported = array();
+        foreach($objVars as $key => $value) {
+            if(in_array($key,$this->system_excluded) || in_array($key,$this->custom_excluded)) continue;
+            $objVarsExported[] = $key;
+        }
+        return $objVarsExported;
+    }
+
+    /**
+     * Task performed after call of unserialize() method
+     * e.g. reestablish any database connections, reinitialization tasks..
+     */
+    public function __wakeup() {
+        $this->pdo = Database_PDO::getInstance();
     }
 
     private function prepare($array = array()) {
@@ -126,41 +162,59 @@ abstract class BaseClass {
 
     private function insert() {
         $objVars = get_object_vars($this);
-        // TODO: add prepared statement to insert query
-        $sql_1 = "INSERT INTO " . static::TABLENAME . " (id";
-        $sql_2 = "VALUES(NULL";
-        foreach ($objVars as $key => $value) {
+
+        $firstPartOfQuery = "INSERT INTO ".static::TABLENAME." (id";
+        $secondPartOfQuery = "VALUES(NULL";
+
+        foreach($objVars as $key => $value) {
             if(in_array($key,$this->system_excluded) || in_array($key,$this->custom_excluded)) continue;
-            $sql_1 .= ",$key";
-            $sql_2 .= ",'$value'";
+            $firstPartOfQuery .= ",$key";
+            $secondPartOfQuery .= ",:$key";
         }
-        $sql_1 .= ") ";
-        $sql_2 .= ")";
-        $sql = $sql_1 . $sql_2;
-        $this->pdo->query($sql);
+
+        $firstPartOfQuery .= ") ";
+        $secondPartOfQuery .= ")";
+
+        $query = $firstPartOfQuery.$secondPartOfQuery;
+        $q = $this->pdo->prepare($query);
+
+        foreach($objVars as $key => &$value) {
+            if($value == "") $value = NULL; // TODO verificare se bindare la stringa vuota a NULL è cosa buona e giusta
+            if(in_array($key,$this->system_excluded) || in_array($key,$this->custom_excluded)) continue;
+            $q->bindParam(":".$key, $value);
+        }
+
+        $q->execute();
+
         $this->id = $this->pdo->lastInsertId();
         return true;
     }
 
     private function update() {
         $objVars = get_object_vars($this);
-        if($objVars !== null && count($objVars)>0){
-            $sql = "UPDATE " . static::TABLENAME . " SET ";
-            foreach ($objVars as $key => $value) {
-                if(in_array($key,$this->system_excluded) || in_array($key,$this->custom_excluded)) continue;
-                $sql .= "$key='" . $value . "',";
-            }
-            $sql = substr($sql, 0, - 1);
-            $sql .= " WHERE id='" . $this->id . "'";
-            try{
-                $this->pdo->query($sql);
-            }
-            catch (Exception $e){
-                Boostack::getInstance()->writeLog("Class -> BaseClass -> update : " + $e->getMessage());
-            }
-            return true;
+
+        $query = "UPDATE ".static::TABLENAME." SET ";
+        foreach($objVars as $key => $value) {
+            if(in_array($key,$this->system_excluded) || in_array($key,$this->custom_excluded)) continue;
+            $query .= "$key = :$key,";
         }
-        return false;
+
+        $query = substr($query, 0, -1);
+        $query .= " WHERE id = :id";
+
+        $q = $this->pdo->prepare($query);
+
+        foreach($objVars as $key => &$value) {
+            if($value == "") $value = NULL; // TODO verificare se bindare la stringa vuota a NULL è cosa buona e giusta
+            if(in_array($key,$this->system_excluded) || in_array($key,$this->custom_excluded)) continue;
+            $q->bindParam(":".$key, $value);
+        }
+
+        $q->bindParam(":id",$this->id);
+        $q->execute();
+
+        return true;
     }
+
 }
 ?>

@@ -29,6 +29,8 @@ class Boostack
     
     const templateUrl = "template/";
 
+    const mailTemplatePath = "template/mail/";
+
     private static $instance = NULL;
     // #############################################################
     private function __construct()
@@ -183,15 +185,22 @@ class Boostack
         <div id="fb-root"></div><div class="overlay"></div><div class="loading"></div></body></html>
 		<?
     }
-
-    /*
-     *
-     */
+    
     public function writeLog($logMesg = "")
     {
         global $CURRENTUSER;
         if ($this->config['database_on'] && $this->config['log_on'])
             Database_AccessLogger::getInstance($CURRENTUSER)->Log($logMesg);
+    }
+
+    public function getMailTemplate($mail,$parameters = null) {
+        $file = ROOTPATH.self::mailTemplatePath.$mail;
+        if(!file_exists($file)) throw new Exception("Mail templating file ($file) not found");
+        $template = file_get_contents($file);
+        foreach ($parameters as $template_param => $value){
+            $template = str_replace("[$template_param]", $value, $template);
+        }
+        return $template;
     }
 
     /*
@@ -217,7 +226,8 @@ class Boostack
     {
         $this->registerCssFile("lib/bootstrap.css");
         $this->registerCssFile("lib/animate.css");
-        $this->registerCssFile("custom.css");
+        $this->registerCssFile("style.css");
+        //$this->registerCssFile("custom.css");
     }
 
     public function logout()
