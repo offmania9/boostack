@@ -1,0 +1,28 @@
+<section>
+    <h2>Moduli Apache</h2>
+    Per un corretto funzionamento, Boostack necessita dei seguenti moduli, attivabili dal file "httpd.conf"
+    <ul>
+        <li>
+            <code>mod_rewrite</code>
+        </li>
+        <li><code>mod_headers</code></li>
+        <li><code>mod_filters</code></li>
+    </ul>
+</section>
+
+
+
+<h2>Configurazione del virtual host</h2>
+<pre>
+    &lt;Directory /var/www/html&gt;
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride All
+        Order allow,deny
+        allow from all
+    &lt;/Directory&gt;
+</pre>
+
+<h2>PHP.ini configuration</h2>
+<pre>
+	short_open_tag = On
+</pre>
