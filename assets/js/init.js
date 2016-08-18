@@ -1,4 +1,5 @@
 var exampleModuleObject = null;
+var CSRFCheckManager = null;
 
 var initLibrary = function() {
 
@@ -11,6 +12,14 @@ var initLibrary = function() {
             exampleModuleObject.init();
         });
     //}
+
+    if (getElementsByClassName("CSRFcheck").length) {
+        require(["module/CSRFCheckManager"], function (ccm) {
+            if (CSRFCheckManager != null) return;
+            CSRFCheckManager = new ccm();
+            CSRFCheckManager.init();
+        });
+    }
 
 };
 
