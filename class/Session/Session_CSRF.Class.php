@@ -16,9 +16,11 @@ class Session_CSRF extends Session_HTTP
 
     private $CSRFRandomStringLength = 32;
 
+    private $newTokenGeneration = false;
+
     public function CSRFRenderHiddenField()
     {
-        return "<input type=\"hidden\" name=\"" . $this->CSRFDefaultKey . "\" value=\"" . self::CSRFTokenGenerator() . "\">";
+        return "<input type=\"hidden\" name=\"" . $this->CSRFDefaultKey . "\" id=\"" . $this->CSRFDefaultKey . "\"  class=\"CSRFcheck\" value=\"" . self::CSRFTokenGenerator() . "\"/>";
     }
 
     public function CSRFTokenGenerator()
@@ -45,9 +47,9 @@ class Session_CSRF extends Session_HTTP
         return $randomString;
     }
 
-    public function CSRFCheckTokenValidity($postArray, $timespan = null, $oneTimeToken = true, $throwException = true)
+    public function CSRFCheckTokenValidity($postArray, $timespan = null, $oneTimeToken = false, $throwException = true)
     {
-        $key = $this->CSRFDefaultKey;
+        $key = $this->CSRFDefaultKey; // get token value from dbsession
         $sessionToken = $this->$key;
         
         if ($sessionToken == "")
@@ -71,9 +73,7 @@ class Session_CSRF extends Session_HTTP
         $decodedToken = base64_decode($sessionToken);
         $decodedToken_requestInfo = substr($decodedToken, 32, 40);
         $decodedToken_timestamp = intval(substr($decodedToken, - 10));
-        
-        if (!$oneTimeToken)
-            $this->$key = null;
+
             
         if (self::getRequestInfo() != $decodedToken_requestInfo) {
             if ($throwException)
@@ -87,9 +87,38 @@ class Session_CSRF extends Session_HTTP
                 throw new Exception('Attention! CSRF token has expired.');
             else
                 return false;
+
+        if ($oneTimeToken)
+            $newToken = CSRCTokenInvalidation();
         
         return true;
     }
+
+    public function CSRCTokenInvalidation(){
+        $res = NULL;
+        $key = $this->CSRFDefaultKey;
+        $this->$key = null;
+        if($this->newTokenGeneration){
+            $res = CSRFTokenGenerator();
+        }
+        return $res;
+    }
+
+    public function CSRFCheckValidity($postArray, $timespan = null, $oneTimeToken = false, $throwException = true){
+        global $boostack;
+        try
+        {
+            $this->CSRFCheckTokenValidity($postArray, $timespan, $oneTimeToken, $throwException);
+            #$boostack->writeLog('CSRFToken: OK');
+        }
+        catch(Exception $e)
+        {
+            $returnValues = new MessageBag();
+            $returnValues->setError($e->getMessage());
+            $boostack->writeLog('ajaxLogManager -> CSRFCheckTokenValidity -> Caught exception: '.$e->getMessage(),"error");
+            echo json_encode($returnValues);
+            exit();
+        }
+    }
 }
 ?>
-

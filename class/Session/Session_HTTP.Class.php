@@ -199,19 +199,33 @@ class Session_HTTP
      *
      */
     public function Login($strUsername, $strPlainPassword, $hashedPassword = "") {
-        $stmt = "SELECT id,pwd FROM boostack_user WHERE username = '$strUsername' AND active='1'";
-        $result = $this->dbhandle->query($stmt);
-        if ($result->rowCount() > 0) {
-            $row = $result->fetch(PDO::FETCH_ASSOC);
-            if($hashedPassword == "" && password_verify($strPlainPassword, $row['pwd']) || $hashedPassword != "" && $hashedPassword == $row['pwd']) {
-                $this->user_id = $row["id"];
-                $this->logged_in = true;
-                $sql = "UPDATE " . $this->http_session_table . " SET logged_in = 't', user_id = '" . $this->user_id . "' WHERE id='" . $this->native_session_id . "'";
-                $result = $this->dbhandle->prepare($sql)->execute();
-                $sql = "UPDATE boostack_user SET last_access='" . time() . "' WHERE id='" . $row["id"] . "'";
-                $result = $this->dbhandle->prepare($sql)->execute();
-                return true;
+        global $boostack;
+        try {
+            $stmt = "SELECT id,pwd FROM boostack_user WHERE username = '$strUsername' AND active='1'";
+            $result = $this->dbhandle->prepare($stmt);
+            $result->execute();
+            if ($result->rowCount() > 0) {
+                $row = $result->fetch(PDO::FETCH_ASSOC);
+                if ($hashedPassword == "" && password_verify($strPlainPassword, $row['pwd']) || $hashedPassword != "" && $hashedPassword == $row['pwd']) {
+                    $this->user_id = $row["id"];
+                    $this->logged_in = true;
+                    $sql = "UPDATE " . $this->http_session_table . " SET logged_in = 't', user_id = '" . $this->user_id . "' WHERE id='" . $this->native_session_id . "'";
+                    $result = $this->dbhandle->prepare($sql)->execute();
+                    $sql = "UPDATE boostack_user SET last_access='" . time() . "' WHERE id='" . $row["id"] . "'";
+                    $result = $this->dbhandle->prepare($sql)->execute();
+                    return true;
+                }
             }
+        }
+        catch (PDOException $e)
+        {
+            $boostack->writeLog('LogList -> view -> Caught PDOException: '.$e->getMessage(),"error");
+            $queryNumberResult = 0;
+        }
+        catch ( Exception $b )
+        {
+            $boostack->writeLog('LogList -> view -> Caught Exception: '.$b->getMessage(),"error");
+            $queryNumberResult = 0;
         }
         return false;
     }
@@ -221,21 +235,29 @@ class Session_HTTP
      *
      *  @param $cookieValue valore del cookie
      */
-    public function loginByCookie($cookieValue){
+    public function loginByCookie($cookieValue)
+    {
         global $boostack;
-        $q = $this->dbhandle->prepare("SELECT username,pwd FROM boostack_user WHERE session_cookie = :cookie ");
-        $q->bindParam(":cookie",$cookieValue);
-        $q->execute();
-        $res = $q->fetchAll(PDO::FETCH_ASSOC);
-        if(count($res) == 1) {
-            if($this->checkCookieHashValidity($cookieValue)){
-                $this->Login($res[0]['username'],"",$res[0]['pwd']);
-                $this->GetUserObject()->refreshRememberMeCookie();
-                return true;
+        try {
+            $q = $this->dbhandle->prepare("SELECT username,pwd FROM boostack_user WHERE session_cookie = :cookie ");
+            $q->bindParam(":cookie", $cookieValue);
+            $q->execute();
+            $res = $q->fetchAll(PDO::FETCH_ASSOC);
+            if (count($res) == 1) {
+                if ($this->checkCookieHashValidity($cookieValue)) {
+                    $this->Login($res[0]['username'], "", $res[0]['pwd']);
+                    $this->GetUserObject()->refreshRememberMeCookie();
+                    return true;
+                } else {
+                    $boostack->writeLog("checkCookieHashValidity(" . $cookieValue . "): false - IP:" . getIpAddress(),"user");
+                }
             }
-            else {
-                $boostack->writeLog("checkCookieHashValidity(".$cookieValue."): false - IP:".getIpAddress());
-            }
+        } catch (PDOException $e) {
+            $boostack->writeLog('Session_HTTP -> loginByCookie -> PDOException: ' . $e->getMessage(), "error");
+            $queryNumberResult = 0;
+        } catch (Exception $b) {
+            $boostack->writeLog('Session_HTTP -> loginByCookie -> Exception: ' . $b->getMessage(), "error");
+            $queryNumberResult = 0;
         }
         return false;
     }
@@ -247,15 +269,23 @@ class Session_HTTP
 
     public function LogOut()
     {
-        if ($this->logged_in == true) {
-            $sql = "UPDATE " . $this->http_session_table . " SET logged_in = 'f', user_id = '0' WHERE id = " . $this->native_session_id;
-            $result = $this->dbhandle->prepare($sql)->execute();
-            $this->logged_in = false;
-            $this->user_id = 0;
-            return true;
-        } else {
-            return false;
+        global $boostack;
+        try {
+            if ($this->logged_in == true) {
+                $sql = "UPDATE " . $this->http_session_table . " SET logged_in = 'f', user_id = '0' WHERE id = " . $this->native_session_id;
+                $result = $this->dbhandle->prepare($sql)->execute();
+                $this->logged_in = false;
+                $this->user_id = 0;
+                return true;
+            }
+        } catch (PDOException $e) {
+            $boostack->writeLog('Session_HTTP -> LogOut -> PDOException: ' . $e->getMessage(), "error");
+            $queryNumberResult = 0;
+        } catch (Exception $b) {
+            $boostack->writeLog('Session_HTTP -> LogOut -> Exception: ' . $b->getMessage(), "error");
+            $queryNumberResult = 0;
         }
+        return false;
     }
 
     public function __get($nm)
@@ -263,7 +293,8 @@ class Session_HTTP
         $sql = "SELECT variable_value FROM " . $this->session_variable . "
 				WHERE session_id = '" . $this->native_session_id . "'
 				AND variable_name ='" . $nm . "' ORDER BY id DESC";
-        $result = $this->dbhandle->query($sql);
+        $result = $this->dbhandle->prepare($sql);
+        $result->execute();
         if ($result->rowCount() > 0) {
             $row = $result->fetch();
             return (unserialize($row["variable_value"]));
@@ -285,7 +316,6 @@ class Session_HTTP
         else
             $sql = "UPDATE " . $this->session_variable . " SET variable_value = '$strSer'
                WHERE session_id = '" . $this->native_session_id . "' AND variable_name ='" . $nm . "'";
-        
         $result = $this->dbhandle->prepare($sql)->execute();
     }
 

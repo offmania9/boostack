@@ -8,10 +8,10 @@
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
  * @version 2.1
  */
-$objSession = ($config['csrf_on']) ? new Session_CSRF(): new Session_HTTP();
+$objSession = ($boostack->getConfig('csrf_on')) ? new Session_CSRF(): new Session_HTTP();
 $objSession->Impress();
-if ($config['cookie_on'] && isset($_COOKIE['' . $config['cookie_name']])) {
-    $c = sanitizeInput($_COOKIE['' . $config['cookie_name']]);
+if ($boostack->getConfig('cookie_on') && isset($_COOKIE['' . $boostack->getConfig('cookie_name')])) {
+    $c = sanitizeInput($_COOKIE['' . $boostack->getConfig('cookie_name')]);
     /*  in caso di utente non loggato ma con il remember-me cookie
         cerca di eseguire una loginByCookie */
     if (! $objSession->IsLoggedIn() && $c !== "") {
@@ -21,4 +21,3 @@ if ($config['cookie_on'] && isset($_COOKIE['' . $config['cookie_name']])) {
         }
     }
 }
-?>

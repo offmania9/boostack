@@ -1,6 +1,6 @@
 <?php
 
-abstract class BaseList implements IteratorAggregate {
+abstract class BaseList implements IteratorAggregate, JsonSerializable {
 
     protected $items;
 
@@ -13,6 +13,10 @@ abstract class BaseList implements IteratorAggregate {
         return new ArrayIterator($this->items);
     }
 
+    public function size() {
+        return count($this->items);
+    }
+
     protected function isEmpty() {
         return count($this->items) == 0;
     }
@@ -21,13 +25,17 @@ abstract class BaseList implements IteratorAggregate {
         $this->items[] = $element;
     }
 
+    /**
+     * This method is used when json_encode() is called
+     * It expose "items" to the json_encode() function
+     */
+    public function jsonSerialize() {
+        return $this->items;
+    }
+
     protected function exist($key) {
         // TODO
         return true;
-    }
-
-    protected function length() {
-        return count($this->items);
     }
 
     protected function remove($key, $shift = true) {

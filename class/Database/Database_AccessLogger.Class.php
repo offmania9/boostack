@@ -28,18 +28,21 @@ class Database_AccessLogger
 
     const TABLENAME = "boostack_log";
 
-    private function __construct($objSession = NULL)
+    private function __construct($objUser = NULL)
     {
         $this->pdo = Database_PDO::getInstance();
-        $this->username = (! is_null($objSession)) ? $objSession->GetUserID() : "Anonymous";
+        $this->username = (! is_null($objUser)) ? $objUser->id : "Anonymous";
         $this->ip = getIpAddress();
         $this->useragent = sanitizeInput(getenv('HTTP_USER_AGENT'));
         $this->referrer = isset($_SERVER["HTTP_REFERER"]) ? sanitizeInput($_SERVER["HTTP_REFERER"]) : "";
         $this->query = sanitizeInput(getenv('REQUEST_URI'));
     }
 
-    public function Log($message = NULL)
+    public function Log($message = NULL, $level = "information")
     {
+        global $boostack;
+        if(!in_array($level,$boostack->getConfig("log_enabledTypes")))
+            return;
         $message = str_replace(array(
             "\r\n",
             "\n",
@@ -51,19 +54,20 @@ class Database_AccessLogger
             "\n",
             "\r"
         ), "", $this->query);
-        $this->query = addslashes($this->query);
-        $sql = "INSERT INTO " . self::TABLENAME . "  (id ,datetime , username, ip ,useragent ,referrer ,query ,message)
-				VALUES(NULL,'" . time() . "','" . $this->username . "','" . $this->ip . "','" . $this->useragent . "','" . $this->referrer . "','" . $this->query . "','" . $message . "')";
+
+        $this->query = htmlspecialchars($this->query,ENT_QUOTES | ENT_HTML401,'UTF-8');
+        $sql = "INSERT INTO " . self::TABLENAME . "  (id ,datetime , level, username, ip ,useragent ,referrer ,query ,message)
+				VALUES(NULL,'" . time() . "','".$level."','" . $this->username . "','" . $this->ip . "','" . $this->useragent . "','" . $this->referrer . "','" . $this->query . "','" . $message . "')";
         $this->pdo->prepare($sql)->execute();
     }
 
     private function __clone()
     {}
 
-    static function getInstance($objSession = NULL)
+    static function getInstance($objUser = NULL)
     {
         if (self::$instance == NULL)
-            self::$instance = new Database_AccessLogger($objSession);
+            self::$instance = new Database_AccessLogger($objUser);
         
         return self::$instance;
     }

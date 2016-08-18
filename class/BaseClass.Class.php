@@ -1,6 +1,6 @@
 <?php
 
-abstract class BaseClass {
+abstract class BaseClass implements JsonSerializable {
 
     protected $id;
     protected $pdo; // TODO: static? Find a way to automatically inject db instance into this field?
@@ -140,6 +140,20 @@ abstract class BaseClass {
      */
     public function __wakeup() {
         $this->pdo = Database_PDO::getInstance();
+    }
+
+    /**
+     * This method is used when json_encode() is called
+     * It expose all the variable of the object to the json_encode() function
+     */
+    public function jsonSerialize() {
+        $objVars = get_object_vars($this);
+        $objVarsExported = array();
+        foreach($objVars as $key => $value) {
+            if(in_array($key,$this->system_excluded) || in_array($key,$this->custom_excluded)) continue;
+            $objVarsExported[$key] = $value;
+        }
+        return $objVarsExported;
     }
 
     private function prepare($array = array()) {

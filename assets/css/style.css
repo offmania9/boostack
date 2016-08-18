@@ -34,13 +34,6 @@ a {
 hr {
   border-top: 1px solid #E2E2E2; }
 
-ul {
-  list-style: none; }
-
-li {
-  padding: 5px;
-  padding-left: 30px; }
-
 .header {
   margin-top: 20px;
   margin-bottom: 20px; }
@@ -165,6 +158,8 @@ section.documentation .documentationInnerContent h2 {
   padding-bottom: 20px; }
 section.documentation .documentationInnerContent p {
   padding: 0px; }
+section.documentation .documentation section {
+  margin: 20px; }
 
 footer {
   background-color: #f0f0f0;

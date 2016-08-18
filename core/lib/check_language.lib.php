@@ -10,14 +10,16 @@
  */
 $l;
 $language;
+$defaultLanguage = $boostack->getConfig("language_default");
+
 if (! isset($_GET['lang'])) { // if isn't set by user from url
-    if ($config['session_on'] && $objSession->SESS_LANGUAGE !== "") { // if is set in the user session
+    if ($boostack->getConfig("session_on") && $objSession->SESS_LANGUAGE !== "") { // if is set in the user session
         if (is_file(ROOTPATH."core/lang/" . $objSession->SESS_LANGUAGE . ".inc.php")) { // if the translation file exists
             include (ROOTPATH."core/lang/" . $objSession->SESS_LANGUAGE . ".inc.php");
             $l = $objSession->SESS_LANGUAGE;
         } else { // default lang
-            include (ROOTPATH."core/lang/" . $config["language_default"] . ".inc.php");
-            $l = $config["language_default"];
+            include (ROOTPATH."core/lang/" . $defaultLanguage . ".inc.php");
+            $l = $defaultLanguage;
         }
     } else { // if isn't set in the user session, fetch it from browser
         $language = explode(',', sanitizeInput($_SERVER['HTTP_ACCEPT_LANGUAGE']));
@@ -26,8 +28,8 @@ if (! isset($_GET['lang'])) { // if isn't set by user from url
             include (ROOTPATH."core/lang/" . $language . ".inc.php");
             $l = $language;
         } else {
-            include (ROOTPATH."core/lang/" . $config["language_default"] . ".inc.php");
-            $l = $config["language_default"];
+            include (ROOTPATH."core/lang/" . $defaultLanguage . ".inc.php");
+            $l = $defaultLanguage;
         }
     }
 } else { // if is set by user from url
@@ -36,13 +38,13 @@ if (! isset($_GET['lang'])) { // if isn't set by user from url
         include (ROOTPATH."core/lang/" . $language . ".inc.php");
         $l = $language;
     } else { // default lang
-        include (ROOTPATH."core/lang/" . $config["language_default"] . ".inc.php");
-        $l = $config["language_default"];
+        include (ROOTPATH."core/lang/" . $defaultLanguage . ".inc.php");
+        $l = $defaultLanguage;
     }
 }
 $boostack->labels = $boostack_labels_strings;
 
-if ($config['session_on'])
+if ($boostack->getConfig("session_on"))
     $objSession->SESS_LANGUAGE = $l;
 unset($l, $language);
 ?>

@@ -44,4 +44,11 @@ $config["fb_admins"] = "";
 // Social accounts
 $config["twitter"] = "@getBoostack";
 $config["gplus"] = "https://plus.google.com/+BoostackFramework/";
+
+$_MONTHS = array("","Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre");
+CONST PRIVILEGE_SYSTEM = 0;
+CONST PRIVILEGE_SUPERADMIN = 1;
+CONST PRIVILEGE_ADMIN = 2;
+CONST PRIVILEGE_USER = 3;
+
 ?>

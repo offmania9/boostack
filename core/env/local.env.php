@@ -48,6 +48,9 @@ $config['mobile_url'] = NULL;
 // ====== log
 // enable or disable boostack Log (#TRUE need $database_on=TRUE)
 $config['log_on'] = FALSE;
+//(Enable logging options ['error','failure','information','success','warning','user']
+$config['log_enabledTypes'] = array('error','failure','information','success','warning','user','cronjob');
+
 
 // ====== email
 // enable or disable send mail
@@ -64,7 +67,7 @@ $MAX_UPLOAD_GENERALFILE_SIZE = 4194304; // 4 MB
 
 // ====== date/time
 date_default_timezone_set('UTC');
-$CURRENT_DATETIME_FORMAT = "d-m-Y H:s";
+$CURRENT_DATETIME_FORMAT = "d-m-Y H:i:s";
 
 // ====== security
 $TIME_ELAPSED_ACCEPTED = 0;

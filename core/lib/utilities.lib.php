@@ -95,10 +95,24 @@ function goToLogout()
     exit();
 }
 
+function goToLogin($callbackURL = NULL) {
+    global $boostack,$objSession;
+    if($callbackURL != NULL) {
+        $objSession->loginCallbackURL = $callbackURL;
+    }
+    header("Location: " . $boostack->url . "login");
+    exit();
+}
+
+function goToUrl($URL) {
+    header("Location: " . $URL);
+    exit();
+}
+
 function checkAcceptedTimeFromLastRequest($timeLastRequest)
 {
     global $TIME_ELAPSED_ACCEPTED;
-    if (empty($timeLastRequest) || !($timeLastRequest == null) && (time() - $timeLastRequest  > $TIME_ELAPSED_ACCEPTED))
+    if ((!empty($timeLastRequest) || $timeLastRequest !== null) && (time() - $timeLastRequest  >= $TIME_ELAPSED_ACCEPTED))
         return true;
     return false;
 }
@@ -243,8 +257,14 @@ function getFileErrorDescription($code)
 
 function timestampToDate($timestamp)
 {
-    global $config;
-    return date($config['datetimeFormatString'], $timestamp);
+    if($timestamp > 0) {
+        global $CURRENT_DATETIME_FORMAT;
+        //return date($CURRENT_DATETIME_FORMAT, $timestamp);
+        $date = new DateTime();
+        $date->setTimestamp($timestamp);
+        $date->setTimezone(new DateTimeZone('Europe/Rome'));
+        return $date->format($CURRENT_DATETIME_FORMAT);
+    }
 }
 
 function getElapsedTime($datetime_timestamp)
@@ -280,5 +300,3 @@ function goToMaintenance() {
     header("Location: " . $boostack->url . $boostack->getConfig("url_maintenance"));
     exit();
 }
-
-?>

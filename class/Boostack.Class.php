@@ -60,20 +60,21 @@ class Boostack
     /*
      *
      */
-    public function getLabel($key)
-    {
-        $k = explode(".", $key);
-        $lenght = count($k);
-        if (is_array(($this->labels)))
-            if ($lenght == 1) {
-                if (isset($this->labels[$k[0]]))
-                    return $this->labels[$k[0]];
-            } else {
-                if ($lenght == 2) {
-                    if (isset($this->labels[$k[0]][$k[1]]))
-                        return $this->labels[$k[0]][$k[1]];
+    public function getLabel($key) {
+        if(is_array($this->labels)) {
+            $k = explode(".", $key);
+            if(count($k) > 0) {
+                $tempArray = $this->labels;
+                foreach($k as $key) {
+                    if(!empty($tempArray[$key]))
+                        $tempArray = $tempArray[$key];
+                    else
+                        return "";
                 }
+                return $tempArray;
             }
+        }
+        return "";
     }
 
     /*
@@ -173,6 +174,10 @@ class Boostack
      */
     public function renderCloseHtmlTag()
     {
+        if($this->getConfig('session_on') && $this->getConfig('csrf_on')){
+            global $objSession;
+            echo $objSession->CSRFRenderHiddenField();
+        }
         echo '<script type="text/javascript"> var rootUrl = "' . $this->url . '";var developmentMode = "' . $this->developmentMode . '";</script>';
         $this->registerScriptFile("lib/require.js");
         $this->registerScriptFile("helpers.js");
@@ -186,11 +191,10 @@ class Boostack
 		<?
     }
     
-    public function writeLog($logMesg = "")
-    {
+    public function writeLog($logMesg = "", $level = "information") {
         global $CURRENTUSER;
         if ($this->config['database_on'] && $this->config['log_on'])
-            Database_AccessLogger::getInstance($CURRENTUSER)->Log($logMesg);
+            Database_AccessLogger::getInstance($CURRENTUSER)->Log($logMesg, $level);
     }
 
     public function getMailTemplate($mail,$parameters = null) {
@@ -233,8 +237,10 @@ class Boostack
     public function logout()
     {
         global $objSession;
-        if ($this->config['session_on'] && isset($objSession) && $objSession->IsLoggedIn())
+        if ($this->config['session_on'] && isset($objSession) && $objSession->IsLoggedIn()){
+            $this->writeLog("[Logout] uid: ".$objSession->GetUserID(),"user");
             $objSession->LogOut();
+        }
         if ($this->config['cookie_on']) {
             setcookie('' . $this->config['cookie_name'], false, time() - $this->config['cookie_expire']);
             setcookie('' . $this->config['cookie_name'], false, time() - $this->config['cookie_expire'], "/");

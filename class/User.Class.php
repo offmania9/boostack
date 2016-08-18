@@ -182,7 +182,7 @@ class User
         $q2 = $q->fetch();
         if ($q->rowCount() == 0)
             if ($throwException)
-                throw new Exception("Attention! User or Email not found.");
+                throw new Exception("Attention! User or Email not found.",0);
         return false;
         
         return $q2[0];
@@ -195,7 +195,7 @@ class User
         $q2 = $q->fetch();
         if ($q->rowCount() == 0){
             if ($throwException)
-                throw new Exception("Attention! User or Email not found.");
+                throw new Exception("Attention! User or Email not found.",1);
             return false;
         }
         return true;
@@ -206,7 +206,7 @@ class User
         $regexp = "/^[a-z0-9]+([_\\.-][a-z0-9]+)*@([a-z0-9]+([\.-][a-z0-9]+)*)+\\.[a-z]{2,}$/i";
         if ($email == "" || ! preg_match($regexp, $email) || strlen($email >= 255)){
             if ($throwException)
-                throw new Exception("This E-mail address is wrong.");
+                throw new Exception("This E-mail address is wrong.",2);
         return false;
         }
         return true;
@@ -216,7 +216,7 @@ class User
     {
         if ($this->pdo->query("SELECT id FROM " . self::TABLENAME . " WHERE email = '" . $email . "'")->rowCount() == 0){
             if ($throwException)
-                throw new Exception("Username or password not valid.");
+                throw new Exception("Username or password not valid.",3);
         return false;
         }
         return true;
@@ -226,7 +226,7 @@ class User
     {
         if ($password == "" || strlen($password) < 6){
             if ($throwException)
-                throw new Exception("Attention! Password value is wrong.");
+                throw new Exception("Attention! Password value is wrong.",4);
             return false;
         }
         return true;
@@ -245,7 +245,7 @@ class User
         $objSession->Login($email, $password);
         if (!$objSession->IsLoggedIn()){
             if ($throwException)
-                throw new Exception("Username or password not valid.");
+                throw new Exception("Username or password not valid.",5);
             return false;
         }
 
@@ -253,6 +253,7 @@ class User
             $user = $objSession->GetUserObject();
             $user->refreshRememberMeCookie();
         }
+        $boostack->writeLog("[Login] uid: ".$objSession->GetUserID(),"user");
         return true;
     }
 
