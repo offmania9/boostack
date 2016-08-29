@@ -35,6 +35,24 @@
 							<div class="col-md-12 control">
 								<div style=" padding-top: 10px;">
 									<small>Email: <b>testing@testing.com</b> - Password: <b>testing</b></a>
+										<button class="btn btn-xs showrawpassword" onclick="showPasswordBox(); return false;">SHOW RAW PASSWORD</button>
+										<script>
+											function showPasswordBox() {
+												$(".passwordBox").slideToggle();
+												return false;
+											}
+										</script>
+										<div class="passwordBox" style="display: none;">
+											<div class="panel panel-default">
+												<div class="panel-body" style="overflow: scroll;">
+													<p>Insert this password in table "boostack_user" in field "pwd":</p>
+													<p>Your PHP version: <b><?= phpversion() ?></b></p>
+													<p>for PHP version > 5.5.x: <i><?= password_hash('testing',PASSWORD_DEFAULT) ?></i></p>
+													<p>for PHP version <= 5.5.x: <i><?= hash("sha512", 'testing') ?></i></p>
+												</div>
+											</div>
+
+										</div>
 									</small>
 								</div>
 							</div>
