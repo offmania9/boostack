@@ -116,7 +116,7 @@ class Session_HTTP
         } else {
             $this->logged_in = false;
             $sql = "INSERT INTO " . $this->http_session_table . "(id,ascii_session_id, logged_in,user_id, created, user_agent)
-							VALUES (NULL,'$id','f',0,'" . time() . "','" . getUserAgent() . "')";
+							VALUES (NULL,'$id','f',0,'" . time() . "','" . Utils::getUserAgent() . "')";
             $result = $this->dbhandle->prepare($sql)->execute();
             $sql = "select id from " . $this->http_session_table . " where ascii_session_id = '$id'";
             $result = $this->dbhandle->query($sql);
@@ -263,8 +263,8 @@ class Session_HTTP
     }
 
     public function checkCookieHashValidity($cookieValue){
-        //return substr($cookieValue,32) == substr(md5(getIpAddress() . getUserAgent()), 32);
-        return substr($cookieValue,32) == md5(getIpAddress().getUserAgent());
+        //return substr($cookieValue,32) == substr(md5(getIpAddress() . Utils::getUserAgent()), 32);
+        return substr($cookieValue,32) == md5(Utils::getIpAddress().Utils::getUserAgent());
     }
 
     public function LogOut()
