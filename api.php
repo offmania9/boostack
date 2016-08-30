@@ -16,7 +16,7 @@ if (! array_key_exists('HTTP_ORIGIN', $_SERVER))
     $_SERVER['HTTP_ORIGIN'] = $_SERVER['SERVER_NAME'];
 
 try {
-    $api = new Rest_Api(sanitizeInput($_REQUEST['request']), sanitizeInput($_SERVER['HTTP_ORIGIN']));
+    $api = new Rest_Api(Utils::sanitizeInput($_REQUEST['request']), Utils::sanitizeInput($_SERVER['HTTP_ORIGIN']));
     echo $api->processAPI();
 }
 catch (Exception $e) {

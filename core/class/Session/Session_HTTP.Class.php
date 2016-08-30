@@ -57,7 +57,7 @@ class Session_HTTP
         ));
         
         if (isset($_COOKIE["PHPSESSID"])) {
-            $this->php_session_id = sanitizeInput($_COOKIE["PHPSESSID"]);
+            $this->php_session_id = Utils::sanitizeInput($_COOKIE["PHPSESSID"]);
         }
         $datetime_now = time();
         $sql = "SELECT created,last_impression FROM " . $this->http_session_table . "
@@ -69,7 +69,7 @@ class Session_HTTP
         $stmt = "select id from " . $this->http_session_table . "
               WHERE ascii_session_id = '" . $this->php_session_id . "'
                       AND $interval_created < " . $this->session_lifespan . "
-              AND user_agent='" . getUserAgent() . "'
+              AND user_agent='" . Utils::getUserAgent() . "'
                       AND $interval_last_impression <= " . $this->session_timeout . "
               OR last_impression = 0
               ";

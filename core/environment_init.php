@@ -9,9 +9,9 @@ if($envPath && is_file($envPath)) {
 }
 
 require_once (ROOTPATH . "core/env/global.env.php");
-require_once (ROOTPATH . "core/lib/utilities.lib.php");
+require_once (ROOTPATH . "core/class/Utils.Class.php");
 
-spl_autoload_register('autoloadClass');
+spl_autoload_register('Utils::autoloadClass');
 $boostack = Boostack::getInstance();
 if ($config['developmentMode']) {
     error_reporting(E_ALL);

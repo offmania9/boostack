@@ -33,7 +33,7 @@ class Session_CSRF extends Session_HTTP
 
     protected static function getRequestInfo()
     {
-        return sha1(sanitizeInput(getIpAddress() . getUserAgent()));
+        return sha1(Utils::sanitizeInput(Utils::getIpAddress() . Utils::getUserAgent()));
     }
 
     protected static function getRandomString($length)

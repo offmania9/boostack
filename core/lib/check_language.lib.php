@@ -22,7 +22,7 @@ if (! isset($_GET['lang'])) { // if isn't set by user from url
             $l = $defaultLanguage;
         }
     } else { // if isn't set in the user session, fetch it from browser
-        $language = explode(',', sanitizeInput($_SERVER['HTTP_ACCEPT_LANGUAGE']));
+        $language = explode(',', Utils::sanitizeInput($_SERVER['HTTP_ACCEPT_LANGUAGE']));
         $language = strtolower(substr(chop($language[0]), 0, 2));
         if (is_file(ROOTPATH."core/lang/" . $language . ".inc.php")) { // if the translation file exists
             include (ROOTPATH."core/lang/" . $language . ".inc.php");
@@ -33,7 +33,7 @@ if (! isset($_GET['lang'])) { // if isn't set by user from url
         }
     }
 } else { // if is set by user from url
-    $language = sanitizeInput($_GET['lang']);
+    $language = Utils::sanitizeInput($_GET['lang']);
     if (is_file(ROOTPATH."core/lang/" . $language . ".inc.php")) { // if the translation file exists
         include (ROOTPATH."core/lang/" . $language . ".inc.php");
         $l = $language;

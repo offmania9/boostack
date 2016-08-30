@@ -17,10 +17,10 @@ $boostack->renderOpenHtmlHeadTags("Registration");
 require_once $boostack->registerTemplateFile("boostack/header.phtml");
 
 if(isset($_POST["email"]) && isset($_POST["psw1"]) && isset($_POST["psw2"])) {
-    $email = sanitizeInput($_POST["email"]);
-    $psw1 = sanitizeInput($_POST["psw1"]);
-    $psw2 = sanitizeInput($_POST["psw2"]);
-    if(checkEmailFormat($email) && $psw1 === $psw2) {
+    $email = Utils::sanitizeInput($_POST["email"]);
+    $psw1 = Utils::sanitizeInput($_POST["psw1"]);
+    $psw2 = Utils::sanitizeInput($_POST["psw2"]);
+    if(Utils::checkEmailFormat($email) && $psw1 === $psw2) {
         $user = new User_Registration();
         $arr["username"] = $email;
         $arr["email"] = $email;

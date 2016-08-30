@@ -33,9 +33,9 @@ class Database_AccessLogger
         $this->pdo = Database_PDO::getInstance();
         $this->username = (! is_null($objUser)) ? $objUser->id : "Anonymous";
         $this->ip = getIpAddress();
-        $this->useragent = sanitizeInput(getenv('HTTP_USER_AGENT'));
-        $this->referrer = isset($_SERVER["HTTP_REFERER"]) ? sanitizeInput($_SERVER["HTTP_REFERER"]) : "";
-        $this->query = sanitizeInput(getenv('REQUEST_URI'));
+        $this->useragent = Utils::sanitizeInput(getenv('HTTP_USER_AGENT'));
+        $this->referrer = isset($_SERVER["HTTP_REFERER"]) ? Utils::sanitizeInput($_SERVER["HTTP_REFERER"]) : "";
+        $this->query = Utils::sanitizeInput(getenv('REQUEST_URI'));
     }
 
     public function Log($message = NULL, $level = "information")
