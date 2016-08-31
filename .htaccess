@@ -332,7 +332,7 @@ Options -Indexes
 <ifmodule php5_module="">
     php_value session.cookie_httponly true
 </ifmodule>
-
+Header set Set-Cookie HttpOnly;Secure
 # ----------------------------------------------------------------------
 # Force latest IE rendering engine
 # ----------------------------------------------------------------------
