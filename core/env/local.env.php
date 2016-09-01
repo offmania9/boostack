@@ -8,7 +8,7 @@ $config['developmentMode'] = TRUE;
 
 // ====== database
 // enable or disable Mysql database
-$config['database_on'] = TRUE;
+$config['database_on'] = FALSE;
 $database['host'] = '127.0.0.1';
 $database['name'] = 'boostack';
 $database['username'] = 'root';
@@ -16,15 +16,15 @@ $database['password'] = 'root';
 
 // ====== sessions
 // enable or disable Sessions (TRUE need $database_on=TRUE)
-$config['session_on'] = TRUE;
+$config['session_on'] = FALSE;
 
 // ====== Cross Site Request Forgery validation
 // enable or disable CSRF validation (TRUE need $database_on=TRUE AND $session_on=TRUE)
-$config['csrf_on'] = TRUE;
+$config['csrf_on'] = FALSE;
 
 // ====== cookie
 // enable or disable Cookies (TRUE need $database_on=TRUE AND $session_on=TRUE)
-$config['cookie_on'] = TRUE;
+$config['cookie_on'] = FALSE;
 // Cookies expire
 $config['cookie_expire'] = 2505600; // 60*60*24*29 = 29days
 // This key is used to generate custom cookie names
@@ -36,7 +36,7 @@ $config['geolocation_on'] = FALSE;
 
 // ====== language
 // enable or disable language check for Multilanguage features (see Language documentation)
-$config["language_on"] = TRUE;
+$config["language_on"] = FALSE;
 $config["language_force_default"] = FALSE;
 $config["language_default"] = "en"; // must exists file: lang/[$defaultlanguage].inc.php es:lang/en.inc.php
 

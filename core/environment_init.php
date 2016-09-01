@@ -1,11 +1,18 @@
 <?php
-
-$envPath = realpath(__DIR__."/env/env.php");
-if($envPath && is_file($envPath)) {
-    require_once $envPath;
-} else {
-    echo "Environment file not found";
-    exit();
+if ($config['developmentMode']) {
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    $envPath = realpath(__DIR__."/env/env.php");
+    if($envPath && is_file($envPath)) {
+        require_once $envPath;
+    } else {
+        echo "Choose an environment configuration file into '/core/env' folder (local.env.php, staging.env.php or production.env.php) and rename it into 'env.php'.";
+        exit();
+    }
+}
+else {
+    error_reporting(0);
+    ini_set('display_errors', 0);
 }
 
 require_once (ROOTPATH . "core/env/global.env.php");
@@ -13,14 +20,6 @@ require_once (ROOTPATH . "core/class/Utils.Class.php");
 
 spl_autoload_register('Utils::autoloadClass');
 $boostack = Boostack::getInstance();
-if ($config['developmentMode']) {
-    error_reporting(E_ALL);
-    ini_set('display_errors', 1);
-}
-else {
-    error_reporting(0);
-    ini_set('display_errors', 0);
-}
 
 $CURRENTUSER = NULL;
 if ($boostack->getConfig('database_on')){
