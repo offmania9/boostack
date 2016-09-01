@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Boostack: Session_HTTP.Class.php
  * ========================================================================
@@ -7,7 +6,7 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 2.1
+ * @version 2.2
  */
 class Session_HTTP
 {
@@ -249,7 +248,7 @@ class Session_HTTP
                     $this->GetUserObject()->refreshRememberMeCookie();
                     return true;
                 } else {
-                    $boostack->writeLog("checkCookieHashValidity(" . $cookieValue . "): false - IP:" . getIpAddress(),"user");
+                    $boostack->writeLog("checkCookieHashValidity(" . $cookieValue . "): false - IP:" . Utils::getIpAddress(),"user");
                 }
             }
         } catch (PDOException $e) {

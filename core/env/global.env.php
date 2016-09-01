@@ -6,7 +6,7 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 2.1
+ * @version 2.2
  */
 $config["url_assets"] = "assets/";
 $config["url_assets_img"] = $config["url_assets"]."img/";

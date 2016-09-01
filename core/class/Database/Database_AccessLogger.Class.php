@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Boostack: Database_AccessLogger.Class.php
  * ========================================================================
@@ -7,7 +6,7 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 2.1
+ * @version 2.2
  */
 class Database_AccessLogger
 {
@@ -32,7 +31,7 @@ class Database_AccessLogger
     {
         $this->pdo = Database_PDO::getInstance();
         $this->username = (! is_null($objUser)) ? $objUser->id : "Anonymous";
-        $this->ip = getIpAddress();
+        $this->ip = Utils::getIpAddress();
         $this->useragent = Utils::sanitizeInput(getenv('HTTP_USER_AGENT'));
         $this->referrer = isset($_SERVER["HTTP_REFERER"]) ? Utils::sanitizeInput($_SERVER["HTTP_REFERER"]) : "";
         $this->query = Utils::sanitizeInput(getenv('REQUEST_URI'));

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Boostack: User.Class.php
  * ========================================================================
@@ -7,7 +6,7 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 2.1
+ * @version 2.2
  */
 class User
 {
@@ -261,7 +260,7 @@ class User
      *  Genera il valore del remember-me cookie
      */
     public function generateCookieHash(){
-        return  md5(time()).md5(getIpAddress() . getUserAgent());
+        return  md5(time()).md5(Utils::getIpAddress() . Utils::getUserAgent());
     }
 
     /*

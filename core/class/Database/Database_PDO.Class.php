@@ -1,5 +1,13 @@
 <?php
-
+/**
+ * Boostack: Database_PDO.Class.php
+ * ========================================================================
+ * Copyright 2015-2016 Spagnolo Stefano
+ * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
+ * ========================================================================
+ * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
+ * @version 2.2
+ */
 class Database_PDO
 {
 
@@ -28,7 +36,7 @@ class Database_PDO
             //$boostack->setConfig("database_on",FALSE);
             // WRITE into log file
             if(!$boostack->getConfig("developmentMode")){ // go to mantainance page
-                goToMaintenance();
+                Utils::goToMaintenance();
             }
             else {
                 echo "An error occurred connection:". $e->getMessage()."<br/";

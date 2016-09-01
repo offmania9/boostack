@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Boostack: User_Registration.Class.php
  * ========================================================================
@@ -7,7 +6,7 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 2.1
+ * @version 2.2
  */
 class User_Registration extends User_Info
 {
@@ -44,7 +43,7 @@ class User_Registration extends User_Info
     {
         $fields["activation_date"] = "0";
         $fields["access_code"] = (isset($post_array["access_code"])) ? $post_array["access_code"] : "";
-        $fields["ip"] = getIpAddress();
+        $fields["ip"] = Utils::getIpAddress();
         $fields["join_date"] = time();
         $fields["join_idconfirm"] = md5($fields["ip"] . $fields["join_date"]);
         foreach ($fields as $key => $value)
