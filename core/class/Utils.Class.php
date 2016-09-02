@@ -66,13 +66,13 @@ class Utils
 
     public static function checkPrivilege($currentUser, $privilegeLevel)
     {
-        if (!hasPrivilege($currentUser, $privilegeLevel))
+        if (!self::hasPrivilege($currentUser, $privilegeLevel))
             goToError();
     }
 
     public static function checkControllerPrivilege($currentUser, $privilegeLevel)
     {
-        if (!hasPrivilege($currentUser, $privilegeLevel))
+        if (!self::hasPrivilege($currentUser, $privilegeLevel))
             exit();
     }
 
