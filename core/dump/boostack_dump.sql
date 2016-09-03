@@ -1,16 +1,3 @@
-# ************************************************************
-# Sequel Pro SQL dump
-# Version 4541
-#
-# http://www.sequelpro.com/
-# https://github.com/sequelpro/sequelpro
-#
-# Host: 127.0.0.1 (MySQL 5.7.11)
-# Database: boostack
-# Generation Time: 2016-08-18 13:12:27 +0000
-# ************************************************************
-
-
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -91,8 +78,8 @@ CREATE TABLE `boostack_user` (
   `pwd` varchar(255) NOT NULL DEFAULT '',
   `email` varchar(255) NOT NULL,
   `pic_square` varchar(255) NOT NULL,
-  `last_access` int(11) NOT NULL DEFAULT '0',
-  `session_cookie` varchar(64) NOT NULL DEFAULT '',
+  `last_access` int(11) NOT NULL,
+  `session_cookie` varchar(32) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

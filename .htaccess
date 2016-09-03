@@ -203,9 +203,16 @@ SetOutputFilter DEFLATE
     Header set Cache-Control "max-age=604800, public, must-revalidate"
   </filesMatch>
   # 6 mins
-  <filesMatch "\\.(html|htm|php)$">
-    Header set Cache-Control "max-age=600, private, must-revalidate"
-  </filesMatch>
+  #<filesMatch "\\.(html|htm|php)$">
+  #  Header set Cache-Control "max-age=600, private, must-revalidate"
+  #</filesMatch>
+    <filesMatch "\\.(html|htm|php)$">
+       FileETag None
+       Header unset ETag
+       Header set Cache-Control "max-age=0, no-cache, no-store, must-revalidate"
+       Header set Pragma "no-cache"
+       Header set Expires "Wed, 11 Jan 1984 05:00:00 GMT"
+    </filesMatch>
 </ifModule>
 
 # BEGIN Turn ETags Off
