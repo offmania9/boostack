@@ -12,7 +12,17 @@ $l;
 $language;
 $defaultLanguage = $boostack->getConfig("language_default");
 
-if (! isset($_GET['lang'])) { // if isn't set by user from url
+// FORCE DEFAULT LANGUAGE
+if($boostack->getConfig("language_force_default") == TRUE) {
+    if (is_file(ROOTPATH."core/lang/" . $defaultLanguage . ".inc.php")) {
+        include(ROOTPATH . "core/lang/" . $defaultLanguage . ".inc.php");
+        $l = $defaultLanguage;
+    } else {
+        throw new Exception_LanguageNotFound("Language file ".ROOTPATH."core/lang/" . $defaultLanguage . ".inc.php"." not found");
+    }
+}
+// SESSION / BROWSER LANGUAGE
+else if (! isset($_GET['lang'])) { // if isn't set by user from url
     if ($boostack->getConfig("session_on") && $objSession->SESS_LANGUAGE !== "") { // if is set in the user session
         if (is_file(ROOTPATH."core/lang/" . $objSession->SESS_LANGUAGE . ".inc.php")) { // if the translation file exists
             include (ROOTPATH."core/lang/" . $objSession->SESS_LANGUAGE . ".inc.php");
@@ -22,17 +32,24 @@ if (! isset($_GET['lang'])) { // if isn't set by user from url
             $l = $defaultLanguage;
         }
     } else { // if isn't set in the user session, fetch it from browser
-        $language = explode(',', Utils::sanitizeInput($_SERVER['HTTP_ACCEPT_LANGUAGE']));
-        $language = strtolower(substr(chop($language[0]), 0, 2));
-        if (is_file(ROOTPATH."core/lang/" . $language . ".inc.php")) { // if the translation file exists
-            include (ROOTPATH."core/lang/" . $language . ".inc.php");
-            $l = $language;
+        if(isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+            $language = explode(',', Utils::sanitizeInput($_SERVER['HTTP_ACCEPT_LANGUAGE']));
+            $language = strtolower(substr(chop($language[0]), 0, 2));
+            if (is_file(ROOTPATH."core/lang/" . $language . ".inc.php")) { // if the translation file exists
+                include (ROOTPATH."core/lang/" . $language . ".inc.php");
+                $l = $language;
+            } else {
+                include (ROOTPATH."core/lang/" . $defaultLanguage . ".inc.php");
+                $l = $defaultLanguage;
+            }
         } else {
             include (ROOTPATH."core/lang/" . $defaultLanguage . ".inc.php");
             $l = $defaultLanguage;
         }
     }
-} else { // if is set by user from url
+}
+// URL LANGUAGE
+else { // if is set by user from url
     $language = Utils::sanitizeInput($_GET['lang']);
     if (is_file(ROOTPATH."core/lang/" . $language . ".inc.php")) { // if the translation file exists
         include (ROOTPATH."core/lang/" . $language . ".inc.php");
@@ -44,7 +61,7 @@ if (! isset($_GET['lang'])) { // if isn't set by user from url
 }
 $boostack->labels = $boostack_labels_strings;
 
-if ($boostack->getConfig("session_on"))
+if ($boostack->getConfig("session_on") && !$boostack->getConfig("language_force_default"))
     $objSession->SESS_LANGUAGE = $l;
 unset($l, $language);
 ?>

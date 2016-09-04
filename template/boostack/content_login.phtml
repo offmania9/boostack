@@ -46,9 +46,10 @@
 											<div class="panel panel-default">
 												<div class="panel-body" style="overflow: scroll;">
 													<p>Insert this password in table "boostack_user" in field "pwd":</p>
-													<p>Your PHP version: <b><?= phpversion() ?></b></p>
-													<p>for PHP version > 5.5.x: <i><?= password_hash('testing',PASSWORD_DEFAULT) ?></i></p>
-													<p>for PHP version <= 5.5.x: <i><?= hash("sha512", 'testing') ?></i></p>
+													<i><?php
+														echo (phpversion()>5.5)?password_hash('testing',PASSWORD_DEFAULT):hash("sha512", 'testing');
+													?>
+													</i>
 												</div>
 											</div>
 
