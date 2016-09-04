@@ -47,7 +47,7 @@
 												<div class="panel-body" style="overflow: scroll;">
 													<p>Insert this password in table "boostack_user" in field "pwd":</p>
 													<i><?php
-														echo (phpversion()>5.5)?password_hash('testing',PASSWORD_DEFAULT):hash("sha512", 'testing');
+														echo (version_compare(PHP_VERSION, '5.5.0') >= 0)?password_hash('testing',PASSWORD_DEFAULT):hash("sha512", 'testing');
 													?>
 													</i>
 												</div>

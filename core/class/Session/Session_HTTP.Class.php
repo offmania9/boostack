@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Boostack: Session_HTTP.Class.php
  * ========================================================================
@@ -34,7 +35,7 @@ class Session_HTTP
         $this->dbhandle = Database_PDO::getInstance();
         $this->session_timeout = $timeout;
         $this->session_lifespan = $lifespan;
-        
+
         $set_save_handler = session_set_save_handler(array(
             $this,
             '_session_open_method'
@@ -54,7 +55,7 @@ class Session_HTTP
             $this,
             '_session_gc_method'
         ));
-        
+
         if (isset($_COOKIE["PHPSESSID"])) {
             $this->php_session_id = Utils::sanitizeInput($_COOKIE["PHPSESSID"]);
         }
@@ -64,7 +65,7 @@ class Session_HTTP
         $lease = $this->dbhandle->query($sql)->fetch();
         $interval_created = $datetime_now - intval($lease[0]);
         $interval_last_impression = $datetime_now - intval($lease[1]);
-        
+
         $stmt = "select id from " . $this->http_session_table . "
               WHERE ascii_session_id = '" . $this->php_session_id . "'
                       AND $interval_created < " . $this->session_lifespan . "
@@ -81,7 +82,7 @@ class Session_HTTP
             $result = $this->dbhandle->prepare($sql)->execute();
             unset($_COOKIE["PHPSESSID"]);
         }
-        
+
         session_set_cookie_params($this->session_lifespan);
         if (! session_id())
             session_start();
@@ -118,7 +119,7 @@ class Session_HTTP
 							VALUES (NULL,'$id','f',0,'" . time() . "','" . Utils::getUserAgent() . "')";
             $result = $this->dbhandle->prepare($sql)->execute();
             $sql = "select id from " . $this->http_session_table . " where ascii_session_id = '$id'";
-            $result = $this->dbhandle->query($sql);
+            $result = $this->dbhandle->prepare($sql)->execute();
             $row = $result->fetch();
             $this->native_session_id = $row["id"];
         }
@@ -163,14 +164,11 @@ class Session_HTTP
         return ($this->php_session_id);
     }
 
-    // old method
-    /*public function Login($strUsername, $strPlainPassword, $hashed_psw = "") {
+    protected function LoginBasic($strUsername, $strPlainPassword, $hashed_psw = "") {
         if ($hashed_psw !== "")
             $strMD5Password = $hashed_psw;
         else
-            $strMD5Password = password_hash($strPlainPassword);
-       
-            
+            $strMD5Password = hash("sha512", $strPlainPassword);
         $stmt = "SELECT id FROM boostack_user WHERE username = '$strUsername' AND pwd = '$strMD5Password' AND active='1'";
         $result = $this->dbhandle->query($stmt);
         if ($result->rowCount() > 0) {
@@ -185,8 +183,7 @@ class Session_HTTP
         } else {
             return false;
         }
-    }*/
-
+    }
 
     /*  Esegue il login
      *
@@ -197,7 +194,7 @@ class Session_HTTP
      * @need PHP>5.5 per password_verify
      *
      */
-    public function Login($strUsername, $strPlainPassword, $hashedPassword = "") {
+    protected function LoginWithSalt($strUsername, $strPlainPassword, $hashedPassword = "") {
         global $boostack;
         try {
             $stmt = "SELECT id,pwd FROM boostack_user WHERE username = '$strUsername' AND active='1'";
@@ -229,6 +226,13 @@ class Session_HTTP
         return false;
     }
 
+
+    public function Login($strUsername, $strPlainPassword, $hashedPassword = "") {
+        if (version_compare(PHP_VERSION, '5.5.0') >= 0)
+            self::LoginWithSalt($strUsername, $strPlainPassword, $hashedPassword);
+        else
+            self::LoginBasic($strUsername, $strPlainPassword, $hashedPassword);
+    }
 
     /*  Esegue il login se è presente il "Remember Me" cookie
      *
@@ -262,7 +266,6 @@ class Session_HTTP
     }
 
     public function checkCookieHashValidity($cookieValue){
-        //return substr($cookieValue,32) == substr(md5(getIpAddress() . Utils::getUserAgent()), 32);
         return substr($cookieValue,32) == md5(Utils::getIpAddress().Utils::getUserAgent());
     }
 

@@ -83,8 +83,7 @@ class User
         if (!isset($post_array["pwd"]) || $post_array["pwd"] == "")
             $this->excluse_from_update[] = "pwd";
         else
-            $fields["pwd"] = password_hash($post_array["pwd"],PASSWORD_DEFAULT);
-            //$fields["pwd"] = hash("sha512", $post_array["pwd"]);
+            $fields["pwd"] = self::passwordToHash($post_array["pwd"]);
         
         $fields["email"] = $post_array["email"];
         $fields["last_access"] = "0";
@@ -95,6 +94,14 @@ class User
             $this->$key = $value; // OBJECT UPDATE
         
         return $fields;
+    }
+
+    public function passwordToHash($clearpassword)
+    {
+        if (version_compare(PHP_VERSION, '5.5.0') >= 0)
+            return password_hash($clearpassword,PASSWORD_DEFAULT);
+        else
+            return hash("sha512", $clearpassword);
     }
 
     public function insert($post_array)
