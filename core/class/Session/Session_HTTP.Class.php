@@ -77,9 +77,11 @@ class Session_HTTP
             $maxlifetime = $this->session_lifespan;
             $sql = "DELETE FROM " . $this->http_session_table . "
                          WHERE (ascii_session_id = '" . $this->php_session_id . "') OR ($datetime_now - created > '$maxlifetime')";
-            $result = $this->dbhandle->prepare($sql)->execute();
+            $result = $this->dbhandle->prepare($sql);
+            $result->execute();
             $sql = "DELETE FROM " . $this->session_variable . " WHERE session_id NOT IN (SELECT id FROM " . $this->http_session_table . ")";
-            $result = $this->dbhandle->prepare($sql)->execute();
+            $result = $this->dbhandle->prepare($sql);
+            $result->execute();
             unset($_COOKIE["PHPSESSID"]);
         }
 
@@ -103,7 +105,8 @@ class Session_HTTP
     {
         $this->php_session_id = $id;
         $sql = "select id, logged_in, user_id from " . $this->http_session_table . " where ascii_session_id = '$id'";
-        $result = $this->dbhandle->query($sql);
+        $result = $this->dbhandle->prepare($sql);
+        $result->execute();
         if ($result->rowCount() > 0) {
             $row = $result->fetch();
             $this->native_session_id = $row["id"];
@@ -117,13 +120,15 @@ class Session_HTTP
             $this->logged_in = false;
             $sql = "INSERT INTO " . $this->http_session_table . "(id,ascii_session_id, logged_in,user_id, created, user_agent)
 							VALUES (NULL,'$id','f',0,'" . time() . "','" . Utils::getUserAgent() . "')";
-            $result = $this->dbhandle->prepare($sql)->execute();
+            $result = $this->dbhandle->prepare($sql);
+            $result->execute();
             $sql = "select id from " . $this->http_session_table . " where ascii_session_id = '$id'";
-            $result = $this->dbhandle->prepare($sql)->execute();
-            $row = $result->fetch();
+            $q = $this->dbhandle->prepare($sql);
+            $q->execute();
+            $row = $q->fetch();
             $this->native_session_id = $row["id"];
         }
-        return ("");
+        return("");
     }
 
     public function Impress()
@@ -170,15 +175,18 @@ class Session_HTTP
         else
             $strMD5Password = hash("sha512", $strPlainPassword);
         $stmt = "SELECT id FROM boostack_user WHERE username = '$strUsername' AND pwd = '$strMD5Password' AND active='1'";
-        $result = $this->dbhandle->query($stmt);
+        $result = $this->dbhandle->prepare($stmt);
+        $result->execute();
         if ($result->rowCount() > 0) {
             $row = $result->fetch();
             $this->user_id = $row["id"];
             $this->logged_in = true;
             $sql = "UPDATE " . $this->http_session_table . " SET logged_in = 't', user_id = '" . $this->user_id . "' WHERE id='" . $this->native_session_id . "'";
-            $result = $this->dbhandle->prepare($sql)->execute();
+            $result = $this->dbhandle->prepare($sql);
+            $result->execute();
             $sql = "UPDATE boostack_user SET last_access='" . time() . "' where id='" . $row["id"] . "'";
-            $result = $this->dbhandle->prepare($sql)->execute();
+            $result = $this->dbhandle->prepare($sql);
+            $result->execute();
             return true;
         } else {
             return false;
@@ -206,9 +214,11 @@ class Session_HTTP
                     $this->user_id = $row["id"];
                     $this->logged_in = true;
                     $sql = "UPDATE " . $this->http_session_table . " SET logged_in = 't', user_id = '" . $this->user_id . "' WHERE id='" . $this->native_session_id . "'";
-                    $result = $this->dbhandle->prepare($sql)->execute();
+                    $result = $this->dbhandle->prepare($sql);
+                    $result->execute();
                     $sql = "UPDATE boostack_user SET last_access='" . time() . "' WHERE id='" . $row["id"] . "'";
-                    $result = $this->dbhandle->prepare($sql)->execute();
+                    $result = $this->dbhandle->prepare($sql);
+                    $result->execute();
                     return true;
                 }
             }
@@ -275,7 +285,8 @@ class Session_HTTP
         try {
             if ($this->logged_in == true) {
                 $sql = "UPDATE " . $this->http_session_table . " SET logged_in = 'f', user_id = '0' WHERE id = " . $this->native_session_id;
-                $result = $this->dbhandle->prepare($sql)->execute();
+                $result = $this->dbhandle->prepare($sql);
+                $result->execute();
                 $this->logged_in = false;
                 $this->user_id = 0;
                 return true;
@@ -311,14 +322,16 @@ class Session_HTTP
         $this->native_session_id = ($this->native_session_id == "") ? 0 : $this->native_session_id;
         $sql = "SELECT id FROM " . $this->session_variable . "
 				WHERE session_id = '" . $this->native_session_id . "' AND variable_name ='" . $nm . "'";
-        $result = $this->dbhandle->query($sql);
+        $result = $this->dbhandle->prepare($sql);
+        $result->execute();
         if ($result->rowCount() == 0)
             $sql = "INSERT INTO " . $this->session_variable . "(session_id, variable_name, variable_value)
                VALUES(" . $this->native_session_id . ", '$nm', '$strSer')";
         else
             $sql = "UPDATE " . $this->session_variable . " SET variable_value = '$strSer'
                WHERE session_id = '" . $this->native_session_id . "' AND variable_name ='" . $nm . "'";
-        $result = $this->dbhandle->prepare($sql)->execute();
+        $result = $this->dbhandle->prepare($sql);
+        $result->execute();
     }
 
     public function _session_write_method($id, $sess_data)
@@ -338,7 +351,8 @@ class Session_HTTP
     {
         $old = time() - $maxlifetime;
         $sql = 'DELETE FROM ' . $this->http_session_table . ' WHERE last_impression < '.$old;
-        if ($this->dbhandle->prepare($sql)->execute())
+        $result = $this->dbhandle->prepare($sql);
+        if ($result->execute())
             return true;
         return false;
     }
