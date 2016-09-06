@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Boostack: User_Registration.Class.php
  * ========================================================================
@@ -41,7 +42,7 @@ class User_Registration extends User_Info
 
     public function prepare($post_array)
     {
-        $fields["activation_date"] = "0";
+        $fields["activation_date"] = (isset($post_array["activation_date"])) ? $post_array["activation_date"] : 0;
         $fields["access_code"] = (isset($post_array["access_code"])) ? $post_array["access_code"] : "";
         $fields["ip"] = Utils::getIpAddress();
         $fields["join_date"] = time();

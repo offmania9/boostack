@@ -6,7 +6,7 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 2.2
+ * @version 2.1
  */
 class Utils
 {
@@ -66,13 +66,13 @@ class Utils
 
     public static function checkPrivilege($currentUser, $privilegeLevel)
     {
-        if (!self::hasPrivilege($currentUser, $privilegeLevel))
+        if (!hasPrivilege($currentUser, $privilegeLevel))
             goToError();
     }
 
     public static function checkControllerPrivilege($currentUser, $privilegeLevel)
     {
-        if (!self::hasPrivilege($currentUser, $privilegeLevel))
+        if (!hasPrivilege($currentUser, $privilegeLevel))
             exit();
     }
 
@@ -209,45 +209,6 @@ class Utils
         return $string;
     }
 
-    public static function printPagination($list, $targetURL, $searchParams = "")
-    {
-        $pages = ceil($list->total / $list->for_page);
-
-        if ($pages > 1) {
-            echo "<ul class='pagination'>";
-            if ($list->current_page > 1)
-                echo "
-                        <li style='display: inline-block; padding: 0; margin: 0;'>
-                            <a href='$targetURL" . ($list->current_page - 1) . "$searchParams' aria-label='Previous'>
-                                <span aria-hidden='true'>&laquo;</span>
-                            </a>
-                        </li>
-                    ";
-
-            for ($i = 1; $i <= $pages; $i++) {
-                $active = $list->current_page == $i ? "class='active'" : "";
-                echo "<li $active style='display: inline-block; padding: 0; margin: 0;'>";
-                if ($list->current_page != $i)
-                    echo "<a href='$targetURL" . $i . "$searchParams'>
-                                    $i
-                                </a>";
-                else
-                    echo "<a>$i</a>";
-                echo "</li>";
-            }
-
-            if ($list->current_page < $pages && $pages > 1)
-                echo "
-                        <li style='display: inline-block; padding: 0; margin: 0;'>
-                            <a href='$targetURL" . ($list->current_page + 1) . "$searchParams' aria-label='Next'>
-                                <span aria-hidden='true'>&raquo;</span>
-                            </a>
-                        </li>
-                    ";
-            echo "</ul>";
-        }
-    }
-
     public static function getFileErrorDescription($code)
     {
         $errors = array(
@@ -309,5 +270,66 @@ class Utils
         global $boostack;
         header("Location: " . $boostack->url . $boostack->getConfig("url_maintenance"));
         exit();
+    }
+
+    public static function passwordGenerator($length = 9, $strength = 0)
+    {
+        $vowels = 'aeuy';
+        $consonants = 'bdghjmnpqrstvz';
+        if ($strength & 1) {
+            $consonants .= 'BDGHJLMNPQRSTVWXZ';
+        }
+        if ($strength & 2) {
+            $vowels .= "AEUY";
+        }
+        if ($strength & 4) {
+            $consonants .= '23456789';
+        }
+        if ($strength & 8) {
+            $consonants .= '@#$%';
+        }
+        $password = '';
+        $alt = time() % 2;
+        for ($i = 0; $i < $length; $i ++) {
+            if ($alt == 1) {
+                $password .= $consonants[(rand() % strlen($consonants))];
+                $alt = 0;
+            } else {
+                $password .= $vowels[(rand() % strlen($vowels))];
+                $alt = 1;
+            }
+        }
+        return $password;
+    }
+
+    public static function getRandomString($length)
+    {
+        $chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charsLength = strlen($chars) - 1;
+        $randomString = '';
+        for ($i = 0; $i < $length; $i ++) {
+            $randomString .= $chars[rand(0, $charsLength)];
+        }
+        return $randomString;
+    }
+
+    public static function getSecureRandomString($length, $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
+    {
+        $str = '';
+        $max = mb_strlen($keyspace, '8bit') - 1;
+        for ($i = 0; $i < $length; ++$i) {
+            $str .= $keyspace[mt_rand(0, $max)];
+        }
+        return $str;
+    }
+
+    public static function checkStringFormat($string, $fieldname="Password", $throwException = true)
+    {
+        if ($string == "" || strlen($string) < 6){
+            if ($throwException)
+                throw new Exception("Attention! ".$fieldname." value is wrong.",4);
+            return false;
+        }
+        return true;
     }
 }

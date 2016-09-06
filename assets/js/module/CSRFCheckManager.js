@@ -8,20 +8,23 @@ define(['jquery'], function($,ccm) {
         }
 
         function concatToOjb(obj){
-            obj.BCSRFT = CSRFToken;
+            if(CSRFToken!=null && CSRFToken!='' && CSRFToken!='undefined')
+                obj.BCSRFT = CSRFToken;
             return obj;
         }
         function concatToArray(arr){
-            arr['BCSRFT'] = CSRFToken;
+            if(CSRFToken!=null && CSRFToken!='' && CSRFToken!='undefined')
+                arr['BCSRFT'] = CSRFToken;
             return arr;
         }
         function addToForm(form){
-            $('<input>').attr({
-                type: 'hidden',
-                id: 'BCSRFT',
-                name: 'BCSRFT',
-                value: CSRFToken,
-            }).appendTo(form);
+            if(CSRFToken!=null && CSRFToken!='' && CSRFToken!='undefined')
+                $('<input>').attr({
+                    type: 'hidden',
+                    id: 'BCSRFT',
+                    name: 'BCSRFT',
+                    value: CSRFToken,
+                }).appendTo(form);
             return true;
         }
         return {

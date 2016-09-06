@@ -339,7 +339,7 @@ Options -Indexes
 <ifmodule php5_module="">
     php_value session.cookie_httponly true
 </ifmodule>
-Header set Set-Cookie HttpOnly;Secure
+#Header set Set-Cookie HttpOnly;Secure
 # ----------------------------------------------------------------------
 # Force latest IE rendering engine
 # ----------------------------------------------------------------------
@@ -357,5 +357,8 @@ Header set Set-Cookie HttpOnly;Secure
   </filesmatch>
 </ifmodule>
 
+<IfModule mod_php5.c>
+    php_value short_open_tag 1
+</IfModule>
 #Cache disable
 #Header Set Cache-Control "max-age=0, no-store"

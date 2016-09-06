@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Boostack: Session_CSRF.Class.php
  * ========================================================================
@@ -19,13 +20,13 @@ class Session_CSRF extends Session_HTTP
 
     public function CSRFRenderHiddenField()
     {
-        return "<input type=\"hidden\" name=\"" . $this->CSRFDefaultKey . "\" id=\"" . $this->CSRFDefaultKey . "\"  class=\"CSRFcheck\" value=\"" . self::CSRFTokenGenerator() . "\"/>";
+        return "<input type=\"hidden\" name=\"" . $this->CSRFDefaultKey. "\" id=\"" . $this->CSRFDefaultKey . "\"  class=\"CSRFcheck\" value=\"" . self::CSRFTokenGenerator() . "\"/>";
     }
 
     public function CSRFTokenGenerator()
-    {
+    { global $boostack;
         $key = $this->CSRFDefaultKey;
-        $token = base64_encode(self::getRandomString(32) . self::getRequestInfo() . time());
+        $token = base64_encode(Utils::getSecureRandomString(32) . self::getRequestInfo() . time());
         $this->$key = $token; // store in session
         return $token;
     }
@@ -35,18 +36,7 @@ class Session_CSRF extends Session_HTTP
         return sha1(Utils::sanitizeInput(Utils::getIpAddress() . Utils::getUserAgent()));
     }
 
-    protected static function getRandomString($length)
-    {
-        $chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $charsLength = strlen($chars) - 1;
-        $randomString = '';
-        for ($i = 0; $i < $length; $i ++) {
-            $randomString .= $chars[rand(0, $charsLength)];
-        }
-        return $randomString;
-    }
-
-    public function CSRFCheckTokenValidity($postArray, $timespan = null, $oneTimeToken = false, $throwException = true)
+    protected function CSRFCheckTokenValidity($postArray, $timespan = null, $oneTimeToken = false, $throwException = true)
     {
         $key = $this->CSRFDefaultKey; // get token value from dbsession
         $sessionToken = $this->$key;
@@ -65,7 +55,7 @@ class Session_CSRF extends Session_HTTP
         
         if ($postArray[$key] != $sessionToken)
             if ($throwException)
-                throw new Exception('Attention! Invalid CSRF token.');
+                throw new Exception('Attention! Invalid CSRF token.'.$postArray[$key].'<br>'.$sessionToken);
             else
                 return false;
         
@@ -114,7 +104,7 @@ class Session_CSRF extends Session_HTTP
         {
             $returnValues = new MessageBag();
             $returnValues->setError($e->getMessage());
-            $boostack->writeLog('ajaxLogManager -> CSRFCheckTokenValidity -> Caught exception: '.$e->getMessage(),"error");
+            $boostack->writeLog('Session_CSRF -> CSRFCheckValidity -> Caught exception: '.$e->getMessage().$e->getTraceAsString(),"error");
             echo json_encode($returnValues);
             exit();
         }

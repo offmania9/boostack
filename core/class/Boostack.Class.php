@@ -10,7 +10,7 @@
  */
 class Boostack
 {
-    
+
     // global url used all over boostack.
     protected $url;
 
@@ -23,9 +23,9 @@ class Boostack
     const cssUrl = "assets/css/";
 
     const jsUrl = "assets/js/";
-    
+
     const imgUrl = "assets/img/";
-    
+
     const templateUrl = "template/";
 
     const mailTemplatePath = "template/mail/";
@@ -100,7 +100,7 @@ class Boostack
     {
         return ROOTPATH.self::templateUrl.$fileName;
     }
-        
+
     /*
      *
      */
@@ -108,7 +108,7 @@ class Boostack
     {
     	return $this->url.self::imgUrl.$fileName;
     }
-        
+
     /*
      *
      */
@@ -189,7 +189,7 @@ class Boostack
         <div id="fb-root"></div><div class="overlay"></div><div class="loading"></div></body></html>
 		<?
     }
-    
+
     public function writeLog($logMesg = "", $level = "information") {
         global $CURRENTUSER;
         if ($this->config['database_on'] && $this->config['log_on'])

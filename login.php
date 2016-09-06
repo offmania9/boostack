@@ -15,32 +15,36 @@ $boostack->renderOpenHtmlHeadTags("Home");
 // #######################
 $error = "";
 require_once $boostack->registerTemplateFile("boostack/header.phtml");
-if($config['session_on']) {
+if($boostack->getConfig('session_on')) {
     if (Utils::checkAcceptedTimeFromLastRequest($objSession->LastTryLogin)) {
         if (!$objSession->IsLoggedIn()) {
             if (isset($_POST['btk_usr'])) {
                 try {
-                    $objSession->CSRFCheckTokenValidity($_POST);
-                    $email = Utils::sanitizeInput($_POST["btk_usr"]);
+                    if($boostack->getConfig('csrf_on'))
+                        $objSession->CSRFCheckValidity($_POST);
+                    $user = Utils::sanitizeInput($_POST["btk_usr"]);
                     $password = Utils::sanitizeInput($_POST["btk_pwd"]);
                     $rememberMe = (isset($_POST['rememberme']) && $_POST['rememberme'] == '1') ? true : false;
                     $objSession->LastTryLogin = time();
                     $anonymousUser = new User();
-                    $anonymousUser->checkEmailFormat($email);
-                    $anonymousUser->checkPasswordFormat($password);
-                    $anonymousUser->checkEmailIntoDB($email);
-                    if ($anonymousUser->tryLogin($email, $password, $config['cookie_on'] && $rememberMe)) {
+                    Utils::checkStringFormat($password);
+                    if ($anonymousUser->tryLogin($user, $password, $config['cookie_on'] && $rememberMe,false,false)) {
                         header("Location: " . $boostack->getFriendlyUrl("login"));
                         exit();
                     }
+                    elseif($anonymousUser->tryLogin($user, $password, $config['cookie_on'] && $rememberMe,true,false)) {
+                        header("Location: " . $boostack->getFriendlyUrl("login"));
+                        exit();
+                    }
+                    $error = "Username or password not valid.";
                 } catch (Exception $e) {
                     $error = $e->getMessage();
+                    $boostack->writeLog("Login.php : ".$e->getMessage()." trace:".$e->getTraceAsString(),"user");
                 }
             }
         }
     } else $error = "Too much request. Wait some seconds";
 }
-
 if($config['session_on'] && $objSession->IsLoggedIn())
     require_once $boostack->registerTemplateFile("boostack/content_login_logged.phtml");
 else

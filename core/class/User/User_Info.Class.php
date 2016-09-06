@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Boostack: User_Info.Class.php
  * ========================================================================
@@ -32,6 +33,8 @@ class User_Info extends User
     private $cell;
 
     private $profession;
+
+    private $company;
 
     private $birthday;
 
@@ -73,6 +76,7 @@ class User_Info extends User
             $this->tel = $fields["tel"];
             $this->cell = $fields["cell"];
             $this->profession = $fields["profession"];
+            $this->company = $fields["company"];
             $this->birthday = $fields["birthday"];
             $this->movies = $fields["movies"];
             $this->music = $fields["music"];
@@ -99,6 +103,7 @@ class User_Info extends User
         $fields["tel"] = (isset($post_array["tel"])) ? $post_array["tel"] : "";
         $fields["cell"] = (isset($post_array["cell"])) ? $post_array["cell"] : "";
         $fields["profession"] = (isset($post_array["profession"])) ? $post_array["profession"] : "";
+        $fields["company"] = (isset($post_array["company"])) ? $post_array["company"] : "";
         $fields["birthday"] = (isset($post_array["birthday"])) ? $post_array["birthday"] : "";
         $fields["movies"] = (isset($post_array["movies"])) ? $post_array["movies"] : "";
         $fields["music"] = (isset($post_array["music"])) ? $post_array["music"] : "";

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Boostack: User.Class.php
  * ========================================================================
@@ -228,28 +229,25 @@ class User
         return true;
     }
 
-    public function checkPasswordFormat($password, $throwException = true)
-    {
-        if ($password == "" || strlen($password) < 6){
-            if ($throwException)
-                throw new Exception("Attention! Password value is wrong.",4);
-            return false;
-        }
-        return true;
-    }
-
     /*
      *  Effettua il login
      */
-    public function tryLogin($email, $password, $cookieRememberMe, $throwException = true)
+    public function tryLogin($username, $password, $cookieRememberMe, $usernameIsEmail=false, $throwException = true)
     {
-        global $objSession,$boostack;
-        if (!self::checkUserExistsByEmail($email))
-            return false;
+        global $objSession, $boostack;
+        if ($usernameIsEmail) {
+            if (!self::checkUserExistsByEmail($username)) {
+                $boostack->writeLog("User -> tryLogin: User doesn't exist by Email Address", "user");
+                if ($throwException)
+                    throw new Exception("Username or password not valid.", 6);
+                return false;
+            }
+        }
             
         $objSession->LogOut();
-        $objSession->Login($email, $password);
+        $objSession->Login($username, $password,$usernameIsEmail);
         if (!$objSession->IsLoggedIn()){
+            $boostack->writeLog("User -> tryLogin: Username or password not valid.","user");
             if ($throwException)
                 throw new Exception("Username or password not valid.",5);
             return false;

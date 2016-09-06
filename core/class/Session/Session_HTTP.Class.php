@@ -35,7 +35,7 @@ class Session_HTTP
         $this->dbhandle = Database_PDO::getInstance();
         $this->session_timeout = $timeout;
         $this->session_lifespan = $lifespan;
-
+        
         $set_save_handler = session_set_save_handler(array(
             $this,
             '_session_open_method'
@@ -55,7 +55,7 @@ class Session_HTTP
             $this,
             '_session_gc_method'
         ));
-
+        
         if (isset($_COOKIE["PHPSESSID"])) {
             $this->php_session_id = Utils::sanitizeInput($_COOKIE["PHPSESSID"]);
         }
@@ -65,7 +65,7 @@ class Session_HTTP
         $lease = $this->dbhandle->query($sql)->fetch();
         $interval_created = $datetime_now - intval($lease[0]);
         $interval_last_impression = $datetime_now - intval($lease[1]);
-
+        
         $stmt = "select id from " . $this->http_session_table . "
               WHERE ascii_session_id = '" . $this->php_session_id . "'
                       AND $interval_created < " . $this->session_lifespan . "
@@ -84,7 +84,7 @@ class Session_HTTP
             $result->execute();
             unset($_COOKIE["PHPSESSID"]);
         }
-
+        
         session_set_cookie_params($this->session_lifespan);
         if (! session_id())
             session_start();
@@ -169,28 +169,39 @@ class Session_HTTP
         return ($this->php_session_id);
     }
 
-    protected function LoginBasic($strUsername, $strPlainPassword, $hashed_psw = "") {
+    protected function LoginBasic($strUsername, $strPlainPassword,$usernameIsEmail=false, $hashed_psw = "")
+    {
+        $f = ($usernameIsEmail) ? "email" : "username";
         if ($hashed_psw !== "")
             $strMD5Password = $hashed_psw;
         else
             $strMD5Password = hash("sha512", $strPlainPassword);
-        $stmt = "SELECT id FROM boostack_user WHERE username = '$strUsername' AND pwd = '$strMD5Password' AND active='1'";
-        $result = $this->dbhandle->prepare($stmt);
-        $result->execute();
-        if ($result->rowCount() > 0) {
-            $row = $result->fetch();
-            $this->user_id = $row["id"];
-            $this->logged_in = true;
-            $sql = "UPDATE " . $this->http_session_table . " SET logged_in = 't', user_id = '" . $this->user_id . "' WHERE id='" . $this->native_session_id . "'";
-            $result = $this->dbhandle->prepare($sql);
+        try {
+            $stmt = "SELECT id FROM boostack_user WHERE $f = '$strUsername' AND pwd = '$strMD5Password' AND active='1'";
+            $result = $this->dbhandle->prepare($stmt);
             $result->execute();
-            $sql = "UPDATE boostack_user SET last_access='" . time() . "' where id='" . $row["id"] . "'";
-            $result = $this->dbhandle->prepare($sql);
-            $result->execute();
-            return true;
-        } else {
-            return false;
+            if ($result->rowCount() > 0) {
+                $row = $result->fetch();
+                $this->user_id = $row["id"];
+                $this->logged_in = true;
+                $sql = "UPDATE " . $this->http_session_table . " SET logged_in = 't', user_id = '" . $this->user_id . "' WHERE id='" . $this->native_session_id . "'";
+                $result = $this->dbhandle->prepare($sql);
+                $result->execute();
+                $sql = "UPDATE boostack_user SET last_access='" . time() . "' where id='" . $row["id"] . "'";
+                $result = $this->dbhandle->prepare($sql);
+                $result->execute();
+                return true;
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            Boostack::getInstance()->writeLog('LogList -> view -> Caught PDOException: ' . $e->getMessage(), "error");
+            $queryNumberResult = 0;
+        } catch (Exception $b) {
+            Boostack::getInstance()->writeLog('LogList -> view -> Caught Exception: ' . $b->getMessage(), "error");
+            $queryNumberResult = 0;
         }
+        return false;
     }
 
     /*  Esegue il login
@@ -202,10 +213,11 @@ class Session_HTTP
      * @need PHP>5.5 per password_verify
      *
      */
-    protected function LoginWithSalt($strUsername, $strPlainPassword, $hashedPassword = "") {
-        global $boostack;
+    protected function LoginWithSalt($strUsername, $strPlainPassword, $usernameIsEmail=false, $hashedPassword = "") {
+        $f = ($usernameIsEmail)?"email":"username";
+        Boostack::getInstance()->writeLog("Session -> loginWithSalt > username field to check:".$f,"user");
         try {
-            $stmt = "SELECT id,pwd FROM boostack_user WHERE username = '$strUsername' AND active='1'";
+            $stmt = "SELECT id,pwd FROM boostack_user WHERE $f = '$strUsername' AND active='1'";
             $result = $this->dbhandle->prepare($stmt);
             $result->execute();
             if ($result->rowCount() > 0) {
@@ -225,25 +237,25 @@ class Session_HTTP
         }
         catch (PDOException $e)
         {
-            $boostack->writeLog('LogList -> view -> Caught PDOException: '.$e->getMessage(),"error");
+            Boostack::getInstance()->writeLog('LogList -> view -> Caught PDOException: '.$e->getMessage(),"error");
             $queryNumberResult = 0;
         }
         catch ( Exception $b )
         {
-            $boostack->writeLog('LogList -> view -> Caught Exception: '.$b->getMessage(),"error");
+            Boostack::getInstance()->writeLog('LogList -> view -> Caught Exception: '.$b->getMessage(),"error");
             $queryNumberResult = 0;
         }
         return false;
     }
 
 
-    public function Login($strUsername, $strPlainPassword, $hashedPassword = "") {
+    public function Login($strUsername, $strPlainPassword,$usernameIsEmail=false, $hashedPassword = "") {
         if (version_compare(PHP_VERSION, '5.5.0') >= 0)
-            self::LoginWithSalt($strUsername, $strPlainPassword, $hashedPassword);
+            self::LoginWithSalt($strUsername, $strPlainPassword,$usernameIsEmail, $hashedPassword);
         else
-            self::LoginBasic($strUsername, $strPlainPassword, $hashedPassword);
+            self::LoginBasic($strUsername, $strPlainPassword,$usernameIsEmail, $hashedPassword);
     }
-
+    
     /*  Esegue il login se è presente il "Remember Me" cookie
      *
      *  @param $cookieValue valore del cookie
