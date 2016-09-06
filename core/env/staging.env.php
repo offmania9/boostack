@@ -1,4 +1,4 @@
-<?
+<?php
 
 define('CURRENT_ENVIRONMENT', "staging");
 define('ROOTPATH', $_SERVER['DOCUMENT_ROOT'] . "/");

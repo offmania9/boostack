@@ -1,4 +1,4 @@
-<?
+<?php
 
 /**
  * Boostack: utilities.second.lib.php

@@ -37,7 +37,7 @@
 				</ul>
 			</div>
 			<div class="col-md-9 documentationInnerContent">
-                <?
+                <?php
                 switch (Utils::sanitizeInput($_GET["docpath"])) {
                     case "requirements":
                         require ("template/boostack/documentation/requirements.phtml");

@@ -90,7 +90,7 @@ class Boostack
     {
         $minified = $this->developmentMode ? "" : ".min";
         $fileName = str_replace(".js", $minified . ".js", $fileName);
-        ?><script type="text/javascript" src="<?=$this->url.self::jsUrl.$fileName;?>"></script><?
+        ?><script type="text/javascript" src="<?=$this->url.self::jsUrl.$fileName;?>"></script><?php
     }
 
     /*
@@ -114,7 +114,7 @@ class Boostack
      */
     public function registerAbsoluteScriptFile($fileURL)
     {
-        ?><script type="text/javascript" src="<?=$fileURL?>"></script><?
+        ?><script type="text/javascript" src="<?=$fileURL?>"></script><?php
     }
 
     /*
@@ -132,7 +132,7 @@ class Boostack
      */
     public function registerAbsoluteCssFile($fileURL)
     {
-        ?><link href="<?=$fileURL?>" rel="stylesheet" type="text/css"><?
+        ?><link href="<?=$fileURL?>" rel="stylesheet" type="text/css"><?php
     }
 
     /*
@@ -187,7 +187,7 @@ class Boostack
         echo "<![endif]-->";
         ?>
         <div id="fb-root"></div><div class="overlay"></div><div class="loading"></div></body></html>
-		<?
+		<?php
     }
 
     public function writeLog($logMesg = "", $level = "information") {
@@ -252,7 +252,7 @@ class Boostack
     public function registerAllDefaultMetaTags($titlePrepend = "")
 {   ?>
 <meta charset="utf-8"/><meta name="viewport" content="<?=$this->config['viewport']?>"/>
-<?
+<?php
 if ($this->facebookMetaTag) {
     ?>
     <meta property="og:title" content="<?=$this->config['og_title']?>" />
@@ -260,16 +260,16 @@ if ($this->facebookMetaTag) {
     <meta property="og:url" content="<?=$this->url?>" />
     <meta property="og:image" content="<?=$this->url.$this->config["url_logo"];?>" />
     <meta property="og:description" content="<?=$this->config['site_description'];?>" />
-    <?
+    <?php
 if ($this->config['fb_app_id'] != "") {
 ?>
-    <meta property="fb:app_id" content="<?=$this->config['fb_app_id']?>" /><?
+    <meta property="fb:app_id" content="<?=$this->config['fb_app_id']?>" /><?php
 }
-?><?
+?><?php
 if ($this->config['fb_app_id'] != "") {
 ?>
-    <meta property="fb:admins" content="<?=$this->config['fb_admins']?>" /><? }?>
-<?
+    <meta property="fb:admins" content="<?=$this->config['fb_admins']?>" /><?php }?>
+<?php
 }
 ?><title><?=($titlePrepend!="")?$titlePrepend." | ":""?><?=$this->config['site_title'];?> | <?=$this->config['project_sitename']?></title>
 <meta name="description" content="<?=$this->config['site_description']?>"/>
@@ -285,7 +285,7 @@ if ($this->config['fb_app_id'] != "") {
 <meta name="apple-mobile-web-app-title" content="<?=$this->url.$this->config['sitename']?>"/>
 <base href="<?=$this->url?>" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
-<?
+<?php
 }
 }
 
