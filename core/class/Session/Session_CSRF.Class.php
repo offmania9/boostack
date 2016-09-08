@@ -24,7 +24,7 @@ class Session_CSRF extends Session_HTTP
     }
 
     public function CSRFTokenGenerator()
-    { global $boostack;
+    {
         $key = $this->CSRFDefaultKey;
         $token = base64_encode(Utils::getSecureRandomString(32) . self::getRequestInfo() . time());
         $this->$key = $token; // store in session
@@ -102,11 +102,8 @@ class Session_CSRF extends Session_HTTP
         }
         catch(Exception $e)
         {
-            $returnValues = new MessageBag();
-            $returnValues->setError($e->getMessage());
             $boostack->writeLog('Session_CSRF -> CSRFCheckValidity -> Caught exception: '.$e->getMessage().$e->getTraceAsString(),"error");
-            echo json_encode($returnValues);
-            exit();
+            throw new Exception('Attention! Wrong CSRF token.');
         }
     }
 }

@@ -72,15 +72,17 @@ DROP TABLE IF EXISTS `boostack_user`;
 CREATE TABLE `boostack_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `active` varchar(1) NOT NULL,
-  `privilege` int(11) NOT NULL,
+  `privilege` int(11) DEFAULT NULL,
   `name` varchar(50) NOT NULL,
   `username` text,
   `pwd` varchar(255) NOT NULL DEFAULT '',
   `email` varchar(255) NOT NULL,
   `pic_square` varchar(255) NOT NULL,
-  `last_access` int(11) NOT NULL,
-  `session_cookie` varchar(32) NOT NULL,
-  PRIMARY KEY (`id`)
+  `last_access` int(11) NOT NULL DEFAULT '0',
+  `session_cookie` varchar(64) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `privilege2` (`privilege`),
+  CONSTRAINT `boostack_user_ibfk_1` FOREIGN KEY (`privilege`) REFERENCES `boostack_user_privilege` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 LOCK TABLES `boostack_user` WRITE;
@@ -88,8 +90,10 @@ LOCK TABLES `boostack_user` WRITE;
 
 INSERT INTO `boostack_user` (`id`, `active`, `privilege`, `name`, `username`, `pwd`, `email`, `pic_square`, `last_access`, `session_cookie`)
 VALUES
-	(0,'0',3,'','boostack','fbd5ee51bd4f9f23201396c9d9d58117d20fdb82c63f9ca8574b67461a1110ad03e3a0a1d9e000371ceb9211fb5676e1688ea060c47f31573465615e73039ab2','@','',522720000,''),
-	(1,'1',3,'','testing@testing.com','521b9ccefbcd14d179e7a1bb877752870a6d620938b28a66a107eac6e6805b9d0989f45b5730508041aa5e710847d439ea74cd312c9355f1f2dae08d40e41d50','testing@testing.com','',1447868924,'');
+	(0,'0',0,'Boostack System','boostack','$2y$10$AilPhuNfaZ/.5ZYVqy2yfO3N6WXgDEgpph4n0JHXyDE.Lr1yo5bta','user@boostack.com','',0,''),
+	(1,'1',3,'Boostack User','boostackuser','$2y$10$AilPhuNfaZ/.5ZYVqy2yfO3N6WXgDEgpph4n0JHXyDE.Lr1yo5bta','user@boostack.com','',1473173491,''),
+	(2,'1',2,'Boostack Admin','boostackadmin','$2y$10$AilPhuNfaZ/.5ZYVqy2yfO3N6WXgDEgpph4n0JHXyDE.Lr1yo5bta','admin@boostack.com','',0,''),
+	(3,'1',1,'Boostack SuperAdmin','boostacksuperadmin','$2y$10$AilPhuNfaZ/.5ZYVqy2yfO3N6WXgDEgpph4n0JHXyDE.Lr1yo5bta','superadmin@boostack.com','',0,'');
 
 /*!40000 ALTER TABLE `boostack_user` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -114,6 +118,7 @@ CREATE TABLE `boostack_user_info` (
   `tel` varchar(20) DEFAULT NULL,
   `cell` varchar(20) DEFAULT NULL,
   `profession` varchar(25) DEFAULT NULL,
+  `company` varchar(25) DEFAULT NULL,
   `birthday` varchar(30) DEFAULT NULL,
   `movies` varchar(300) DEFAULT NULL,
   `music` varchar(300) DEFAULT NULL,
@@ -127,6 +132,44 @@ CREATE TABLE `boostack_user_info` (
   CONSTRAINT `user_info_ibfk_1` FOREIGN KEY (`id`) REFERENCES `boostack_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+LOCK TABLES `boostack_user_info` WRITE;
+/*!40000 ALTER TABLE `boostack_user_info` DISABLE KEYS */;
+
+INSERT INTO `boostack_user_info` (`id`, `first_name`, `last_name`, `name`, `locale`, `city`, `state`, `country`, `zip`, `about_me`, `tel`, `cell`, `profession`, `company`, `birthday`, `movies`, `music`, `political`, `interests`, `tv`, `religion`, `pic_big`, `sex`)
+VALUES
+	(0,'Boostack','System',NULL,'','','','','','','','','','Boostack','','','','','','','','',''),
+	(1,'Boostack','User',NULL,'','','','','','','','','','Boostack','','','','','','','','',''),
+	(2,'Boostack','Admin',NULL,'','','','','','','','','','Boostack','','','','','','','','',''),
+	(3,'Boostack','SuperAdmin',NULL,'','','','','','','','','','Boostack','','','','','','','','','');
+
+/*!40000 ALTER TABLE `boostack_user_info` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table boostack_user_privilege
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `boostack_user_privilege`;
+
+CREATE TABLE `boostack_user_privilege` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL DEFAULT '',
+  `description` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+LOCK TABLES `boostack_user_privilege` WRITE;
+/*!40000 ALTER TABLE `boostack_user_privilege` DISABLE KEYS */;
+
+INSERT INTO `boostack_user_privilege` (`id`, `title`, `description`)
+VALUES
+	(0,'SYSTEM','only \"boostack\" user'),
+	(1,'SUPERADMIN',''),
+	(2,'ADMIN',''),
+	(3,'USER','');
+
+/*!40000 ALTER TABLE `boostack_user_privilege` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table boostack_user_registration
@@ -145,6 +188,18 @@ CREATE TABLE `boostack_user_registration` (
   CONSTRAINT `user_registration_ibfk_1` FOREIGN KEY (`id`) REFERENCES `boostack_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+LOCK TABLES `boostack_user_registration` WRITE;
+/*!40000 ALTER TABLE `boostack_user_registration` DISABLE KEYS */;
+
+INSERT INTO `boostack_user_registration` (`id`, `activation_date`, `access_code`, `ip`, `join_date`, `join_idconfirm`)
+VALUES
+	(0,0,'','::1',1473168850,'624c503ee2ada3e32e782203f8798752'),
+	(1,0,'','::1',1473168850,'624c503ee2ada3e32e782203f8798752'),
+	(2,0,'','::1',1473168850,'624c503ee2ada3e32e782203f8798752'),
+	(3,0,'','::1',1473168850,'624c503ee2ada3e32e782203f8798752');
+
+/*!40000 ALTER TABLE `boostack_user_registration` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table boostack_user_social

@@ -24,15 +24,15 @@ if($boostack->getConfig('session_on')) {
                         $objSession->CSRFCheckValidity($_POST);
                     $user = Utils::sanitizeInput($_POST["btk_usr"]);
                     $password = Utils::sanitizeInput($_POST["btk_pwd"]);
-                    $rememberMe = (isset($_POST['rememberme']) && $_POST['rememberme'] == '1') ? true : false;
+                    $rememberMe = (isset($_POST['rememberme']) && $_POST['rememberme'] == '1' && $boostack->getConfig('cookie_on')) ? true : false;
                     $objSession->LastTryLogin = time();
                     $anonymousUser = new User();
                     Utils::checkStringFormat($password);
-                    if ($anonymousUser->tryLogin($user, $password, $config['cookie_on'] && $rememberMe,false,false)) {
+                    if ($anonymousUser->tryLogin($user, $password, $rememberMe,false,false)) {
                         header("Location: " . $boostack->getFriendlyUrl("login"));
                         exit();
                     }
-                    elseif($anonymousUser->tryLogin($user, $password, $config['cookie_on'] && $rememberMe,true,false)) {
+                    elseif($anonymousUser->tryLogin($user, $password, $rememberMe,true,false)) {
                         header("Location: " . $boostack->getFriendlyUrl("login"));
                         exit();
                     }
@@ -43,9 +43,10 @@ if($boostack->getConfig('session_on')) {
                 }
             }
         }
-    } else $error = "Too much request. Wait some seconds";
+    } else
+        $error = "Too much request. Wait some seconds";
 }
-if($config['session_on'] && $objSession->IsLoggedIn())
+if($boostack->getConfig('session_on') && $objSession->IsLoggedIn())
     require_once $boostack->registerTemplateFile("boostack/content_login_logged.phtml");
 else
     require_once $boostack->registerTemplateFile("boostack/content_login.phtml");

@@ -20,7 +20,7 @@ require_once $boostack->registerTemplateFile("boostack/content_error.phtml");
 require_once $boostack->registerTemplateFile("boostack/footer.phtml");
 
 // #######################
-$boostack->renderCloseHtmlTag();
+$boostack->renderCloseHtmlTag(true);
 $boostack->writeLog("Error Page");
 // #######################
 ?>

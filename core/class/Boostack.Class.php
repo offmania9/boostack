@@ -171,9 +171,9 @@ class Boostack
     /*
      *
      */
-    public function renderCloseHtmlTag()
+    public function renderCloseHtmlTag($noToken = false)
     {
-        if($this->getConfig('session_on') && $this->getConfig('csrf_on')){
+        if(!$noToken && $this->getConfig('session_on') && $this->getConfig('csrf_on')){
             global $objSession;
             echo $objSession->CSRFRenderHiddenField();
         }
