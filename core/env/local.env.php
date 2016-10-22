@@ -22,6 +22,9 @@ $config['session_on'] = FALSE;
 // enable or disable CSRF validation (TRUE need $database_on=TRUE AND $session_on=TRUE)
 $config['csrf_on'] = FALSE;
 
+// ====== Username field for login process: "username" | "email" | "both"
+$config['userToLogin'] = "username"; # "username" | "email" | "both"
+
 // ====== cookie
 // enable or disable Cookies (TRUE need $database_on=TRUE AND $session_on=TRUE)
 $config['cookie_on'] = FALSE;

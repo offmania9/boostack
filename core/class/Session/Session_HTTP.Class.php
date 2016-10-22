@@ -169,15 +169,26 @@ class Session_HTTP
         return ($this->php_session_id);
     }
 
-    protected function LoginBasic($strUsername, $strPlainPassword,$usernameIsEmail=false, $hashed_psw = "")
+    private function getSQLPartOfLoginQuery($strUsername){
+        $sqlWhere = "username='".$strUsername."'";
+        switch(Boostack::getInstance()->getConfig("userToLogin")){
+            case "email":
+                $sqlWhere = "email='".$strUsername."'";
+                break;
+            case "both":
+                $sqlWhere = "(email='".$strUsername."' OR username='".$strUsername."'";
+                break;
+            default:
+                $sqlWhere = "username='".$strUsername."'";
+        }
+        return $sqlWhere;
+    }
+
+    protected function LoginBasic($strUsername, $strPlainPassword, $hashed_psw = "")
     {
-        $f = ($usernameIsEmail) ? "email" : "username";
-        if ($hashed_psw !== "")
-            $strMD5Password = $hashed_psw;
-        else
-            $strMD5Password = hash("sha512", $strPlainPassword);
+        $strMD5Password = ($hashed_psw !== "") ? $hashed_psw : hash("sha512", $strPlainPassword);
         try {
-            $stmt = "SELECT id FROM boostack_user WHERE $f = '$strUsername' AND pwd = '$strMD5Password' AND active='1'";
+            $stmt = "SELECT id FROM boostack_user WHERE ".getSQLPartOfLoginQuery($strUsername)." AND pwd = '$strMD5Password' AND active='1'";
             $result = $this->dbhandle->prepare($stmt);
             $result->execute();
             if ($result->rowCount() > 0) {
@@ -213,11 +224,9 @@ class Session_HTTP
      * @need PHP>5.5 per password_verify
      *
      */
-    protected function LoginWithSalt($strUsername, $strPlainPassword, $usernameIsEmail=false, $hashedPassword = "") {
-        $f = ($usernameIsEmail)?"email":"username";
-        Boostack::getInstance()->writeLog("Session -> loginWithSalt > username field to check:".$f,"user");
+    protected function LoginWithSalt($strUsername, $strPlainPassword, $hashedPassword = "") {
         try {
-            $stmt = "SELECT id,pwd FROM boostack_user WHERE $f = '$strUsername' AND active='1'";
+            $stmt = "SELECT id,pwd FROM boostack_user WHERE ".getSQLPartOfLoginQuery($strUsername)." AND active='1'";
             $result = $this->dbhandle->prepare($stmt);
             $result->execute();
             if ($result->rowCount() > 0) {
@@ -249,11 +258,45 @@ class Session_HTTP
     }
 
 
-    public function Login($strUsername, $strPlainPassword,$usernameIsEmail=false, $hashedPassword = "") {
+    public function StartLoginProcess($u,$p,$r=null,$throwException = true){
+        global $boostack;
+        $res = FALSE;
+        if (Utils::checkAcceptedTimeFromLastRequest($this->LastTryLogin)) {
+            if (!$this->IsLoggedIn()) {
+                    try {
+                        if($boostack->getConfig('csrf_on'))
+                            $this->CSRFCheckValidity($_POST);
+                        $user = Utils::sanitizeInput($u);
+                        $password = Utils::sanitizeInput($p);
+                        $rememberMe = (isset($r) && $r == '1' && $boostack->getConfig('cookie_on')) ? true : false;
+                        $this->LastTryLogin = time();
+                        $anonymousUser = new User();
+                        Utils::checkStringFormat($password);
+                        if ($anonymousUser->tryLogin($user, $password, $rememberMe,$throwException)) {
+                            header("Location: " . $boostack->getFriendlyUrl("login"));
+                            exit();
+                        }
+                        $error = "Username or password not valid.";
+                    } catch (Exception $e) {
+                        throw new Exception($e->getMessage());
+                        $boostack->writeLog("Login.php : ".$error." trace:".$e->getTraceAsString(),"user");
+                    }
+            }
+        }
+        else{
+            throw new Exception("Too much request. Wait some seconds");
+            $res = false;
+        }
+
+        return $res;
+    }
+
+
+    public function Login($strUsername, $strPlainPassword, $hashedPassword = "") {
         if (version_compare(PHP_VERSION, '5.5.0') >= 0)
-            self::LoginWithSalt($strUsername, $strPlainPassword,$usernameIsEmail, $hashedPassword);
+            self::LoginWithSalt($strUsername, $strPlainPassword, $hashedPassword);
         else
-            self::LoginBasic($strUsername, $strPlainPassword,$usernameIsEmail, $hashedPassword);
+            self::LoginBasic($strUsername, $strPlainPassword, $hashedPassword);
     }
     
     /*  Esegue il login se è presente il "Remember Me" cookie
@@ -290,6 +333,7 @@ class Session_HTTP
     public function checkCookieHashValidity($cookieValue){
         return substr($cookieValue,32) == md5(Utils::getIpAddress().Utils::getUserAgent());
     }
+
 
     public function LogOut()
     {
