@@ -2,11 +2,11 @@
 /**
  * Boostack: Boostack.Class.php
  * ========================================================================
- * Copyright 2015-2016 Spagnolo Stefano
+ * Copyright 2014-2017 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 2.2
+ * @version 2.3
  */
 class Boostack
 {
@@ -190,7 +190,7 @@ class Boostack
 		<?php
     }
 
-    public function writeLog($logMesg = "", $level = "information") {
+    public function writeLog($logMesg = "", $level = LogLevel::Information) {
         global $CURRENTUSER;
         if ($this->config['database_on'] && $this->config['log_on'])
             Database_AccessLogger::getInstance($CURRENTUSER)->Log($logMesg, $level);

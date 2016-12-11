@@ -3,20 +3,11 @@ php_value zlib.output_compression on
 ###### TIME
 SetEnv TZ Europe/Rome
 
-# disable the Server response header totally
-<IfModule mod_headers.c>
-  Header unset Server
-  Header unset X-Powered-By
-</IfModule>
-
 # disable the server signature
 #ServerTokens ProductOnly
 ServerSignature Off
 
 AddDefaultCharset utf-8
-
-# Secure Your Web Site from Clickjacking Attack
-Header append X-FRAME-OPTIONS "SAMEORIGIN"
 
 # set the server administrator email
 SetEnv SERVER_ADMIN info@boostack.com
@@ -29,25 +20,6 @@ SetEnv SERVER_ADMIN info@boostack.com
 #AuthName "Authentication Required"
 #AuthUserFile /var/www/html/boostack/.htpasswd
 #Require valid-user
-
-###### RULES
-Options -MultiViews
-RewriteEngine on
-#---------
-RewriteCond %{DOCUMENT_ROOT}/boostack/maintenance.php -f
-RewriteCond %{DOCUMENT_ROOT}/boostack/maintenance.enable -f
-RewriteCond %{SCRIPT_FILENAME} !maintenance.php
-RewriteRule ^.*$ /maintenance.php [R=503,L]
-#----------------
-RewriteRule ^home$ index.php [L]
-RewriteRule ^docs/([a-zA-Z0-9_-]+)$ documentation.php?docpath=$1 [L]
-RewriteRule ^docs documentation.php [L]
-RewriteRule ^download$ download.php [L]
-RewriteRule ^login$ login.php [L]
-RewriteRule ^registration$ registration.php [L]
-RewriteRule ^logout$ logout.php [L]
-RewriteRule ^api/([^\.]+)$ api.php?request=$1 [L]
-
 
 ErrorDocument 400 /boostack/error.php?code=400
 ErrorDocument 401 /boostack/error.php?code=401
@@ -62,82 +34,33 @@ ErrorDocument 503 /boostack/maintenance.php
 #ErrorDocument 500 https://boostack.com/error.php?code=500
 #ErrorDocument 503 https://boostack.com/maintenance.php
 
-<IfModule mod_gzip.c>
-    mod_gzip_on       Yes
-    mod_gzip_dechunk  Yes
-    mod_gzip_item_include file      \.(html?|txt|css|js|php|pl)$
-    mod_gzip_item_include handler   ^cgi-script$
-    mod_gzip_item_include mime      ^text/.*
-    mod_gzip_item_include mime      ^application/x-javascript.*
-    mod_gzip_item_exclude mime      ^image/.*
-    mod_gzip_item_exclude rspheader ^Content-Encoding:.*gzip.*
-</IfModule>
 
+###### RULES
+# Block access to "hidden" directories whose names begin with a period
+<IfModule mod_rewrite.c>
+#Options -MultiViews
+Options +FollowSymlinks -MultiViews
 
-<IfModule mod_expires.c>
-ExpiresActive On
-ExpiresByType text/css A31536000
-ExpiresByType application/x-javascript A31536000
-ExpiresByType text/html A31536000
-ExpiresByType text/richtext A31536000
-ExpiresByType image/svg+xml A31536000
-ExpiresByType text/plain A31536000
-ExpiresByType text/xsd A31536000
-ExpiresByType text/xsl A31536000
-ExpiresByType text/xml A31536000
-ExpiresByType video/asf A31536000
-ExpiresByType video/avi A31536000
-ExpiresByType image/bmp A31536000
-ExpiresByType application/java A31536000
-ExpiresByType video/divx A31536000
-ExpiresByType application/msword A31536000
-ExpiresByType application/x-msdownload A31536000
-ExpiresByType image/gif A31536000
-ExpiresByType application/x-gzip A31536000
-ExpiresByType image/x-icon A31536000
-ExpiresByType application/vnd.ms-access A31536000
-ExpiresByType audio/midi A31536000
-ExpiresByType video/quicktime A31536000
-ExpiresByType audio/mpeg A31536000
-ExpiresByType video/mp4 A31536000
-ExpiresByType video/mpeg A31536000
-ExpiresByType application/vnd.ms-project A31536000
-ExpiresByType application/vnd.oasis.opendocument.database A31536000
-ExpiresByType application/vnd.oasis.opendocument.chart A31536000
-ExpiresByType application/vnd.oasis.opendocument.formula A31536000
-ExpiresByType application/vnd.oasis.opendocument.graphics A31536000
-ExpiresByType application/vnd.oasis.opendocument.presentation A31536000
-ExpiresByType application/vnd.oasis.opendocument.spreadsheet A31536000
-ExpiresByType application/vnd.oasis.opendocument.text A31536000
-ExpiresByType audio/ogg A31536000
-ExpiresByType application/pdf A31536000
-ExpiresByType image/png A31536000
-ExpiresByType application/vnd.ms-powerpoint A31536000
-ExpiresByType audio/x-realaudio A31536000
-ExpiresByType application/x-shockwave-flash A31536000
-ExpiresByType application/x-tar A31536000
-ExpiresByType image/tiff A31536000
-ExpiresByType audio/wav A31536000
-ExpiresByType audio/wma A31536000
-ExpiresByType application/vnd.ms-write A31536000
-ExpiresByType application/vnd.ms-excel A31536000
-ExpiresByType application/zip A31536000
-
-FileETag MTime Size
-
-# Cache all files for 2 weeks after access (A).
-ExpiresDefault A1209600
-
-# Do not cache dynamically generated pages.
-ExpiresByType text/html A1
-
-</IfModule>
-
-
-<FilesMatch "\.(htaccess|htpasswd|ini|phps|fla|psd|log|sh|sql|inc|phtml|inc.php|Class.php)$">
-Order Allow,Deny
-Deny from all
-</FilesMatch>
+RewriteEngine on
+#---------
+RewriteCond %{DOCUMENT_ROOT}/boostack/maintenance.php -f
+RewriteCond %{DOCUMENT_ROOT}/boostack/maintenance.enable -f
+RewriteCond %{SCRIPT_FILENAME} !maintenance.php
+RewriteRule ^.*$ /maintenance.php [R=503,L]
+#----------------
+# Block access to "hidden" directories whose names begin with a period
+    RewriteCond %{SCRIPT_FILENAME} -d
+    RewriteCond %{SCRIPT_FILENAME} -f
+    RewriteRule "(^|/)\." - [F]
+#----------------
+RewriteRule ^home$ index.php [L]
+RewriteRule ^docs$ documentation.php [L]
+RewriteRule ^docs/([a-zA-Z0-9_-]+)$ documentation.php?docpath=$1 [L]
+RewriteRule ^download$ download.php [L]
+RewriteRule ^login$ login.php [L]
+RewriteRule ^registration$ registration.php [L]
+RewriteRule ^logout$ logout.php [L]
+RewriteRule ^api/([^\.]+)$ api.php?request=$1 [L]
 
 # proc/self/environ? no!
 RewriteCond %{QUERY_STRING} proc/self/environ [OR]
@@ -157,55 +80,104 @@ RewriteCond %{QUERY_STRING} GLOBALS(=|[|\%[0-9A-Z]{0,2}) [OR]
 # block all requests trying to set the PHP _Request variable via URL
 RewriteCond %{QUERY_STRING} _REQUEST(=|[|\%[0-9A-Z]{0,2})[OR]
 
-
 # Redirect all blocked request to error page
 RewriteRule ^(.*)$ error.php [F,L]
+</IfModule>
 
-# Start compression
-SetOutputFilter DEFLATE
-AddOutputFilter DEFLATE text/plain
-AddOutputFilter DEFLATE text/html
-AddOutputFilter DEFLATE text/xml
-AddOutputFilter DEFLATE text/css
-AddOutputFilter DEFLATE application/xml
-AddOutputFilter DEFLATE application/xhtml+xml
-AddOutputFilter DEFLATE application/rss+xml
-AddOutputFilter DEFLATE application/javascript
-AddOutputFilter DEFLATE application/x-javascript
-AddOutputFilter DEFLATE application/x-httpd-php
-AddOutputFilter DEFLATE application/x-httpd-fastphp
-AddOutputFilter DEFLATE application/x-httpd-fastphp
-AddOutputFilter DEFLATE image/svg+xml
-BrowserMatch ^Mozilla/4 gzip-only-text/html
-BrowserMatch ^Mozilla/4.0[678] no-gzip
-BrowserMatch bMSIE !no-gzip !gzip-only-text/html
-SetEnvIf User-Agent ".*MSIE.*" nokeepalive ssl-unclean-shutdown downgrade-1.0 force-response-1.0
-# Don't compress images
-SetEnvIfNoCase Request_URI .(?:gif|jpe?g)$ no-gzip dont-vary
-AddOutputFilter DEFLATE image/png
+<IfModule mod_gzip.c>
+    mod_gzip_on       Yes
+    mod_gzip_dechunk  Yes
+    mod_gzip_item_include file      \.(html?|txt|css|js|php|pl)$
+    mod_gzip_item_include handler   ^cgi-script$
+    mod_gzip_item_include mime      ^text/.*
+    mod_gzip_item_include mime      ^application/x-javascript.*
+    mod_gzip_item_exclude mime      ^image/.*
+    mod_gzip_item_exclude rspheader ^Content-Encoding:.*gzip.*
+</IfModule>
 
-AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css image/png
-<FilesMatch ".(js|css|html|htm|php|xml|png)$">
-SetOutputFilter DEFLATE
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css A31536000
+    ExpiresByType application/x-javascript A31536000
+    ExpiresByType text/html A31536000
+    ExpiresByType text/richtext A31536000
+    ExpiresByType image/svg+xml A31536000
+    ExpiresByType text/plain A31536000
+    ExpiresByType text/xsd A31536000
+    ExpiresByType text/xsl A31536000
+    ExpiresByType text/xml A31536000
+    ExpiresByType video/asf A31536000
+    ExpiresByType video/avi A31536000
+    ExpiresByType image/bmp A31536000
+    ExpiresByType application/java A31536000
+    ExpiresByType video/divx A31536000
+    ExpiresByType application/msword A31536000
+    ExpiresByType application/x-msdownload A31536000
+    ExpiresByType image/gif A31536000
+    ExpiresByType application/x-gzip A31536000
+    ExpiresByType image/x-icon A31536000
+    ExpiresByType application/vnd.ms-access A31536000
+    ExpiresByType audio/midi A31536000
+    ExpiresByType video/quicktime A31536000
+    ExpiresByType audio/mpeg A31536000
+    ExpiresByType video/mp4 A31536000
+    ExpiresByType video/mpeg A31536000
+    ExpiresByType application/vnd.ms-project A31536000
+    ExpiresByType application/vnd.oasis.opendocument.database A31536000
+    ExpiresByType application/vnd.oasis.opendocument.chart A31536000
+    ExpiresByType application/vnd.oasis.opendocument.formula A31536000
+    ExpiresByType application/vnd.oasis.opendocument.graphics A31536000
+    ExpiresByType application/vnd.oasis.opendocument.presentation A31536000
+    ExpiresByType application/vnd.oasis.opendocument.spreadsheet A31536000
+    ExpiresByType application/vnd.oasis.opendocument.text A31536000
+    ExpiresByType audio/ogg A31536000
+    ExpiresByType application/pdf A31536000
+    ExpiresByType image/png A31536000
+    ExpiresByType application/vnd.ms-powerpoint A31536000
+    ExpiresByType audio/x-realaudio A31536000
+    ExpiresByType application/x-shockwave-flash A31536000
+    ExpiresByType application/x-tar A31536000
+    ExpiresByType image/tiff A31536000
+    ExpiresByType audio/wav A31536000
+    ExpiresByType audio/wma A31536000
+    ExpiresByType application/vnd.ms-write A31536000
+    ExpiresByType application/vnd.ms-excel A31536000
+    ExpiresByType application/zip A31536000
+
+    FileETag MTime Size
+
+    # Cache all files for 2 weeks after access (A).
+    ExpiresDefault A1209600
+
+    # Do not cache dynamically generated pages.
+    ExpiresByType text/html A1
+
+</IfModule>
+
+
+<FilesMatch "\.(htaccess|htpasswd|ini|phps|fla|psd|log|sh|sql|inc|phtml|inc.php|Class.php)$">
+    Order Allow,Deny
+    Deny from all
 </FilesMatch>
 
 <ifModule mod_headers.c>
-  <filesMatch "\\.(ico|pdf|flv|jpg|jpeg|png|gif|swf)$">
+    <filesMatch "\\.(ico|pdf|flv|jpg|jpeg|png|gif|swf)$">
     Header set Cache-Control "max-age=2592000, public"
-  </filesMatch>
-  <filesMatch "\\.(css)$">
+    </filesMatch>
+    <filesMatch "\\.(css)$">
     Header set Cache-Control "max-age=604800, public"
-  </filesMatch>
-  <filesMatch "\\.(js)$">
+    </filesMatch>
+    <filesMatch "\\.(js)$">
     Header set Cache-Control "max-age=604800, private"
-  </filesMatch>
-  <filesMatch "\\.(xml|txt)$">
+    </filesMatch>
+    <filesMatch "\\.(xml|txt)$">
     Header set Cache-Control "max-age=604800, public, must-revalidate"
-  </filesMatch>
-  # 6 mins
-  #<filesMatch "\\.(html|htm|php)$">
-  #  Header set Cache-Control "max-age=600, private, must-revalidate"
-  #</filesMatch>
+    </filesMatch>
+    # 6 mins
+    #<filesMatch "\\.(html|htm|php)$">
+    #  Header set Cache-Control "max-age=600, private, must-revalidate"
+    #</filesMatch>
     <filesMatch "\\.(html|htm|php)$">
        FileETag None
        Header unset ETag
@@ -213,22 +185,23 @@ SetOutputFilter DEFLATE
        Header set Pragma "no-cache"
        Header set Expires "Wed, 11 Jan 1984 05:00:00 GMT"
     </filesMatch>
+
+    Header unset ETag
+    FileETag None
+    Header unset Last-Modified
+    Header unset X-UA-Compatible
+    Header set X-UA-Compatible "IE=Edge,chrome=1"
+    Header append Vary: Accept-Encoding
+    Header unset Server
+    Header unset X-Powered-By
+
+    # Secure Your Web Site from Clickjacking Attack
+    Header append X-FRAME-OPTIONS "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+
 </ifModule>
 
-# BEGIN Turn ETags Off
-<ifModule mod_headers.c>
-  Header unset ETag
-</ifModule>
-FileETag None
-# END Turn ETags Off
-
-# BEGIN Remove Last-Modified Header
-<ifModule mod_headers.c>
-  Header unset Last-Modified
-</ifModule>
-# END Remove Last-Modified Header
-
-<ifmodule mod_mime.c="">
+<ifmodule mod_mime.c>
     AddType text/css .css
     AddType application/x-javascript .js
     AddType text/x-component .htc
@@ -282,39 +255,112 @@ FileETag None
     AddType application/zip .zip
 </ifmodule>
 
-<ifmodule mod_deflate.c="">
+<ifmodule mod_deflate.c>
     # Force deflate for mangled headers developer.yahoo.com/blogs/ydn/posts/2010/12/pushing-beyond-gzipping/
-    <ifmodule mod_setenvif.c="">
-        <ifmodule mod_headers.c="">
+    <ifmodule mod_setenvif.c>
+        <ifmodule mod_headers.c>
             SetEnvIfNoCase ^(Accept-EncodXng|X-cept-Encoding|X{15}|~{15}|-{15})$ ^((gzip|deflate)\s*,?\s*)+|[X~-]{4,13}$ HAVE_Accept-Encoding
             RequestHeader append Accept-Encoding "gzip,deflate" env=HAVE_Accept-Encoding
         </ifmodule>
     </ifmodule>
 
-    <ifmodule filter_module="">
-        # HTML, TXT, CSS, JavaScript, JSON, XML, HTC:
-        FilterDeclare   COMPRESS
-        FilterProvider  COMPRESS  DEFLATE "%{CONTENT_TYPE} = '$text/html'"
-        FilterProvider  COMPRESS  DEFLATE "%{CONTENT_TYPE} = '$text/css'"
-        FilterProvider  COMPRESS  DEFLATE "%{CONTENT_TYPE} = '$text/plain'"
-        FilterProvider  COMPRESS  DEFLATE "%{CONTENT_TYPE} = '$text/xml'"
-        FilterProvider  COMPRESS  DEFLATE "%{CONTENT_TYPE} = '$text/x-component'"
-        FilterProvider  COMPRESS  DEFLATE "%{CONTENT_TYPE} = '$application/javascript'"
-        FilterProvider  COMPRESS  DEFLATE "%{CONTENT_TYPE} = '$application/json'"
-        FilterProvider  COMPRESS  DEFLATE "%{CONTENT_TYPE} = '$application/xml'"
-        FilterProvider  COMPRESS  DEFLATE "%{CONTENT_TYPE} = '$application/xhtml+xml'"
-        FilterProvider  COMPRESS  DEFLATE "%{CONTENT_TYPE} = '$application/rss+xml'"
-        FilterProvider  COMPRESS  DEFLATE "%{CONTENT_TYPE} = '$application/atom+xml'"
-        FilterProvider  COMPRESS  DEFLATE "%{CONTENT_TYPE} = '$application/vnd.ms-fontobject'"
-        FilterProvider  COMPRESS  DEFLATE "%{CONTENT_TYPE} = '$image/svg+xml'"
-        FilterProvider  COMPRESS  DEFLATE "%{CONTENT_TYPE} = '$image/x-icon'"
-        FilterProvider  COMPRESS  DEFLATE "%{CONTENT_TYPE} = '$application/x-font-ttf'"
-        FilterProvider  COMPRESS  DEFLATE "%{CONTENT_TYPE} = '$font/opentype'"
-        FilterChain     COMPRESS
-        FilterProtocol  COMPRESS  DEFLATE change=yes;byteranges=no
-    </ifmodule>
+    # Start compression
+    SetOutputFilter DEFLATE
+    AddOutputFilter DEFLATE text/plain
+    AddOutputFilter DEFLATE text/html
+    AddOutputFilter DEFLATE text/xml
+    AddOutputFilter DEFLATE text/css
+    AddOutputFilter DEFLATE application/xml
+    AddOutputFilter DEFLATE application/xhtml+xml
+    AddOutputFilter DEFLATE application/rss+xml
+    AddOutputFilter DEFLATE application/javascript
+    AddOutputFilter DEFLATE application/x-javascript
+    AddOutputFilter DEFLATE application/x-httpd-php
+    AddOutputFilter DEFLATE application/x-httpd-fastphp
+    AddOutputFilter DEFLATE application/x-httpd-fastphp
+    AddOutputFilter DEFLATE image/svg+xml
+    BrowserMatch ^Mozilla/4 gzip-only-text/html
+    BrowserMatch ^Mozilla/4.0[678] no-gzip
+    BrowserMatch bMSIE !no-gzip !gzip-only-text/html
+    SetEnvIf User-Agent ".*MSIE.*" nokeepalive ssl-unclean-shutdown downgrade-1.0 force-response-1.0
+    # Don't compress images
+    SetEnvIfNoCase Request_URI .(?:gif|jpe?g)$ no-gzip dont-vary
+    AddOutputFilter DEFLATE image/png
 
-    <ifmodule mod_filter.c="">
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css image/png
+    <FilesMatch ".(js|css|html|htm|php|xml|png)$">
+    SetOutputFilter DEFLATE
+    </FilesMatch>
+  # HTML, TXT, CSS, JavaScript, JSON, XML, HTC:
+  <IfModule filter_module.c>
+      <IfModule version.c>
+          <IfVersion >= 2.4>
+              FilterDeclare  COMPRESS
+              FilterProvider COMPRESS DEFLATE "%{CONTENT_TYPE} =~ m|^text/html|"
+              FilterProvider COMPRESS DEFLATE "%{CONTENT_TYPE} =~ m|^text/css|"
+              FilterProvider COMPRESS DEFLATE "%{CONTENT_TYPE} =~ m|^text/plain|"
+              FilterProvider COMPRESS DEFLATE "%{CONTENT_TYPE} =~ m|^text/xml|"
+              FilterProvider COMPRESS DEFLATE "%{CONTENT_TYPE} =~ m|^text/x-component|"
+              FilterProvider COMPRESS DEFLATE "%{CONTENT_TYPE} =~ m|^application/javascript|"
+              FilterProvider COMPRESS DEFLATE "%{CONTENT_TYPE} =~ m|^application/json|"
+              FilterProvider COMPRESS DEFLATE "%{CONTENT_TYPE} =~ m|^application/xml|"
+              FilterProvider COMPRESS DEFLATE "%{CONTENT_TYPE} =~ m|^application/xhtml+xml|"
+              FilterProvider COMPRESS DEFLATE "%{CONTENT_TYPE} =~ m|^application/rss+xml|"
+              FilterProvider COMPRESS DEFLATE "%{CONTENT_TYPE} =~ m|^application/atom+xml|"
+              FilterProvider COMPRESS DEFLATE "%{CONTENT_TYPE} =~ m|^application/vnd.ms-fontobject|"
+              FilterProvider COMPRESS DEFLATE "%{CONTENT_TYPE} = 'image/svg+xml'"
+              FilterProvider COMPRESS DEFLATE "%{CONTENT_TYPE} = 'image/x-icon'"
+              FilterProvider COMPRESS DEFLATE "%{CONTENT_TYPE} = 'application/x-font-ttf'"
+              FilterProvider COMPRESS DEFLATE "%{CONTENT_TYPE} = 'font/opentype'"
+              FilterChain    COMPRESS
+              FilterProtocol COMPRESS DEFLATE change=yes;byteranges=no
+          </IfVersion>
+          <IfVersion < 2.4>
+              FilterDeclare   COMPRESS
+              FilterProvider  COMPRESS  DEFLATE resp=Content-Type $text/html
+              FilterProvider  COMPRESS  DEFLATE resp=Content-Type $text/css
+              FilterProvider  COMPRESS  DEFLATE resp=Content-Type $text/plain
+              FilterProvider  COMPRESS  DEFLATE resp=Content-Type $text/xml
+              FilterProvider  COMPRESS  DEFLATE resp=Content-Type $text/x-component
+              FilterProvider  COMPRESS  DEFLATE resp=Content-Type $application/javascript
+              FilterProvider  COMPRESS  DEFLATE resp=Content-Type $application/json
+              FilterProvider  COMPRESS  DEFLATE resp=Content-Type $application/xml
+              FilterProvider  COMPRESS  DEFLATE resp=Content-Type $application/xhtml+xml
+              FilterProvider  COMPRESS  DEFLATE resp=Content-Type $application/rss+xml
+              FilterProvider  COMPRESS  DEFLATE resp=Content-Type $application/atom+xml
+              FilterProvider  COMPRESS  DEFLATE resp=Content-Type $application/vnd.ms-fontobject
+              FilterProvider  COMPRESS  DEFLATE resp=Content-Type $image/svg+xml
+              FilterProvider  COMPRESS  DEFLATE resp=Content-Type $image/x-icon
+              FilterProvider  COMPRESS  DEFLATE resp=Content-Type $application/x-font-ttf
+              FilterProvider  COMPRESS  DEFLATE resp=Content-Type $font/opentype
+              FilterChain     COMPRESS
+              FilterProtocol  COMPRESS  DEFLATE change=yes;byteranges=no
+          </IfVersion>
+      </IfModule>
+      <IfModule !version.c>
+          FilterDeclare   COMPRESS
+          FilterProvider  COMPRESS  DEFLATE resp=Content-Type $text/html
+          FilterProvider  COMPRESS  DEFLATE resp=Content-Type $text/css
+          FilterProvider  COMPRESS  DEFLATE resp=Content-Type $text/plain
+          FilterProvider  COMPRESS  DEFLATE resp=Content-Type $text/xml
+          FilterProvider  COMPRESS  DEFLATE resp=Content-Type $text/x-component
+          FilterProvider  COMPRESS  DEFLATE resp=Content-Type $application/javascript
+          FilterProvider  COMPRESS  DEFLATE resp=Content-Type $application/json
+          FilterProvider  COMPRESS  DEFLATE resp=Content-Type $application/xml
+          FilterProvider  COMPRESS  DEFLATE resp=Content-Type $application/xhtml+xml
+          FilterProvider  COMPRESS  DEFLATE resp=Content-Type $application/rss+xml
+          FilterProvider  COMPRESS  DEFLATE resp=Content-Type $application/atom+xml
+          FilterProvider  COMPRESS  DEFLATE resp=Content-Type $application/vnd.ms-fontobject
+          FilterProvider  COMPRESS  DEFLATE resp=Content-Type $image/svg+xml
+          FilterProvider  COMPRESS  DEFLATE resp=Content-Type $image/x-icon
+          FilterProvider  COMPRESS  DEFLATE resp=Content-Type $application/x-font-ttf
+          FilterProvider  COMPRESS  DEFLATE resp=Content-Type $font/opentype
+          FilterChain     COMPRESS
+          FilterProtocol  COMPRESS  DEFLATE change=yes;byteranges=no
+      </IfModule>
+  </IfModule>
+
+    <ifmodule mod_filter.c>
         # Legacy versions of Apache
         AddOutputFilterByType DEFLATE text/html text/plain text/css application/json
         AddOutputFilterByType DEFLATE application/javascript
@@ -325,40 +371,12 @@ FileETag None
 
 </ifmodule>
 
-# Block access to "hidden" directories whose names begin with a period
-<ifmodule mod_rewrite.c="">
-    RewriteCond %{SCRIPT_FILENAME} -d
-    RewriteCond %{SCRIPT_FILENAME} -f
-    RewriteRule "(^|/)\." - [F]
-</ifmodule>
-
 <ifmodule mod_autoindex.c="">
     Options -Indexes
 </ifmodule>
-Options -Indexes
 <ifmodule php5_module="">
     php_value session.cookie_httponly true
 </ifmodule>
-#Header set Set-Cookie HttpOnly;Secure
-# ----------------------------------------------------------------------
-# Force latest IE rendering engine
-# ----------------------------------------------------------------------
-<ifmodule mod_headers.c="">
-    Header set X-UA-Compatible "IE=Edge,chrome=1"
-        # mod_headers can't match by content-type, but we don't want to this header on everything
-        <filesmatch>
-            Header unset X-UA-Compatible
-        </filesmatch>
-</ifmodule>
 
-<ifmodule mod_headers.c="">
-  <filesmatch>
-    Header append Vary: Accept-Encoding
-  </filesmatch>
-</ifmodule>
-
-#<IfModule mod_php5.c>
-#    php_value short_open_tag 1
-#</IfModule>
 #Cache disable
 #Header Set Cache-Control "max-age=0, no-store"

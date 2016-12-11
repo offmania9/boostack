@@ -3,11 +3,11 @@
 /**
  * Boostack: User.Class.php
  * ========================================================================
- * Copyright 2015-2016 Spagnolo Stefano
+ * Copyright 2014-2017 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 2.2
+ * @version 2.3
  */
 class User
 {
