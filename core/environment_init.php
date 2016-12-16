@@ -3,6 +3,7 @@ $envPath = realpath(__DIR__."/env/env.php");
 if($envPath && is_file($envPath)) {
     require_once $envPath;
 } else {
+    header("Location: setup");
     echo "Choose an environment configuration file into '/core/env' folder (local.env.php, staging.env.php or production.env.php) and rename it into 'env.php'.";
     exit();
 }
