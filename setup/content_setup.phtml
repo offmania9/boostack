@@ -1,201 +1,278 @@
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-
-
 <div class="container">
     <div class="row">
-        <div class="col-md-12">
-
-            <?php if(!empty($errorMessage)): ?>
+        <div class="col-md-offset-2 col-md-8">
+            <p>&nbsp;</p>
+            <?php if (!empty($errorMessage)) { ?>
                 <div class="alert alert-danger" role="alert">
-                    <?= $errorMessage ?>
+                    <p>?= $errorMessage ?></p>
                 </div>
-            <?php endif; ?>
-
-            <h3>PHP Version</h3>
-            <table class="table table-bordered">
-                <thead>
-                    <th>Your</th>
-                    <th>Required >=</th>
-                    <th>Status</th>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><?= $phpVersion ?></td>
-                        <td><?= $required_php_version[0] ?></td>
-                        <td class="<?= $phpVersionResult ? "success" : "danger" ?>"><?= $phpVersionResult ?></td>
-                    </tr>
-                </tbody>
-            </table>
-
-
-
-            <h3>Required Apache Modules</h3>
-            <table class="table table-bordered">
-                <thead>
-                    <th>Module</th>
-                    <th>Status</th>
-                </thead>
-                <tbody>
-                <?php foreach($apacheModulesRequiredTable as $name => $value): ?>
-                    <tr>
-                        <td><?= $name ?></td>
-                        <td class="<?= $value ? "success" : "danger" ?>"><?= $value ?></td>
-                    </tr>
-                <?php endforeach; ?>
-                </tbody>
-            </table>
-
-            <h3>Optional Apache Modules</h3>
-            <table class="table table-bordered">
-                <thead>
-                    <th>Module</th>
-                    <th>Status</th>
-                </thead>
-                <tbody>
-                <?php foreach($apacheModulesOptionalTable as $name => $value): ?>
-                    <tr>
-                        <td><?= $name ?></td>
-                        <td class="<?= $value ? "success" : "danger" ?>"><?= $value ?></td>
-                    </tr>
-                <?php endforeach; ?>
-                </tbody>
-            </table>
-
-            <h3>Required PHP Extensions</h3>
-            <table class="table table-bordered">
-                <thead>
-                <th>Extension</th>
-                <th>Status</th>
-                </thead>
-                <tbody>
-                <?php foreach($phpExtensionsRequiredTable as $name => $value): ?>
-                    <tr>
-                        <td><?= $name ?></td>
-                        <td class="<?= $value ? "success" : "danger" ?>"><?= $value ?></td>
-                    </tr>
-                <?php endforeach; ?>
-                </tbody>
-            </table>
-
-            <h3>Required PHP Configurations</h3>
-            <table class="table table-bordered">
-                <thead>
-                <th>Configuration</th>
-                <th>Status</th>
-                </thead>
-                <tbody>
-                <?php foreach($phpConfigurationTable as $name => $value): ?>
-                    <tr>
-                        <td><?= $name ?></td>
-                        <td class="<?= $value ? "success" : "danger" ?>"><?= $value ?></td>
-                    </tr>
-                <?php endforeach; ?>
-                </tbody>
-            </table>
-
-            <h3>Environment setup</h3>
-            <form method="post" action="" class="form-horizontal">
-
-
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">General</h3>
-                    </div>
-                    <div class="panel-body">
-                        <div class="form-group">
-                            <label for="rootpath" class="col-sm-2 control-label">Rootpath</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" id="rootpath" name="rootpath" placeholder="/" value="/">
-                            </div>
+            <?php } else { ?>
+                <div class="alert alert-success" role="alert">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h3>Congratulations!</h3>
+                            <p>Server and PHP configuration meets the minimum requirements for Boostack</p>
                         </div>
-                        <div class="form-group">
-                            <label for="url" class="col-sm-2 control-label">URL</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" id="url" name="url" placeholder="boostack.local" value="boostack.dev">
-                            </div>
+                        <div class="col-md-4 text-center">
+                            <a class="btn btn-success" onclick="document.getElementById('initsetup-btn').remove();return true;" id="initsetup-btn" name="initsetup-btn" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"
+                               aria-expanded="false" aria-controls="collapseTwo" >
+                                Setup
+                            </a>
                         </div>
+
                     </div>
+
+
                 </div>
+            <?php } ?>
+        </div>
+    </div>
+</div>
+<div class="container">
+     <div class="row">
+<div class="col-md-offset-2 col-md-8">
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingOne">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
+                   aria-expanded="true" aria-controls="collapseOne">
+                    Requirements
+                </a>
+            </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+            <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4>Required PHP Configurations</h4>
+                            <table class="table table-bordered">
+                                <thead>
+                                <th>Configuration</th>
+                                <th>Required</th>
+                                <th>Status</th>
+                                </thead>
+                                <tbody>
+                                <tr class="<?= $phpVersionResult ? "success" : "danger" ?>">
+                                    <td>PHP Version</td>
+                                    <td>>= <?= $required_php_version[0] ?></td>
+                                    <td ><?= $phpVersion ?></td>
+                                </tr>
+                                <?php foreach ($phpConfigurationTable as $name => $value): ?>
+                                    <tr class="<?= $value ? "success" : "danger" ?>">
+                                        <td><?= $name ?></td>
+                                        <td>Enabled</td>
+                                        <td><?= $value=="1"?"Enabled":"Disabled" ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                                <?php foreach ($phpExtensionsRequiredTable as $name => $value): ?>
+                                    <tr class="<?= $value ? "success" : "danger" ?>">
+                                        <td><?= $name ?> Extension</td>
+                                        <td>Enabled</td>
+                                        <td><?= $value=="1"?"Enabled":"Disabled" ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                                <tr class="<?= $isWritebleEnvFolder ? "success" : "danger" ?>">
+                                    <td>Write access to 'env' folder</td>
+                                    <td>Give write permission to '<?=exec('whoami')?>' user </td>
+                                    <td><?= $isWritebleEnvFolder?"Writeble":"Not Writeble" ?></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <h4>Apache Modules</h4>
+                            <table class="table table-bordered">
+                                <thead>
+                                <th>Configuration</th>
+                                <th>Required</th>
+                                <th>Status</th>
+                                </thead>
+                                <tbody>
+                                <?php foreach ($apacheModulesRequiredTable as $name => $value): ?>
+                                    <tr class="<?= $value ? "success" : "danger" ?>">
+                                        <td><?= $name ?></td>
+                                        <td>Enabled</td>
+                                        <td><?= $value=="1"?"Enabled":"Disabled" ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                                <?php foreach ($apacheModulesOptionalTable as $name => $value): ?>
+                                    <tr class="<?= $value ? "success" : "warning" ?>">
+                                        <td>[Optional] <?= $name ?></td>
+                                        <td>Enabled</td>
+                                        <td><?= $value=="1"?"Enabled":"Disabled" ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
 
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Database</h3>
-                    </div>
-                    <div class="panel-body">
-                        <div class="form-group">
-                            <label for="db-true" class="col-sm-2 control-label">Database</label>
-                            <div class="col-sm-8">
-                                <label class="radio-inline">
-                                    <input type="radio" name="db-active" id="db-true" value="true" checked> Yes
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="radio" name="db-active" id="db-false" value="false"> No
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="db-host" class="col-sm-2 control-label">Host</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" id="db-host" name="db-host" placeholder="127.0.0.1" value="127.0.0.1">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="db-name" class="col-sm-2 control-label">Name</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" id="db-name" name="db-name" placeholder="boostack" value="boostack">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="db-username" class="col-sm-2 control-label">Username</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" id="db-username" name="db-username" placeholder="root" value="root">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="db-password" class="col-sm-2 control-label">Password</label>
-                            <div class="col-sm-8">
-                                <input type="password" class="form-control" id="db-password" name="db-password" placeholder="" value="">
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingTwo">
+            <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"
+                   aria-expanded="false" aria-controls="collapseTwo" onclick="document.getElementById('initsetup-btn').remove();return true;">
+                    Environment setup
+                </a>
+            </h4>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+            <div class="panel-body">
 
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Other</h3>
-                    </div>
-                    <div class="panel-body">
-                        <div class="form-group">
-                            <label for="session-true" class="col-sm-2 control-label">Session</label>
-                            <div class="col-sm-8">
-                                <label class="radio-inline">
-                                    <input type="radio" name="session-active" id="session-true" value="true" checked> Yes
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="radio" name="session-active" id="session-false" value="false"> No
-                                </label>
+                <form method="post" action="" class="form-horizontal">
+
+
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">General</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label for="rootpath" class="col-sm-2 control-label">Current Document Root</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" disabled id="dr" name="dr"
+                                           value="<?=$_SERVER['DOCUMENT_ROOT']?>">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="rootpath" class="col-sm-2 control-label">Rootpath</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="rootpath" name="rootpath"
+                                           placeholder="/" value="<?=$init_rootpath?>">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="url" class="col-sm-2 control-label">URL</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="url" name="url"
+                                           placeholder="boostack.local" value="<?=$init_url?>">
+
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-default">Save</button>
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Database</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group noHide">
+                                <label for="db-true" class="col-sm-2 control-label">Database</label>
+                                <div class="col-sm-8">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="db-active" id="db-true" value="true" checked> Yes
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="db-active" id="db-false" value="false"> No
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="db-host" class="col-sm-2 control-label">Host</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="db-host" name="db-host"
+                                           value="<?=$init_ip?>">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="db-name" class="col-sm-2 control-label">Name</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="db-name" name="db-name"
+                                           placeholder="boostack" value="boostack">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="db-name" class="col-sm-2 control-label">Table Prefix</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="db-table-prefix" name="db-table-prefix"
+                                           placeholder="boostack_" value="boostack_">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="db-username" class="col-sm-2 control-label">Username</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="db-username" name="db-username"
+                                           placeholder="root" value="root">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="db-password" class="col-sm-2 control-label">Password</label>
+                                <div class="col-sm-8">
+                                    <input type="password" class="form-control" id="db-password" name="db-password"
+                                           placeholder="" value="">
+                                </div>
+                            </div>
+
+                            <div class="form-group"> <hr/>
+                                <label for="db-session-true" class="col-sm-2 control-label">Session</label>
+                                <div class="col-sm-8">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="db-session-active" id="db-session-true" value="true"
+                                               checked> Yes
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="db-session-active" id="db-session-false" value="false"> No
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group noHide"> <hr/>
+                                <label for="db-cookie-true" class="col-sm-2 control-label">Cookie</label>
+                                <div class="col-sm-8">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="db-cookie-active" id="db-cookie-true" value="true"
+                                               checked> Yes
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="db-cookie-active" id="db-cookie-false" value="false"> No
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="db-cookie-expired" class="col-sm-2 control-label">Expired (seconds)</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="db-cookie-expired" name="db-cookie-expired"
+                                           placeholder="29 days" value="2505600">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="db-cookie-name" class="col-sm-2 control-label">Name</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="db-cookie-name" name="db-cookie-name"
+                                           placeholder="" value="_<?=substr(md5(time()),0,9)?>">
+                                </div>
+                            </div>
+
+                            <div class="form-group"> <hr/>
+                                <label for="db-log-true" class="col-sm-2 control-label">Log</label>
+                                <div class="col-sm-8">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="db-log-active" id="db-log-true" value="true"
+                                               checked> Yes
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="db-log-active" id="db-log-false" value="false"> No
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </form>
+                    <hr/>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10 text-right">
+                            <button type="submit" class="btn btn-success">Save</button>
+                        </div>
+                    </div>
+                </form>
 
+
+            </div>
         </div>
     </div>
 
-
-
-
 </div>
-
-
-
+</div>
+</div>
+</div>

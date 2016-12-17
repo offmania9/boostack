@@ -52,19 +52,26 @@ $env_parameters = [
 $exampleEnvName = "sample.env.php";
 $outputEnvName = "env.php";
 $envPath = "/../core/env/";
-$exampleEnvPath = realpath(__DIR__.$envPath.$exampleEnvName);
+$exampleEnvPath = realpath($exampleEnvName);
 $finalEnvPath = realpath(__DIR__.$envPath)."/".$outputEnvName;
 
-
-$envContent = file_get_contents($exampleEnvPath);
-
-
-foreach ($env_parameters as $param => $value){
-    $envContent = str_replace("[$param]", $value, $envContent);
+$envContent = @file_get_contents($exampleEnvPath);
+if($envContent === FALSE){
+    echo "Attention: setup/sample.env.php -> failed to open stream: Permission denied. <br/><br/>Solution: add read access to 'setup' folder";
+}
+else{
+    foreach ($env_parameters as $param => $value){
+        $value = ($value == "true" || $value == "false")?strtoupper($value):$value;
+        $envContent = str_replace("[$param]", $value, $envContent);
+    }
+    if(@file_put_contents($finalEnvPath, $envContent) === FALSE) {
+        echo "Attention: env/env.php -> failed to open stream: Permission denied. <br/><br/>Solution: add write access to 'env' folder";
+    }
 }
 
-file_put_contents($finalEnvPath, $envContent);
 
-header("Location: http://".$env_parameters['url']);
+//header("Location: http://".$env_parameters['url']);
 
 // CREAZIONE DB
+
+?>

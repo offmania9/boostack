@@ -14,7 +14,9 @@ body {
 	font-family: "open sans", arial, sans-serif;
 	background-color: #fff;
 }
-
+body.setup{
+	font-size: 12px !important;
+}
 @font-face {
 	font-family: 'Open Sans';
 	font-style: normal;
@@ -43,6 +45,7 @@ h1, h2, h3, h4, blockquote, q {
 	font-weight: 300;
 	color: #333
 }
+
 
 a, a:active, a:visited, a:hover {
 	color: #333333
@@ -75,7 +78,14 @@ li {
 	background-color: #84c441; /*6EC038*/
 	padding: 4px;
 }
-
+.setup .line p {
+	color: #435f26;
+}
+.setup .form-control{
+	height: 27px;
+	padding: 4px 8px;
+	font-size: 12px;
+}
 header {
 	padding-top: 10px;
 }
@@ -114,6 +124,11 @@ section.disclaimer h1 {
 
 section.disclaimer.sectionTitle h1 {
 	padding: 10px;
+}
+.setup section.disclaimer h1 {
+	font-size: 2.5em ;
+	line-height: 30px;
+	padding-left: 0;
 }
 
 section.disclaimer h1 .title {
@@ -218,6 +233,9 @@ section.documentation .documentationInnerContent h2 {
 
 section.documentation .documentationInnerContent p {
 	padding: 0px;
+}
+.checker .alert h3{
+	margin-top: 0px !important;
 }
 
 footer {

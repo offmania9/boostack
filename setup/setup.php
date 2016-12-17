@@ -10,7 +10,7 @@ $required_php_version = [
 $apache_modules_required = [
     "mod_rewrite",
     "mod_filter",
-    "mod_include",
+
     "mod_deflate",
     "mod_headers",
 ];
@@ -19,6 +19,7 @@ $apache_modules_optional = [
     "mod_mime",
     "mod_expires",
     "mod_autoindex",
+    "mod_include",
 ];
 $php_extensions_required = [
     "curl",
@@ -88,4 +89,39 @@ foreach($php_configurations_required as $name => $value) {
 
 $errorMessage = !empty($_GET['message']) ? $_GET['message'] : "";
 
+$init_rootpath = urlpath_calculation($_SERVER[REQUEST_URI]);
+$init_url = urlpath_calculation($_SERVER[HTTP_HOST].$_SERVER[REQUEST_URI]);
+$init_ip = ($_SERVER['SERVER_ADDR'] == "::1")?"127.0.0.1":$_SERVER['SERVER_ADDR'];
+$isWritebleEnvFolder = is_writable_r(realpath(__DIR__.$envPath));
+
 require_once "content_setup.phtml";
+
+//-- FUNCTIONS
+function is_writable_r($dir) {
+    if (is_dir($dir)) {
+        if(is_writable($dir)){
+            $objects = scandir($dir);
+            foreach ($objects as $object) {
+                if ($object != "." && $object != "..") {
+                    if (!is_writable_r($dir."/".$object)) return false;
+                    else continue;
+                }
+            }
+            return true;
+        }else{
+            return false;
+        }
+
+    }else if(file_exists($dir)){
+        return (is_writable($dir));
+
+    }
+}
+
+function urlpath_calculation($urlOrPath){
+    $r = str_replace("/setup","",$urlOrPath);
+    $r = (substr($r,-1)=="/")?$r:$r."/";
+    return $r;
+}
+
+?>
