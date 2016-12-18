@@ -169,7 +169,7 @@ class Session_HTTP
         return ($this->php_session_id);
     }
 
-    private function getSQLPartOfLoginQuery($strUsername){
+    protected function getSQLPartOfLoginQuery($strUsername){
         $sqlWhere = "username='".$strUsername."'";
         switch(Boostack::getInstance()->getConfig("userToLogin")){
             case "email":
@@ -188,7 +188,7 @@ class Session_HTTP
     {
         $strMD5Password = ($hashed_psw !== "") ? $hashed_psw : hash("sha512", $strPlainPassword);
         try {
-            $stmt = "SELECT id FROM boostack_user WHERE ".getSQLPartOfLoginQuery($strUsername)." AND pwd = '$strMD5Password' AND active='1'";
+            $stmt = "SELECT id FROM boostack_user WHERE ".$this->getSQLPartOfLoginQuery($strUsername)." AND pwd = '$strMD5Password' AND active='1'";
             $result = $this->dbhandle->prepare($stmt);
             $result->execute();
             if ($result->rowCount() > 0) {
@@ -226,7 +226,7 @@ class Session_HTTP
      */
     protected function LoginWithSalt($strUsername, $strPlainPassword, $hashedPassword = "") {
         try {
-            $stmt = "SELECT id,pwd FROM boostack_user WHERE ".getSQLPartOfLoginQuery($strUsername)." AND active='1'";
+            $stmt = "SELECT id,pwd FROM boostack_user WHERE ".$this->getSQLPartOfLoginQuery($strUsername)." AND active='1'";
             $result = $this->dbhandle->prepare($stmt);
             $result->execute();
             if ($result->rowCount() > 0) {
@@ -264,7 +264,7 @@ class Session_HTTP
         if (Utils::checkAcceptedTimeFromLastRequest($this->LastTryLogin)) {
             if (!$this->IsLoggedIn()) {
                     try {
-                        if($boostack->getConfig('csrf_on'))
+                        if ($boostack->getConfig('csrf_on'))
                             $this->CSRFCheckValidity($_POST);
                         $user = Utils::sanitizeInput($u);
                         $password = Utils::sanitizeInput($p);
@@ -272,14 +272,14 @@ class Session_HTTP
                         $this->LastTryLogin = time();
                         $anonymousUser = new User();
                         Utils::checkStringFormat($password);
-                        if ($anonymousUser->tryLogin($user, $password, $rememberMe,$throwException)) {
+                        if ($anonymousUser->tryLogin($user, $password, $rememberMe, $throwException)) {
                             header("Location: " . $boostack->getFriendlyUrl("login"));
                             exit();
                         }
                         $error = "Username or password not valid.";
                     } catch (Exception $e) {
                         throw new Exception($e->getMessage());
-                        $boostack->writeLog("Login.php : ".$error." trace:".$e->getTraceAsString(),"user");
+                        $boostack->writeLog("Login.php : " . $error . " trace:" . $e->getTraceAsString(), "user");
                     }
             }
         }

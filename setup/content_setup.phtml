@@ -35,9 +35,16 @@ if (!empty($_POST)) { ?>
         <div class="row">
             <div class="col-md-offset-2 col-md-8">
                 <p>&nbsp;</p>
-                <?php if (!empty($errorMessage)) { ?>
+                <?php if(!$requirements_satisfaction) {?>
                     <div class="alert alert-danger" role="alert">
-                        <p><?= $errorMessage ?></p>
+                        <div class="row">
+                            <div class="col-md-12">
+                        <h3>Attention!</h3>
+                        <p>Server and PHP configuration does not meet the minimum requirements for Boostack.<br/>
+                            <b>Setup is unable to proceed due to the following error(s).</b>
+                        </p>
+                            </div>
+                        </div>
                     </div>
                 <?php } else { ?>
                     <div class="alert alert-success" role="alert">

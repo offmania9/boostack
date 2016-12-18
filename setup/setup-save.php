@@ -12,32 +12,6 @@ if (empty($input['url'])) {
     $error = TRUE;
     $finalSetupMessageError .= "Missing URL <br/>";
 }
-/*if(empty($input['db-active'])) {
-    $error = true;
-    $message .= "Missing DB-active <br/>";
-}
-if(empty($input['db-host'])) {
-    $error = true;
-    $message .= "Missing DB-host <br/>";
-}
-if(empty($input['db-name'])) {
-    $error = true;
-    $message .= "Missing DB-name <br/>";
-}
-if(empty($input['db-username'])) {
-    $error = true;
-    $message .= "Missing DB-username <br/>";
-}
-if(empty($input['session-active'])) {
-    $error = true;
-    $message .= "Missing Session-active <br/>";
-}
-
-if($error) {
-    header("Location: ?message=".$message);
-    exit();
-}
-*/
 $env_parameters = [
     "current_environment" => "local",
     "rootpath" => $input['rootpath'],
@@ -68,23 +42,25 @@ if ($envContent === FALSE) {
         $value = ($value == "true" || $value == "false") ? strtoupper($value) : $value;
         $envContent = str_replace("[$param]", $value, $envContent);
     }
+    $old = umask(0);
     if (@file_put_contents($finalEnvPath, $envContent) === FALSE) {
         $finalSetupMessageError = "message: env/env.php -> failed to open stream: Permission denied. <br/><br/>Solution: add write access to 'env' folder";
     }
 }
 
-
-// CREAZIONE DB
-
 if ($env_parameters["database_on"] && $finalSetupMessageError=="") {
     try {
-        // TO DO: creazione utenti (UserRegistration ???)
         require_once("../core/class/Utils.Class.php");
         require_once("../core/class/Boostack.Class.php");
         require_once("../core/class/Database/Database_PDO.Class.php");
         require_once("../core/class/User.Class.php");
         require_once("../core/class/User/User_Info.Class.php");
         require_once("../core/class/User/User_Registration.Class.php");
+
+        $db0 = new PDO('mysql:host=' . $env_parameters["db_host"] . ';dbname=' . $env_parameters["db_name"], $env_parameters["db_username"], $env_parameters["db_password"], array(
+            PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
+        ));
+        $db0->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $db = Database_PDO::getInstance($env_parameters["db_host"], $env_parameters["db_name"], $env_parameters["db_username"], $env_parameters["db_password"]);
         $sql = file_get_contents('boostack_dump.sql');
@@ -139,9 +115,11 @@ if ($env_parameters["database_on"] && $finalSetupMessageError=="") {
 
     } catch (PDOException $e) {
         $finalSetupMessageError = "Database Error. Message: " . $e->getMessage();
+        unlink($finalEnvPath);
     }
      catch (Exception $e2) {
-    $finalSetupMessageError = "Error. Message: " . $e2->getMessage();
+        $finalSetupMessageError = "Error. Message: " . $e2->getMessage();
+        unlink($finalEnvPath);
     }
 }
 

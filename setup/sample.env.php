@@ -20,7 +20,7 @@ $config['session_on'] = [session_on];
 
 // ====== Cross Site Request Forgery validation
 // enable or disable CSRF validation (TRUE need $database_on=TRUE AND $session_on=TRUE)
-$config['csrf_on'] = FALSE;
+$config['csrf_on'] = TRUE;
 
 // ====== Username field for login process: "username" | "email" | "both"
 $config['userToLogin'] = "username"; # "username" | "email" | "both"
