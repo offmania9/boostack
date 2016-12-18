@@ -59,6 +59,10 @@ class Utils
         return $ip;
     }
 
+    function isStrongPassword($pwd){
+        return preg_match("#.*^(?=.{8,20})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$#", $pwd);
+    }
+
     public static function getUserAgent()
     {
         return Utils::sanitizeInput($_SERVER["HTTP_USER_AGENT"]);
@@ -252,7 +256,6 @@ class Utils
             $t = (int)($et / 86400);
             $res = ($t > 1) ? "$t days ago" : "$t day ago";
         }
-
         return $res;
     }
 
@@ -267,7 +270,7 @@ class Utils
 
     public static function goToMaintenance()
     {
-        global $boostack;
+        $boostack = Boostack::getInstance();
         header("Location: " . $boostack->url . $boostack->getConfig("url_maintenance"));
         exit();
     }

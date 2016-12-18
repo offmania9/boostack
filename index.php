@@ -20,6 +20,7 @@ require_once $boostack->registerTemplateFile("boostack/content_index_out.phtml")
 
 require_once $boostack->registerTemplateFile("boostack/footer.phtml");
 
+
 // #######################
 $boostack->renderCloseHtmlTag();
 $boostack->writeLog("Homepage Page", LogLevel::Information);

@@ -3,22 +3,25 @@ $envPath = realpath(__DIR__."/env/env.php");
 if($envPath && is_file($envPath)) {
     require_once $envPath;
 } else {
+    header("Location: setup");
     echo "Choose an environment configuration file into '/core/env' folder (local.env.php, staging.env.php or production.env.php) and rename it into 'env.php'.";
     exit();
 }
 require_once (ROOTPATH . "core/env/global.env.php");
 require_once (ROOTPATH . "core/class/Utils.Class.php");
 spl_autoload_register('Utils::autoloadClass');
-$boostack = Boostack::getInstance();
 if ($config['developmentMode']) {
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
+    if (file_exists(ROOTPATH."setup/")) {
+        $config['setupFolderExists'] = TRUE;
+    }
 }
 else {
     error_reporting(0);
     ini_set('display_errors', 0);
 }
-
+$boostack = Boostack::getInstance();
 $CURRENTUSER = NULL;
 if ($boostack->getConfig('database_on')){
     Database_PDO::getInstance($database['host'], $database['name'], $database['username'], $database['password']);

@@ -35,7 +35,7 @@ class Database_PDO
             $boostack = Boostack::getInstance();
             //$boostack->setConfig("database_on",FALSE);
             // WRITE into log file
-            if(!$boostack->getConfig("developmentMode")){ // go to mantainance page
+            if(!$boostack->getConfig("developmentMode")){// go to mantainance page
                 Utils::goToMaintenance();
             }
             else {

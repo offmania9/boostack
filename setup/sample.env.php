@@ -1,37 +1,37 @@
 <?php
 
-define('CURRENT_ENVIRONMENT', "staging");
-define('ROOTPATH', $_SERVER['DOCUMENT_ROOT'] . "/");
+define('CURRENT_ENVIRONMENT', "[current_environment]");
+define('ROOTPATH', $_SERVER['DOCUMENT_ROOT'] . "[rootpath]");
 $config['protocol'] = isSecureProtocol() ? 'https://' : 'http://';
-$config['url'] = $config['protocol']."/";
+$config['url'] = $config['protocol']."[url]";
 $config['developmentMode'] = TRUE;
 
 // ====== database
 // enable or disable Mysql database
-$config['database_on'] = TRUE;
-$database['host'] = '127.0.0.1';
-$database['name'] = 'boostack';
-$database['username'] = 'root';
-$database['password'] = 'root';
+$config['database_on'] = [database_on];
+$database['host'] = '[db_host]';
+$database['name'] = '[db_name]';
+$database['username'] = '[db_username]';
+$database['password'] = '[db_password]';
 
 // ====== sessions
 // enable or disable Sessions (TRUE need $database_on=TRUE)
-$config['session_on'] = TRUE;
-
-// ====== Username field for login process: "username" | "email" | "both"
-$config['userToLogin'] = "username"; # "username" | "email" | "both"
+$config['session_on'] = [session_on];
 
 // ====== Cross Site Request Forgery validation
 // enable or disable CSRF validation (TRUE need $database_on=TRUE AND $session_on=TRUE)
 $config['csrf_on'] = TRUE;
 
+// ====== Username field for login process: "username" | "email" | "both"
+$config['userToLogin'] = "username"; # "username" | "email" | "both"
+
 // ====== cookie
 // enable or disable Cookies (TRUE need $database_on=TRUE AND $session_on=TRUE)
-$config['cookie_on'] = FALSE;
+$config['cookie_on'] = [cookie_on];
 // Cookies expire
-$config['cookie_expire'] = 2505600; // 60*60*24*29 = 29days
+$config['cookie_expire'] = [cookie_expire]; // 60*60*24*29 = 29days
 // This key is used to generate custom cookie names
-$config['cookie_name'] = "5asmbstk_16";
+$config['cookie_name'] = "[cookie_name]";
 
 // ====== geolocalization
 // enable or disable Geolocalization
@@ -50,9 +50,10 @@ $config['mobile_url'] = NULL;
 
 // ====== log
 // enable or disable boostack Log (#TRUE need $database_on=TRUE)
-$config['log_on'] = FALSE;
+$config['log_on'] = [log_on];
 //(Enable logging options ['error','failure','information','success','warning','user']
 $config['log_enabledTypes'] = array('error','failure','information','success','warning','user','cronjob');
+
 
 // ====== email
 // enable or disable send mail
@@ -72,7 +73,7 @@ date_default_timezone_set('UTC');
 $CURRENT_DATETIME_FORMAT = "d-m-Y H:i:s";
 
 // ====== security
-$TIME_ELAPSED_ACCEPTED = 3000;
+$TIME_ELAPSED_ACCEPTED = 0;
 
 function isSecureProtocol($forceTrueForReverseProxy = false) {
     return $forceTrueForReverseProxy || (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443;

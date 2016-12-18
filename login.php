@@ -53,6 +53,8 @@ else
 
 require_once $boostack->registerTemplateFile("boostack/footer.phtml");
 
+#$loginMessage = $objSession->StartLoginProcess($_POST['btk_usr'], $_POST["btk_pwd"], $_POST['rememberme']);
+
 // #######################
 $boostack->renderCloseHtmlTag();
 $boostack->writeLog("Login Page");

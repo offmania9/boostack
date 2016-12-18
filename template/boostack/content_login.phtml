@@ -30,41 +30,6 @@
 					<form id="loginform"
 						action="<?=$boostack->getFriendlyUrl("login");?>" name="loginform"
 						class="form-horizontal" method="post" role="form">
-
-						<div class="form-group">
-							<div class="col-md-12 control">
-								<div style=" padding-top: 10px;">
-									<small>
-										[User Privilege]<br/>
-										User or Email: <b>boostackuser</b> or <b>user@boostack.com</b> - Password: <b>testing</b></a><hr/>
-										[Admin Privilege]<br/>
-										User or Email: <b>boostackadmin</b> or <b>admin@boostack.com</b> - Password: <b>testing</b></a><hr/>
-										[SuperAdmin Privilege]<br/>
-										User or Email: <b>boostacksuperadmin</b> or <b>superadmin@boostack.com</b> - Password: <b>testing</b></a><hr/>
-
-										<button class="btn btn-xs showrawpassword" onclick="showPasswordBox(); return false;">SHOW RAW PASSWORD</button>
-										<script>
-											function showPasswordBox() {
-												$(".passwordBox").slideToggle();
-												return false;
-											}
-										</script>
-										<div class="passwordBox" style="display: none;">
-											<div class="panel panel-default">
-												<div class="panel-body" style="overflow: scroll;">
-													<p>Insert this password in table "boostack_user" in field "pwd":</p>
-													<i><?php
-														echo (version_compare(PHP_VERSION, '5.5.0') >= 0)?password_hash('testing',PASSWORD_DEFAULT):hash("sha512", 'testing');
-													?>
-													</i>
-												</div>
-											</div>
-
-										</div>
-									</small>
-								</div>
-							</div>
-						</div>
 						
 						<div style="margin-bottom: 25px; margin-top: 25px;"
 							class="input-group">
@@ -92,7 +57,7 @@
 						<div style="margin-top: 10px" class="form-group">
 							<div class="col-sm-12 controls">
 								<a id="btn-login" href="#" class="btn btn-default"
-									onclick="CSRFCheckManager.addToForm(loginform);loginform.submit();return false;"><?=$boostack->getLabel("login.login");?></a>
+									onclick="if(CSRFCheckManager != null){CSRFCheckManager.addToForm(loginform);}loginform.submit();return false;"><?=$boostack->getLabel("login.login");?></a>
 
 							</div>
 						</div>
@@ -108,6 +73,40 @@
 						</div>
 
                       </form>
+                    <div class="form-group">
+                        <div class="col-md-12 control">
+                            <div style=" padding-top: 10px;">
+                                <small>
+                                    [User Privilege]<br/>
+                                    User or Email: <b>boostackuser</b> or <b>user@boostack.com</b> - Password: <b>testing</b></a><hr/>
+                                    [Admin Privilege]<br/>
+                                    User or Email: <b>boostackadmin</b> or <b>admin@boostack.com</b> - Password: <b>testing</b></a><hr/>
+                                    [SuperAdmin Privilege]<br/>
+                                    User or Email: <b>boostacksuperadmin</b> or <b>superadmin@boostack.com</b> - Password: <b>testing</b></a><hr/>
+
+                                    <button class="btn btn-xs showrawpassword" onclick="showPasswordBox(); return false;">SHOW RAW PASSWORD</button>
+                                    <script>
+                                        function showPasswordBox() {
+                                            $(".passwordBox").slideToggle();
+                                            return false;
+                                        }
+                                    </script>
+                                    <div class="passwordBox" style="display: none;">
+                                        <div class="panel panel-default">
+                                            <div class="panel-body" style="overflow: scroll;">
+                                                <p>Insert this password in table "boostack_user" in field "pwd":</p>
+                                                <i><?php
+                                                    echo (version_compare(PHP_VERSION, '5.5.0') >= 0)?password_hash('testing',PASSWORD_DEFAULT):hash("sha512", 'testing');
+                                                    ?>
+                                                </i>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </small>
+                            </div>
+                        </div>
+                    </div>
 				</div>
 			</div>
 		</div>

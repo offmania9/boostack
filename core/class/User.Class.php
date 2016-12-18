@@ -232,10 +232,10 @@ class User
     /*
      *  Effettua il login
      */
-    public function tryLogin($username, $password, $cookieRememberMe, $usernameIsEmail=false, $throwException = true)
+    public function tryLogin($username, $password, $cookieRememberMe, $throwException = true)
     {
         global $objSession, $boostack;
-        if ($usernameIsEmail) {
+        if ($boostack->getConfig("userToLogin") == "email") {
             if (!self::checkUserExistsByEmail($username)) {
                 $boostack->writeLog("User -> tryLogin: User doesn't exist by Email Address", "user");
                 if ($throwException)
@@ -245,7 +245,7 @@ class User
         }
             
         $objSession->LogOut();
-        $objSession->Login($username, $password,$usernameIsEmail);
+        $objSession->Login($username, $password);
         if (!$objSession->IsLoggedIn()){
             $boostack->writeLog("User -> tryLogin: Username or password not valid.","user");
             if ($throwException)

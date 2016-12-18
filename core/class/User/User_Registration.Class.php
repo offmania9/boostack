@@ -54,6 +54,7 @@ class User_Registration extends User_Info
 
     public function insert($post_array)
     {
+
         parent::insert($post_array);
         $fields = self::prepare($post_array);
         $sql_1 = "INSERT INTO " . self::TABLENAME . " (id";

@@ -158,6 +158,8 @@ class Boostack
         $this->registerAllDefaultMetaTags($titlePrepend);
         $this->registerAllDefaultCssFiles();
         echo '</head><body>';
+        if(isset($this->config['setupFolderExists']) && $this->config['setupFolderExists'])
+            require $this->registerTemplateFile("boostack/setup_exists_header.phtml");
     }
 
     /*
