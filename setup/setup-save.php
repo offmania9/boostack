@@ -1,18 +1,18 @@
 <?php
 
 $input = $_POST;
-$error = false;
-$message = "";
+$error = FALSE;
+$finalSetupMessageError = "";
 
 if(empty($input['rootpath'])) {
-    $error = true;
-    $message .= "Missing rootpath <br/>";
+    $error = TRUE;
+    $finalSetupMessageError .= "Missing rootpath <br/>";
 }
 if(empty($input['url'])) {
-    $error = true;
-    $message .= "Missing URL <br/>";
+    $error = TRUE;
+    $finalSetupMessageError .= "Missing URL <br/>";
 }
-if(empty($input['db-active'])) {
+/*if(empty($input['db-active'])) {
     $error = true;
     $message .= "Missing DB-active <br/>";
 }
@@ -35,8 +35,9 @@ if(empty($input['session-active'])) {
 
 if($error) {
     header("Location: ?message=".$message);
+    exit();
 }
-
+*/
 $env_parameters = [
     "current_environment" => "local",
     "rootpath" => $input['rootpath'],
@@ -46,7 +47,11 @@ $env_parameters = [
     "db_name" => $input['db-name'],
     "db_username" => $input['db-username'],
     "db_password" => $input['db-password'],
-    "session_on" => $input['session-active'],
+    "session_on" => $input['db-session-active'],
+    "cookie_on" => $input['db-cookie-active'],
+    "cookie_expire" => $input['db-cookie-expired'],
+    "cookie_name" => $input['db-cookie-name'],
+    "log_on" => $input['db-log-active']
 ];
 
 $exampleEnvName = "sample.env.php";
@@ -57,7 +62,7 @@ $finalEnvPath = realpath(__DIR__.$envPath)."/".$outputEnvName;
 
 $envContent = @file_get_contents($exampleEnvPath);
 if($envContent === FALSE){
-    echo "Attention: setup/sample.env.php -> failed to open stream: Permission denied. <br/><br/>Solution: add read access to 'setup' folder";
+    $finalSetupMessageError =  "message: setup/sample.env.php -> failed to open stream: Permission denied. <br/><br/>Solution: add read access to 'setup' folder";
 }
 else{
     foreach ($env_parameters as $param => $value){
@@ -65,13 +70,12 @@ else{
         $envContent = str_replace("[$param]", $value, $envContent);
     }
     if(@file_put_contents($finalEnvPath, $envContent) === FALSE) {
-        echo "Attention: env/env.php -> failed to open stream: Permission denied. <br/><br/>Solution: add write access to 'env' folder";
+        $finalSetupMessageError =  "message: env/env.php -> failed to open stream: Permission denied. <br/><br/>Solution: add write access to 'env' folder";
     }
 }
 
 
-//header("Location: http://".$env_parameters['url']);
-
 // CREAZIONE DB
 
+require_once "content_setup.phtml";
 ?>

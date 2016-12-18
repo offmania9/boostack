@@ -27,11 +27,11 @@ $config['userToLogin'] = "username"; # "username" | "email" | "both"
 
 // ====== cookie
 // enable or disable Cookies (TRUE need $database_on=TRUE AND $session_on=TRUE)
-$config['cookie_on'] = FALSE;
+$config['cookie_on'] = [cookie_on];
 // Cookies expire
-$config['cookie_expire'] = 2505600; // 60*60*24*29 = 29days
+$config['cookie_expire'] = [cookie_expire]; // 60*60*24*29 = 29days
 // This key is used to generate custom cookie names
-$config['cookie_name'] = "5asmbstk_16";
+$config['cookie_name'] = "[cookie_name]";
 
 // ====== geolocalization
 // enable or disable Geolocalization
@@ -50,7 +50,7 @@ $config['mobile_url'] = NULL;
 
 // ====== log
 // enable or disable boostack Log (#TRUE need $database_on=TRUE)
-$config['log_on'] = FALSE;
+$config['log_on'] = [log_on];
 //(Enable logging options ['error','failure','information','success','warning','user']
 $config['log_enabledTypes'] = array('error','failure','information','success','warning','user','cronjob');
 

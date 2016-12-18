@@ -42,17 +42,25 @@
     $(document).ready(function(){
         $("input[name$='db-active']").click(function() {
             var dbItems = $("input[name^='db-']").parents(".form-group:not('.noHide')");
-            if($(this).val()=="true")
+            if($(this).val()=="true"){
                 dbItems.show();
-            else
+                $("input[id$='db-session-true']").trigger("click");
+                $("input[id$='db-cookie-true']").trigger("click");
+                $("input[id$='db-log-true']").trigger("click");
+            }
+            else{
                 dbItems.hide();
+                $("input[id$='db-session-false']").trigger("click");
+                $("input[id$='db-cookie-false']").trigger("click");
+                $("input[id$='db-log-false']").trigger("click");
+            }
         });
         $("input[name$='db-session-active']").click(function() {
             if($(this).val()=="false")
                 $("input[id$='db-cookie-false']").trigger("click");
         });
         $("input[name$='db-cookie-active']").click(function() {
-            var dbItems = $("input[name^='db-cookie']").parents(".form-group:not('.noHide')");
+            var dbItems = $("input[name^='db-cookie']").parents(".form-group:not('.noHideCookie')");
             if($(this).val()=="true")
                 dbItems.show();
             else
