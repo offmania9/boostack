@@ -3,7 +3,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>Home | Boostack - a full stack web layer for PHP | Boostack.com</title>
     <meta name="description" content="Improve your development and build a modern website in minutes"><meta name="author" content="stefano spagnolo"><meta content="boostack, php, framework, website, productive, simplicity, seo, secure, mysql, open-source" name="Keywords" /><meta content="INDEX, FOLLOW" name="ROBOTS" />
-    <link rel="shortcut icon" href="img/favicon.ico" /><link rel="image_src" href="img/boostack_logo_x210.png" />
+    <link rel="shortcut icon" href="../img/favicon.ico" /><link rel="image_src" href="img/boostack_logo_x210.png" />
     <link href="../assets/css/lib/bootstrap.min.css" rel="stylesheet">
     <link href="../assets/css/lib/animate.min.css" rel="stylesheet">
     <link href="../assets/css/custom.css" rel="stylesheet">
@@ -40,6 +40,9 @@
         -->
 <script type="text/javascript">
     $(document).ready(function(){
+        if($(".setup tr.danger").size()>0){
+            $(".setup .setupInstaller, .setup #initsetup-btn").hide();
+        }
         $("input[name$='db-active']").click(function() {
             var dbItems = $("input[name^='db-']").parents(".form-group:not('.noHide')");
             if($(this).val()=="true"){

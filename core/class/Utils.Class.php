@@ -256,7 +256,6 @@ class Utils
             $t = (int)($et / 86400);
             $res = ($t > 1) ? "$t days ago" : "$t day ago";
         }
-
         return $res;
     }
 
@@ -271,7 +270,7 @@ class Utils
 
     public static function goToMaintenance()
     {
-        global $boostack;
+        $boostack = Boostack::getInstance();
         header("Location: " . $boostack->url . $boostack->getConfig("url_maintenance"));
         exit();
     }

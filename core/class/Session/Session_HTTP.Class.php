@@ -119,7 +119,7 @@ class Session_HTTP
         } else {
             $this->logged_in = false;
             $sql = "INSERT INTO " . $this->http_session_table . "(id,ascii_session_id, logged_in,user_id, created, user_agent)
-							VALUES (NULL,'$id','f',0,'" . time() . "','" . Utils::getUserAgent() . "')";
+							VALUES (NULL,'$id','f',1,'" . time() . "','" . Utils::getUserAgent() . "')";
             $result = $this->dbhandle->prepare($sql);
             $result->execute();
             $sql = "select id from " . $this->http_session_table . " where ascii_session_id = '$id'";
@@ -340,7 +340,7 @@ class Session_HTTP
         global $boostack;
         try {
             if ($this->logged_in == true) {
-                $sql = "UPDATE " . $this->http_session_table . " SET logged_in = 'f', user_id = '0' WHERE id = " . $this->native_session_id;
+                $sql = "UPDATE " . $this->http_session_table . " SET logged_in = 'f', user_id = '1' WHERE id = " . $this->native_session_id;
                 $result = $this->dbhandle->prepare($sql);
                 $result->execute();
                 $this->logged_in = false;

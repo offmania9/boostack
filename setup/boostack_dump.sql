@@ -85,6 +85,7 @@ CREATE TABLE `boostack_user` (
   CONSTRAINT `boostack_user_ibfk_1` FOREIGN KEY (`privilege`) REFERENCES `boostack_user_privilege` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+/*
 LOCK TABLES `boostack_user` WRITE;
 /*!40000 ALTER TABLE `boostack_user` DISABLE KEYS */;
 
@@ -97,7 +98,7 @@ VALUES
 
 /*!40000 ALTER TABLE `boostack_user` ENABLE KEYS */;
 UNLOCK TABLES;
-
+*/
 
 # Dump of table boostack_user_info
 # ------------------------------------------------------------
@@ -131,7 +132,7 @@ CREATE TABLE `boostack_user_info` (
   PRIMARY KEY (`id`),
   CONSTRAINT `user_info_ibfk_1` FOREIGN KEY (`id`) REFERENCES `boostack_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
+/*
 LOCK TABLES `boostack_user_info` WRITE;
 /*!40000 ALTER TABLE `boostack_user_info` DISABLE KEYS */;
 
@@ -144,7 +145,7 @@ VALUES
 
 /*!40000 ALTER TABLE `boostack_user_info` ENABLE KEYS */;
 UNLOCK TABLES;
-
+*/
 
 # Dump of table boostack_user_privilege
 # ------------------------------------------------------------
@@ -187,7 +188,7 @@ CREATE TABLE `boostack_user_registration` (
   PRIMARY KEY (`id`),
   CONSTRAINT `user_registration_ibfk_1` FOREIGN KEY (`id`) REFERENCES `boostack_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
+/*
 LOCK TABLES `boostack_user_registration` WRITE;
 /*!40000 ALTER TABLE `boostack_user_registration` DISABLE KEYS */;
 
@@ -200,7 +201,7 @@ VALUES
 
 /*!40000 ALTER TABLE `boostack_user_registration` ENABLE KEYS */;
 UNLOCK TABLES;
-
+*/
 
 # Dump of table boostack_user_social
 # ------------------------------------------------------------

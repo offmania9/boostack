@@ -78,15 +78,70 @@ if ($envContent === FALSE) {
 
 if ($env_parameters["database_on"] && $finalSetupMessageError=="") {
     try {
-        $db = new PDO('mysql:host=' . $env_parameters["db_host"] . ';dbname=' . $env_parameters["db_name"], $env_parameters["db_username"], $env_parameters["db_password"], array(
-            PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
-        ));
-        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        // TO DO: creazione utenti (UserRegistration ???)
+        require_once("../core/class/Utils.Class.php");
+        require_once("../core/class/Boostack.Class.php");
+        require_once("../core/class/Database/Database_PDO.Class.php");
+        require_once("../core/class/User.Class.php");
+        require_once("../core/class/User/User_Info.Class.php");
+        require_once("../core/class/User/User_Registration.Class.php");
+
+        $db = Database_PDO::getInstance($env_parameters["db_host"], $env_parameters["db_name"], $env_parameters["db_username"], $env_parameters["db_password"]);
         $sql = file_get_contents('boostack_dump.sql');
         $qr = $db->exec($sql);
-        // TO DO: creazione utenti (UserRegistration ???)
+
+        $u = new User_Registration();
+        $arr["username"] = "boostack";
+        $arr["name"] = "Boostack System";
+        $arr["first_name"] = "Boostack";
+        $arr["company"] = "Boostack";
+        $arr["last_name"] = "System";
+        $arr["email"] = "user@boostack.com";
+        $arr["pwd"] = "testing";
+        $arr["privilege"] = "0";
+        $u->insert($arr);
+
+        $u = new User_Registration();
+        $arr["username"] = "boostackuser";
+        $arr["name"] = "Boostack User";
+        $arr["first_name"] = "Boostack";
+        $arr["company"] = "Boostack";
+        $arr["last_name"] = "User";
+        $arr["email"] = "user@boostack.com";
+        $arr["pwd"] = "testing";
+        $arr["privilege"] = "3";
+        $arr["active"] = "1";
+        $u->insert($arr);
+
+        $u = new User_Registration();
+        $arr["username"] = "boostackadmin";
+        $arr["name"] = "Boostack Admin";
+        $arr["first_name"] = "Boostack";
+        $arr["company"] = "Boostack";
+        $arr["last_name"] = "Admin";
+        $arr["email"] = "admin@boostack.com";
+        $arr["pwd"] = "testing";
+        $arr["privilege"] = "2";
+        $arr["active"] = "1";
+        $u->insert($arr);
+
+        $u = new User_Registration();
+        $arr["username"] = "boostacksuperadmin";
+        $arr["name"] = "Boostack SuperAdmin";
+        $arr["first_name"] = "Boostack";
+        $arr["company"] = "Boostack";
+        $arr["last_name"] = "SuperAdmin";
+        $arr["email"] = "superadmin@boostack.com";
+        $arr["pwd"] = "testing";
+        $arr["privilege"] = "1";
+        $arr["active"] = "1";
+        $u->insert($arr);
+
     } catch (PDOException $e) {
-        $finalSetupMessageError = "Database Connection Error. Message: " . $e->getMessage();
+        $finalSetupMessageError = "Database Error. Message: " . $e->getMessage();
+    }
+     catch (Exception $e2) {
+    $finalSetupMessageError = "Error. Message: " . $e2->getMessage();
     }
 }
 
