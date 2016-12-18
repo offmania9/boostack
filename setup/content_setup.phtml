@@ -7,7 +7,8 @@ if (!empty($_POST)) { ?>
                 <?php if (!empty($finalSetupMessageError)) { ?>
                     <div class="alert alert-danger" role="alert">
                         <h3>Attention!</h3>
-                        <p><?= $finalSetupMessageError ?></p>
+                        <p style="font-size: 1.2em;"><?= $finalSetupMessageError ?></p>
+                        <p style="font-size: 1.2em;" class="text-left"><b><a href="javascript:window.history.back();"><< Back</a></b></p>
                     </div>
                 <?php } else { ?>
                     <div class="alert alert-success" role="alert">

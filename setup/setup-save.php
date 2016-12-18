@@ -4,11 +4,11 @@ $input = $_POST;
 $error = FALSE;
 $finalSetupMessageError = "";
 
-if(empty($input['rootpath'])) {
+if (empty($input['rootpath'])) {
     $error = TRUE;
     $finalSetupMessageError .= "Missing rootpath <br/>";
 }
-if(empty($input['url'])) {
+if (empty($input['url'])) {
     $error = TRUE;
     $finalSetupMessageError .= "Missing URL <br/>";
 }
@@ -41,7 +41,7 @@ if($error) {
 $env_parameters = [
     "current_environment" => "local",
     "rootpath" => $input['rootpath'],
-    "url" => rtrim($input['url'],"/").'/',
+    "url" => rtrim($input['url'], "/") . '/',
     "database_on" => $input['db-active'],
     "db_host" => $input['db-host'],
     "db_name" => $input['db-name'],
@@ -58,24 +58,37 @@ $exampleEnvName = "sample.env.php";
 $outputEnvName = "env.php";
 $envPath = "/../core/env/";
 $exampleEnvPath = realpath($exampleEnvName);
-$finalEnvPath = realpath(__DIR__.$envPath)."/".$outputEnvName;
+$finalEnvPath = realpath(__DIR__ . $envPath) . "/" . $outputEnvName;
 
 $envContent = @file_get_contents($exampleEnvPath);
-if($envContent === FALSE){
-    $finalSetupMessageError =  "message: setup/sample.env.php -> failed to open stream: Permission denied. <br/><br/>Solution: add read access to 'setup' folder";
-}
-else{
-    foreach ($env_parameters as $param => $value){
-        $value = ($value == "true" || $value == "false")?strtoupper($value):$value;
+if ($envContent === FALSE) {
+    $finalSetupMessageError = "message: setup/sample.env.php -> failed to open stream: Permission denied. <br/><br/>Solution: add read access to 'setup' folder";
+} else {
+    foreach ($env_parameters as $param => $value) {
+        $value = ($value == "true" || $value == "false") ? strtoupper($value) : $value;
         $envContent = str_replace("[$param]", $value, $envContent);
     }
-    if(@file_put_contents($finalEnvPath, $envContent) === FALSE) {
-        $finalSetupMessageError =  "message: env/env.php -> failed to open stream: Permission denied. <br/><br/>Solution: add write access to 'env' folder";
+    if (@file_put_contents($finalEnvPath, $envContent) === FALSE) {
+        $finalSetupMessageError = "message: env/env.php -> failed to open stream: Permission denied. <br/><br/>Solution: add write access to 'env' folder";
     }
 }
 
 
 // CREAZIONE DB
+
+if ($env_parameters["database_on"] && $finalSetupMessageError=="") {
+    try {
+        $db = new PDO('mysql:host=' . $env_parameters["db_host"] . ';dbname=' . $env_parameters["db_name"], $env_parameters["db_username"], $env_parameters["db_password"], array(
+            PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
+        ));
+        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql = file_get_contents('boostack_dump.sql');
+        $qr = $db->exec($sql);
+        // TO DO: creazione utenti (UserRegistration ???)
+    } catch (PDOException $e) {
+        $finalSetupMessageError = "Database Connection Error. Message: " . $e->getMessage();
+    }
+}
 
 require_once "content_setup.phtml";
 ?>
