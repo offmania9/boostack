@@ -9,8 +9,6 @@ $required_php_version = [
 
 $apache_modules_required = [
     "mod_rewrite",
-    "mod_filter",
-
     "mod_deflate",
     "mod_headers",
 ];
@@ -20,6 +18,7 @@ $apache_modules_optional = [
     "mod_expires",
     "mod_autoindex",
     "mod_include",
+    "mod_filter",
 ];
 $php_extensions_required = [
     "curl",
@@ -89,7 +88,8 @@ foreach($php_configurations_required as $name => $value) {
 $init_rootpath = urlpath_calculation($_SERVER[REQUEST_URI]);
 $init_url = urlpath_calculation($_SERVER[HTTP_HOST].$_SERVER[REQUEST_URI]);
 $init_ip = ($_SERVER['SERVER_ADDR'] == "::1")?"127.0.0.1":$_SERVER['SERVER_ADDR'];
-$isWritebleEnvFolder = is_writable_r(realpath(__DIR__.$envPath));
+$envPath = realpath(__DIR__."/../core/env/");
+$isWritebleEnvFolder = is_writable_r($envPath);
 if(!$isWritebleEnvFolder)
     $requirements_satisfaction = false;
 
