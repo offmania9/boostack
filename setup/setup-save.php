@@ -48,7 +48,7 @@ if ($envContent === FALSE) {
     }
 }
 
-if ($env_parameters["database_on"] && $finalSetupMessageError=="") {
+if ($env_parameters["database_on"]=="true" && $finalSetupMessageError=="") {
     try {
         require_once("../core/class/Utils.Class.php");
         require_once("../core/class/Boostack.Class.php");
