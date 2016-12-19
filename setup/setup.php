@@ -9,8 +9,6 @@ $required_php_version = [
 
 $apache_modules_required = [
     "mod_rewrite",
-    "mod_filter",
-
     "mod_deflate",
     "mod_headers",
 ];
@@ -20,6 +18,7 @@ $apache_modules_optional = [
     "mod_expires",
     "mod_autoindex",
     "mod_include",
+    "mod_filter",
 ];
 $php_extensions_required = [
     "curl",
