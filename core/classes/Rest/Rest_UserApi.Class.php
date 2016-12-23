@@ -8,7 +8,7 @@
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
  * @version 2.2
  */
-require_once 'class/Rest/Rest_Api_Abstract.Class.php';
+require_once 'classes/Rest/Rest_Api_Abstract.Class.php';
 class Rest_UserApi extends Rest_Api_Abstract
 {
     private $privateKey = "iuRJ-8hcN-nXXc-sT3f"; 
