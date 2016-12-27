@@ -1,5 +1,6 @@
 var exampleModuleObject = null;
 var CSRFCheckManager = null;
+var cookieMessageModule = null;
 
 var initLibrary = function() {
 
@@ -12,6 +13,12 @@ var initLibrary = function() {
             exampleModuleObject.init();
         });
     //}
+
+    require(["module/cookieMessageModule"], function (object) {
+        if (cookieMessageModule != null) return;
+        cookieMessageModule = new object();
+        cookieMessageModule.init();
+    });
 
     if (getElementsByClassName("CSRFcheck").length) {
         require(["module/CSRFCheckManager"], function (ccm) {
