@@ -38,14 +38,32 @@ if ($boostack->getConfig('database_on')){
     }
 }
 
-if ($boostack->getConfig('language_on'))
-    require_once (ROOTPATH . "core/lib/check_language.lib.php");
+if ($boostack->getConfig('language_on')) {
+    $language = Language::getLanguage();
+    $languageFile = Language::findLanguageFile($language);
+    Language::setSessionLanguage($language);
+    require_once $languageFile;
+    $boostack->labels = $boostack_labels_strings;
+}
 if ($boostack->getConfig('mobile_on')) {
     $detect = new Mobile_Detect();
     if ($detect->isMobile()) {
         header("location: " . $boostack->getConfig("mobile_url"));
         exit();
     }
+}
+
+function d($var) {
+    echo "<pre>";
+    var_dump($var);
+    echo "</pre>";
+}
+
+function dd($var) {
+    echo "<pre>";
+    var_dump($var);
+    echo "</pre>";
+    die();
 }
 
 ?>

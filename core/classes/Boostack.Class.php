@@ -167,7 +167,12 @@ class Boostack
      */
     public function getFriendlyUrl($virtualPath)
     {
-        return $this->url . $virtualPath;
+        global $objSession;
+        $langUrl = $objSession->SESS_LANGUAGE."/";
+        if(!$this->config['show_default_language_in_URL'] && $objSession->SESS_LANGUAGE == $this->config['language_default'])
+            $langUrl = "";
+
+        return $this->url . $langUrl . $virtualPath;
     }
 
     /*
