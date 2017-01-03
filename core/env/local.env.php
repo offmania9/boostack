@@ -41,7 +41,7 @@ $config['geolocation_on'] = FALSE;
 // enable or disable language check for Multilanguage features (see Language documentation)
 $config["language_on"] = TRUE;
 $config["language_force_default"] = FALSE;
-$config["enabled_languages"] = array("it","en");
+$config["enabled_languages"] = array("en");
 $config["language_default"] = "en"; // must exists file: lang/[$defaultlanguage].inc.php es:lang/en.inc.php
 $config["show_default_language_in_URL"] = FALSE;
 
