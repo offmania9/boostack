@@ -8,7 +8,7 @@ if($envPath && is_file($envPath)) {
     exit();
 }
 require_once (ROOTPATH . "core/env/global.env.php");
-require_once (ROOTPATH . "core/class/Utils.Class.php");
+require_once(ROOTPATH . "core/classes/Utils.Class.php");
 spl_autoload_register('Utils::autoloadClass');
 if ($config['developmentMode']) {
     error_reporting(E_ALL);
@@ -38,14 +38,32 @@ if ($boostack->getConfig('database_on')){
     }
 }
 
-if ($boostack->getConfig('language_on'))
-    require_once (ROOTPATH . "core/lib/check_language.lib.php");
+if ($boostack->getConfig('language_on')) {
+    $language = Language::getLanguage();
+    $languageFile = Language::findLanguageFile($language);
+    Language::setSessionLanguage($language);
+    require_once $languageFile;
+    $boostack->labels = $boostack_labels_strings;
+}
 if ($boostack->getConfig('mobile_on')) {
     $detect = new Mobile_Detect();
     if ($detect->isMobile()) {
         header("location: " . $boostack->getConfig("mobile_url"));
         exit();
     }
+}
+
+function d($var) {
+    echo "<pre>";
+    var_dump($var);
+    echo "</pre>";
+}
+
+function dd($var) {
+    echo "<pre>";
+    var_dump($var);
+    echo "</pre>";
+    die();
 }
 
 ?>

@@ -29,8 +29,8 @@ class Utils
     public static function autoloadClass($className)
     {
         $cn = explode("_", $className);
-        $pathcore = ROOTPATH . "core/class/";
-        $pathcustom = ROOTPATH . "class/";
+        $pathcore = ROOTPATH . "core/classes/";
+        $pathcustom = ROOTPATH . "classes/";
         $filename = "";
         $cnt = count($cn);
         if ($cnt == 1) {

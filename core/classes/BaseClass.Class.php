@@ -27,7 +27,7 @@ abstract class BaseClass implements JsonSerializable {
         if($id !== NULL) {
             $this->load($id);
         } else {
-            self::prepare();
+            $this->prepare();
         }
     }
 
@@ -39,7 +39,7 @@ abstract class BaseClass implements JsonSerializable {
      * @throws Exception
      */
     public function fill($array) {
-        self::prepare($array);
+        $this->prepare($array);
         return true;
     }
 
@@ -59,7 +59,7 @@ abstract class BaseClass implements JsonSerializable {
         if(empty($result)) {
             throw new Exception("No result found in table ".static::TABLENAME." with ID ".$id);
         }
-        self::prepare($result);
+        $this->prepare($result);
         $this->id = $id;
         return true;
     }
@@ -95,13 +95,13 @@ abstract class BaseClass implements JsonSerializable {
      *
      * @param $property_name
      * @return mixed
-     * @throws Exception_FieldNotFound
+     * @throws Exception
      */
     public function __get($property_name) {
         if (property_exists($this, $property_name)) {
             return $this->$property_name;
         } else {
-            throw new Exception_FieldNotFound("Field $property_name not found");
+            throw new Exception("Field $property_name not found");
         }
     }
 
@@ -110,13 +110,13 @@ abstract class BaseClass implements JsonSerializable {
      *
      * @param $property_name
      * @param $val
-     * @throws Exception_FieldNotFound
+     * @throws Exception
      */
     public function __set($property_name, $val) {
         if (property_exists($this, $property_name)) {
             $this->$property_name = $val;
         } else {
-            throw new Exception_FieldNotFound("Field $property_name not found");
+            throw new Exception("Field $property_name not found");
         }
     }
 
@@ -164,7 +164,7 @@ abstract class BaseClass implements JsonSerializable {
         return $objVarsExported;
     }
 
-    private function prepare($array = array()) {
+    protected function prepare($array = array()) {
         $defaultValuesKeys = array_keys($this->default_values);
         $inputKeys = array_keys($array);
         $fieldsNotPresent = array_diff($inputKeys,$defaultValuesKeys,$this->system_excluded,$this->custom_excluded);
@@ -201,7 +201,7 @@ abstract class BaseClass implements JsonSerializable {
         $q = $this->pdo->prepare($query);
 
         foreach($objVars as $key => &$value) {
-            if($value == "") $value = NULL; // TODO verificare se bindare la stringa vuota a NULL è cosa buona e giusta
+            // if($value === "") $value = NULL; // TODO verificare se bindare la stringa vuota a NULL è cosa buona e giusta
             if(in_array($key,$this->system_excluded) || in_array($key,$this->custom_excluded)) continue;
             $q->bindParam(":".$key, $value);
         }
@@ -209,6 +209,40 @@ abstract class BaseClass implements JsonSerializable {
         $q->execute();
 
         $this->id = $this->pdo->lastInsertId();
+        return true;
+    }
+
+    protected function insertWithID($id) {
+        $objVars = get_object_vars($this);
+        $objVars["id"] = $id;
+
+        $system_excluded_without_id = array_diff($this->system_excluded,["id"]);
+        $firstPartOfQuery = "INSERT INTO ".static::TABLENAME." (";
+        $secondPartOfQuery = "VALUES(";
+
+        foreach($objVars as $key => $value) {
+            if(in_array($key,$system_excluded_without_id) || in_array($key,$this->custom_excluded)) continue;
+            $firstPartOfQuery .= "$key,";
+            $secondPartOfQuery .= ":$key,";
+        }
+
+        $firstPartOfQuery = rtrim($firstPartOfQuery, ",").") ";
+        $secondPartOfQuery = rtrim($secondPartOfQuery, ",").")";
+
+        $query = $firstPartOfQuery.$secondPartOfQuery;
+
+        $q = $this->pdo->prepare($query);
+
+        foreach($objVars as $key => &$value) {
+            // if($value === "") $value = NULL; // TODO verificare se bindare la stringa vuota a NULL è cosa buona e giusta
+            if(in_array($key,$system_excluded_without_id) || in_array($key,$this->custom_excluded)) continue;
+            $q->bindParam(":".$key, $value);
+        }
+
+        $q->execute();
+
+        $this->id = $id;
+
         return true;
     }
 
@@ -227,7 +261,7 @@ abstract class BaseClass implements JsonSerializable {
         $q = $this->pdo->prepare($query);
 
         foreach($objVars as $key => &$value) {
-            if($value == "") $value = NULL; // TODO verificare se bindare la stringa vuota a NULL è cosa buona e giusta
+            // if($value === "") $value = NULL; // TODO verificare se bindare la stringa vuota a NULL è cosa buona e giusta
             if(in_array($key,$this->system_excluded) || in_array($key,$this->custom_excluded)) continue;
             $q->bindParam(":".$key, $value);
         }
