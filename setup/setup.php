@@ -87,7 +87,7 @@ foreach($php_configurations_required as $name => $value) {
 
 $init_rootpath = urlpath_calculation($_SERVER[REQUEST_URI]);
 $init_url = urlpath_calculation($_SERVER[HTTP_HOST].$_SERVER[REQUEST_URI]);
-$init_ip = ($_SERVER['SERVER_ADDR'] == "::1")?"127.0.0.1":$_SERVER['SERVER_ADDR'];
+$init_ip = (isset($_SERVER) && $_SERVER['SERVER_ADDR'] == "::1")?"127.0.0.1":$_SERVER['SERVER_ADDR'];
 $envPath = realpath(__DIR__."/../core/env/");
 $isWritebleEnvFolder = is_writable_r($envPath);
 if(!$isWritebleEnvFolder)
