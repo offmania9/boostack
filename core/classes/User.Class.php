@@ -42,7 +42,7 @@ class User extends BaseClass
     public function __set($property_name, $val)
     {
         if($property_name == "pwd") {
-            $this->$property_name = $this->passwordToHash($val);
+            $val = $this->passwordToHash($val);
         }
         parent::__set($property_name, $val);
     }
@@ -107,7 +107,6 @@ class User extends BaseClass
 
     public function passwordToHash($clearpassword)
     {
-        d("hash pwd");
         if (version_compare(PHP_VERSION, '5.5.0') >= 0)
             return password_hash($clearpassword,PASSWORD_DEFAULT);
         else
