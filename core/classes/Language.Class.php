@@ -2,8 +2,8 @@
 
 class Language {
 
-    const LANGUAGE_FILES_PATH = "core/lang/";
-    const LANGUAGE_FILES_EXTENSION = ".inc.php";
+    const LANGUAGE_FILES_PATH = "lang/";
+    const LANGUAGE_FILES_EXTENSION = ".inc.json";
 
     public static function getLanguage() {
         global $objSession;
@@ -44,6 +44,12 @@ class Language {
             return $filePath;
         }
         throw new Exception("Language file ".$filePath." not found");
+    }
+
+    public static function readAndDecodeLanguageFile($file) {
+        $jsonFileContent = file_get_contents($file);
+        $decodedFileContent = json_decode($jsonFileContent, true);
+        return $decodedFileContent;
     }
 
 

@@ -41,9 +41,9 @@ if ($boostack->getConfig('database_on')){
 if ($boostack->getConfig('language_on')) {
     $language = Language::getLanguage();
     $languageFile = Language::findLanguageFile($language);
+    $translatedLabels = Language::readAndDecodeLanguageFile($languageFile);
     Language::setSessionLanguage($language);
-    require_once $languageFile;
-    $boostack->labels = $boostack_labels_strings;
+    $boostack->labels = $translatedLabels;
 }
 if ($boostack->getConfig('mobile_on')) {
     $detect = new Mobile_Detect();
