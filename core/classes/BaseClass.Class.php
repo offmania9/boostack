@@ -272,5 +272,9 @@ abstract class BaseClass implements JsonSerializable {
         return true;
     }
 
+    public function getTablename() {
+        return static::TABLENAME;
+    }
+
 }
 ?>

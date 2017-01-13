@@ -59,7 +59,7 @@ class Utils
         return $ip;
     }
 
-    function isStrongPassword($pwd){
+    public static function isStrongPassword($pwd){
         return preg_match("#.*^(?=.{8,20})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$#", $pwd);
     }
 
