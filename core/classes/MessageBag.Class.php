@@ -29,11 +29,20 @@ class MessageBag implements JsonSerializable {
         $this->data = $data;
     }
 
+    public function getData() {
+        return $this->data;
+    }
+
     public function removeError() {
         $this->error = false;
     }
+
     public function hasError() {
         return $this->error;
+    }
+
+    public function getErrorMessage() {
+        return $this->message;
     }
 
     public function jsonSerialize() {
