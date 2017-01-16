@@ -2,11 +2,11 @@
 /**
  * Boostack: BaseList.Class.php
  * ========================================================================
- * Copyright 2015-2016 Spagnolo Stefano
+ * Copyright 2014-2017 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 2.2
+ * @version 2.3
  */
 abstract class BaseList implements IteratorAggregate, JsonSerializable {
 
@@ -41,12 +41,16 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable {
         return count($this->items);
     }
 
-    protected function isEmpty() {
+    public function isEmpty() {
         return count($this->items) == 0;
     }
 
-    protected function add($element) {
+    public function add($element) {
         $this->items[] = $element;
+    }
+
+    public function toArray() {
+        return $this->items;
     }
 
     /**
@@ -57,44 +61,9 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable {
         return $this->items;
     }
 
-    protected function haskey($key) {
-        // TODO
-        return true;
-    }
-
-    protected function remove($key, $shift = true) {
-        // TODO
-        return true;
-    }
-
-    protected function get($key) {
-        return $this->items[$key];
-    }
-
-    protected function find($field,$value) {
-        // TODO
-        return true;
-    }
-
-    protected function fill($array) {
-        foreach ($array as $elem) {
-            $baseClassInstance = new $this->baseClassName;
-            $baseClassInstance->fill($elem);
-            $this->items[] = $baseClassInstance;
-        }
-    }
-
-    protected function loadAll() {
-        $sql = "SELECT * FROM " . $this->baseClassTablename;
-        $q = $this->pdo->prepare($sql);
-        $q->execute();
-        $queryResults = $q->fetchAll(PDO::FETCH_ASSOC);
-        $this->fill($queryResults);
-        $countResult = count($queryResults);
-        return $countResult;
-    }
-
-
+    /**
+     * Retrieve values with field filtering, ordering and pagination
+     */
     public function view($fields = NULL, $orderColumn = NULL, $orderType = NULL, $numitem = 25, $currentPage = 1) {
         $sql = "";
         $orderType = strtoupper($orderType);
@@ -178,6 +147,46 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable {
 
         return $queryNumberResult;
     }
+
+    public function haskey($key) {
+        return array_key_exists($key,$this->items);
+    }
+
+    protected function remove($key, $shift = true) {
+        // TODO
+        return true;
+    }
+
+    public function get($key) {
+        return $this->items[$key];
+    }
+
+    /**
+     * Fill the list with an array of array of object fields
+     * For example with query results
+     * ex. $array = [ 0 => [ "field1" => "value1", .. ], 1 => [..] ]
+     */
+    protected function fill($array) {
+        foreach ($array as $elem) {
+            $baseClassInstance = new $this->baseClassName;
+            $baseClassInstance->fill($elem);
+            $this->items[] = $baseClassInstance;
+        }
+    }
+
+    public function loadAll() {
+        $sql = "SELECT * FROM " . $this->baseClassTablename;
+        $q = $this->pdo->prepare($sql);
+        $q->execute();
+        $queryResults = $q->fetchAll(PDO::FETCH_ASSOC);
+        $this->fill($queryResults);
+        $countResult = count($queryResults);
+        return $countResult;
+    }
+
+
+
+
 
 }
 
