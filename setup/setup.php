@@ -1,37 +1,35 @@
 <?php
 
 // CONFIGURATION
-
-$required_php_version = [
+$required_php_version = array(
     "5.4.00",
     "50400",
-];
+);
 
-$apache_modules_required = [
+$apache_modules_required = array(
     "mod_rewrite",
     "mod_deflate",
     "mod_headers",
-];
-$apache_modules_optional = [
+);
+$apache_modules_optional = array(
     "mod_setenvif",
     "mod_mime",
     "mod_expires",
     "mod_autoindex",
     "mod_include",
     "mod_filter",
-];
-$php_extensions_required = [
+);
+$php_extensions_required = array(
     "curl",
     "PDO",
     "json",
     "session",
-];
-$php_configurations_required = [
+);
+$php_configurations_required = array(
     "short_open_tag" => true,
-];
+);
 
 // END CONFIGURATION
-
 
 if (!defined('PHP_VERSION_ID')) {
     $version = explode('.', PHP_VERSION);
@@ -85,8 +83,14 @@ foreach($php_configurations_required as $name => $value) {
     }
 }
 
-$init_rootpath = urlpath_calculation($_SERVER[REQUEST_URI]);
-$init_url = urlpath_calculation($_SERVER[HTTP_HOST].$_SERVER[REQUEST_URI]);
+$init_rootpath = "";
+$init_url = "";
+if(isset($_SERVER['REQUEST_URI'])){
+    $init_rootpath = urlpath_calculation($_SERVER['REQUEST_URI']);
+    if(isset($_SERVER['HTTP_HOST'])) {
+        $init_url = urlpath_calculation($_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
+    }
+}
 $init_ip = (isset($_SERVER) && $_SERVER['SERVER_ADDR'] == "::1")?"127.0.0.1":$_SERVER['SERVER_ADDR'];
 $envPath = realpath(__DIR__."/../core/env/");
 $isWritebleEnvFolder = is_writable_r($envPath);
