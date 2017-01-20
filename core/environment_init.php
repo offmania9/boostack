@@ -32,7 +32,7 @@ if ($boostack->getConfig('database_on')){
             $c = Utils::sanitizeInput($_COOKIE[''.$boostack->getConfig('cookie_name')]); //user not logged in but remember-me cookie exists then try to perform loginByCookie function
             if (!$objSession->IsLoggedIn() && $c !== "")
                 if (!$objSession->loginByCookie($c)) //cookie is set but wrong (manually edited)
-                    Utils::goToLogout();
+                    $boostack->logout();
         }
         $CURRENTUSER = $objSession->GetUserObject();
     }
