@@ -6,9 +6,10 @@ class CurlRequest {
 
     private $endpoint = "";
     private $is_post = true;
-    private $fields = array();
     private $return_transfer = true;
     private $encoding = "";
+    private $getFields = array();
+    private $postFields = array();
 
     public function __construct() {
 
@@ -22,23 +23,37 @@ class CurlRequest {
         $this->is_post = $isPost;
     }
 
-    public function setData($data) {
-        $this->fields = $data;
-    }
-
     public function setReturnTransfer($returnTransfer) {
         $this->return_transfer = $returnTransfer;
     }
 
+    public function setGetFields($fields) {
+        $this->getFields = $fields;
+    }
+
+    public function setPostFields($fields) {
+        $this->postFields = $fields;
+    }
+
     public function send() {
         $response = new MessageBag();
+
+        $endpoint = $this->endpoint;
+        if(!empty($this->getFields)) {
+            $endpoint = $this->endpoint."?".http_build_query($this->getFields);
+        }
+
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $this->endpoint);
+        curl_setopt($ch, CURLOPT_URL, $endpoint);
         curl_setopt($ch, CURLOPT_ENCODING , $this->encoding);
         if($this->is_post) {
             curl_setopt($ch, CURLOPT_POST, 1);
         }
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($this->fields));
+
+        if(!empty($this->postFields)) {
+            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($this->postFields));
+        }
+
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, $this->return_transfer);
         $curlResult = curl_exec($ch);
         if($curlResult == false) {
