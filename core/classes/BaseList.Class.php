@@ -41,16 +41,12 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable {
         return count($this->items);
     }
 
-    public function isEmpty() {
+    protected function isEmpty() {
         return count($this->items) == 0;
     }
 
-    public function add($element) {
+    protected function add($element) {
         $this->items[] = $element;
-    }
-
-    public function toArray() {
-        return $this->items;
     }
 
     /**
