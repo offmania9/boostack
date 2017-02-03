@@ -1,5 +1,5 @@
 <?php
-$envPath = realpath(__DIR__."/env/env.php");
+$envPath = realpath(__DIR__."/../config/env/env.php");
 if($envPath && is_file($envPath)) {
     require_once $envPath;
 } else {
@@ -7,7 +7,7 @@ if($envPath && is_file($envPath)) {
     echo "Choose an environment configuration file into '/core/env' folder (local.env.php, staging.env.php or production.env.php) and rename it into 'env.php'.";
     exit();
 }
-require_once (ROOTPATH . "core/env/global.env.php");
+require_once (ROOTPATH . "config/env/global.env.php");
 require_once(ROOTPATH . "core/classes/Utils.Class.php");
 spl_autoload_register('Utils::autoloadClass');
 if ($config['developmentMode']) {
