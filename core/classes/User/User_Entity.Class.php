@@ -113,22 +113,6 @@ class User_Entity extends BaseClass
             return hash("sha512", $clearpassword);
     }
 
-    public function isRegisterbyUsername($username)
-    {
-        $sql = "SELECT id FROM " . self::TABLENAME . " WHERE username ='" . $username . "' ";
-        $q = $this->pdo->query($sql);
-        $q2 = $q->fetch();
-        return ($q->rowCount() == 0) ? NULL : $q2[0];
-    }
-
-    public function isUsernameRegistered($username)
-    {
-        $sql = "SELECT id FROM " . self::TABLENAME . " WHERE username ='" . $username . "' ";
-        $q = $this->pdo->query($sql);
-        $q2 = $q->fetch();
-        return ($q->rowCount() == 0) ? NULL : $q2[0];
-    }
-
     public function getUserIDByEmail($email, $throwException = true)
     {
         $sql = "SELECT id FROM " . self::TABLENAME . " WHERE email ='" . $email . "' ";
@@ -150,6 +134,19 @@ class User_Entity extends BaseClass
         if ($q->rowCount() == 0){
             if ($throwException)
                 throw new Exception("Attention! User or Email not found.",1);
+            return false;
+        }
+        return true;
+    }
+
+    public function checkUserExistsByUsername($username, $throwException = true)
+    {
+        $sql = "SELECT id FROM " . self::TABLENAME . " WHERE username ='" . $username . "' ";
+        $q = $this->pdo->query($sql);
+        $q2 = $q->fetch();
+        if ($q->rowCount() == 0){
+            if ($throwException)
+                throw new Exception("Attention! Username or Email not found.",1);
             return false;
         }
         return true;
@@ -185,6 +182,24 @@ class User_Entity extends BaseClass
         if ($boostack->getConfig("userToLogin") == "email") {
             if (!self::checkUserExistsByEmail($username)) {
                 $boostack->writeLog("User -> tryLogin: User doesn't exist by Email Address", "user");
+                if ($throwException)
+                    throw new Exception("Username or password not valid.", 6);
+                return false;
+            }
+        }
+
+        if ($boostack->getConfig("userToLogin") == "username") {
+            if (!self::checkUserExistsByusername($username)) {
+                $boostack->writeLog("User -> tryLogin: User doesn't exist by Username", "user");
+                if ($throwException)
+                    throw new Exception("Username or password not valid.", 6);
+                return false;
+            }
+        }
+
+        if($boostack->getConfig("userToLogin") == "both") {
+            if(!self::checkUserExistsByEmail($username,false) && !self::checkUserExistsByUsername($username,false)) {
+                $boostack->writeLog("User -> tryLogin: User doesn't exist by Username and by email", "user");
                 if ($throwException)
                     throw new Exception("Username or password not valid.", 6);
                 return false;

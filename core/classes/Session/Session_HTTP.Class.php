@@ -170,16 +170,16 @@ class Session_HTTP
     }
 
     protected function getSQLPartOfLoginQuery($strUsername){
-        $sqlWhere = "username='".$strUsername."'";
+        $sqlWhere = " username='".$strUsername."' ";
         switch(Boostack::getInstance()->getConfig("userToLogin")){
             case "email":
-                $sqlWhere = "email='".$strUsername."'";
+                $sqlWhere = " email='".$strUsername."' ";
                 break;
             case "both":
-                $sqlWhere = "(email='".$strUsername."' OR username='".$strUsername."'";
+                $sqlWhere = " (email='".$strUsername."' OR username='".$strUsername."') ";
                 break;
             default:
-                $sqlWhere = "username='".$strUsername."'";
+                $sqlWhere = " username='".$strUsername."' ";
         }
         return $sqlWhere;
     }
