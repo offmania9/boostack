@@ -1,15 +1,14 @@
 <?php
-
 /**
- * Boostack: User_Info.Class.php
+ * Boostack: User_InfoEntity.Class.php
  * ========================================================================
- * Copyright 2015-2016 Spagnolo Stefano
+ * Copyright 2014-2017 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 2.2
+ * @version 2.4
  */
-class User_Info extends BaseClass
+class User_InfoEntity extends User_Entity
 {
 
     protected $first_name;
@@ -33,7 +32,7 @@ class User_Info extends BaseClass
     protected $religion;
     protected $pic_big;
     protected $sex;
-    protected $name;
+   # protected $name;
 
     const TABLENAME = "boostack_user_info";
 
@@ -62,17 +61,21 @@ class User_Info extends BaseClass
         "name" => "",
     ];
 
-    protected $userInstance;
-    protected $custom_excluded = ['userInstance'];
+    #protected $userInstance;
+    #protected $custom_excluded = ['userInstance'];
 
     public function __construct($id = null)
     {
         parent::init($id);
-        $this->userInstance = new User($id); // TODO lazy loading su userInstance
+        //$this->userInstance = new User_Entity($id); // TODO lazy loading su userInstance
     }
 
     public function save()
     {
+        $super = new User_Entity();
+        $super->save();
+        parent::save();
+        /*
         if (empty($this->userInstance->id)) {
             $this->userInstance->save();
             parent::insertWithID($this->userInstance->id);
@@ -80,6 +83,7 @@ class User_Info extends BaseClass
             $this->userInstance->save();
             parent::save();
         }
+        */
     }
 }
 

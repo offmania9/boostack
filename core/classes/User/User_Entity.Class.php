@@ -7,9 +7,9 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 2.3
+ * @version 2.4
  */
-class User extends BaseClass
+class User_Entity extends BaseClass
 {
     protected $active;
     protected $privilege;
@@ -54,56 +54,6 @@ class User extends BaseClass
         }
         parent::prepare($array);
     }
-
-//    public function __construct($id = -1, $init = true)
-//    {
-//        $this->pdo = Database_PDO::getInstance();
-//        if ($id != - 1) {
-//            if ($init) {
-//                $sql = "SELECT * FROM " . self::TABLENAME . " WHERE id ='" . $id . "' ";
-//                $fields = $this->pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
-//                if (get_class($this) != __CLASS__)
-//                    $this->dbfield = $fields;
-//                $this->id = $fields["id"];
-//                $this->active = $fields["active"];
-//                $this->privilege = $fields["privilege"];
-//                $this->name = $fields["name"];
-//                $this->username = $fields["username"];
-//                $this->pwd = $fields["pwd"];
-//                $this->email = $fields["email"];
-//                $this->last_access = $fields["last_access"];
-//                $this->session_cookie = $fields["session_cookie"];
-//                $this->pic_square = $fields["pic_square"];
-//            } else {
-//                $sql = "SELECT id FROM " . self::TABLENAME . " WHERE id ='" . $id . "' ";
-//                $fields = $this->pdo->query($sql)->fetch();
-//                $this->id = $fields["id"];
-//            }
-//        }
-//    }
-
-//    public function prepare($post_array)
-//    {
-//        global $default_profilepic;
-//        $fields["active"] = (! isset($post_array["active"])) ? "0" : $post_array["active"];
-//        $fields["privilege"] = (!isset($post_array["privilege"]) || $post_array["privilege"] == "") ? "0" : $post_array["privilege"];
-//        $fields["name"] = (!isset($post_array["name"]) || $post_array["name"] == "") ? "" : $post_array["name"];
-//        $fields["username"] = $post_array["username"];
-//        if (!isset($post_array["pwd"]) || $post_array["pwd"] == "")
-//            $this->excluse_from_update[] = "pwd";
-//        else
-//            $fields["pwd"] = self::passwordToHash($post_array["pwd"]);
-//
-//        $fields["email"] = $post_array["email"];
-//        $fields["last_access"] = "0";
-//        $fields["session_cookie"] = (! isset($post_array["session_cookie"])) ? "" : $post_array["session_cookie"];
-//        $fields["pic_square"] = (!isset($post_array["pic_square"]) || $post_array["pic_square"] == "") ? $default_profilepic : $post_array["pic_square"];
-//
-//        foreach ($fields as $key => $value)
-//            $this->$key = $value; // OBJECT UPDATE
-//
-//        return $fields;
-//    }
 
     public function passwordToHash($clearpassword)
     {

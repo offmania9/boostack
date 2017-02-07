@@ -6,7 +6,7 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 2.3
+ * @version 2.4
  */
 
 // #######################
@@ -21,11 +21,12 @@ if(isset($_POST["email"]) && isset($_POST["psw1"]) && isset($_POST["psw2"])) {
     $psw1 = Utils::sanitizeInput($_POST["psw1"]);
     $psw2 = Utils::sanitizeInput($_POST["psw2"]);
     if(Utils::checkEmailFormat($email) && $psw1 === $psw2) {
-        $user = new User_Registration();
+        $user = new User_RegistrationEntity();
+        $arr = array();
         $arr["username"] = $email;
         $arr["email"] = $email;
         $arr["pwd"] = $psw1;
-        $user->insert($arr);
+        $user->save($arr);
         require_once $boostack->registerTemplateFile("boostack/content_login_logged.phtml");
     }
     else
@@ -34,6 +35,16 @@ if(isset($_POST["email"]) && isset($_POST["psw1"]) && isset($_POST["psw2"])) {
 else {
     require_once $boostack->registerTemplateFile("boostack/content_registration.phtml");
 }
+
+$u = new User_InfoEntity();
+$arr["username"] = "usern";
+$arr["active"] = "1";
+$arr["email"] = "email";
+$arr["pwd"] = "passw";
+$arr["company"] = "company";
+$u->save($arr);
+var_dump($u);
+
 
 require_once $boostack->registerTemplateFile("boostack/footer.phtml");
 

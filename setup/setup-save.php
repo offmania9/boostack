@@ -54,9 +54,9 @@ if ($env_parameters["database_on"]=="true" && $finalSetupMessageError=="") {
         require_once("../core/classes/Boostack.Class.php");
         require_once("../core/classes/Database/Database_PDO.Class.php");
         require_once("../core/classes/BaseClass.Class.php");
-        require_once("../core/classes/User.Class.php");
-        require_once("../core/classes/User/User_Info.Class.php");
-        require_once("../core/classes/User/User_Registration.Class.php");
+        require_once("../core/classes/User_Entity.Class.php");
+        require_once("../core/classes/User/User_InfoEntity.Class.php");
+        require_once("../core/classes/User/User_RegistrationEntity.Class.php");
 
         $db0 = new PDO('mysql:host=' . $env_parameters["db_host"] . ';dbname=' . $env_parameters["db_name"], $env_parameters["db_username"], $env_parameters["db_password"], array(
             PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
@@ -67,7 +67,7 @@ if ($env_parameters["database_on"]=="true" && $finalSetupMessageError=="") {
         $sql = file_get_contents('boostack_dump.sql');
         $qr = $db->exec($sql);
 
-        $u = new User_Registration();
+        $u = new User_RegistrationEntity();
         $u->userInfoInstance->userInstance->username = "boostack";
         $u->userInfoInstance->userInstance->name = "Boostack System";
         $u->userInfoInstance->userInstance->email = "user@boostack.com";
@@ -78,7 +78,7 @@ if ($env_parameters["database_on"]=="true" && $finalSetupMessageError=="") {
         $u->userInfoInstance->last_name = "System";
         $u->save();
 
-        $u = new User_Registration();
+        $u = new User_RegistrationEntity();
         $u->userInfoInstance->userInstance->username = "boostackuser";
         $u->userInfoInstance->userInstance->name = "Boostack User";
         $u->userInfoInstance->userInstance->email = "user@boostack.com";
@@ -90,7 +90,7 @@ if ($env_parameters["database_on"]=="true" && $finalSetupMessageError=="") {
         $u->userInfoInstance->last_name = "User";
         $u->save();
 
-        $u = new User_Registration();
+        $u = new User_RegistrationEntity();
         $u->userInfoInstance->userInstance->username = "boostackadmin";
         $u->userInfoInstance->userInstance->name = "Boostack Admin";
         $u->userInfoInstance->userInstance->email = "admin@boostack.com";
@@ -102,7 +102,7 @@ if ($env_parameters["database_on"]=="true" && $finalSetupMessageError=="") {
         $u->userInfoInstance->last_name = "Admin";
         $u->save();
 
-        $u = new User_Registration();
+        $u = new User_RegistrationEntity();
         $u->userInfoInstance->userInstance->username = "boostacksuperadmin";
         $u->userInfoInstance->userInstance->name = "Boostack SuperAdmin";
         $u->userInfoInstance->userInstance->email = "superadmin@boostack.com";

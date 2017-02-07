@@ -6,7 +6,7 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 2.3
+ * @version 2.4
  */
 abstract class BaseClass implements JsonSerializable {
 
@@ -41,6 +41,17 @@ abstract class BaseClass implements JsonSerializable {
     public function fill($array) {
         $this->prepare($array);
         return true;
+    }
+
+    public function clearAndFill($array){
+        $defaultValuesKeys = array_keys($this->default_values);
+        $inputKeys = array_keys($array);
+        $fieldsNotPresent = array_diff($inputKeys,$defaultValuesKeys,$this->system_excluded,$this->custom_excluded);
+        if(count($fieldsNotPresent) > 0) {
+            foreach ($fieldsNotPresent as $value)
+                unset($array[$value]);
+        }
+        return $this->fill($array);
     }
 
     /**
@@ -184,6 +195,7 @@ abstract class BaseClass implements JsonSerializable {
 
     private function insert() {
         $objVars = get_object_vars($this);
+        //var_dump($objVars);
 
         $firstPartOfQuery = "INSERT INTO ".static::TABLENAME." (id";
         $secondPartOfQuery = "VALUES(NULL";
@@ -262,7 +274,8 @@ abstract class BaseClass implements JsonSerializable {
 
         foreach($objVars as $key => &$value) {
             // if($value === "") $value = NULL; // TODO verificare se bindare la stringa vuota a NULL è cosa buona e giusta
-            if(in_array($key,$this->system_excluded) || in_array($key,$this->custom_excluded)) continue;
+            if(in_array($key,$this->system_excluded) || in_array($key,$this->custom_excluded))
+                continue;
             $q->bindParam(":".$key, $value);
         }
 

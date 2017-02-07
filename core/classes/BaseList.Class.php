@@ -6,7 +6,7 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 2.3
+ * @version 2.4
  */
 abstract class BaseList implements IteratorAggregate, JsonSerializable {
 
@@ -37,16 +37,24 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable {
         return new ArrayIterator($this->items);
     }
 
+    public function getItemsArray() {
+        return $this->items;
+    }
+
     public function size() {
         return count($this->items);
     }
 
-    protected function isEmpty() {
+    public function isEmpty() {
         return count($this->items) == 0;
     }
 
-    protected function add($element) {
+    public function add($element) {
         $this->items[] = $element;
+    }
+
+    public function toArray() {
+        return $this->items;
     }
 
     /**
@@ -75,51 +83,64 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable {
         $sqlMaster = "SELECT * FROM " . $this->baseClassTablename . " ";
 
         $sql .= "WHERE" . " ";
-        foreach ($fields as $option) {
-            if ($option[0] == "datetime") {
-                $sql .= "FROM_UNIXTIME(" . $option[0] . ") ";
-            } else
-                $sql .= $option[0] . " ";
-            $option[1] = strtoupper($option[1]);
-            switch ($option[1]) {
-                case '&LT;&GT;': {
-                    $sql .= "!= '" . $option[2] . "'";
-                    break;
+        $separator = " AND ";
+        $count = 0;
+        if(count($fields)>0){
+            foreach ($fields as $option) {
+                if($count > 0) $sql .= $separator;
+                if ($option[0] == "datetime") {
+                    $sql .= "FROM_UNIXTIME(" . $option[0] . ") ";
+                } else
+                    $sql .= $option[0] . " ";
+                $option[1] = strtoupper($option[1]);
+                switch ($option[1]) {
+                    case '<>':
+                    case '&LT;&GT;': {
+                        $sql .= "!= '" . $option[2] . "'";
+                        break;
+                    }
+                    case 'LIKE': {
+                        $sql .= $option[1] . " '%" . $option[2] . "%'";
+                        break;
+                    }
+                    case '=': {
+                        $sql .= $option[1] . " '" . $option[2] . "'";
+                        break;
+                    }
+                    case '<':
+                    case '&LT;': {
+                        $sql .= "< '" . $option[2] . "'";
+                        break;
+                    }
+                    case '<=':
+                    case '&LT;=': {
+                        $sql .= "<= '" . $option[2] . "'";
+                        break;
+                    }
+                    case '>':
+                    case '&GT;': {
+                        $sql .= "> '" . $option[2] . "'";
+                        break;
+                    }
+                    case '>=':
+                    case '&GT;=': {
+                        $sql .= ">= '" . $option[2] . "'";
+                        break;
+                    }
                 }
-                case 'LIKE': {
-                    $sql .= $option[1] . " '%" . $option[2] . "%'";
-                    break;
-                }
-                case '=': {
-                    $sql .= $option[1] . " '" . $option[2] . "'";
-                    break;
-                }
-                case '&LT;': {
-                    $sql .= "< '" . $option[2] . "'";
-                    break;
-                }
-                case '&LT;=': {
-                    $sql .= "<= '" . $option[2] . "'";
-                    break;
-                }
-                case '&GT;': {
-                    $sql .= "> '" . $option[2] . "'";
-                    break;
-                }
-                case '&GT;=': {
-                    $sql .= ">= '" . $option[2] . "'";
-                    break;
-                }
+                $count++;
             }
         }
-
         $q = $this->pdo->prepare($sqlCount . $sql);
         $q->execute();
         $result = $q->fetch();
 
         $queryNumberResult = intval($result[0]);
         $maxPage = floor($queryNumberResult / $numitem) + 1;
-        if ($currentPage > $maxPage) throw new Exception("Invalid Current Page");
+        if ($currentPage >= $maxPage){
+            $maxPage = floor($queryNumberResult / 25) + 1;
+            $currentPage = 1;
+        };
 
         if ($orderColumn != NULL) {
             $sql .= " ORDER BY" . " " . $orderColumn;
@@ -179,7 +200,5 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable {
         $countResult = count($queryResults);
         return $countResult;
     }
-
 }
-
 ?>
