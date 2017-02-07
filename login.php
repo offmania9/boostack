@@ -6,7 +6,7 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 2.3
+ * @version 2.4
  */
 
 // #######################
@@ -26,7 +26,7 @@ if($boostack->getConfig('session_on')) {
                     $password = Utils::sanitizeInput($_POST["btk_pwd"]);
                     $rememberMe = (isset($_POST['rememberme']) && $_POST['rememberme'] == '1' && $boostack->getConfig('cookie_on')) ? true : false;
                     $objSession->LastTryLogin = time();
-                    $anonymousUser = new User();
+                    $anonymousUser = new User_Entity();
                     Utils::checkStringFormat($password);
                     if ($anonymousUser->tryLogin($user, $password, $rememberMe,false,false)) {
                         header("Location: " . $boostack->getFriendlyUrl("login"));

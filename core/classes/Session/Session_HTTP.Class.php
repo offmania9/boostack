@@ -7,7 +7,7 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 2.3
+ * @version 2.4
  */
 class Session_HTTP
 {
@@ -156,8 +156,8 @@ class Session_HTTP
     public function GetUserObject()
     {
         if ($this->logged_in) {
-            if (class_exists("User")) {
-                $objUser = new User($this->user_id);
+            if (class_exists("User_Entity")) {
+                $objUser = new User_Entity($this->user_id);
                 return ($objUser);
             }
         }
@@ -270,7 +270,7 @@ class Session_HTTP
                         $password = Utils::sanitizeInput($p);
                         $rememberMe = (isset($r) && $r == '1' && $boostack->getConfig('cookie_on')) ? true : false;
                         $this->LastTryLogin = time();
-                        $anonymousUser = new User();
+                        $anonymousUser = new User_Entity();
                         Utils::checkStringFormat($password);
                         if ($anonymousUser->tryLogin($user, $password, $rememberMe, $throwException)) {
                             header("Location: " . $boostack->getFriendlyUrl("login"));
