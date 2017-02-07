@@ -28,24 +28,9 @@ class User_Registration extends BaseClass
         "join_idconfirm" => "",
     ];
 
-    protected $userInfoInstance;
-    protected $custom_excluded = ['userInfoInstance'];
-
     public function __construct($id = null)
     {
         parent::init($id);
-        $this->userInfoInstance = new User_Info($id); // TODO lazy loading su userInfoInstance
-    }
-
-    public function save()
-    {
-        if (empty($this->userInfoInstance->id)) {
-            $this->userInfoInstance->save();
-            parent::insertWithID($this->userInfoInstance->id);
-        } else {
-            $this->userInfoInstance->save();
-            parent::save();
-        }
     }
 
 }

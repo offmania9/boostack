@@ -67,11 +67,16 @@ abstract class BaseClass implements JsonSerializable {
     /**
      * Save the object into the database
      *
+     * @param $forcedID: if not null, insert the entity with $forceID as id
+     *
      * @return bool
      */
-    public function save() {
+    public function save($forcedID = null) {
         if(empty($this->id)) {
-            return $this->insert();
+            if(empty($forcedID)) {
+                return $this->insert();
+            }
+            return $this->insertWithID($forcedID);
         } else {
             return $this->update();
         }
@@ -164,6 +169,26 @@ abstract class BaseClass implements JsonSerializable {
         return $objVarsExported;
     }
 
+    /**
+     * Return the object database table
+     */
+    public function getTablename() {
+        return static::TABLENAME;
+    }
+
+    /**
+     * Return the list of object attributes
+     */
+    public function getAttributes() {
+        $objVars = get_object_vars($this);
+        $attributes = array();
+        foreach($objVars as $key => $value) {
+            if(in_array($key,$this->system_excluded) || in_array($key,$this->custom_excluded)) continue;
+            $attributes[] = $key;
+        }
+        return $attributes;
+    }
+
     protected function prepare($array = array()) {
         $defaultValuesKeys = array_keys($this->default_values);
         $inputKeys = array_keys($array);
@@ -183,6 +208,7 @@ abstract class BaseClass implements JsonSerializable {
     }
 
     private function insert() {
+
         $objVars = get_object_vars($this);
 
         $firstPartOfQuery = "INSERT INTO ".static::TABLENAME." (id";
@@ -270,10 +296,6 @@ abstract class BaseClass implements JsonSerializable {
         $q->execute();
 
         return true;
-    }
-
-    public function getTablename() {
-        return static::TABLENAME;
     }
 
 }

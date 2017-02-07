@@ -62,25 +62,11 @@ class User_Info extends BaseClass
         "name" => "",
     ];
 
-    protected $userInstance;
-    protected $custom_excluded = ['userInstance'];
-
     public function __construct($id = null)
     {
         parent::init($id);
-        $this->userInstance = new User($id); // TODO lazy loading su userInstance
     }
 
-    public function save()
-    {
-        if (empty($this->userInstance->id)) {
-            $this->userInstance->save();
-            parent::insertWithID($this->userInstance->id);
-        } else {
-            $this->userInstance->save();
-            parent::save();
-        }
-    }
 }
 
 ?>
