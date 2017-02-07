@@ -16,9 +16,7 @@ $boostack->renderOpenHtmlHeadTags("Home");
 
 require_once $boostack->registerTemplateFile("boostack/header.phtml");
 
-#require_once $boostack->registerTemplateFile("boostack/content_index_out.phtml");
-$u= new User_Entity(2);
-dd($u);
+require_once $boostack->registerTemplateFile("boostack/content_index_out.phtml");
 
 require_once $boostack->registerTemplateFile("boostack/footer.phtml");
 
