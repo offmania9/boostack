@@ -24,6 +24,7 @@ if(isset($_POST["email"]) && isset($_POST["psw1"]) && isset($_POST["psw2"])) {
         $user = new User();
         $user->username = $email;
         $user->email = $email;
+        $user->active = true;
         $user->pwd = $psw1;
         $user->save();
         require_once $boostack->registerTemplateFile("boostack/content_login_logged.phtml");
