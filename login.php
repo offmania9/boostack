@@ -26,7 +26,7 @@ if($boostack->getConfig('session_on')) {
                     $password = Utils::sanitizeInput($_POST["btk_pwd"]);
                     $rememberMe = (isset($_POST['rememberme']) && $_POST['rememberme'] == '1' && $boostack->getConfig('cookie_on')) ? true : false;
                     $objSession->LastTryLogin = time();
-                    $anonymousUser = new User_Entity();
+                    $anonymousUser = new User();
                     Utils::checkStringFormat($password);
                     if ($anonymousUser->tryLogin($user, $password, $rememberMe,false,false)) {
                         header("Location: " . $boostack->getFriendlyUrl("login"));

@@ -157,7 +157,7 @@ class Session_HTTP
     {
         if ($this->logged_in) {
             if (class_exists("User_Entity")) {
-                $objUser = new User_Entity($this->user_id);
+                $objUser = new User($this->user_id);
                 return ($objUser);
             }
         }
@@ -270,7 +270,7 @@ class Session_HTTP
                         $password = Utils::sanitizeInput($p);
                         $rememberMe = (isset($r) && $r == '1' && $boostack->getConfig('cookie_on')) ? true : false;
                         $this->LastTryLogin = time();
-                        $anonymousUser = new User_Entity();
+                        $anonymousUser = new User();
                         Utils::checkStringFormat($password);
                         if ($anonymousUser->tryLogin($user, $password, $rememberMe, $throwException)) {
                             header("Location: " . $boostack->getFriendlyUrl("login"));
