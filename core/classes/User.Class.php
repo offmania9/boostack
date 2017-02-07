@@ -90,6 +90,7 @@ class User implements JsonSerializable {
     }
 
     public function __get($property) {
+        if($property == "id") return $this->id;
         if(!isset($this->attributes[$property]))
             throw new Exception("Field $property not found");
         $objectInstance = $this->attributes[$property];
@@ -105,6 +106,10 @@ class User implements JsonSerializable {
             "user" => $this->objects[User::class],
             "userinfo" => $this->objects[User_Info::class],
         ];
+    }
+
+    public function tryLogin($username, $password, $cookieRememberMe, $throwException = true) {
+        return $this->objects[User_Entity::class]->tryLogin($username, $password, $cookieRememberMe, $throwException);
     }
 
 }
