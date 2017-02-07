@@ -92,7 +92,7 @@ if(isset($_SERVER['REQUEST_URI'])){
     }
 }
 $init_ip = (isset($_SERVER) && $_SERVER['SERVER_ADDR'] == "::1")?"127.0.0.1":$_SERVER['SERVER_ADDR'];
-$envPath = realpath(__DIR__."/../core/env/");
+$envPath = realpath(__DIR__."/../config/env/");
 $isWritebleEnvFolder = is_writable_r($envPath);
 if(!$isWritebleEnvFolder)
     $requirements_satisfaction = false;

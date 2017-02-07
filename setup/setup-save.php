@@ -30,7 +30,7 @@ $env_parameters = [
 
 $exampleEnvName = "sample.env.php";
 $outputEnvName = "env.php";
-$envPath = "/../core/env/";
+$envPath = "/../config/env/";
 $exampleEnvPath = realpath($exampleEnvName);
 $finalEnvPath = realpath(__DIR__ . $envPath) . "/" . $outputEnvName;
 
@@ -55,8 +55,11 @@ if ($env_parameters["database_on"]=="true" && $finalSetupMessageError=="") {
         require_once("../core/classes/Database/Database_PDO.Class.php");
         require_once("../core/classes/BaseClass.Class.php");
         require_once("../core/classes/User.Class.php");
+        require_once("../core/classes/User/User_Entity.Class.php");
         require_once("../core/classes/User/User_Info.Class.php");
         require_once("../core/classes/User/User_Registration.Class.php");
+        require_once("../core/classes/User/User_Social.Class.php");
+        require_once("../core/classes/LogLevel.Class.php");
 
         $db0 = new PDO('mysql:host=' . $env_parameters["db_host"] . ';dbname=' . $env_parameters["db_name"], $env_parameters["db_username"], $env_parameters["db_password"], array(
             PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
@@ -67,51 +70,55 @@ if ($env_parameters["database_on"]=="true" && $finalSetupMessageError=="") {
         $sql = file_get_contents('boostack_dump.sql');
         $qr = $db->exec($sql);
 
-        $u = new User_Registration();
-        $u->userInfoInstance->userInstance->username = "boostack";
-        $u->userInfoInstance->userInstance->name = "Boostack System";
-        $u->userInfoInstance->userInstance->email = "user@boostack.com";
-        $u->userInfoInstance->userInstance->pwd = "testing";
-        $u->userInfoInstance->userInstance->privilege = "0";
-        $u->userInfoInstance->first_name = "Boostack";
-        $u->userInfoInstance->company = "Boostack";
-        $u->userInfoInstance->last_name = "System";
+        $u = new User();
+        $u->username = "boostack";
+        $u->name = "Boostack System";
+        $u->full_name = "Boostack System";
+        $u->email = "user@boostack.com";
+        $u->pwd = "testing";
+        $u->privilege = "0";
+        $u->first_name = "Boostack";
+        $u->company = "Boostack";
+        $u->last_name = "System";
         $u->save();
 
-        $u = new User_Registration();
-        $u->userInfoInstance->userInstance->username = "boostackuser";
-        $u->userInfoInstance->userInstance->name = "Boostack User";
-        $u->userInfoInstance->userInstance->email = "user@boostack.com";
-        $u->userInfoInstance->userInstance->pwd = "testing";
-        $u->userInfoInstance->userInstance->privilege = "3";
-        $u->userInfoInstance->userInstance->active = "1";
-        $u->userInfoInstance->first_name = "Boostack";
-        $u->userInfoInstance->company = "Boostack";
-        $u->userInfoInstance->last_name = "User";
+        $u = new User();
+        $u->username = "boostackuser";
+        $u->name = "Boostack User";
+        $u->full_name = "Boostack User";
+        $u->email = "user@boostack.com";
+        $u->pwd = "testing";
+        $u->privilege = "3";
+        $u->active = "1";
+        $u->first_name = "Boostack";
+        $u->company = "Boostack";
+        $u->last_name = "User";
         $u->save();
 
-        $u = new User_Registration();
-        $u->userInfoInstance->userInstance->username = "boostackadmin";
-        $u->userInfoInstance->userInstance->name = "Boostack Admin";
-        $u->userInfoInstance->userInstance->email = "admin@boostack.com";
-        $u->userInfoInstance->userInstance->pwd = "testing";
-        $u->userInfoInstance->userInstance->privilege = "2";
-        $u->userInfoInstance->userInstance->active = "1";
-        $u->userInfoInstance->first_name = "Boostack";
-        $u->userInfoInstance->company = "Boostack";
-        $u->userInfoInstance->last_name = "Admin";
+        $u = new User();
+        $u->username = "boostackadmin";
+        $u->name = "Boostack Admin";
+        $u->full_name = "Boostack Admin";
+        $u->email = "admin@boostack.com";
+        $u->pwd = "testing";
+        $u->privilege = "2";
+        $u->active = "1";
+        $u->first_name = "Boostack";
+        $u->company = "Boostack";
+        $u->last_name = "Admin";
         $u->save();
 
-        $u = new User_Registration();
-        $u->userInfoInstance->userInstance->username = "boostacksuperadmin";
-        $u->userInfoInstance->userInstance->name = "Boostack SuperAdmin";
-        $u->userInfoInstance->userInstance->email = "superadmin@boostack.com";
-        $u->userInfoInstance->userInstance->pwd = "testing";
-        $u->userInfoInstance->userInstance->privilege = "1";
-        $u->userInfoInstance->userInstance->active = "1";
-        $u->userInfoInstance->first_name = "Boostack";
-        $u->userInfoInstance->company = "Boostack";
-        $u->userInfoInstance->last_name = "SuperAdmin";
+        $u = new User();
+        $u->username = "boostacksuperadmin";
+        $u->name = "Boostack SuperAdmin";
+        $u->full_name = "Boostack SuperAdmin";
+        $u->email = "superadmin@boostack.com";
+        $u->pwd = "testing";
+        $u->privilege = "1";
+        $u->active = "1";
+        $u->first_name = "Boostack";
+        $u->company = "Boostack";
+        $u->last_name = "SuperAdmin";
         $u->save();
 
     } catch (PDOException $e) {

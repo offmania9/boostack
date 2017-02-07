@@ -98,7 +98,7 @@ CREATE TABLE `boostack_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `active` varchar(1) NOT NULL,
   `privilege` int(11) DEFAULT NULL,
-  `name` varchar(50) NOT NULL,
+  `full_name` varchar(50) NOT NULL,
   `username` text,
   `pwd` varchar(255) NOT NULL DEFAULT '',
   `email` varchar(255) NOT NULL,
@@ -174,7 +174,6 @@ CREATE TABLE `boostack_user_social` (
   `website` varchar(255) NOT NULL,
   `extra` varchar(10) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `uid` (`uid`,`type`),
   KEY `id` (`id`),
   CONSTRAINT `user_social_ibfk_1` FOREIGN KEY (`id`) REFERENCES `boostack_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
