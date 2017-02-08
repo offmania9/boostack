@@ -10,13 +10,10 @@
  */
 class LogList extends BaseList {
 
-    private $pdo;
-
-    const TABLENAME = "boostack_log";
+    const BASE_CLASS = Log::class;
 
     public function __construct() {
-        $this->pdo = Database_PDO::getInstance();
-        $this->items = [];
+        parent::init();
     }
 
     public function truncate(){
