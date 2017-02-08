@@ -103,7 +103,7 @@ class Session_CSRF extends Session_HTTP
         catch(Exception $e)
         {
             $boostack->writeLog('Session_CSRF -> CSRFCheckValidity -> Caught exception: '.$e->getMessage().$e->getTraceAsString(),"error");
-            throw new Exception('Attention! Wrong CSRF token.');
+            throw new Exception('Attention! Authentication failed');
         }
     }
 }
