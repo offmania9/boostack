@@ -16,8 +16,8 @@ $boostack->renderOpenHtmlHeadTags("Home");
 $error = "";
 require_once $boostack->registerTemplateFile("boostack/header.phtml");
 if($boostack->getConfig('session_on')) {
-    if (Utils::checkAcceptedTimeFromLastRequest($objSession->LastTryLogin)) {
-        if (!$objSession->IsLoggedIn()) {
+    if (Utils::checkAcceptedTimeFromLastRequest(Auth::getLastTry())) {
+        if (!Auth::isLoggedIn()) {
             if (isset($_POST['btk_usr'])) {
                 try {
                     if($boostack->getConfig('csrf_on'))
@@ -25,14 +25,13 @@ if($boostack->getConfig('session_on')) {
                     $user = Utils::sanitizeInput($_POST["btk_usr"]);
                     $password = Utils::sanitizeInput($_POST["btk_pwd"]);
                     $rememberMe = (isset($_POST['rememberme']) && $_POST['rememberme'] == '1' && $boostack->getConfig('cookie_on')) ? true : false;
-                    $objSession->LastTryLogin = time();
-                    $anonymousUser = new User();
+                    Auth::impressLastTry();
                     Utils::checkStringFormat($password);
-                    if ($anonymousUser->tryLogin($user, $password, $rememberMe,false,false)) {
+                    if (Auth::tryLogin($user, $password, $rememberMe, false)) {
                         header("Location: " . $boostack->getFriendlyUrl("login"));
                         exit();
                     }
-                    elseif($anonymousUser->tryLogin($user, $password, $rememberMe,true,false)) {
+                    elseif(Auth::tryLogin($user, $password, $rememberMe, true)) {
                         header("Location: " . $boostack->getFriendlyUrl("login"));
                         exit();
                     }
@@ -46,7 +45,7 @@ if($boostack->getConfig('session_on')) {
     } else
         $error = "Too much request. Wait some seconds";
 }
-if($boostack->getConfig('session_on') && $objSession->IsLoggedIn())
+if($boostack->getConfig('session_on') && Auth::isLoggedIn())
     require_once $boostack->registerTemplateFile("boostack/content_login_logged.phtml");
 else
     require_once $boostack->registerTemplateFile("boostack/content_login.phtml");

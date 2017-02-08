@@ -335,4 +335,18 @@ class Utils
         }
         return true;
     }
+
+    /*
+    *  Genera il valore del remember-me cookie
+    */
+    public static function generateCookieHash()
+    {
+        return  md5(time()).md5(Utils::getIpAddress() . Utils::getUserAgent());
+    }
+
+    public static function checkCookieHashValidity($cookieValue)
+    {
+        return substr($cookieValue,32) == md5(Utils::getIpAddress().Utils::getUserAgent());
+    }
+
 }

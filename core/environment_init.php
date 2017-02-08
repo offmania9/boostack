@@ -29,10 +29,11 @@ if ($boostack->getConfig('database_on')){
         $objSession = ($boostack->getConfig('csrf_on')) ? new Session_CSRF(): new Session_HTTP();
         $objSession->Impress();
         if ($boostack->getConfig('cookie_on') && isset($_COOKIE[''.$boostack->getConfig('cookie_name')])) {
-            $c = Utils::sanitizeInput($_COOKIE[''.$boostack->getConfig('cookie_name')]); //user not logged in but remember-me cookie exists then try to perform loginByCookie function
-            if (!$objSession->IsLoggedIn() && $c !== "")
-                if (!$objSession->loginByCookie($c)) //cookie is set but wrong (manually edited)
-                    $boostack->logout();
+            //user not logged in but remember-me cookie exists then try to perform loginByCookie function
+            $c = Utils::sanitizeInput($_COOKIE[''.$boostack->getConfig('cookie_name')]);
+            if (!Auth::isLoggedIn() && $c !== "")
+                if (!Auth::loginByCookie($c)) //cookie is set but wrong (manually edited)
+                    Auth::logout();
         }
         $CURRENTUSER = $objSession->GetUserObject();
     }

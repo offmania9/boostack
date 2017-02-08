@@ -55,17 +55,17 @@ class User_Entity extends BaseClass
         parent::prepare($array);
     }
 
-    public function passwordToHash($clearpassword)
+    public function passwordToHash($cleanPassword)
     {
         if (version_compare(PHP_VERSION, '5.5.0') >= 0)
-            return password_hash($clearpassword,PASSWORD_DEFAULT);
+            return password_hash($cleanPassword,PASSWORD_DEFAULT);
         else
-            return hash("sha512", $clearpassword);
+            return hash("sha512", $cleanPassword);
     }
 
     public function getUserIDByEmail($email, $throwException = true)
     {
-        $sql = "SELECT id FROM " . self::TABLENAME . " WHERE email ='" . $email . "' ";
+        $sql = "SELECT id FROM ".self::TABLENAME." WHERE email ='" . $email . "' ";
         $q = $this->pdo->query($sql);
         $q2 = $q->fetch();
         if ($q->rowCount() == 0)
@@ -76,25 +76,29 @@ class User_Entity extends BaseClass
         return $q2[0];
     }
 
-    public function checkUserExistsByEmail($email, $throwException = true)
+    public static function existsByEmail($email, $throwException = true)
     {
-        $sql = "SELECT id FROM " . self::TABLENAME . " WHERE email ='" . $email . "' ";
-        $q = $this->pdo->query($sql);
-        $q2 = $q->fetch();
-        if ($q->rowCount() == 0){
+        $pdo = Database_PDO::getInstance();
+        $query = "SELECT id FROM ".self::TABLENAME." WHERE email = :email";
+        $q = $pdo->prepare($query);
+        $q->bindParam(":email", $email);
+        $q->execute();
+        if($q->rowCount() == 0) {
             if ($throwException)
-                throw new Exception("Attention! User or Email not found.",1);
+                throw new Exception("Username or password not valid.",3);
             return false;
         }
         return true;
     }
 
-    public function checkUserExistsByUsername($username, $throwException = true)
+    public static function existsByUsername($username, $throwException = true)
     {
-        $sql = "SELECT id FROM " . self::TABLENAME . " WHERE username ='" . $username . "' ";
-        $q = $this->pdo->query($sql);
-        $q2 = $q->fetch();
-        if ($q->rowCount() == 0){
+        $pdo = Database_PDO::getInstance();
+        $query = "SELECT id FROM ".self::TABLENAME." WHERE username = :username";
+        $q = $pdo->prepare($query);
+        $q->bindParam(":username", $username);
+        $q->execute();
+        if($q->rowCount() == 0) {
             if ($throwException)
                 throw new Exception("Attention! Username or Email not found.",1);
             return false;
@@ -102,94 +106,103 @@ class User_Entity extends BaseClass
         return true;
     }
 
-    public function checkEmailFormat($email, $throwException = true)
-    {
-        $regexp = "/^[a-z0-9]+([_\\.-][a-z0-9]+)*@([a-z0-9]+([\.-][a-z0-9]+)*)+\\.[a-z]{2,}$/i";
-        if ($email == "" || ! preg_match($regexp, $email) || strlen($email >= 255)){
-            if ($throwException)
-                throw new Exception("This E-mail address is wrong.",2);
+    public static function getCredentialByCookie($cookieValue) {
+        $pdo = Database_PDO::getInstance();
+        $query = "SELECT username,pwd FROM ".self::TABLENAME." WHERE session_cookie = :cookie ";
+        $q = $pdo->prepare($query);
+        $q->bindParam(":cookie", $cookieValue);
+        $q->execute();
+        if($q->rowCount() == 1) {
+            $res = $q->fetchAll(PDO::FETCH_ASSOC);
+            return $res[0];
+        }
         return false;
-        }
-        return true;
     }
 
-    public function checkEmailIntoDB($email, $throwException = true)
-    {
-        if ($this->pdo->query("SELECT id FROM " . self::TABLENAME . " WHERE email = '" . $email . "'")->rowCount() == 0){
-            if ($throwException)
-                throw new Exception("Username or password not valid.",3);
+    public static function getActiveCredentialByEmail($email) {
+        $pdo = Database_PDO::getInstance();
+        $query = "SELECT id,pwd FROM ".self::TABLENAME." WHERE email = :email AND active = '1' ";
+        $q = $pdo->prepare($query);
+        $q->bindParam(":email", $email);
+        $q->execute();
+        if($q->rowCount() == 1) {
+            $res = $q->fetchAll(PDO::FETCH_ASSOC);
+            return $res[0];
+        }
         return false;
-        }
-        return true;
     }
 
-    /*
-     *  Effettua il login
-     */
-    public function tryLogin($username, $password, $cookieRememberMe, $throwException = true)
-    {
-        global $objSession, $boostack;
-        if ($boostack->getConfig("userToLogin") == "email") {
-            if (!self::checkUserExistsByEmail($username)) {
-                $boostack->writeLog("User -> tryLogin: User doesn't exist by Email Address", "user");
-                if ($throwException)
-                    throw new Exception("Username or password not valid.", 6);
-                return false;
-            }
+    public static function getActiveCredentialByUsername($username) {
+        $pdo = Database_PDO::getInstance();
+        $query = "SELECT id,pwd FROM ".self::TABLENAME." WHERE username = :username AND active = '1' ";
+        $q = $pdo->prepare($query);
+        $q->bindParam(":username", $username);
+        $q->execute();
+        if($q->rowCount() == 1) {
+            $res = $q->fetchAll(PDO::FETCH_ASSOC);
+            return $res[0];
         }
-
-        if ($boostack->getConfig("userToLogin") == "username") {
-            if (!self::checkUserExistsByusername($username)) {
-                $boostack->writeLog("User -> tryLogin: User doesn't exist by Username", "user");
-                if ($throwException)
-                    throw new Exception("Username or password not valid.", 6);
-                return false;
-            }
-        }
-
-        if($boostack->getConfig("userToLogin") == "both") {
-            if(!self::checkUserExistsByEmail($username,false) && !self::checkUserExistsByUsername($username,false)) {
-                $boostack->writeLog("User -> tryLogin: User doesn't exist by Username and by email", "user");
-                if ($throwException)
-                    throw new Exception("Username or password not valid.", 6);
-                return false;
-            }
-        }
-            
-        $objSession->LogOut();
-        $objSession->Login($username, $password);
-        if (!$objSession->IsLoggedIn()){
-            $boostack->writeLog("User -> tryLogin: Username or password not valid.","user");
-            if ($throwException)
-                throw new Exception("Username or password not valid.",5);
-            return false;
-        }
-
-        if ($cookieRememberMe) {
-            $user = $objSession->GetUserObject();
-            $user->refreshRememberMeCookie();
-        }
-        $boostack->writeLog("[Login] uid: ".$objSession->GetUserID(),"user");
-        return true;
+        return false;
     }
 
-    /*
-     *  Genera il valore del remember-me cookie
-     */
-    public function generateCookieHash(){
-        return  md5(time()).md5(Utils::getIpAddress() . Utils::getUserAgent());
+    public static function getActiveCredentialByEmailOrUsername($email, $username) {
+        $pdo = Database_PDO::getInstance();
+        $query = "SELECT id,pwd FROM ".self::TABLENAME." WHERE (username = :username OR email = :email) AND active = '1' ";
+        $q = $pdo->prepare($query);
+        $q->bindParam(":username", $username);
+        $q->bindParam(":email", $email);
+        $q->execute();
+        if($q->rowCount() == 1) {
+            $res = $q->fetchAll(PDO::FETCH_ASSOC);
+            return $res[0];
+        }
+        return false;
     }
 
-    /*
-     *  Aggiorna il valore del remember-me cookie
-     *  dopo un login
-     */
-    public function refreshRememberMeCookie() {
-        global $boostack;
-        $cookieHash = $this->generateCookieHash();
-        setcookie($boostack->getConfig("cookie_name"), $cookieHash, time() + $boostack->getConfig("cookie_expire"), '/');
-        $this->pdo->query("UPDATE " . self::TABLENAME . " SET session_cookie = '$cookieHash' WHERE id = '" . $this->id . "'");
+    public static function getActiveIdByEmailAndPassword($email, $password) {
+        $pdo = Database_PDO::getInstance();
+        $query = "SELECT id FROM ".self::TABLENAME." WHERE email = :email AND pwd = :password AND active = '1' ";
+        $q = $pdo->prepare($query);
+        $q->bindParam(":email", $email);
+        $q->bindParam(":password", $password);
+        $q->execute();
+        if($q->rowCount() == 1) {
+            $res = $q->fetchAll(PDO::FETCH_ASSOC);
+            return $res[0];
+        }
+        return false;
     }
+
+    public static function getActiveIdByUsernameAndPassword($username, $password) {
+        $pdo = Database_PDO::getInstance();
+        $query = "SELECT id FROM ".self::TABLENAME." WHERE username = :username AND pwd = :password AND active = '1' ";
+        $q = $pdo->prepare($query);
+        $q->bindParam(":username", $username);
+        $q->bindParam(":password", $password);
+        $q->execute();
+        if($q->rowCount() == 1) {
+            $res = $q->fetchAll(PDO::FETCH_ASSOC);
+            return $res[0];
+        }
+        return false;
+    }
+
+    public static function getActiveIdByEmailOrUsernameAndPassword($email, $username, $password) {
+        $pdo = Database_PDO::getInstance();
+        $query = "SELECT id FROM ".self::TABLENAME." WHERE (username = :username OR email = :email) AND pwd = :password AND active = '1' ";
+        $q = $pdo->prepare($query);
+        $q->bindParam(":email", $email);
+        $q->bindParam(":username", $username);
+        $q->bindParam(":password", $password);
+        $q->execute();
+        if($q->rowCount() == 1) {
+            $res = $q->fetchAll(PDO::FETCH_ASSOC);
+            return $res[0];
+        }
+        return false;
+    }
+
 
 }
+
 ?>

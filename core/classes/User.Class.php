@@ -103,13 +103,53 @@ class User implements JsonSerializable {
     public function jsonSerialize()
     {
         return [
-            "user" => $this->objects[User::class],
+            "user" => $this->objects[User_Entity::class],
             "userinfo" => $this->objects[User_Info::class],
         ];
     }
 
-    public function tryLogin($username, $password, $cookieRememberMe, $throwException = true) {
-        return $this->objects[User_Entity::class]->tryLogin($username, $password, $cookieRememberMe, $throwException);
+    public static function existsByEmail($email, $throwException = true) {
+        return User_Entity::existsByEmail($email, $throwException);
+    }
+
+    public static function existsByUsername($username, $throwException = true) {
+        return User_Entity::existsByUsername($username, $throwException);
+    }
+
+    public static function getCredentialByCookie($cookieValue) {
+        return User_Entity::getCredentialByCookie($cookieValue);
+    }
+
+    public static function getActiveCredentialByEmail($email) {
+        return User_Entity::getActiveCredentialByEmail($email);
+    }
+
+    public static function getActiveCredentialByUsername($username) {
+        return User_Entity::getActiveCredentialByUsername($username);
+    }
+
+    public static function getActiveCredentialByEmailOrUsername($email, $username) {
+        return User_Entity::getActiveCredentialByEmailOrUsername($email, $username);
+    }
+
+    public static function getActiveIdByEmailAndPassword($email, $password) {
+        return User_Entity::getActiveIdByEmailAndPassword($email, $password);
+    }
+
+    public static function getActiveIdByUsernameAndPassword($username, $password) {
+        return User_Entity::getActiveIdByUsernameAndPassword($username, $password);
+    }
+
+    public static function getActiveIdByEmailOrUsernameAndPassword($email, $username, $password) {
+        return User_Entity::getActiveIdByEmailOrUsernameAndPassword($email, $username, $password);
+    }
+
+    public function refreshRememberMeCookie() {
+        global $boostack;
+        $cookieHash = Utils::generateCookieHash();
+        $this->session_cookie = $cookieHash;
+        $this->save();
+        setcookie($boostack->getConfig("cookie_name"), $cookieHash, time() + $boostack->getConfig("cookie_expire"), '/');
     }
 
 }

@@ -242,19 +242,6 @@ class Boostack
         //$this->registerCssFile("custom.css");
     }
 
-    public function logout()
-    {
-        global $objSession;
-        if ($this->config['session_on'] && isset($objSession) && $objSession->IsLoggedIn()){
-            $this->writeLog("[Logout] uid: ".$objSession->GetUserID(),"user");
-            $objSession->LogOut();
-        }
-        if ($this->config['cookie_on']) {
-            setcookie('' . $this->config['cookie_name'], false, time() - $this->config['cookie_expire']);
-            setcookie('' . $this->config['cookie_name'], false, time() - $this->config['cookie_expire'], "/");
-        }
-    }
-
     /*
      *
      */

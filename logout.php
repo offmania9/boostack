@@ -9,7 +9,7 @@
  * @version 2.4
  */
 require_once "core/environment_init.php";
-$boostack->logout();
+Auth::logout();
 header("location: " . $boostack->url);
 exit();
 ?>

@@ -169,193 +169,55 @@ class Session_HTTP
         return ($this->php_session_id);
     }
 
-    protected function getSQLPartOfLoginQuery($strUsername){
-        $sqlWhere = " username='".$strUsername."' ";
-        switch(Boostack::getInstance()->getConfig("userToLogin")){
-            case "email":
-                $sqlWhere = " email='".$strUsername."' ";
-                break;
-            case "both":
-                $sqlWhere = " (email='".$strUsername."' OR username='".$strUsername."') ";
-                break;
-            default:
-                $sqlWhere = " username='".$strUsername."' ";
-        }
-        return $sqlWhere;
+    public function logoutUser() {
+        $sql = "UPDATE " . $this->http_session_table . " SET logged_in = 'f', user_id = '1' WHERE id = " . $this->native_session_id;
+        $result = $this->dbhandle->prepare($sql);
+        $result->execute();
+        $this->logged_in = false;
+        $this->user_id = 0;
+        return true;
     }
 
-    protected function LoginBasic($strUsername, $strPlainPassword, $hashed_psw = "")
-    {
-        $strMD5Password = ($hashed_psw !== "") ? $hashed_psw : hash("sha512", $strPlainPassword);
-        try {
-            $stmt = "SELECT id FROM boostack_user WHERE ".$this->getSQLPartOfLoginQuery($strUsername)." AND pwd = '$strMD5Password' AND active='1'";
-            $result = $this->dbhandle->prepare($stmt);
-            $result->execute();
-            if ($result->rowCount() > 0) {
-                $row = $result->fetch();
-                $this->user_id = $row["id"];
-                $this->logged_in = true;
-                $sql = "UPDATE " . $this->http_session_table . " SET logged_in = 't', user_id = '" . $this->user_id . "' WHERE id='" . $this->native_session_id . "'";
-                $result = $this->dbhandle->prepare($sql);
-                $result->execute();
-                $sql = "UPDATE boostack_user SET last_access='" . time() . "' where id='" . $row["id"] . "'";
-                $result = $this->dbhandle->prepare($sql);
-                $result->execute();
-                return true;
-            } else {
-                return false;
-            }
-        } catch (PDOException $e) {
-            Boostack::getInstance()->writeLog('LogList -> view -> Caught PDOException: ' . $e->getMessage(), "error");
-            $queryNumberResult = 0;
-        } catch (Exception $b) {
-            Boostack::getInstance()->writeLog('LogList -> view -> Caught Exception: ' . $b->getMessage(), "error");
-            $queryNumberResult = 0;
-        }
-        return false;
+    public function loginUser($userID) {
+        $this->user_id = $userID;
+        $this->logged_in = true;
+        $sql = "UPDATE " . $this->http_session_table . " SET logged_in = 't', user_id = '" . $this->user_id . "' WHERE id='" . $this->native_session_id . "'";
+        $result = $this->dbhandle->prepare($sql);
+        $result->execute();
     }
 
-    /*  Esegue il login
-     *
-     * @param $strUsername          username
-     * @param $strPlainPassword     password in chiaro (utilizzata durante il login da form)
-     * @param $hashedPassword       password in hash (utilizzata durante il login da cookie)
-     *
-     * @need PHP>5.5 per password_verify
-     *
-     */
-    protected function LoginWithSalt($strUsername, $strPlainPassword, $hashedPassword = "") {
-        try {
-            $stmt = "SELECT id,pwd FROM boostack_user WHERE ".$this->getSQLPartOfLoginQuery($strUsername)." AND active='1'";
-            $result = $this->dbhandle->prepare($stmt);
-            $result->execute();
-            if ($result->rowCount() > 0) {
-                $row = $result->fetch(PDO::FETCH_ASSOC);
-                if ($hashedPassword == "" && password_verify($strPlainPassword, $row['pwd']) || $hashedPassword != "" && $hashedPassword == $row['pwd']) {
-                    $this->user_id = $row["id"];
-                    $this->logged_in = true;
-                    $sql = "UPDATE " . $this->http_session_table . " SET logged_in = 't', user_id = '" . $this->user_id . "' WHERE id='" . $this->native_session_id . "'";
-                    $result = $this->dbhandle->prepare($sql);
-                    $result->execute();
-                    $sql = "UPDATE boostack_user SET last_access='" . time() . "' WHERE id='" . $row["id"] . "'";
-                    $result = $this->dbhandle->prepare($sql);
-                    $result->execute();
-                    return true;
-                }
-            }
-        }
-        catch (PDOException $e)
-        {
-            Boostack::getInstance()->writeLog('LogList -> view -> Caught PDOException: '.$e->getMessage(),"error");
-            $queryNumberResult = 0;
-        }
-        catch ( Exception $b )
-        {
-            Boostack::getInstance()->writeLog('LogList -> view -> Caught Exception: '.$b->getMessage(),"error");
-            $queryNumberResult = 0;
-        }
-        return false;
-    }
-
-
-    public function StartLoginProcess($u,$p,$r=null,$throwException = true){
-        global $boostack;
-        $res = FALSE;
-        if (Utils::checkAcceptedTimeFromLastRequest($this->LastTryLogin)) {
-            if (!$this->IsLoggedIn()) {
-                    try {
-                        if ($boostack->getConfig('csrf_on'))
-                            $this->CSRFCheckValidity($_POST);
-                        $user = Utils::sanitizeInput($u);
-                        $password = Utils::sanitizeInput($p);
-                        $rememberMe = (isset($r) && $r == '1' && $boostack->getConfig('cookie_on')) ? true : false;
-                        $this->LastTryLogin = time();
-                        $anonymousUser = new User();
-                        Utils::checkStringFormat($password);
-                        if ($anonymousUser->tryLogin($user, $password, $rememberMe, $throwException)) {
-                            header("Location: " . $boostack->getFriendlyUrl("login"));
-                            exit();
-                        }
-                        $error = "Username or password not valid.";
-                    } catch (Exception $e) {
-                        throw new Exception($e->getMessage());
-                        $boostack->writeLog("Login.php : " . $error . " trace:" . $e->getTraceAsString(), "user");
-                    }
-            }
-        }
-        else{
-            throw new Exception("Too much request. Wait some seconds");
-            $res = false;
-        }
-
-        return $res;
-    }
-
-
-    public function Login($strUsername, $strPlainPassword, $hashedPassword = "") {
-        if (version_compare(PHP_VERSION, '5.5.0') >= 0)
-            self::LoginWithSalt($strUsername, $strPlainPassword, $hashedPassword);
-        else
-            self::LoginBasic($strUsername, $strPlainPassword, $hashedPassword);
-    }
-    
-    /*  Esegue il login se è presente il "Remember Me" cookie
-     *
-     *  @param $cookieValue valore del cookie
-     */
-    public function loginByCookie($cookieValue)
-    {
-        global $boostack;
-        try {
-            $q = $this->dbhandle->prepare("SELECT username,pwd FROM boostack_user WHERE session_cookie = :cookie ");
-            $q->bindParam(":cookie", $cookieValue);
-            $q->execute();
-            $res = $q->fetchAll(PDO::FETCH_ASSOC);
-            if (count($res) == 1) {
-                if ($this->checkCookieHashValidity($cookieValue)) {
-                    $this->Login($res[0]['username'], "", $res[0]['pwd']);
-                    $this->GetUserObject()->refreshRememberMeCookie();
-                    return true;
-                } else {
-                    $boostack->writeLog("checkCookieHashValidity(" . $cookieValue . "): false - IP:" . Utils::getIpAddress(),"user");
-                }
-            }
-        } catch (PDOException $e) {
-            $boostack->writeLog('Session_HTTP -> loginByCookie -> PDOException: ' . $e->getMessage(), "error");
-            $queryNumberResult = 0;
-        } catch (Exception $b) {
-            $boostack->writeLog('Session_HTTP -> loginByCookie -> Exception: ' . $b->getMessage(), "error");
-            $queryNumberResult = 0;
-        }
-        return false;
-    }
-
-    public function checkCookieHashValidity($cookieValue){
-        return substr($cookieValue,32) == md5(Utils::getIpAddress().Utils::getUserAgent());
-    }
-
-
-    public function LogOut()
-    {
-        global $boostack;
-        try {
-            if ($this->logged_in == true) {
-                $sql = "UPDATE " . $this->http_session_table . " SET logged_in = 'f', user_id = '1' WHERE id = " . $this->native_session_id;
-                $result = $this->dbhandle->prepare($sql);
-                $result->execute();
-                $this->logged_in = false;
-                $this->user_id = 0;
-                return true;
-            }
-        } catch (PDOException $e) {
-            $boostack->writeLog('Session_HTTP -> LogOut -> PDOException: ' . $e->getMessage(), "error");
-            $queryNumberResult = 0;
-        } catch (Exception $b) {
-            $boostack->writeLog('Session_HTTP -> LogOut -> Exception: ' . $b->getMessage(), "error");
-            $queryNumberResult = 0;
-        }
-        return false;
-    }
+//    public function StartLoginProcess($u,$p,$r=null,$throwException = true){
+//        global $boostack;
+//        $res = FALSE;
+//        if (Utils::checkAcceptedTimeFromLastRequest($this->LastTryLogin)) {
+//            if (!$this->IsLoggedIn()) {
+//                    try {
+//                        if ($boostack->getConfig('csrf_on'))
+//                            $this->CSRFCheckValidity($_POST);
+//                        $user = Utils::sanitizeInput($u);
+//                        $password = Utils::sanitizeInput($p);
+//                        $rememberMe = (isset($r) && $r == '1' && $boostack->getConfig('cookie_on')) ? true : false;
+//                        $this->LastTryLogin = time();
+//                        $anonymousUser = new User();
+//                        Utils::checkStringFormat($password);
+//                        if ($anonymousUser->tryLogin($user, $password, $rememberMe, $throwException)) {
+//                            header("Location: " . $boostack->getFriendlyUrl("login"));
+//                            exit();
+//                        }
+//                        $error = "Username or password not valid.";
+//                    } catch (Exception $e) {
+//                        throw new Exception($e->getMessage());
+//                        $boostack->writeLog("Login.php : " . $error . " trace:" . $e->getTraceAsString(), "user");
+//                    }
+//            }
+//        }
+//        else{
+//            throw new Exception("Too much request. Wait some seconds");
+//            $res = false;
+//        }
+//
+//        return $res;
+//    }
 
     public function __get($nm)
     {
