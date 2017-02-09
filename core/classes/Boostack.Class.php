@@ -187,12 +187,21 @@ class Boostack
             echo $objSession->CSRFRenderHiddenField();
         }
         echo '<script type="text/javascript"> var rootUrl = "' . $this->url . '";var developmentMode = "' . $this->developmentMode . '";</script>';
-        $this->registerScriptFile("lib/require.js");
-        $this->registerScriptFile("helpers.js");
-        $this->registerScriptFile("init.js");
+
+        $defaultJsFiles = $this->getConfig("default_js_files");
+        if(!empty($defaultJsFiles)) {
+            foreach ($defaultJsFiles as $jsFile) {
+                $this->registerScriptFile($jsFile);
+            }
+        }
+
         echo "<!--[if lt IE 9]>";
-        $this->registerScriptFile("lib/html5shiv.js");
-        $this->registerScriptFile("lib/respond.js");
+        $defaultIeJsFiles = $this->getConfig("default_ie_js_files");
+        if(!empty($defaultIeJsFiles)) {
+            foreach ($defaultIeJsFiles as $jsFile) {
+                $this->registerScriptFile($jsFile);
+            }
+        }
         echo "<![endif]-->";
         ?>
         <div id="fb-root"></div><div class="overlay"></div><div class="loading"></div></body></html>
@@ -236,10 +245,12 @@ class Boostack
      */
     public function registerAllDefaultCssFiles()
     {
-        $this->registerCssFile("lib/bootstrap.css");
-        $this->registerCssFile("lib/animate.css");
-        $this->registerCssFile("style.css");
-        //$this->registerCssFile("custom.css");
+        $defaultCssFiles = $this->getConfig("default_css_files");
+        if(!empty($defaultCssFiles)) {
+            foreach ($defaultCssFiles as $cssFile) {
+                $this->registerCssFile($cssFile);
+            }
+        }
     }
 
     /*

@@ -45,6 +45,11 @@ $config["fb_admins"] = "";
 $config["twitter"] = "@getBoostack";
 $config["gplus"] = "https://plus.google.com/+BoostackFramework/";
 
+// css & js
+$config["default_js_files"] = array("lib/require.js","helpers.js","init.js");
+$config["default_ie_js_files"] = array("lib/html5shiv.js","lib/respond.js");
+$config["default_css_files"] = array("lib/bootstrap.css","lib/animate.css","style.css",/*"custom.css"*/);
+
 $_MONTHS = array("","Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre");
 CONST PRIVILEGE_SYSTEM = 0;
 CONST PRIVILEGE_SUPERADMIN = 1;
