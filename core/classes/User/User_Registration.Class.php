@@ -1,13 +1,13 @@
 <?php
 
 /**
- * Boostack: User_RegistrationEntity.Class.php
+ * Boostack: User_Registration.Class.php
  * ========================================================================
  * Copyright 2014-2017 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * * @version 2.4
+ * @version 3.0
  */
 class User_Registration extends BaseClass
 {

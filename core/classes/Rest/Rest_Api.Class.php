@@ -6,7 +6,7 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 2.4
+ * @version 3.0
  */
 require_once 'classes/Rest/Rest_Api_Abstract.Class.php';
 class Rest_Api extends Rest_Api_Abstract
