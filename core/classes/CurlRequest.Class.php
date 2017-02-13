@@ -61,6 +61,10 @@ class CurlRequest {
         }
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, $this->return_transfer);
+
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+
         $curlResult = curl_exec($ch);
         if($curlResult == false) {
             $response->setError(curl_error($ch));
