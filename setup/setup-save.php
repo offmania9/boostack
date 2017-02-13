@@ -60,6 +60,7 @@ if ($env_parameters["database_on"]=="true" && $finalSetupMessageError=="") {
         require_once("../core/classes/User/User_Registration.Class.php");
         require_once("../core/classes/User/User_Social.Class.php");
         require_once("../core/classes/LogLevel.Class.php");
+        require_once("../core/classes/FileLogger.Class.php");
 
         $db0 = new PDO('mysql:host=' . $env_parameters["db_host"] . ';dbname=' . $env_parameters["db_name"], $env_parameters["db_username"], $env_parameters["db_password"], array(
             PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"

@@ -208,10 +208,20 @@ class Boostack
 		<?php
     }
 
-    public function writeLog($logMesg = "", $level = LogLevel::Information) {
+    public function writeLog($logMesg = "", $level = LogLevel::Information, $type = LogType::DB) {
         global $CURRENTUSER;
-        if ($this->config['database_on'] && $this->config['log_on'])
-            Database_AccessLogger::getInstance($CURRENTUSER)->Log($logMesg, $level);
+        switch ($type) {
+            case LogType::DB:
+                if ($this->config['database_on'] && $this->config['log_on'])
+                    Database_AccessLogger::getInstance($CURRENTUSER)->Log($logMesg, $level);
+                break;
+            case LogType::File:
+                if ($this->config['log_on'])
+                    FileLogger::getInstance()->log($logMesg, $level);
+                break;
+            default:
+                throw new Exception("Log type not found");
+        }
     }
 
     public function getMailTemplate($mail,$parameters = null) {
