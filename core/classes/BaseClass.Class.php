@@ -62,17 +62,22 @@ abstract class BaseClass implements JsonSerializable {
      * @throws Exception
      */
     public function load($id) {
-        $sql = "SELECT * FROM " . static::TABLENAME . " WHERE id = :id";
-        $q = $this->pdo->prepare($sql);
-        $q->bindValue(':id', $id);
-        $q->execute();
-        $result = $q->fetch(PDO::FETCH_ASSOC);
-        if(empty($result)) {
-            throw new Exception("No result found in table ".static::TABLENAME." with ID ".$id);
+        try {
+            $sql = "SELECT * FROM " . static::TABLENAME . " WHERE id = :id";
+            $q = $this->pdo->prepare($sql);
+            $q->bindValue(':id', $id);
+            $q->execute();
+            $result = $q->fetch(PDO::FETCH_ASSOC);
+            if(empty($result)) {
+                throw new Exception("No result found in table ".static::TABLENAME." with ID ".$id);
+            }
+            $this->prepare($result);
+            $this->id = $id;
+            return true;
+        } catch(PDOException $pdoEx) {
+            FileLogger::getInstance()->log($pdoEx);
+            throw new PDOException("Database Exception. Please see log file.");
         }
-        $this->prepare($result);
-        $this->id = $id;
-        return true;
     }
 
     /**
@@ -83,13 +88,18 @@ abstract class BaseClass implements JsonSerializable {
      * @return bool
      */
     public function save($forcedID = null) {
-        if(empty($this->id)) {
-            if(empty($forcedID)) {
-                return $this->insert();
+        try {
+            if(empty($this->id)) {
+                if(empty($forcedID)) {
+                    return $this->insert();
+                }
+                return $this->insertWithID($forcedID);
+            } else {
+                return $this->update();
             }
-            return $this->insertWithID($forcedID);
-        } else {
-            return $this->update();
+        } catch (PDOException $pdoEx) {
+            FileLogger::getInstance()->log($pdoEx);
+            throw new PDOException("Database Exception. Please see log file.");
         }
     }
 
@@ -99,11 +109,16 @@ abstract class BaseClass implements JsonSerializable {
      * @return bool
      */
     public function delete() {
-        $sql = "DELETE FROM " . static::TABLENAME . " WHERE id = :id";
-        $q = $this->pdo->prepare($sql);
-        $q->bindValue(':id', $this->id);
-        $q->execute();
-        return ($q->rowCount() > 0);
+        try {
+            $sql = "DELETE FROM " . static::TABLENAME . " WHERE id = :id";
+            $q = $this->pdo->prepare($sql);
+            $q->bindValue(':id', $this->id);
+            $q->execute();
+            return ($q->rowCount() > 0);
+        } catch (PDOException $pdoEx) {
+            FileLogger::getInstance()->log($pdoEx);
+            throw new PDOException("Database Exception. Please see log file.");
+        }
     }
 
     /**

@@ -69,100 +69,105 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable {
      * Retrieve values with field filtering, ordering and pagination
      */
     public function view($fields = NULL, $orderColumn = NULL, $orderType = NULL, $numitem = 25, $currentPage = 1) {
-        $sql = "";
-        $orderType = strtoupper($orderType);
+        try {
+            $sql = "";
+            $orderType = strtoupper($orderType);
 
-        $error = false;
-        if (!is_numeric($numitem)) $error = "Wrong num_item type";
-        if (!is_numeric($currentPage) || $currentPage < 0) $error = "Wrong current_page format";
-        if (!($orderType == self::ORDER_ASC || $orderType == self::ORDER_DESC)) $error = "Wrong order_type format";
-        if (!(is_array($fields) && count($fields) > 0)) $error = "Wrong field_view format";
-        if ($error !== false) throw new Exception($error);
+            $error = false;
+            if (!is_numeric($numitem)) $error = "Wrong num_item type";
+            if (!is_numeric($currentPage) || $currentPage < 0) $error = "Wrong current_page format";
+            if (!($orderType == self::ORDER_ASC || $orderType == self::ORDER_DESC)) $error = "Wrong order_type format";
+            if (!(is_array($fields) && count($fields) > 0)) $error = "Wrong field_view format";
+            if ($error !== false) throw new Exception($error);
 
-        $sqlCount = "SELECT count(id) FROM " . $this->baseClassTablename . " ";
-        $sqlMaster = "SELECT * FROM " . $this->baseClassTablename . " ";
+            $sqlCount = "SELECT count(id) FROM " . $this->baseClassTablename . " ";
+            $sqlMaster = "SELECT * FROM " . $this->baseClassTablename . " ";
 
-        $sql .= "WHERE" . " ";
-        $separator = " AND ";
-        $count = 0;
-        if(count($fields)>0){
-            foreach ($fields as $option) {
-                if($count > 0) $sql .= $separator;
-                if ($option[0] == "datetime") {
-                    $sql .= "FROM_UNIXTIME(" . $option[0] . ") ";
-                } else
-                    $sql .= $option[0] . " ";
-                $option[1] = strtoupper($option[1]);
-                switch ($option[1]) {
-                    case '<>':
-                    case '&LT;&GT;': {
-                        $sql .= "!= '" . $option[2] . "'";
-                        break;
+            $sql .= "WHERE" . " ";
+            $separator = " AND ";
+            $count = 0;
+            if(count($fields)>0){
+                foreach ($fields as $option) {
+                    if($count > 0) $sql .= $separator;
+                    if ($option[0] == "datetime") {
+                        $sql .= "FROM_UNIXTIME(" . $option[0] . ") ";
+                    } else
+                        $sql .= $option[0] . " ";
+                    $option[1] = strtoupper($option[1]);
+                    switch ($option[1]) {
+                        case '<>':
+                        case '&LT;&GT;': {
+                            $sql .= "!= '" . $option[2] . "'";
+                            break;
+                        }
+                        case 'LIKE': {
+                            $sql .= $option[1] . " '%" . $option[2] . "%'";
+                            break;
+                        }
+                        case '=': {
+                            $sql .= $option[1] . " '" . $option[2] . "'";
+                            break;
+                        }
+                        case '<':
+                        case '&LT;': {
+                            $sql .= "< '" . $option[2] . "'";
+                            break;
+                        }
+                        case '<=':
+                        case '&LT;=': {
+                            $sql .= "<= '" . $option[2] . "'";
+                            break;
+                        }
+                        case '>':
+                        case '&GT;': {
+                            $sql .= "> '" . $option[2] . "'";
+                            break;
+                        }
+                        case '>=':
+                        case '&GT;=': {
+                            $sql .= ">= '" . $option[2] . "'";
+                            break;
+                        }
                     }
-                    case 'LIKE': {
-                        $sql .= $option[1] . " '%" . $option[2] . "%'";
-                        break;
-                    }
-                    case '=': {
-                        $sql .= $option[1] . " '" . $option[2] . "'";
-                        break;
-                    }
-                    case '<':
-                    case '&LT;': {
-                        $sql .= "< '" . $option[2] . "'";
-                        break;
-                    }
-                    case '<=':
-                    case '&LT;=': {
-                        $sql .= "<= '" . $option[2] . "'";
-                        break;
-                    }
-                    case '>':
-                    case '&GT;': {
-                        $sql .= "> '" . $option[2] . "'";
-                        break;
-                    }
-                    case '>=':
-                    case '&GT;=': {
-                        $sql .= ">= '" . $option[2] . "'";
-                        break;
-                    }
+                    $count++;
                 }
-                $count++;
             }
+            $q = $this->pdo->prepare($sqlCount . $sql);
+            $q->execute();
+            $result = $q->fetch();
+
+            $queryNumberResult = intval($result[0]);
+            $maxPage = floor($queryNumberResult / $numitem) + 1;
+            if ($currentPage >= $maxPage){
+                $maxPage = floor($queryNumberResult / 25) + 1;
+                $currentPage = 1;
+            };
+
+            if ($orderColumn != NULL) {
+                $sql .= " ORDER BY" . " " . $orderColumn;
+                if ($orderType != NULL)
+                    $sql .= " " . $orderType;
+            }
+            if ($numitem != NULL) {
+                if ($currentPage == 1)
+                    $lowerBound = ($currentPage - 1);
+                else
+                    $lowerBound = ($currentPage - 1) * $numitem;
+                $upperBound = $numitem;
+                $sql .= " LIMIT" . " " . $lowerBound . "," . $upperBound;
+            }
+            $q = $this->pdo->prepare($sqlMaster . $sql);
+
+            $q->execute();
+            $queryResults = $q->fetchAll(PDO::FETCH_ASSOC);
+
+            $this->fill($queryResults);
+
+            return $queryNumberResult;
+        } catch (PDOException $pdoEx) {
+            FileLogger::getInstance()->log($pdoEx);
+            throw new PDOException("Database Exception. Please see log file.");
         }
-        $q = $this->pdo->prepare($sqlCount . $sql);
-        $q->execute();
-        $result = $q->fetch();
-
-        $queryNumberResult = intval($result[0]);
-        $maxPage = floor($queryNumberResult / $numitem) + 1;
-        if ($currentPage >= $maxPage){
-            $maxPage = floor($queryNumberResult / 25) + 1;
-            $currentPage = 1;
-        };
-
-        if ($orderColumn != NULL) {
-            $sql .= " ORDER BY" . " " . $orderColumn;
-            if ($orderType != NULL)
-                $sql .= " " . $orderType;
-        }
-        if ($numitem != NULL) {
-            if ($currentPage == 1)
-                $lowerBound = ($currentPage - 1);
-            else
-                $lowerBound = ($currentPage - 1) * $numitem;
-            $upperBound = $numitem;
-            $sql .= " LIMIT" . " " . $lowerBound . "," . $upperBound;
-        }
-        $q = $this->pdo->prepare($sqlMaster . $sql);
-
-        $q->execute();
-        $queryResults = $q->fetchAll(PDO::FETCH_ASSOC);
-
-        $this->fill($queryResults);
-
-        return $queryNumberResult;
     }
 
     public function haskey($key) {
@@ -192,13 +197,18 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable {
     }
 
     public function loadAll() {
-        $sql = "SELECT * FROM " . $this->baseClassTablename;
-        $q = $this->pdo->prepare($sql);
-        $q->execute();
-        $queryResults = $q->fetchAll(PDO::FETCH_ASSOC);
-        $this->fill($queryResults);
-        $countResult = count($queryResults);
-        return $countResult;
+        try {
+            $sql = "SELECT * FROM " . $this->baseClassTablename;
+            $q = $this->pdo->prepare($sql);
+            $q->execute();
+            $queryResults = $q->fetchAll(PDO::FETCH_ASSOC);
+            $this->fill($queryResults);
+            $countResult = count($queryResults);
+            return $countResult;
+        } catch (PDOException $pdoEx) {
+            FileLogger::getInstance()->log($pdoEx);
+            throw new PDOException("Database Exception. Please see log file.");
+        }
     }
 }
 ?>
