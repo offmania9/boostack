@@ -10,7 +10,30 @@
  */
 class Auth {
 
-    public static function tryLogin($username, $password, $cookieRememberMe, $throwException = true)
+    public static function tryLogin($username, $password, $cookieRememberMe = false)
+    {
+        global $boostack,$objSession;
+        $result = new MessageBag();
+        try {
+            if(!Utils::checkAcceptedTimeFromLastRequest(self::getLastTry())) throw new Exception("Too much request. Wait some seconds");
+            if(Auth::isLoggedIn()) return true;
+            if(empty($username)) throw new Exception("Missing username");
+            if(empty($password)) throw new Exception("Missing password");
+
+            if($boostack->getConfig('csrf_on')) $objSession->CSRFCheckValidity($_POST);
+            Auth::impressLastTry();
+            Utils::checkStringFormat($password);
+
+            Auth::checkAndLogin($username, $password, $cookieRememberMe, true);
+
+        } catch (Exception $e) {
+            $boostack->writeLog("Login.php : ".$e->getMessage()." trace:".$e->getTraceAsString(),"user");
+            $result->setError($e->getMessage());
+        }
+        return $result;
+    }
+
+    private static function checkAndLogin($username, $password, $cookieRememberMe, $throwException = true)
     {
         global $objSession, $boostack;
         if ($boostack->getConfig("userToLogin") == "email") {
@@ -59,7 +82,7 @@ class Auth {
     }
 
 
-    public static function login($strUsername, $strPlainPassword, $hashedPassword = "")
+    private static function login($strUsername, $strPlainPassword, $hashedPassword = "")
     {
         if (version_compare(PHP_VERSION, '5.5.0') >= 0)
             self::LoginWithSalt($strUsername, $strPlainPassword, $hashedPassword);
