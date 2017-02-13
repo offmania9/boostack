@@ -8,7 +8,8 @@ if($envPath && is_file($envPath)) {
     exit();
 }
 require_once (ROOTPATH . "config/env/global.env.php");
-require_once(ROOTPATH . "core/classes/Utils.Class.php");
+require_once (ROOTPATH . "core/classes/Utils.Class.php");
+require_once (ROOTPATH . "core/libs/helpers.php");
 spl_autoload_register('Utils::autoloadClass');
 if ($config['developmentMode']) {
     error_reporting(E_ALL);
@@ -52,19 +53,6 @@ if ($boostack->getConfig('mobile_on')) {
         header("location: " . $boostack->getConfig("mobile_url"));
         exit();
     }
-}
-
-function d($var) {
-    echo "<pre>";
-    var_dump($var);
-    echo "</pre>";
-}
-
-function dd($var) {
-    echo "<pre>";
-    var_dump($var);
-    echo "</pre>";
-    die();
 }
 
 ?>
