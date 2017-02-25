@@ -13,7 +13,8 @@
 require_once "core/environment_init.php";
 $boostack->renderOpenHtmlHeadTags("Home");
 // #######################
-$error = "";
+$errorMessage = "";
+$errorCode = null;
 require_once $boostack->registerTemplateFile("boostack/header.phtml");
 if($boostack->getConfig('session_on')) {
     if(isset($_POST["btk_usr"]) && isset($_POST["btk_pwd"])) {
@@ -21,7 +22,10 @@ if($boostack->getConfig('session_on')) {
         $password = !empty($_POST["btk_pwd"]) ? Utils::sanitizeInput($_POST["btk_pwd"]) : null;
         $rememberMe = (isset($_POST['rememberme']) && $_POST['rememberme'] == '1' && $boostack->getConfig('cookie_on')) ? true : false;
         $loginResult = Auth::tryLogin($user,$password,$rememberMe);
-        if($loginResult->hasError()) $error = $loginResult->getErrorMessage();
+        if($loginResult->hasError()) {
+            $errorMessage = $loginResult->getErrorMessage();
+            $errorCode = $loginResult->getCode();
+        }
     }
 }
 if($boostack->getConfig('session_on') && Auth::isLoggedIn())

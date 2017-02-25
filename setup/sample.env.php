@@ -35,6 +35,22 @@ $config['log_enabledTypes'] =
  * LOGIN
  */
 $config['userToLogin'] = "username";    // Username field for login process: "username" | "email" | "both"
+$config['forceStrongPassword'] = FALSE;
+$config['lockStrategy_on'] = FALSE;
+
+
+$config['login_lockStrategy'] = "timer"; // "timer" | "recaptcha" | FALSE (if you set timer remember to set login_secondsFormBlocked)
+$config['login_secondsFormBlocked'] = 180;
+$config['login_maxAttempts'] = 3;
+$config['login_secondsFormBlocked'] = 10;
+$config['google_recaptcha-endpoint']= "https://www.google.com/recaptcha/api/siteverify";        //ReCaptcha Google endpoint
+$config['reCaptcha_public'] = "6LfCzxQUAAAAAJwvPlEHpsHCMdLxeFsKhwON5Epl";       //recaptcha key
+$config['reCaptcha_private'] = "6LfCzxQUAAAAALgBGC2ZHI8GYXq7UDQkvFTf8M2C";      //recaptcha key
+
+$config["google_2factor"] = FALSE;
+$config["google_2factor_delay"] = 2;
+$config["google_2factor_qrName"] = "Reag";
+
 
 /**
  * COOKIES
@@ -83,12 +99,17 @@ $CURRENT_DATETIME_FORMAT = "d-m-Y H:i:s";
 /**
  * SECURITY
  */
-$TIME_ELAPSED_ACCEPTED = 0;         // time accepted between each request
+$config["seconds_accepted_between_requests"] = 0; // time accepted between each request
 
 /**
  * GEOLOCALIZATION
  */
 $config['geolocation_on'] = FALSE;  // enable or disable Geolocalization
+
+/**
+ * CUSTOM VARIABLES
+ */
+// TODO
 
 function isSecureProtocol($forceTrueForReverseProxy = false) {
     return $forceTrueForReverseProxy || (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443;

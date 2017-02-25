@@ -88,6 +88,8 @@ class Session_HTTP
         session_set_cookie_params($this->session_lifespan);
         if (! session_id())
             session_start();
+
+        $this->Impress();
     }
 
     private function _session_open_method($save_path, $session_name)

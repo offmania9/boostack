@@ -123,8 +123,8 @@ class Utils
 
     public static function checkAcceptedTimeFromLastRequest($timeLastRequest)
     {
-        global $TIME_ELAPSED_ACCEPTED;
-        if ((!empty($timeLastRequest) || $timeLastRequest !== null) && (time() - $timeLastRequest >= $TIME_ELAPSED_ACCEPTED))
+        $secondsAccepted = Boostack::getInstance()->getConfig("seconds_accepted_between_requests");
+        if ((!empty($timeLastRequest) || $timeLastRequest !== null) && (time() - $timeLastRequest >= $secondsAccepted))
             return true;
         return false;
     }

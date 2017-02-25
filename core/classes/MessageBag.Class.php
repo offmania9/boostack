@@ -11,6 +11,7 @@
 class MessageBag implements JsonSerializable {
 
     private $error;
+    private $code;
     private $message;
     private $data;
 
@@ -29,8 +30,16 @@ class MessageBag implements JsonSerializable {
         $this->data = $data;
     }
 
+    public function setCode($code) {
+        $this->code = $code;
+    }
+
     public function getData() {
         return $this->data;
+    }
+
+    public function getCode() {
+        return $this->code;
     }
 
     public function removeError() {
@@ -48,6 +57,7 @@ class MessageBag implements JsonSerializable {
     public function jsonSerialize() {
         return [
             "error" => $this->error,
+            "code" => $this->code,
             "message" => $this->message,
             "data" => $this->data,
         ];

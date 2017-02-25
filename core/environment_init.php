@@ -28,7 +28,6 @@ if ($boostack->getConfig('database_on')){
     Database_PDO::getInstance($database['host'], $database['name'], $database['username'], $database['password']);
     if ($boostack->getConfig('session_on')) {
         $objSession = ($boostack->getConfig('csrf_on')) ? new Session_CSRF(): new Session_HTTP();
-        $objSession->Impress();
         if ($boostack->getConfig('cookie_on') && isset($_COOKIE[''.$boostack->getConfig('cookie_name')])) {
             //user not logged in but remember-me cookie exists then try to perform loginByCookie function
             $c = Utils::sanitizeInput($_COOKIE[''.$boostack->getConfig('cookie_name')]);
@@ -36,7 +35,24 @@ if ($boostack->getConfig('database_on')){
                 if (!Auth::loginByCookie($c)) //cookie is set but wrong (manually edited)
                     Auth::logout();
         }
-        $CURRENTUSER = $objSession->GetUserObject();
+        $CURRENTUSER = Auth::getUserLoggedObject();
+
+        /**
+         *  Strong password check
+         *  (when user log-in for the first time he needs to change password
+         */
+        if ($boostack->getConfig('forceStrongPassword')) {
+            if(isset($CURRENTUSER->has_strong_password) && $CURRENTUSER->has_strong_password == "0" && (!$objSession->TwoFactor_Check || $objSession->TwoFactor_Check == 2)) {
+                if ($objSession->password_to_change == 1) {
+                    $objSession->password_to_change = 0;
+                } else if ($objSession->password_to_change == 0) {
+                    $objSession->password_to_change = 1;
+                    if (!isset($_POST["passwordChange_POST"]))
+                        Utils::goToUrl($boostack->getFriendlyUrl("password_change"));
+                }
+            }
+        }
+
     }
 }
 

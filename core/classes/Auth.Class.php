@@ -10,26 +10,51 @@
  */
 class Auth {
 
+    const LOCK_TIMER = -1;
+    const LOCK_RECAPTCHA = -2;
+
     public static function tryLogin($username, $password, $cookieRememberMe = false)
     {
         global $boostack,$objSession;
         $result = new MessageBag();
+        $isLockStrategyEnabled = $boostack->getConfig("lockStrategy_on");
+        $lockStrategy = $boostack->getConfig("login_lockStrategy");
+
         try {
             if(!Utils::checkAcceptedTimeFromLastRequest(self::getLastTry())) throw new Exception("Too much request. Wait some seconds");
             if(Auth::isLoggedIn()) return true;
+
+            /** LOCK STRATEGY CHECK **/
+            if($isLockStrategyEnabled) {
+                if(!$objSession->failed_login_count) $objSession->failed_login_count = 0;
+                if($objSession->failed_login_count >= $boostack->getConfig("login_maxAttempts")) {
+                    if($lockStrategy == "timer") {
+                        if(!self::checkAcceptedTimeFromLastLogin(self::getLastTry())) throw new Exception("Too much login request. Wait some seconds", self::LOCK_TIMER);
+                    } else if($lockStrategy == "recaptcha") {
+                        $recaptchaFormData = isset($_POST["g-recaptcha-response"]) ? $_POST["g-recaptcha-response"] : null;
+                        if(empty($recaptchaFormData)) throw new Exception("Missing recaptcha data", self::LOCK_RECAPTCHA);
+                        $recaptchaResponse = self::reCaptchaVerify($boostack, $_POST["g-recaptcha-response"]);
+                        if(!$recaptchaResponse) throw new Exception("Invalid reCaptcha", self::LOCK_RECAPTCHA);
+                    }
+                    $objSession->failed_login_count = 0;
+                }
+            }
+
             if(empty($username)) throw new Exception("Missing username");
             if(empty($password)) throw new Exception("Missing password");
-
             if($boostack->getConfig('csrf_on')) $objSession->CSRFCheckValidity($_POST);
             Auth::impressLastTry();
             Utils::checkStringFormat($password);
-
+            if($isLockStrategyEnabled) $objSession->failed_login_count++;
             Auth::checkAndLogin($username, $password, $cookieRememberMe, true);
+            if($isLockStrategyEnabled) $objSession->failed_login_count = 0;
 
         } catch (Exception $e) {
             $boostack->writeLog("Login.php : ".$e->getMessage()." trace:".$e->getTraceAsString(),"user");
             $result->setError($e->getMessage());
+            $result->setCode($e->getCode());
         }
+
         return $result;
     }
 
@@ -235,6 +260,47 @@ class Auth {
     {
         global $objSession;
         $objSession->LastTryLogin = time();
+    }
+
+    public static function getUserLoggedObject()
+    {
+        global $objSession;
+        return $objSession->GetUserObject();
+    }
+
+    public static function isTimerLocked()
+    {
+        global $boostack, $objSession;
+        return $boostack->getConfig("lockStrategy_on") && $boostack->getConfig("login_lockStrategy") == "timer" && $objSession->failed_login_count >= $boostack->getConfig("login_maxAttempts") && !self::checkAcceptedTimeFromLastLogin(self::getLastTry());
+    }
+
+    public static function haveToShowCaptcha()
+    {
+        global $boostack, $objSession;
+        return $boostack->getConfig("lockStrategy_on") && $boostack->getConfig("login_lockStrategy") == "recaptcha" && $objSession->failed_login_count >= $boostack->getConfig("login_maxAttempts");
+
+    }
+
+    private static function reCaptchaVerify($boostack, $response)
+    {
+        $reCaptcha_private = $boostack->getConfig("reCaptcha_private");
+        $curlRequest = new CurlRequest();
+        $curlRequest->setEndpoint($boostack->getConfig("google_recaptcha-endpoint"));
+        $curlRequest->setIsPost(true);
+        $curlRequest->setReturnTransfer(true);
+        $curlRequest->setPostFields([
+            "secret" => $reCaptcha_private,
+            "response" => $response
+        ]);
+        $response = $curlRequest->send();
+        if(!$response->hasError() && json_decode($response->getData(), true)["success"]) return true;
+        return false;
+    }
+
+    private static function checkAcceptedTimeFromLastLogin($lastLogin)
+    {
+        global $boostack;
+        return $lastLogin != 0 && (time() - $lastLogin > $boostack->getConfig("login_secondsFormBlocked"));
     }
 
 }

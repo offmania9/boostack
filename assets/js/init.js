@@ -1,6 +1,7 @@
 var exampleModuleObject = null;
 var CSRFCheckManager = null;
 var cookieMessageModule = null;
+var loginModule = null;
 
 var initLibrary = function() {
 
@@ -25,6 +26,14 @@ var initLibrary = function() {
             if (CSRFCheckManager != null) return;
             CSRFCheckManager = new ccm();
             CSRFCheckManager.init();
+        });
+    }
+
+    if (getElementsByClassName("login").length) {
+        require(["module/loginModule"], function (m) {
+            if (loginModule != null) return;
+            loginModule = new m();
+            loginModule.init();
         });
     }
 
