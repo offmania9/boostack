@@ -27,11 +27,11 @@ if($boostack->getConfig('session_on')) {
             $errorCode = $loginResult->getCode();
         }
     }
+    if(Auth::isLoggedIn())
+        require_once $boostack->registerTemplateFile("boostack/content_login_logged.phtml");
+    else
+        require_once $boostack->registerTemplateFile("boostack/content_login.phtml");
 }
-if($boostack->getConfig('session_on') && Auth::isLoggedIn())
-    require_once $boostack->registerTemplateFile("boostack/content_login_logged.phtml");
-else
-    require_once $boostack->registerTemplateFile("boostack/content_login.phtml");
 
 require_once $boostack->registerTemplateFile("boostack/footer.phtml");
 
