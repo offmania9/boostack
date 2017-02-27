@@ -40,8 +40,8 @@ class Auth {
                 }
             }
 
-            if(empty($username)) throw new Exception("Missing username");
-            if(empty($password)) throw new Exception("Missing password");
+            if(!Validator::username($username)) throw new Exception("Username format not valid");
+            if(!Validator::password($password)) throw new Exception("Password format not valid");
             if($boostack->getConfig('csrf_on')) $objSession->CSRFCheckValidity($_POST);
             Auth::impressLastTry();
             Utils::checkStringFormat($password);

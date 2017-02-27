@@ -38,6 +38,10 @@ $config['userToLogin'] = "username";    // Username field for login process: "us
 $config['forceStrongPassword'] = FALSE;
 $config['lockStrategy_on'] = FALSE;
 
+$config['username_min_length'] = 5;
+$config['username_max_length'] = 12;
+$config['password_min_length'] = 6;
+$config['password_max_length'] = 12;
 
 $config['login_lockStrategy'] = "timer"; // "timer" | "recaptcha" | FALSE (if you set timer remember to set login_secondsFormBlocked)
 $config['login_secondsFormBlocked'] = 180;

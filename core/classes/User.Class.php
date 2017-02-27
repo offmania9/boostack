@@ -68,8 +68,8 @@ class User implements JsonSerializable {
             $this->pdo->commit();
         } catch(Exception $e) {
             $this->pdo->rollBack();
-            throw $e;
             Boostack::getInstance()->writeLog($e->getMessage(),LogLevel::Error);
+            throw $e;
         }
 
     }

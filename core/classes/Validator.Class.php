@@ -168,7 +168,7 @@ class Validator {
      *  Ritornano true/false
      **/
 
-    public function string($input) {
+    public static function string($input) {
         $res = true;
         if(is_array($input)) {
             foreach($input as $elem) {
@@ -182,7 +182,7 @@ class Validator {
         return $res;
     }
 
-    public function numeric($input) {
+    public static function numeric($input) {
         $res = true;
         if(is_array($input)) {
             foreach($input as $elem) {
@@ -196,7 +196,7 @@ class Validator {
         return $res;
     }
 
-    public function integer($input) {
+    public static function integer($input) {
         $res = true;
         if(is_array($input)) {
             foreach($input as $elem) {
@@ -210,7 +210,7 @@ class Validator {
         return $res;
     }
 
-    public function float($input) {
+    public static function float($input) {
         $res = true;
         if(is_array($input)) {
             foreach($input as $elem) {
@@ -224,17 +224,27 @@ class Validator {
         return $res;
     }
 
-    public function in($elem,$array) {
+    public static function in($elem,$array) {
         return in_array($elem,$array);
     }
 
-    public function email($input) {
+    public static function email($input) {
         return is_string($input) && filter_var($input, FILTER_VALIDATE_EMAIL);
     }
 
-    public function phone($input) {
+    public static function phone($input) {
         // TODO find regex for phone numbers
         return true;
+    }
+
+    public static function password($password) {
+        $boostack = Boostack::getInstance();
+        return !empty($password) && (strlen($password) >= $boostack->getConfig("password_min_length")) && (strlen($password) <= $boostack->getConfig("password_max_length"));
+    }
+
+    public static function username($username) {
+        $boostack = Boostack::getInstance();
+        return !empty($username) && (strlen($username) >= $boostack->getConfig("username_min_length")) && (strlen($username) <= $boostack->getConfig("username_max_length"));
     }
 
     public function required($input,$array) {

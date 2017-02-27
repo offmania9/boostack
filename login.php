@@ -20,7 +20,7 @@ if($boostack->getConfig('session_on')) {
     if(isset($_POST["btk_usr"]) && isset($_POST["btk_pwd"])) {
         $user = !empty($_POST["btk_usr"]) ? Utils::sanitizeInput($_POST["btk_usr"]) : null;
         $password = !empty($_POST["btk_pwd"]) ? Utils::sanitizeInput($_POST["btk_pwd"]) : null;
-        $rememberMe = (isset($_POST['rememberme']) && $_POST['rememberme'] == '1' && $boostack->getConfig('cookie_on')) ? true : false;
+        $rememberMe = ($boostack->getConfig('cookie_on') && isset($_POST['rememberme']) && $_POST['rememberme'] == '1') ? true : false;
         $loginResult = Auth::tryLogin($user,$password,$rememberMe);
         if($loginResult->hasError()) {
             $errorMessage = $loginResult->getErrorMessage();
