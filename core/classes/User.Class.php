@@ -112,7 +112,9 @@ class User implements JsonSerializable {
     {
         return [
             "user" => $this->objects[User_Entity::class],
-            "userinfo" => $this->objects[User_Info::class],
+            "user_info" => $this->objects[User_Info::class],
+            "user_social" => $this->objects[User_Social::class],
+            "user_registration" => $this->objects[User_Registration::class],
         ];
     }
 
