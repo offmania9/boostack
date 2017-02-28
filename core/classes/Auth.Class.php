@@ -24,8 +24,10 @@ class Auth {
         $lockStrategy = $boostack->getConfig("login_lockStrategy");
 
         try {
-            if(!Utils::checkAcceptedTimeFromLastRequest(self::getLastTry())) throw new Exception("Too much request. Wait some seconds");
-            if(Auth::isLoggedIn()) return true;
+            if(!Utils::checkAcceptedTimeFromLastRequest(self::getLastTry()))
+                throw new Exception("Too much request. Wait some seconds");
+            if(Auth::isLoggedIn())
+                return $result;
 
             /** LOCK STRATEGY CHECK **/
             if($isLockStrategyEnabled) {
@@ -42,8 +44,10 @@ class Auth {
                     $objSession->failed_login_count = 0;
                 }
             }
-            if(!Validator::username($username)) throw new Exception("Username format not valid");
-            if(!Validator::password($password)) throw new Exception("Password format not valid");
+            if(!Validator::username($username))
+                throw new Exception("Username format not valid");
+            if(!Validator::password($password))
+                throw new Exception("Password format not valid");
             Auth::impressLastTry();
             Utils::checkStringFormat($password);
             if($isLockStrategyEnabled) $objSession->failed_login_count++;
@@ -64,10 +68,10 @@ class Auth {
      */
     public static function loginByUserID($userID)
     {
-        if(Auth::isLoggedIn()) return true;
-        $user = new User($userID);
-        self::login($user->username,"",$user->pwd);
-        return true;
+        if(!Auth::isLoggedIn()) {
+            $user = new User($userID);
+            self::login($user->username, "", $user->pwd);
+        }
     }
 
     /*  Esegue il login dell'utente con il "remember-me cookie"
@@ -164,7 +168,7 @@ class Auth {
         global $objSession, $boostack;
         if ($boostack->getConfig("userToLogin") == "email") {
             if (!User::existsByEmail($username)) {
-                $boostack->writeLog("User -> tryLogin: User doesn't exist by Email Address", "user");
+                $boostack->writeLog("Auth -> checkAndLogin: User doesn't exist by Email Address", "user");
                 if ($throwException)
                     throw new Exception("Username or password not valid.", 6);
                 return false;
@@ -173,7 +177,7 @@ class Auth {
 
         if ($boostack->getConfig("userToLogin") == "username") {
             if (!User::existsByUsername($username)) {
-                $boostack->writeLog("User -> tryLogin: User doesn't exist by Username", "user");
+                $boostack->writeLog("Auth -> checkAndLogin: User doesn't exist by Username", "user");
                 if ($throwException)
                     throw new Exception("Username or password not valid.", 6);
                 return false;
@@ -182,7 +186,7 @@ class Auth {
 
         if($boostack->getConfig("userToLogin") == "both") {
             if(!User::existsByEmail($username,false) && !User::existsByUsername($username,false)) {
-                $boostack->writeLog("User -> tryLogin: User doesn't exist by Username and by email", "user");
+                $boostack->writeLog("Auth -> tryLogin: User doesn't exist by Username and by email", "user");
                 if ($throwException)
                     throw new Exception("Username or password not valid.", 6);
                 return false;
@@ -193,7 +197,7 @@ class Auth {
         self::login($username, $password);
 
         if (!self::isLoggedIn()){
-            $boostack->writeLog("User -> tryLogin: Username or password not valid.","user");
+            $boostack->writeLog("Auth -> checkAndLogin: Username or password not valid.","user");
             if ($throwException)
                 throw new Exception("Username or password not valid.",5);
             return false;
@@ -208,23 +212,6 @@ class Auth {
     }
 
     private static function login($strUsername, $strPlainPassword, $hashedPassword = "")
-    {
-        if (version_compare(PHP_VERSION, '5.5.0') >= 0)
-            self::LoginWithSalt($strUsername, $strPlainPassword, $hashedPassword);
-        else
-            self::LoginBasic($strUsername, $strPlainPassword, $hashedPassword);
-    }
-
-    /*  Esegue il login
-     *
-     * @param $strUsername          username
-     * @param $strPlainPassword     password in chiaro (utilizzata durante il login da form)
-     * @param $hashedPassword       password in hash (utilizzata durante il login da cookie)
-     *
-     * @need PHP>5.5 per password_verify
-     *
-     */
-    private static function LoginWithSalt($strUsername, $strPlainPassword, $hashedPassword = "")
     {
         global $objSession;
         try {
@@ -258,39 +245,6 @@ class Auth {
         return false;
     }
 
-    private static function LoginBasic($strUsername, $strPlainPassword, $hashed_psw = "")
-    {
-        global $objSession;
-        $strMD5Password = ($hashed_psw !== "") ? $hashed_psw : hash("sha512", $strPlainPassword);
-        try {
-            switch (Boostack::getInstance()->getConfig("userToLogin")) {
-                case "email":
-                    $userData = User::getActiveIdByEmailAndPassword($strUsername, $strMD5Password);
-                    break;
-                case "both":
-                    $userData = User::getActiveIdByEmailOrUsernameAndPassword($strUsername, $strUsername, $strMD5Password);
-                    break;
-                default:
-                    $userData = User::getActiveIdByUsernameAndPassword($strUsername,$strMD5Password);
-                    break;
-            }
-            if ($userData != false) {
-                $userPwd = $userData["pwd"];
-                $userId = $userData["id"];
-                $objSession->loginUser($userId);
-                $userObject = new User($userId);
-                $userObject->last_access = time();
-                $userObject->save();
-                return true;
-            }
-            return false;
-        } catch (PDOException $e) {
-            Boostack::getInstance()->writeLog('LogList -> view -> Caught PDOException: ' . $e->getMessage(), "error");
-        } catch (Exception $b) {
-            Boostack::getInstance()->writeLog('LogList -> view -> Caught Exception: ' . $b->getMessage(), "error");
-        }
-    }
-
     private static function reCaptchaVerify($boostack, $response)
     {
         $reCaptcha_private = $boostack->getConfig("reCaptcha_private");
@@ -303,8 +257,8 @@ class Auth {
             "response" => $response
         ]);
         $response = $curlRequest->send();
-        if(!$response->hasError() && json_decode($response->getData(), true)["success"]) return true;
-        return false;
+        $a =  json_decode($response->getData(), true);
+        return(!$response->hasError() && $a["success"]);
     }
 
     private static function checkAcceptedTimeFromLastLogin($lastLogin)
