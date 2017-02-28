@@ -21,7 +21,8 @@ if($boostack->getConfig('session_on')) {
         $user = !empty($_POST["btk_usr"]) ? Utils::sanitizeInput($_POST["btk_usr"]) : null;
         $password = !empty($_POST["btk_pwd"]) ? Utils::sanitizeInput($_POST["btk_pwd"]) : null;
         $rememberMe = ($boostack->getConfig('cookie_on') && isset($_POST['rememberme']) && $_POST['rememberme'] == '1') ? true : false;
-        $loginResult = Auth::tryLogin($user,$password,$rememberMe);
+        if($boostack->getConfig('csrf_on')) $objSession->CSRFCheckValidity($_POST);
+        $loginResult = Auth::loginByUsernameAndPlainPassword($user,$password,$rememberMe);
         if($loginResult->hasError()) {
             $errorMessage = $loginResult->getErrorMessage();
             $errorCode = $loginResult->getCode();

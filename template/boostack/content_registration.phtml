@@ -8,35 +8,35 @@
     </div>
 </section>
 <p>&nbsp;</p>
-<section>
+<section class="registration">
     <div class="container">
-
         <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">Registration</h3>
                 </div>
                 <div class="panel-body">
-                    <form class="form-horizontal" method="post" action="<?=$boostack->getFriendlyUrl("registration")?>">
+                    <div class="alert alert-danger col-sm-12 <?= $registrationError == "" ? "hidden" : "" ?>"><?= $registrationError; ?></div>
+                    <form id="registration-form" class="form-horizontal" method="post" action="<?=$boostack->getFriendlyUrl("registration")?>">
                         <div class="form-group">
                             <label for="inputEmail3" class="col-sm-4 control-label">Email</label>
                             <div class="col-sm-8">
-                                <input type="email" class="form-control" name="email" id="inputEmail3" placeholder="Email">
+                                <input type="email" class="form-control" name="email" id="reg-email" placeholder="Email">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="inputPassword1" class="col-sm-4 control-label">Password</label>
                             <div class="col-sm-8">
-                                <input type="password" class="form-control" name="psw1" id="inputPassword1" placeholder="Password">
+                                <input type="password" class="form-control" name="psw1" id="reg-pwd1" placeholder="Password">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="inputPassword2" class="col-sm-4 control-label">Repeat Password</label>
                             <div class="col-sm-8">
-                                <input type="password" class="form-control" name="psw2" id="inputPassword2" placeholder="Password">
+                                <input type="password" class="form-control" name="psw2" id="reg-pwd2" placeholder="Password">
                             </div>
                         </div>
+                        <p id="form-validation-error" class="text-danger"></p>
                         <div class="form-group">
                             <div class="col-sm-offset-4 col-sm-8">
                                 <button type="submit" class="btn btn-default">Register</button>
@@ -47,7 +47,6 @@
             </div>
         </div>
     </div>
-
 </section>
 
 

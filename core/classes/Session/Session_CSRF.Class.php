@@ -78,7 +78,7 @@ class Session_CSRF extends Session_HTTP
                 return false;
 
         if ($oneTimeToken)
-            $newToken = CSRCTokenInvalidation();
+            $newToken = $this->CSRCTokenInvalidation();
         
         return true;
     }
@@ -88,22 +88,18 @@ class Session_CSRF extends Session_HTTP
         $key = $this->CSRFDefaultKey;
         $this->$key = null;
         if($this->newTokenGeneration){
-            $res = CSRFTokenGenerator();
+            $res = $this->CSRFTokenGenerator();
         }
         return $res;
     }
 
     public function CSRFCheckValidity($postArray, $timespan = null, $oneTimeToken = false, $throwException = true){
         global $boostack;
-        try
-        {
-            $this->CSRFCheckTokenValidity($postArray, $timespan, $oneTimeToken, $throwException);
-            #$boostack->writeLog('CSRFToken: OK');
-        }
-        catch(Exception $e)
-        {
+        try {
+            return $this->CSRFCheckTokenValidity($postArray, $timespan, $oneTimeToken, $throwException);
+        } catch(Exception $e) {
             $boostack->writeLog('Session_CSRF -> CSRFCheckValidity -> Caught exception: '.$e->getMessage().$e->getTraceAsString(),"error");
-            throw new Exception('Attention! Authentication failed');
+            throw new Exception('Invalid CSRF token');
         }
     }
 }

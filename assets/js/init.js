@@ -2,6 +2,7 @@ var exampleModuleObject = null;
 var CSRFCheckManager = null;
 var cookieMessageModule = null;
 var loginModule = null;
+var registrationModule = null;
 
 var initLibrary = function() {
 
@@ -34,6 +35,14 @@ var initLibrary = function() {
             if (loginModule != null) return;
             loginModule = new m();
             loginModule.init();
+        });
+    }
+
+    if (getElementsByClassName("registration").length) {
+        require(["module/registrationModule"], function (m) {
+            if (registrationModule != null) return;
+            registrationModule = new m();
+            registrationModule.init();
         });
     }
 
