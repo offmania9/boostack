@@ -35,14 +35,13 @@ $config['log_enabledTypes'] =
  * LOGIN
  */
 $config['userToLogin'] = "username";    // Username field for login process: "username" | "email" | "both"
-$config['forceStrongPassword'] = FALSE;
-$config['lockStrategy_on'] = FALSE;
 
 $config['username_min_length'] = 5;
 $config['username_max_length'] = 12;
 $config['password_min_length'] = 6;
 $config['password_max_length'] = 12;
 
+$config['lockStrategy_on'] = FALSE;
 $config['login_lockStrategy'] = "timer"; // "timer" | "recaptcha" | FALSE (if you set timer remember to set login_secondsFormBlocked)
 $config['login_secondsFormBlocked'] = 180;
 $config['login_maxAttempts'] = 3;

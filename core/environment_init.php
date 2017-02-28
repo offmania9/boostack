@@ -37,22 +37,6 @@ if ($boostack->getConfig('database_on')){
         }
         $CURRENTUSER = Auth::getUserLoggedObject();
 
-        /**
-         *  Strong password check
-         *  (when user log-in for the first time he needs to change password
-         */
-        if ($boostack->getConfig('forceStrongPassword')) {
-            if(isset($CURRENTUSER->has_strong_password) && $CURRENTUSER->has_strong_password == "0" && (!$objSession->TwoFactor_Check || $objSession->TwoFactor_Check == 2)) {
-                if ($objSession->password_to_change == 1) {
-                    $objSession->password_to_change = 0;
-                } else if ($objSession->password_to_change == 0) {
-                    $objSession->password_to_change = 1;
-                    if (!isset($_POST["passwordChange_POST"]))
-                        Utils::goToUrl($boostack->getFriendlyUrl("password_change"));
-                }
-            }
-        }
-
     }
 }
 
