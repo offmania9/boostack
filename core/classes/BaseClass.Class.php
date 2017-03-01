@@ -81,6 +81,26 @@ abstract class BaseClass implements JsonSerializable {
     }
 
     /**
+     * Check if object with specified id exist
+     *
+     * @param $id
+     * @return bool
+     */
+    public function exist($id) {
+        try {
+            $sql = "SELECT id FROM " . static::TABLENAME . " WHERE id = :id";
+            $q = $this->pdo->prepare($sql);
+            $q->bindValue(':id', $id);
+            $q->execute();
+            $result = $q->fetch(PDO::FETCH_ASSOC);
+            return !empty($result);
+        } catch(PDOException $pdoEx) {
+            FileLogger::getInstance()->log($pdoEx);
+            throw new PDOException("Database Exception. Please see log file.");
+        }
+    }
+
+    /**
      * Save the object into the database
      *
      * @param $forcedID: if not null, insert the entity with $forceID as id
