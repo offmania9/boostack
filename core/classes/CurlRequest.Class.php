@@ -16,6 +16,7 @@ class CurlRequest {
     private $encoding = "";
     private $getFields = array();
     private $postFields = array();
+    private $customHeader = array();
 
     public function __construct() {
 
@@ -41,6 +42,10 @@ class CurlRequest {
         $this->postFields = $fields;
     }
 
+    public function setCustomHeader($data) {
+        $this->customHeader = $data;
+    }
+
     public function send() {
         $response = new MessageBag();
 
@@ -58,6 +63,10 @@ class CurlRequest {
 
         if(!empty($this->postFields)) {
             curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($this->postFields));
+        }
+
+        if(!empty($this->customHeader)) {
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $this->customHeader);
         }
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, $this->return_transfer);
