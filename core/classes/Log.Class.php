@@ -9,7 +9,6 @@
  * @version 3.0
  */
 class Log extends BaseClass implements JsonSerializable{
-    protected $id;
     protected $level;
     protected $datetime;
     protected $username;
