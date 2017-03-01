@@ -16,19 +16,19 @@ $boostack->renderOpenHtmlHeadTags("Home");
 $errorMessage = "";
 $errorCode = null;
 require_once $boostack->registerTemplateFile("boostack/header.phtml");
-if($boostack->getConfig('session_on')) {
-    if(isset($_POST["btk_usr"]) && isset($_POST["btk_pwd"])) {
-        $user = !empty($_POST["btk_usr"]) ? Utils::sanitizeInput($_POST["btk_usr"]) : null;
-        $password = !empty($_POST["btk_pwd"]) ? Utils::sanitizeInput($_POST["btk_pwd"]) : null;
-        $rememberMe = ($boostack->getConfig('cookie_on') && isset($_POST['rememberme']) && $_POST['rememberme'] == '1') ? true : false;
-        if($boostack->getConfig('csrf_on')) $objSession->CSRFCheckValidity($_POST);
-        $loginResult = Auth::loginByUsernameAndPlainPassword($user,$password,$rememberMe);
-        if($loginResult->hasError()) {
+if ($boostack->getConfig('session_on')) {
+    $user = $request->getPostParam("btk_usr");
+    $password = $request->getPostParam("btk_pwd");
+    if ($user != null && $password != null) {
+        $rememberMe = ($boostack->getConfig('cookie_on') && $request->getPostParam("rememberme") == '1') ? true : false;
+        if ($boostack->getConfig('csrf_on')) $objSession->CSRFCheckValidity($_POST);
+        $loginResult = Auth::loginByUsernameAndPlainPassword($user, $password, $rememberMe);
+        if ($loginResult->hasError()) {
             $errorMessage = $loginResult->getErrorMessage();
             $errorCode = $loginResult->getCode();
         }
     }
-    if(Auth::isLoggedIn())
+    if (Auth::isLoggedIn())
         require_once $boostack->registerTemplateFile("boostack/content_login_logged.phtml");
     else
         require_once $boostack->registerTemplateFile("boostack/content_login.phtml");

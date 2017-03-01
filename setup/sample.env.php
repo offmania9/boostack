@@ -37,7 +37,7 @@ $config['log_enabledTypes'] =
 $config['userToLogin'] = "username";    // Username field for login process: "username" | "email" | "both"
 
 $config['username_min_length'] = 5;
-$config['username_max_length'] = 12;
+$config['username_max_length'] = 18;
 $config['password_min_length'] = 6;
 $config['password_max_length'] = 12;
 
@@ -89,9 +89,9 @@ $config["mail_maintenance"] = "mntn@boostack.com";
  * IMAGES
  */
 $config["default_images_path"] = "img/";
-$MAX_UPLOAD_IMAGE_SIZE = 2097152; // 2 MB
-$MAX_UPLOAD_NAMEFILE_LENGTH = 100;
-$MAX_UPLOAD_GENERALFILE_SIZE = 4194304; // 4 MB
+$config["max_upload_image_size"] = 2097152; // 2 MB
+$config["max_upload_namefile_length"] = 100;
+$config["max_upload_generalfile_size"] = 4194304; // 4 MB
 
 /**
  * DATES AND TIMES

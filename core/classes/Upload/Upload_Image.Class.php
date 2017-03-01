@@ -95,13 +95,13 @@ class Upload_Image
 
     public function constraints($file)
     {
-        global $MAX_UPLOAD_IMAGE_SIZE, $MAX_UPLOAD_PDF_SIZE, $MAX_UPLOAD_NAMEFILE_LENGTH, $MAX_UPLOAD_GENERALFILE_SIZE, $mime_types;
+        global $boostack, $MAX_UPLOAD_IMAGE_SIZE, $MAX_UPLOAD_PDF_SIZE, $MAX_UPLOAD_NAMEFILE_LENGTH, $MAX_UPLOAD_GENERALFILE_SIZE, $mime_types;
         
-        if (strlen($file["name"]) >= $MAX_UPLOAD_NAMEFILE_LENGTH) { // # FILE NAME TOO LONG
+        if (strlen($file["name"]) >= $boostack->getConfig("max_upload_namefile_length")) { // # FILE NAME TOO LONG
             throw new Exception("File Name too long. Rename it and repeat upload. <br />");
         }
         if (in_array($file["type"], $this->image_types)) { // IS IMAGE
-            if ($file["size"] > $MAX_UPLOAD_IMAGE_SIZE) // SIZE CHECK
+            if ($file["size"] > $boostack->getConfig("max_upload_image_size")) // SIZE CHECK
                 throw new Exception("File too large. <br />");
             return true;
         }
