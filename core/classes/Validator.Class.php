@@ -196,6 +196,20 @@ class Validator {
         return $res;
     }
 
+    public static function alphanumeric($input) {
+        $res = true;
+        if(is_array($input)) {
+            foreach($input as $elem) {
+                if(!preg_match('/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]+$/',$elem) && $res) {
+                    $res = false;
+                }
+            }
+        } else {
+            $res = preg_match('/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]+$/',$input);
+        }
+        return $res;
+    }
+
     public static function integer($input) {
         $res = true;
         if(is_array($input)) {

@@ -216,6 +216,24 @@ abstract class BaseClass implements JsonSerializable {
     }
 
     /**
+     * Lock the table for read and write operations
+     */
+    public function lockTable() {
+        $sql = "LOCK TABLES ".static::TABLENAME." WRITE";
+        $result = $this->pdo->prepare($sql);
+        $result->execute();
+    }
+
+    /**
+     * Release all the locks for all the tables
+     */
+    public function unlockTable() {
+        $sql = "UNLOCK TABLES";
+        $result = $this->pdo->prepare($sql);
+        $result->execute();
+    }
+
+    /**
      * Return the object database table
      */
     public function getTablename() {
