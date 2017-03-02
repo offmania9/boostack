@@ -21,6 +21,9 @@ class User implements JsonSerializable {
 
     protected $attributes = array();
 
+    /**
+     * Crea una nuova istanza della classe, istanziando i sotto-oggetti.
+     */
     public function __construct($id = null) {
         $this->id = $id;
         $this->pdo = Database_PDO::getInstance();
@@ -34,6 +37,10 @@ class User implements JsonSerializable {
         }
     }
 
+    /**
+     * Riempie l'oggetto con l'array chiave-valore passato come parametro (invocando __get).
+     * Se è presente l'id, lo setta in tutte le sotto-istanze.
+     */
     public function fill($array) {
         if(array_key_exists("id",$array)) {
             foreach($this->objects as $object) {
@@ -49,6 +56,11 @@ class User implements JsonSerializable {
         $this->id = $id;
     }
 
+    /**
+     * Salva tutte le istanze sul database, attraverso una transaction.
+     * Se è presente l'id, invoca la save delle sotto-istanze.
+     * Altrimenti, salva la prima istanza ottenento l'id auto-incrementale e successivamente salva le altre istanze con lo stesso id.
+     */
     public function save() {
         try {
             $this->pdo->beginTransaction();
@@ -79,6 +91,9 @@ class User implements JsonSerializable {
 
     }
 
+    /**
+     * Rimuove tutte le sotto-istanze dell'utente dal database.
+     */
     public function delete() {
         try {
             $this->pdo->beginTransaction();
@@ -92,6 +107,9 @@ class User implements JsonSerializable {
         }
     }
 
+    /** Setta un attributo sulla relativa variabile d'istanza.
+     * Se è presente l'id ma la relativa istanza non è ancora stata caricata, effettua la load.
+     */
     public function __set($property, $value) {
         if(!isset($this->attributes[$property]))
             throw new Exception("Field $property not found");
@@ -102,6 +120,10 @@ class User implements JsonSerializable {
         $objectInstance->$property = $value;
     }
 
+    /**
+     * Restituisce il valore di un attributo recuperandolo dalla relativa variabile d'istanza.
+     * Se è presente l'id ma la relativa istanza non è ancora stata caricata, effettua la load.
+     */
     public function __get($property) {
         if($property == "id") return $this->id;
         if(!isset($this->attributes[$property]))
@@ -128,6 +150,10 @@ class User implements JsonSerializable {
 //            "user_social" => $this->objects[User_Social::class],
 //            "user_registration" => $this->objects[User_Registration::class],
 //        ];
+    }
+
+    public static function existById($id, $throwException = true) {
+        return User_Entity::existById($id, $throwException);
     }
 
     public static function existsByEmail($email, $throwException = true) {

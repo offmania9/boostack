@@ -18,6 +18,9 @@ class UserList extends BaseList {
     protected $mainTablename = null;
     protected $otherTablenames = array();
 
+    /**
+     * Crea una nuovai stanza della classe, salvando le tabelle del database associate con le relative classi passate come parametro.
+     */
     public function __construct($classes = array(User_Entity::class)) {
         $this->pdo = Database_PDO::getInstance();
         $this->items = [];
@@ -31,6 +34,9 @@ class UserList extends BaseList {
         }
     }
 
+    /**
+     * Esegue il load di tutti gli elementi presenti nella tabella.
+     */
     public function loadAll() {
         try {
             $sql = "SELECT * ".$this->getSQLFromJoinPart();
@@ -47,7 +53,7 @@ class UserList extends BaseList {
     }
 
     /**
-     * Retrieve values with field filtering, ordering and pagination
+     * Esegue il load degli elementi che rispettano i filtri passati come parametro
      */
     public function view($fields = NULL, $orderColumn = NULL, $orderType = NULL, $numitem = 25, $currentPage = 1) {
         try {
@@ -153,6 +159,10 @@ class UserList extends BaseList {
         }
     }
 
+    /**
+     * Riempie l'oggetto con un array contentente a sua volta un array di attributi per ogni istanza, richiamando la fill del singolo oggetto.
+     * Di default, la password (se presente tra i parametri) viene esclusa in modo da non causare un nuovo re-hash.
+     */
     protected function fill($array, $excludePwd = true) {
         foreach ($array as $elem) {
             $baseClassInstance = new $this->baseClassName;
@@ -163,6 +173,9 @@ class UserList extends BaseList {
         }
     }
 
+    /**
+     * Genera la parte di query contenente il FROM inserendo eventuali JOIN nel caso siano incluse più classi.
+     */
     private function getSQLFromJoinPart() {
         $sql = " FROM " . $this->mainTablename;
         $otherTablenamesCount = count($this->otherTablenames);

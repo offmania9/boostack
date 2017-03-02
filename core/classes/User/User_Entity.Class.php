@@ -81,6 +81,14 @@ class User_Entity extends BaseClass
         return $q2[0];
     }
 
+    public static function existById($id, $throwException = true)
+    {
+        $exist = parent::exist($id);
+        if(!$exist && $throwException)
+            throw new Exception("User not found.",3);
+        return $exist;
+    }
+
     public static function existsByEmail($email, $throwException = true)
     {
         $pdo = Database_PDO::getInstance();
