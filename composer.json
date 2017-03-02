@@ -19,5 +19,6 @@
       "email": "alessio.debernardi22@gmail.com"
     }
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "minimum-stability": "dev"
 }
