@@ -54,6 +54,12 @@ class User_Entity extends BaseClass
         parent::prepare($array);
     }
 
+    public function jsonSerialize() {
+        $vars = parent::jsonSerialize();
+        $vars["id"] = $this->id;
+        return $vars;
+    }
+
     public function passwordToHash($cleanPassword)
     {
         if (version_compare(PHP_VERSION, '5.5.0') >= 0)

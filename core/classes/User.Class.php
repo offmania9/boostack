@@ -19,7 +19,7 @@ class User implements JsonSerializable {
         User_Info::class => null,
     ];
 
-    protected $attributes = [];
+    protected $attributes = array();
 
     public function __construct($id = null) {
         $this->id = $id;
@@ -35,6 +35,11 @@ class User implements JsonSerializable {
     }
 
     public function fill($array) {
+        if(array_key_exists("id",$array)) {
+            foreach($this->objects as $object) {
+                $object->id = $array["id"];
+            }
+        }
         foreach($array as $attribute => $value) {
             $this->$attribute = $value;
         }
@@ -110,12 +115,19 @@ class User implements JsonSerializable {
 
     public function jsonSerialize()
     {
-        return [
-            "user" => $this->objects[User_Entity::class],
-            "user_info" => $this->objects[User_Info::class],
-            "user_social" => $this->objects[User_Social::class],
-            "user_registration" => $this->objects[User_Registration::class],
-        ];
+        return array_merge(
+            $this->objects[User_Entity::class]->jsonSerialize(),
+            $this->objects[User_Info::class]->jsonSerialize(),
+            $this->objects[User_Social::class]->jsonSerialize(),
+            $this->objects[User_Registration::class]->jsonSerialize()
+        );
+
+//        return [
+//            "user" => $this->objects[User_Entity::class],
+//            "user_info" => $this->objects[User_Info::class],
+//            "user_social" => $this->objects[User_Social::class],
+//            "user_registration" => $this->objects[User_Registration::class],
+//        ];
     }
 
     public static function existsByEmail($email, $throwException = true) {
