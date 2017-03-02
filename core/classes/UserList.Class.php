@@ -75,7 +75,7 @@ class UserList extends BaseList {
                         $sql .= "FROM_UNIXTIME(" . $option[0] . ") ";
                     } else
                         if($option[0] == "id") $option[0] = $this->mainTablename.".id";
-                        $sql .= $option[0] . " ";
+                    $sql .= $option[0] . " ";
                     $option[1] = strtoupper($option[1]);
                     switch ($option[1]) {
                         case '<>':
@@ -145,13 +145,21 @@ class UserList extends BaseList {
 
             $q->execute();
             $queryResults = $q->fetchAll(PDO::FETCH_ASSOC);
-
             $this->fill($queryResults);
-
             return $queryNumberResult;
         } catch (PDOException $pdoEx) {
             FileLogger::getInstance()->log($pdoEx);
             throw new PDOException("Database Exception. Please see log file.");
+        }
+    }
+
+    protected function fill($array, $excludePwd = true) {
+        foreach ($array as $elem) {
+            $baseClassInstance = new $this->baseClassName;
+            // escludo la password in modo da non hasharla ogni volta
+            if($excludePwd) unset($elem["pwd"]);
+            $baseClassInstance->fill($elem);
+            $this->items[] = $baseClassInstance;
         }
     }
 
