@@ -16,7 +16,9 @@ $boostack->renderOpenHtmlHeadTags("Home");
 $errorMessage = "";
 $errorCode = null;
 require_once $boostack->registerTemplateFile("boostack/header.phtml");
-if ($boostack->getConfig('session_on')) {
+
+try {
+    $boostack->constraitConfig("session_on");
     $user = $request->getPostParam("btk_usr");
     $password = $request->getPostParam("btk_pwd");
     if ($user != null && $password != null) {
@@ -32,11 +34,13 @@ if ($boostack->getConfig('session_on')) {
         require_once $boostack->registerTemplateFile("boostack/content_login_logged.phtml");
     else
         require_once $boostack->registerTemplateFile("boostack/content_login.phtml");
+} catch (Exception_Misconfiguration $em) {
+    dd($em->getMessage());
+} catch(Exception $e) {
+    $loginError = $e->getMessage();
 }
 
 require_once $boostack->registerTemplateFile("boostack/footer.phtml");
-
-#$loginMessage = $objSession->StartLoginProcess($_POST['btk_usr'], $_POST["btk_pwd"], $_POST['rememberme']);
 
 // #######################
 $boostack->renderCloseHtmlTag();

@@ -83,6 +83,12 @@ class Boostack
     {
         return (isset($this->config[$key]))?$this->config[$key]:"";
     }
+
+    public function constraitConfig($key, $value = true)
+    {
+        if(isset($this->config[$key]) && $this->config[$key] == $value) return true;
+        throw new Exception_Misconfiguration("You must enable ".$key."config");
+    }
     /*
      *
      */

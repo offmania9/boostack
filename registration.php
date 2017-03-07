@@ -17,6 +17,7 @@ $boostack->renderOpenHtmlHeadTags("Registration");
 require_once $boostack->registerTemplateFile("boostack/header.phtml");
 
 try {
+    $boostack->constraitConfig("session_on");
     $registrationError = "";
     $email = $request->getPostParam('email');
     $psw1 = $request->getPostParam('psw1');
@@ -37,14 +38,15 @@ try {
             Auth::loginByUserID($user->id);
         }
     }
+    if (Auth::isLoggedIn()) {
+        require_once $boostack->registerTemplateFile("boostack/content_login_logged.phtml");
+    } else {
+        require_once $boostack->registerTemplateFile("boostack/content_registration.phtml");
+    }
+} catch (Exception_Misconfiguration $em) {
+    dd($em->getMessage());
 } catch (Exception $e) {
     $registrationError = $e->getMessage();
-}
-
-if (Auth::isLoggedIn()) {
-    require_once $boostack->registerTemplateFile("boostack/content_login_logged.phtml");
-} else {
-    require_once $boostack->registerTemplateFile("boostack/content_registration.phtml");
 }
 
 require_once $boostack->registerTemplateFile("boostack/footer.phtml");
