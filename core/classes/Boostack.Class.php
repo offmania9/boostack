@@ -34,16 +34,14 @@ class Boostack
     // #############################################################
     private function __construct()
     {
-        global $config;
-        $this->config = $config;
-        if ($this->config['developmentMode']) {
+        if (Config::get('developmentMode')) {
             if (! ini_get('zlib.output_compression') && substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') && ! in_array('ob_gzhandler', ob_list_handlers()))
                 ob_start("ob_gzhandler");
             else
                 ob_start();
         }
-        $this->url = $this->config['url'];
-        $this->developmentMode = $this->config['developmentMode'];
+        $this->url = Config::get('url');
+        $this->developmentMode = Config::get('developmentMode');
     }
 
     private function __clone()
@@ -145,13 +143,13 @@ class Boostack
     public function renderOpenHtmlHeadTags($titlePrepend = "")
     {
         echo '<!DOCTYPE html>'
-             .'<html lang="'.$this->config['html_lang'].'"'
+             .'<html lang="'.Config::get('html_lang').'"'
              .'xmlns:og="https://opengraphprotocol.org/schema/" xmlns:fb="https://www.facebook.com/2008/fbml">'
              .'<head>';
         $this->registerAllDefaultMetaTags($titlePrepend);
         $this->registerAllDefaultCssFiles();
         echo '</head><body>';
-        if(isset($this->config['setupFolderExists']) && $this->config['setupFolderExists'])
+        if(Config::get('setupFolderExists'))
             require $this->registerTemplateFile("boostack/setup_exists_header.phtml");
     }
 
@@ -163,7 +161,7 @@ class Boostack
         if(Config::get('session_on')){
             global $objSession;
             $langUrl = $objSession->SESS_LANGUAGE."/";
-            if(!$this->config['show_default_language_in_URL'] && $objSession->SESS_LANGUAGE == $this->config['language_default'])
+            if(!Config::get('show_default_language_in_URL') && $objSession->SESS_LANGUAGE == Config::get('language_default'))
                 $langUrl = "";
             return $this->url . $langUrl . $virtualPath;
         }
@@ -205,11 +203,11 @@ class Boostack
         global $CURRENTUSER;
         switch ($type) {
             case LogType::DB:
-                if ($this->config['database_on'] && $this->config['log_on'])
+                if (Config::get('database_on') && Config::get('log_on'))
                     Database_AccessLogger::getInstance($CURRENTUSER)->Log($logMesg, $level);
                 break;
             case LogType::File:
-                if ($this->config['log_on'])
+                if (Config::get('log_on'))
                     FileLogger::getInstance()->log($logMesg, $level);
                 break;
             default:
@@ -261,38 +259,38 @@ class Boostack
      */
     public function registerAllDefaultMetaTags($titlePrepend = "")
 {   ?>
-<meta charset="utf-8"/><meta name="viewport" content="<?=$this->config['viewport']?>"/>
+<meta charset="utf-8"/><meta name="viewport" content="<?=Config::get('viewport')?>"/>
 <?php
 if ($this->facebookMetaTag) {
     ?>
-    <meta property="og:title" content="<?=$this->config['og_title']?>" />
-    <meta property="og:type" content="<?=$this->config['og_type']?>" />
+    <meta property="og:title" content="<?=Config::get('og_title')?>" />
+    <meta property="og:type" content="<?=Config::get('og_type')?>" />
     <meta property="og:url" content="<?=$this->url?>" />
-    <meta property="og:image" content="<?=$this->url.$this->config["url_logo"];?>" />
-    <meta property="og:description" content="<?=$this->config['site_description'];?>" />
+    <meta property="og:image" content="<?=$this->url.Config::get("url_logo");?>" />
+    <meta property="og:description" content="<?=Config::get('site_description');?>" />
     <?php
-if ($this->config['fb_app_id'] != "") {
+if (Config::get('fb_app_id') != "") {
 ?>
-    <meta property="fb:app_id" content="<?=$this->config['fb_app_id']?>" /><?php
+    <meta property="fb:app_id" content="<?=Config::get('fb_app_id')?>" /><?php
 }
 ?><?php
-if ($this->config['fb_app_id'] != "") {
+if (Config::get('fb_app_id') != "") {
 ?>
-    <meta property="fb:admins" content="<?=$this->config['fb_admins']?>" /><?php }?>
+    <meta property="fb:admins" content="<?=Config::get('fb_admins')?>" /><?php }?>
 <?php
 }
-?><title><?=($titlePrepend!="")?$titlePrepend." | ":""?><?=$this->config['site_title'];?> | <?=$this->config['project_sitename']?></title>
-<meta name="description" content="<?=$this->config['site_description']?>"/>
-<meta name="author" content="<?=$this->config['site_author']?>"/>
-<meta content="<?=$this->config['site_keywords'];?>" name="Keywords" />
+?><title><?=($titlePrepend!="")?$titlePrepend." | ":""?><?=Config::get('site_title');?> | <?=Config::get('project_sitename')?></title>
+<meta name="description" content="<?=Config::get('site_description')?>"/>
+<meta name="author" content="<?=Config::get('site_author')?>"/>
+<meta content="<?=Config::get('site_keywords');?>" name="Keywords" />
 <meta content="INDEX, FOLLOW" name="ROBOTS" />
-<link rel="shortcut icon" href="<?=$this->url.$this->config['site_shortcuticon'];?>" />
-<link rel="image_src" href="<?=$this->url.$this->config['url_logo'];?>" />
-<link rel="apple-touch-icon" sizes="144x144" href="<?=$this->url.$this->config['appletouchicon_144'];?>"/>
-<link rel="apple-touch-icon" sizes="114x114" href="<?=$this->url.$this->config['appletouchicon_114'];?>"/>
-<link rel="apple-touch-icon" sizes="72x72" href="<?=$this->url.$this->config['appletouchicon_72'];?>"/>
-<link rel="apple-touch-icon" href="<?=$this->url.$this->config['appletouchicon_def'];?>"/>
-<meta name="apple-mobile-web-app-title" content="<?=$this->url.$this->config['sitename']?>"/>
+<link rel="shortcut icon" href="<?=$this->url.Config::get('site_shortcuticon');?>" />
+<link rel="image_src" href="<?=$this->url.Config::get('url_logo');?>" />
+<link rel="apple-touch-icon" sizes="144x144" href="<?=$this->url.Config::get('appletouchicon_144');?>"/>
+<link rel="apple-touch-icon" sizes="114x114" href="<?=$this->url.Config::get('appletouchicon_114');?>"/>
+<link rel="apple-touch-icon" sizes="72x72" href="<?=$this->url.Config::get('appletouchicon_72');?>"/>
+<link rel="apple-touch-icon" href="<?=$this->url.Config::get('appletouchicon_def');?>"/>
+<meta name="apple-mobile-web-app-title" content="<?=$this->url.Config::get('sitename')?>"/>
 <base href="<?=$this->url?>" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <?php
