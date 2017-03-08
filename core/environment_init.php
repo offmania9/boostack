@@ -44,7 +44,7 @@ if (Config::get('language_on')) {
     $language = Language::getLanguage();
     $languageFile = Language::findLanguageFile($language);
     $translatedLabels = Language::readAndDecodeLanguageFile($languageFile);
-    Language::setSessionLanguage($language);
+    if(Config::get('session_on')) Language::setSessionLanguage($language);
     $boostack->labels = $translatedLabels;
 }
 if (Config::get('mobile_on')) {
