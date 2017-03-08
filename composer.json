@@ -1,0 +1,32 @@
+{
+  "name": "offmania9/boostack",
+  "description": "Boostack is PHP Framework for developers. Improve your development and build a modern website in minutes",
+  "keywords": [
+    "php",
+    "framework",
+    "web",
+    "css",
+    "js"
+  ],
+  "type": "project",
+    "require": {
+        "php": ">=5.6"
+    },
+  "homepage": "https://boostack.com",
+  "authors": [
+    {
+      "name": "Stefano Spagnolo",
+      "email": "s.spagnolo@hotmail.it"
+    },
+    {
+      "name": "Alessio Debernardi",
+      "email": "alessio.debernardi22@gmail.com"
+    }
+  ],
+  "license": "MIT",
+  "extra": {
+  "branch-alias": {
+    "dev-master": "2.4.x-dev"
+  }
+ }
+}
