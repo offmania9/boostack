@@ -1,40 +1,194 @@
 <?php
+/**
+ * Boostack: Request.Class.php
+ * ========================================================================
+ * Copyright 2014-2017 Spagnolo Stefano
+ * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
+ * ========================================================================
+ * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
+ * @version 3.0
+ */
 
 class Request
 {
+    /**
+     * @var
+     */
+    protected static $query;
+    /**
+     * @var
+     */
+    protected static $post;
+    /**
+     * @var
+     */
+    protected static $server;
+    /**
+     * @var
+     */
+    protected static $request;
+    /**
+     * @var
+     */
+    protected static $files;
+    /**
+     * @var
+     */
+    protected static $cookie;
 
+    /**
+     *
+     */
+    public static function init()
+    {
+        self::registerFromGlobals();
+    }
+
+    /**
+     * @param $type
+     * @param $param
+     * @return bool
+     */
+    private static function has($type,$param)
+    {
+        return isset(self::${$type}[$param]);
+    }
+
+    /**
+     * @param $type
+     * @param $param
+     * @return mixed
+     */
+    private static function get($type, $param)
+    {
+        return self::${$type}[$param];
+    }
+
+    /**
+     *
+     */
+    private static function registerFromGlobals()
+    {
+        self::$query = $_GET;
+        self::$post = $_POST;
+        self::$server = $_SERVER;
+        self::$request = $_REQUEST;
+        self::$files = $_FILES;
+        self::$cookie = $_COOKIE;
+    }
+
+    /**
+     * @param $param
+     * @return bool
+     */
+    public static function hasPostParam($param)
+    {
+        return self::has(RequestType::POST, $param);
+    }
+
+    /**
+     * @param $param
+     * @return array|null|string
+     */
     public static function getPostParam($param)
     {
-        return isset($_POST) && !empty($_POST[$param]) ? Utils::sanitizeInput($_POST[$param]) : null;
+        $rt = RequestType::POST;
+        return !empty(self::get($rt,$param)) ? Utils::sanitizeInput(self::get($rt,$param)) : null;
     }
 
+    /**
+     * @param $param
+     * @return bool
+     */
+    public static function hasQueryParam($param)
+    {
+        return self::has(RequestType::QUERY,$param);
+    }
+
+    /**
+     * @param $param
+     * @return array|null|string
+     */
     public static function getQueryParam($param)
     {
-        return isset($_GET) && !empty($_GET[$param]) ? Utils::sanitizeInput($_GET[$param]) : null;
+        $rt = RequestType::QUERY;
+        return !empty(self::get($rt,$param)) ? Utils::sanitizeInput(self::get($rt,$param)) : null;
     }
 
-    public static function getCookieParam($param)
+    /**
+     * @param $param
+     * @return bool
+     */
+    public static function hasServerParam($param)
     {
-        return isset($_COOKIE) && !empty($_COOKIE[$param]) ? Utils::sanitizeInput($_COOKIE[$param]) : null;
+        return self::has(RequestType::SERVER,$param);
     }
 
-    public static function getFileParam($param)
-    {
-        if (isset($_FILES) && !empty($_FILES[$param]) && $_FILES[$param]["size"] > Config::get("max_upload_generalfile_size"))
-            return null;
-        return $_FILES[$param];
-    }
-
-    public static function getRequestParam($param)
-    {
-        return isset($_REQUEST) && !empty($_REQUEST[$param]) ? Utils::sanitizeInput($_REQUEST[$param]) : null;
-    }
-
+    /**
+     * @param $param
+     * @return array|null|string
+     */
     public static function getServerParam($param)
     {
-        return isset($_SERVER) && !empty($_SERVER[$param]) ? Utils::sanitizeInput($_SERVER[$param]) : null;
+        $rt = RequestType::SERVER;
+        return !empty(self::get($rt,$param)) ? Utils::sanitizeInput(self::get($rt,$param)) : null;
     }
 
-}
+    /**
+     * @param $param
+     * @return bool
+     */
+    public static function hasCookieParam($param)
+    {
+        return self::has(RequestType::COOKIE,$param);
+    }
 
+    /**
+     * @param $param
+     * @return array|null|string
+     */
+    public static function getCookieParam($param)
+    {
+        $rt = RequestType::COOKIE;
+        return !empty(self::get($rt,$param)) ? Utils::sanitizeInput(self::get($rt,$param)) : null;
+    }
+
+    /**
+     * @param $param
+     * @return bool
+     */
+    public static function hasRequestParam($param)
+    {
+        return self::has(RequestType::REQUEST,$param);
+    }
+
+    /**
+     * @param $param
+     * @return array|null|string
+     */
+    public static function getRequestParam($param)
+    {
+        $rt = RequestType::REQUEST;
+        return !empty(self::get($rt,$param)) ? Utils::sanitizeInput(self::get($rt,$param)) : null;
+    }
+
+    /**
+     * @param $param
+     * @return bool
+     */
+    public static function hasFilesParam($param)
+    {
+        return self::has(RequestType::FILES,$param);
+    }
+
+    /**
+     * @param $param
+     * @return array|null|string
+     */
+    public static function getFilesParam($param)
+    {
+        $rt = RequestType::FILES;
+        return !empty(self::get($rt,$param)) ? Utils::sanitizeInput(self::get($rt,$param)) : null;
+    }
+}
 ?>

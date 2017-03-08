@@ -22,6 +22,7 @@ if ($config['developmentMode']) {
     ini_set('display_errors', 0);
 }
 Config::initConfig();
+Request::init();
 $boostack = Boostack::getInstance();
 $CURRENTUSER = NULL;
 if (Config::get('database_on')) {

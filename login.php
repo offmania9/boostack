@@ -16,29 +16,29 @@ $boostack->renderOpenHtmlHeadTags("Home");
 $errorMessage = "";
 $errorCode = null;
 require_once $boostack->registerTemplateFile("boostack/header.phtml");
-
 try {
     Config::constraint("session_on");
-    $user = Request::getPostParam("btk_usr");
-    $password = Request::getPostParam("btk_pwd");
-    if ($user != null && $password != null) {
+    if (Request::hasPostParam("btk_usr") && Request::hasPostParam("btk_pwd")) {
+        $user = Request::getPostParam("btk_usr");
+        $password = Request::getPostParam("btk_pwd");
         $rememberMe = (Config::get('cookie_on') && Request::getPostParam("rememberme") == '1') ? true : false;
-        if (Config::get('csrf_on')) $objSession->CSRFCheckValidity($_POST);
+        if (Config::get('csrf_on'))
+            $objSession->CSRFCheckValidity($_POST);
         $loginResult = Auth::loginByUsernameAndPlainPassword($user, $password, $rememberMe);
         if ($loginResult->hasError()) {
             $errorMessage = $loginResult->getErrorMessage();
             $errorCode = $loginResult->getCode();
         }
     }
-    if (Auth::isLoggedIn())
-        require_once $boostack->registerTemplateFile("boostack/content_login_logged.phtml");
-    else
-        require_once $boostack->registerTemplateFile("boostack/content_login.phtml");
 } catch (Exception_Misconfiguration $em) {
     dd($em->getMessage());
 } catch(Exception $e) {
-    $loginError = $e->getMessage();
+    $errorMessage = $e->getMessage();
 }
+if (Auth::isLoggedIn())
+    require_once $boostack->registerTemplateFile("boostack/content_login_logged.phtml");
+else
+    require_once $boostack->registerTemplateFile("boostack/content_login.phtml");
 
 require_once $boostack->registerTemplateFile("boostack/footer.phtml");
 

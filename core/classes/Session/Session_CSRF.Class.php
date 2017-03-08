@@ -94,11 +94,10 @@ class Session_CSRF extends Session_HTTP
     }
 
     public function CSRFCheckValidity($postArray, $timespan = null, $oneTimeToken = false, $throwException = true){
-        global $boostack;
         try {
             return $this->CSRFCheckTokenValidity($postArray, $timespan, $oneTimeToken, $throwException);
         } catch(Exception $e) {
-            $boostack->writeLog('Session_CSRF -> CSRFCheckValidity -> Caught exception: '.$e->getMessage().$e->getTraceAsString(),"error");
+            Boostack::getInstance()->writeLog('Session_CSRF -> CSRFCheckValidity -> Caught exception: '.$e->getMessage().$e->getTraceAsString(),"error");
             throw new Exception('Invalid CSRF token');
         }
     }
