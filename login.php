@@ -18,12 +18,12 @@ $errorCode = null;
 require_once $boostack->registerTemplateFile("boostack/header.phtml");
 
 try {
-    $boostack->constraitConfig("session_on");
+    Config::constraint("session_on");
     $user = $request->getPostParam("btk_usr");
     $password = $request->getPostParam("btk_pwd");
     if ($user != null && $password != null) {
-        $rememberMe = ($boostack->getConfig('cookie_on') && $request->getPostParam("rememberme") == '1') ? true : false;
-        if ($boostack->getConfig('csrf_on')) $objSession->CSRFCheckValidity($_POST);
+        $rememberMe = (Config::get('cookie_on') && $request->getPostParam("rememberme") == '1') ? true : false;
+        if (Config::get('csrf_on')) $objSession->CSRFCheckValidity($_POST);
         $loginResult = Auth::loginByUsernameAndPlainPassword($user, $password, $rememberMe);
         if ($loginResult->hasError()) {
             $errorMessage = $loginResult->getErrorMessage();

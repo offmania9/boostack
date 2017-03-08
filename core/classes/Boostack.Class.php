@@ -79,19 +79,6 @@ class Boostack
     /*
      *
      */
-    public function getConfig($key)
-    {
-        return (isset($this->config[$key]))?$this->config[$key]:"";
-    }
-
-    public function constraitConfig($key, $value = true)
-    {
-        if(isset($this->config[$key]) && $this->config[$key] == $value) return true;
-        throw new Exception_Misconfiguration("You must enable ".$key."config");
-    }
-    /*
-     *
-     */
     public function registerScriptFile($fileName)
     {
         $minified = $this->developmentMode ? "" : ".min";
@@ -173,7 +160,7 @@ class Boostack
      */
     public function getFriendlyUrl($virtualPath)
     {
-        if($this->getConfig('session_on')){
+        if(Config::get('session_on')){
             global $objSession;
             $langUrl = $objSession->SESS_LANGUAGE."/";
             if(!$this->config['show_default_language_in_URL'] && $objSession->SESS_LANGUAGE == $this->config['language_default'])
@@ -188,13 +175,13 @@ class Boostack
      */
     public function renderCloseHtmlTag($noToken = false)
     {
-        if(!$noToken && $this->getConfig('session_on') && $this->getConfig('csrf_on')){
+        if(!$noToken && Config::get('session_on') && Config::get('csrf_on')){
             global $objSession;
             echo $objSession->CSRFRenderHiddenField();
         }
         echo '<script type="text/javascript"> var rootUrl = "' . $this->url . '";var developmentMode = "' . $this->developmentMode . '";</script>';
 
-        $defaultJsFiles = $this->getConfig("default_js_files");
+        $defaultJsFiles = Config::get("default_js_files");
         if(!empty($defaultJsFiles)) {
             foreach ($defaultJsFiles as $jsFile) {
                 $this->registerScriptFile($jsFile);
@@ -202,7 +189,7 @@ class Boostack
         }
 
         echo "<!--[if lt IE 9]>";
-        $defaultIeJsFiles = $this->getConfig("default_ie_js_files");
+        $defaultIeJsFiles = Config::get("default_ie_js_files");
         if(!empty($defaultIeJsFiles)) {
             foreach ($defaultIeJsFiles as $jsFile) {
                 $this->registerScriptFile($jsFile);
@@ -261,7 +248,7 @@ class Boostack
      */
     public function registerAllDefaultCssFiles()
     {
-        $defaultCssFiles = $this->getConfig("default_css_files");
+        $defaultCssFiles = Config::get("default_css_files");
         if(!empty($defaultCssFiles)) {
             foreach ($defaultCssFiles as $cssFile) {
                 $this->registerCssFile($cssFile);

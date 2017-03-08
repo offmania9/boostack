@@ -21,16 +21,17 @@ if ($config['developmentMode']) {
     error_reporting(0);
     ini_set('display_errors', 0);
 }
+Config::initConfig();
 $boostack = Boostack::getInstance();
 $CURRENTUSER = NULL;
 $request = Request::getInstance();
-if ($boostack->getConfig('database_on')) {
+if (Config::get('database_on')) {
     Database_PDO::getInstance($database['host'], $database['name'], $database['username'], $database['password']);
-    if ($boostack->getConfig('session_on')) {
-        $objSession = ($boostack->getConfig('csrf_on')) ? new Session_CSRF() : new Session_HTTP();
-        if ($boostack->getConfig('cookie_on') && $request->getCookieParam($boostack->getConfig('cookie_name')) != NULL) {
+    if (Config::get('session_on')) {
+        $objSession = (Config::get('csrf_on')) ? new Session_CSRF() : new Session_HTTP();
+        if (Config::get('cookie_on') && $request->getCookieParam(Config::get('cookie_name')) != NULL) {
             //user not logged in but remember-me cookie exists then try to perform loginByCookie function
-            $c = $request->getCookieParam($boostack->getConfig('cookie_name'));
+            $c = $request->getCookieParam(Config::get('cookie_name'));
             if (!Auth::isLoggedIn() && $c !== "")
                 if (!Auth::loginByCookie($c)) //cookie is set but wrong (manually edited)
                     Auth::logout();
@@ -40,17 +41,17 @@ if ($boostack->getConfig('database_on')) {
     }
 }
 
-if ($boostack->getConfig('language_on')) {
+if (Config::get('language_on')) {
     $language = Language::getLanguage();
     $languageFile = Language::findLanguageFile($language);
     $translatedLabels = Language::readAndDecodeLanguageFile($languageFile);
     Language::setSessionLanguage($language);
     $boostack->labels = $translatedLabels;
 }
-if ($boostack->getConfig('mobile_on')) {
+if (Config::get('mobile_on')) {
     $detect = new Mobile_Detect();
     if ($detect->isMobile()) {
-        header("location: " . $boostack->getConfig("mobile_url"));
+        header("location: " . Config::get("mobile_url"));
         exit();
     }
 }

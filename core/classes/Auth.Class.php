@@ -20,8 +20,8 @@ class Auth {
     {
         global $boostack,$objSession;
         $result = new MessageBag();
-        $isLockStrategyEnabled = $boostack->getConfig("lockStrategy_on");
-        $lockStrategy = $boostack->getConfig("login_lockStrategy");
+        $isLockStrategyEnabled = Config::get("lockStrategy_on");
+        $lockStrategy = Config::get("login_lockStrategy");
 
         try {
             if(!Utils::checkAcceptedTimeFromLastRequest(self::getLastTry()))
@@ -32,7 +32,7 @@ class Auth {
             /** LOCK STRATEGY CHECK **/
             if($isLockStrategyEnabled) {
                 if(!$objSession->failed_login_count) $objSession->failed_login_count = 0;
-                if($objSession->failed_login_count >= $boostack->getConfig("login_maxAttempts")) {
+                if($objSession->failed_login_count >= Config::get("login_maxAttempts")) {
                     if($lockStrategy == "timer") {
                         if(!self::checkAcceptedTimeFromLastLogin(self::getLastTry())) throw new Exception("Too much login request. Wait some seconds", self::LOCK_TIMER);
                     } else if($lockStrategy == "recaptcha") {
@@ -112,13 +112,13 @@ class Auth {
         global $objSession, $boostack;
         try {
             if(self::isLoggedIn()) {
-                if ($boostack->getConfig("session_on") && isset($objSession) && self::isLoggedIn()){
+                if (Config::get("session_on") && isset($objSession) && self::isLoggedIn()){
                     $boostack->writeLog("[Logout] uid: ".$objSession->GetUserID(),"user");
                     $objSession->logoutUser();
                 }
-                if ($boostack->getConfig("cookie_on")) {
-                    $cookieName = $boostack->getConfig("cookie_name");
-                    $cookieExpire = $boostack->getConfig("cookie_expire");
+                if (Config::get("cookie_on")) {
+                    $cookieName = Config::get("cookie_name");
+                    $cookieExpire = Config::get("cookie_expire");
                     setcookie('' . $cookieName, false, time() - $cookieExpire);
                     setcookie('' . $cookieName, false, time() - $cookieExpire, "/");
                 }
@@ -152,21 +152,21 @@ class Auth {
 
     public static function isTimerLocked()
     {
-        global $boostack, $objSession;
-        return $boostack->getConfig("lockStrategy_on") && $boostack->getConfig("login_lockStrategy") == "timer" && $objSession->failed_login_count >= $boostack->getConfig("login_maxAttempts") && !self::checkAcceptedTimeFromLastLogin(self::getLastTry());
+        global $objSession;
+        return Config::get("lockStrategy_on") && Config::get("login_lockStrategy") == "timer" && $objSession->failed_login_count >= Config::get("login_maxAttempts") && !self::checkAcceptedTimeFromLastLogin(self::getLastTry());
     }
 
     public static function haveToShowCaptcha()
     {
-        global $boostack, $objSession;
-        return $boostack->getConfig("lockStrategy_on") && $boostack->getConfig("login_lockStrategy") == "recaptcha" && $objSession->failed_login_count >= $boostack->getConfig("login_maxAttempts");
+        global $objSession;
+        return Config::get("lockStrategy_on") && Config::get("login_lockStrategy") == "recaptcha" && $objSession->failed_login_count >= Config::get("login_maxAttempts");
 
     }
 
     private static function checkAndLogin($username, $password, $cookieRememberMe, $throwException = true)
     {
         global $objSession, $boostack;
-        if ($boostack->getConfig("userToLogin") == "email") {
+        if (Config::get("userToLogin") == "email") {
             if (!User::existsByEmail($username)) {
                 $boostack->writeLog("Auth -> checkAndLogin: User doesn't exist by Email Address", "user");
                 if ($throwException)
@@ -175,7 +175,7 @@ class Auth {
             }
         }
 
-        if ($boostack->getConfig("userToLogin") == "username") {
+        if (Config::get("userToLogin") == "username") {
             if (!User::existsByUsername($username)) {
                 $boostack->writeLog("Auth -> checkAndLogin: User doesn't exist by Username", "user");
                 if ($throwException)
@@ -184,7 +184,7 @@ class Auth {
             }
         }
 
-        if($boostack->getConfig("userToLogin") == "both") {
+        if(Config::get("userToLogin") == "both") {
             if(!User::existsByEmail($username,false) && !User::existsByUsername($username,false)) {
                 $boostack->writeLog("Auth -> tryLogin: User doesn't exist by Username and by email", "user");
                 if ($throwException)
@@ -215,7 +215,7 @@ class Auth {
     {
         global $objSession;
         try {
-            switch (Boostack::getInstance()->getConfig("userToLogin")) {
+            switch (Config::get("userToLogin")) {
                 case "email":
                     $userData = User::getActiveCredentialByEmail($strUsername);
                     break;
@@ -247,9 +247,9 @@ class Auth {
 
     private static function reCaptchaVerify($boostack, $response)
     {
-        $reCaptcha_private = $boostack->getConfig("reCaptcha_private");
+        $reCaptcha_private = Config::get("reCaptcha_private");
         $curlRequest = new CurlRequest();
-        $curlRequest->setEndpoint($boostack->getConfig("google_recaptcha-endpoint"));
+        $curlRequest->setEndpoint(Config::get("google_recaptcha-endpoint"));
         $curlRequest->setIsPost(true);
         $curlRequest->setReturnTransfer(true);
         $curlRequest->setPostFields([
@@ -263,8 +263,7 @@ class Auth {
 
     private static function checkAcceptedTimeFromLastLogin($lastLogin)
     {
-        global $boostack;
-        return $lastLogin != 0 && (time() - $lastLogin > $boostack->getConfig("login_secondsFormBlocked"));
+        return $lastLogin != 0 && (time() - $lastLogin > Config::get("login_secondsFormBlocked"));
     }
 
 }

@@ -15,18 +15,17 @@ class Language {
 
     public static function getLanguage() {
         global $objSession;
-        $boostack = Boostack::getInstance();
-        $defaultLanguage = $boostack->getConfig("language_default");
+        $defaultLanguage = Config::get("language_default");
         $language = null;
 
-        if($boostack->getConfig("language_force_default") == TRUE) {
+        if(Config::get("language_force_default") == TRUE) {
             $language = $defaultLanguage;
         }
         else if(!empty($_GET['lang'])) {
             $language = Utils::sanitizeInput($_GET['lang']);
         }
 //        else {
-//            if ($boostack->getConfig("session_on") && $objSession->SESS_LANGUAGE !== "") { // if is set in the user session
+//            if (Config::get("session_on") && $objSession->SESS_LANGUAGE !== "") { // if is set in the user session
 //                $language = $objSession->SESS_LANGUAGE;
 //            } else { // if isn't set in the user session, fetch it from browser
 //                if(isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
@@ -35,15 +34,15 @@ class Language {
 //                }
 //            }
 //        }
-        if(in_array($language,$boostack->getConfig("enabled_languages"))) return $language;
+        if(in_array($language,Config::get("enabled_languages"))) return $language;
         return $defaultLanguage;
     }
 
     public static function setSessionLanguage($lang) {
         global $objSession;
-        $boostack = Boostack::getInstance();
-        if ($boostack->getConfig("session_on"))
-            $objSession->SESS_LANGUAGE = $lang;
+        Config::constraint("session_on");
+        Config::constraint("database_on");
+        $objSession->SESS_LANGUAGE = $lang;
     }
 
     public static function findLanguageFile($lang) {

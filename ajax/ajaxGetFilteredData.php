@@ -2,9 +2,7 @@
 
 require_once "../core/environment_init.php";
 
-if (!($boostack->getConfig('session_on') && $objSession->IsLoggedIn())) return false;
-
-$boostack = Boostack::getInstance();
+if (!(Config::get('session_on') && Auth::isLoggedIn())) return false;
 
 $res = new MessageBag();
 

@@ -188,39 +188,6 @@ class Session_HTTP
         $result->execute();
     }
 
-//    public function StartLoginProcess($u,$p,$r=null,$throwException = true){
-//        global $boostack;
-//        $res = FALSE;
-//        if (Utils::checkAcceptedTimeFromLastRequest($this->LastTryLogin)) {
-//            if (!$this->IsLoggedIn()) {
-//                    try {
-//                        if ($boostack->getConfig('csrf_on'))
-//                            $this->CSRFCheckValidity($_POST);
-//                        $user = Utils::sanitizeInput($u);
-//                        $password = Utils::sanitizeInput($p);
-//                        $rememberMe = (isset($r) && $r == '1' && $boostack->getConfig('cookie_on')) ? true : false;
-//                        $this->LastTryLogin = time();
-//                        $anonymousUser = new User();
-//                        Utils::checkStringFormat($password);
-//                        if ($anonymousUser->tryLogin($user, $password, $rememberMe, $throwException)) {
-//                            header("Location: " . $boostack->getFriendlyUrl("login"));
-//                            exit();
-//                        }
-//                        $error = "Username or password not valid.";
-//                    } catch (Exception $e) {
-//                        throw new Exception($e->getMessage());
-//                        $boostack->writeLog("Login.php : " . $error . " trace:" . $e->getTraceAsString(), "user");
-//                    }
-//            }
-//        }
-//        else{
-//            throw new Exception("Too much request. Wait some seconds");
-//            $res = false;
-//        }
-//
-//        return $res;
-//    }
-
     public function __get($nm)
     {
         $sql = "SELECT variable_value FROM " . $this->session_variable . "

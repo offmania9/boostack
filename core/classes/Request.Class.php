@@ -28,8 +28,7 @@ class Request
 
     public function getFileParam($param)
     {
-        global $boostack;
-        if ($_FILES[$param]["size"] > $boostack->getConfig("max_upload_generalfile_size"))
+        if ($_FILES[$param]["size"] > Config::get("max_upload_generalfile_size"))
             return null;
         return $_FILES[$param];
     }

@@ -123,7 +123,7 @@ class Utils
 
     public static function checkAcceptedTimeFromLastRequest($timeLastRequest)
     {
-        $secondsAccepted = Boostack::getInstance()->getConfig("seconds_accepted_between_requests");
+        $secondsAccepted = Config::get("seconds_accepted_between_requests");
         if ((!empty($timeLastRequest) || $timeLastRequest !== null) && (time() - $timeLastRequest >= $secondsAccepted))
             return true;
         return false;
@@ -271,7 +271,7 @@ class Utils
     public static function goToMaintenance()
     {
         $boostack = Boostack::getInstance();
-        header("Location: " . $boostack->url . $boostack->getConfig("url_maintenance"));
+        header("Location: " . $boostack->url . Config::get("url_maintenance"));
         exit();
     }
 

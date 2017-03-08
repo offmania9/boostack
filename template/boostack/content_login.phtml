@@ -57,7 +57,7 @@
                                 </script>
                                 <div id="reCaptcha-align">
                                     <div name="response" class="g-recaptcha" data-callback="verifyCaptcha"
-                                         data-sitekey="<?= $boostack->getConfig("reCaptcha_public") ?>"></div>
+                                         data-sitekey="<?= Config::get("reCaptcha_public") ?>"></div>
                                 </div>
                                 <br>
                             <? endif; ?>

@@ -64,13 +64,13 @@ class Upload_File
 
     public function constraints($file)
     {
-        global $boostack, $mime_types;
+        global $mime_types;
         
-        if (strlen($file["name"]) >= $boostack->getConfig("max_upload_namefile_length")) { // # se il nome del file � troppo lungo
+        if (strlen($file["name"]) >= Config::get("max_upload_namefile_length")) { // # se il nome del file � troppo lungo
             throw new Exception("File Name too long. Rename it and repeat upload. <br />");
         }
         if (in_array($file["type"], $this->image_types)) { // IS IMAGE
-            if ($file["size"] > $boostack->getConfig("max_upload_image_size")) // SIZE CHECK
+            if ($file["size"] > Config::get("max_upload_image_size")) // SIZE CHECK
                 throw new Exception("File too large. <br />");
             return true;
         }

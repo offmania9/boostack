@@ -21,7 +21,7 @@ class Database_PDO
 
     public static function getInstance($host = null, $db = null, $username = null, $password = null)
     {
-
+        Config::constraint("database_on");
         try {
             if (self::$instance === null) {
                 self::$instance = new PDO('mysql:host=' . $host . ';dbname=' . $db, $username, $password, array(
@@ -32,10 +32,9 @@ class Database_PDO
             return self::$instance;
         }
         catch(PDOException $e){
-            $boostack = Boostack::getInstance();
             //$boostack->setConfig("database_on",FALSE);
             // WRITE into log file
-            if(!$boostack->getConfig("developmentMode")){// go to mantainance page
+            if(!Config::get("developmentMode")){// go to mantainance page
                 Utils::goToMaintenance();
             }
             else {

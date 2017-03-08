@@ -17,7 +17,7 @@ $boostack->renderOpenHtmlHeadTags("Registration");
 require_once $boostack->registerTemplateFile("boostack/header.phtml");
 
 try {
-    $boostack->constraitConfig("session_on");
+    Config::constraint("session_on");
     $registrationError = "";
     $email = $request->getPostParam('email');
     $psw1 = $request->getPostParam('psw1');
@@ -27,7 +27,7 @@ try {
         if (!Validator::email($email)) $registrationError = "Username format not valid";
         if (!Validator::password($psw1)) $registrationError = "Password format not valid";
         if (User::existsByEmail($email, false) || User::existsByUsername($email, false)) $registrationError = "Email already registered";
-        if ($boostack->getConfig('csrf_on')) $objSession->CSRFCheckValidity($_POST);
+        if (Config::get('csrf_on')) $objSession->CSRFCheckValidity($_POST);
         if (strlen($registrationError) == 0) {
             $user = new User();
             $user->username = $email;

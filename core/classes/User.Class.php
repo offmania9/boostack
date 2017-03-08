@@ -193,11 +193,10 @@ class User implements JsonSerializable {
     }
 
     public function refreshRememberMeCookie() {
-        global $boostack;
         $cookieHash = Utils::generateCookieHash();
         $this->session_cookie = $cookieHash;
         $this->save();
-        setcookie($boostack->getConfig("cookie_name"), $cookieHash, time() + $boostack->getConfig("cookie_expire"), '/');
+        setcookie(Config::get("cookie_name"), $cookieHash, time() + Config::get("cookie_expire"), '/');
     }
 
 }

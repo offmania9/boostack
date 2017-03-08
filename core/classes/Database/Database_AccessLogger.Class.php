@@ -39,8 +39,7 @@ class Database_AccessLogger
 
     public function Log($message = NULL, $level = "information")
     {
-        global $boostack;
-        if(!in_array($level,$boostack->getConfig("log_enabledTypes")))
+        if(!in_array($level,Config::get("log_enabledTypes")))
             return;
         $message = str_replace(array(
             "\r\n",
