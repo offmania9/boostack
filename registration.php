@@ -19,10 +19,10 @@ require_once $boostack->registerTemplateFile("boostack/header.phtml");
 try {
     Config::constraint("session_on");
     $registrationError = "";
-    $email = Request::getPostParam('email');
-    $psw1 = Request::getPostParam('psw1');
-    $psw2 = Request::getPostParam('psw2');
-    if ($email != null && $psw1 != null && $psw2 != null) {
+    if (Request::hasPostParam('email') && Request::hasPostParam('psw1') && Request::hasPostParam('psw2')) {
+        $email = Request::getPostParam('email');
+        $psw1 = Request::getPostParam('psw1');
+        $psw2 = Request::getPostParam('psw2');
         if ($psw1 !== $psw2) $registrationError = "Passwords must be equals";
         if (!Validator::email($email)) $registrationError = "Username format not valid";
         if (!Validator::password($psw1)) $registrationError = "Password format not valid";
