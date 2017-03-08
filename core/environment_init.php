@@ -29,7 +29,7 @@ if (Config::get('database_on')) {
     Database_PDO::getInstance($database['host'], $database['name'], $database['username'], $database['password']);
     if (Config::get('session_on')) {
         $objSession = (Config::get('csrf_on')) ? new Session_CSRF() : new Session_HTTP();
-        if (Config::get('cookie_on') && Request::getCookieParam(Config::get('cookie_name')) != NULL) {
+        if (Config::get('cookie_on') && Request::hasCookieParam(Config::get('cookie_name')) && Request::getCookieParam(Config::get('cookie_name')) != NULL) {
             //user not logged in but remember-me cookie exists then try to perform loginByCookie function
             $c = Request::getCookieParam(Config::get('cookie_name'));
             if (!Auth::isLoggedIn() && $c !== "")

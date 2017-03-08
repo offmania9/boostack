@@ -93,7 +93,7 @@ class Request
     public static function getPostParam($param)
     {
         $rt = RequestType::POST;
-        return !empty(self::get($rt,$param)) ? Utils::sanitizeInput(self::get($rt,$param)) : null;
+        return Utils::sanitizeInput(self::get($rt,$param));
     }
 
     /**
@@ -112,7 +112,7 @@ class Request
     public static function getQueryParam($param)
     {
         $rt = RequestType::QUERY;
-        return !empty(self::get($rt,$param)) ? Utils::sanitizeInput(self::get($rt,$param)) : null;
+        return Utils::sanitizeInput(self::get($rt,$param));
     }
 
     /**
@@ -131,7 +131,7 @@ class Request
     public static function getServerParam($param)
     {
         $rt = RequestType::SERVER;
-        return !empty(self::get($rt,$param)) ? Utils::sanitizeInput(self::get($rt,$param)) : null;
+        return Utils::sanitizeInput(self::get($rt,$param));
     }
 
     /**
@@ -150,7 +150,7 @@ class Request
     public static function getCookieParam($param)
     {
         $rt = RequestType::COOKIE;
-        return !empty(self::get($rt,$param)) ? Utils::sanitizeInput(self::get($rt,$param)) : null;
+        return Utils::sanitizeInput(self::get($rt,$param));
     }
 
     /**
@@ -169,7 +169,7 @@ class Request
     public static function getRequestParam($param)
     {
         $rt = RequestType::REQUEST;
-        return !empty(self::get($rt,$param)) ? Utils::sanitizeInput(self::get($rt,$param)) : null;
+        return Utils::sanitizeInput(self::get($rt,$param));
     }
 
     /**
@@ -188,7 +188,7 @@ class Request
     public static function getFilesParam($param)
     {
         $rt = RequestType::FILES;
-        return !empty(self::get($rt,$param)) ? Utils::sanitizeInput(self::get($rt,$param)) : null;
+        return Utils::sanitizeInput(self::get($rt,$param));
     }
 }
 ?>
