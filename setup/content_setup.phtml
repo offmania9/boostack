@@ -114,7 +114,7 @@ if (!empty($_POST)) { ?>
                                                 </tr>
                                             <?php endforeach; ?>
                                             <tr class="<?php echo $isWritebleEnvFolder ? "success" : "danger" ?>">
-                                                <td>Write access to 'env' folder</td>
+                                                <td>Write access to 'config/env' folder</td>
                                                 <td>Give write permission to '<?php echo exec('whoami') ?>' user</td>
                                                 <td><?php echo $isWritebleEnvFolder ? "Writeble" : "Not Writeble" ?></td>
                                             </tr>

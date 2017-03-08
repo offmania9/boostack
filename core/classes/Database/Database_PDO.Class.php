@@ -13,6 +13,7 @@ class Database_PDO
 
     private static $instance = null;
 
+
     private function __construct()
     {}
 
@@ -21,9 +22,9 @@ class Database_PDO
 
     public static function getInstance($host = null, $db = null, $username = null, $password = null)
     {
-        Config::constraint("database_on");
         try {
             if (self::$instance === null) {
+                Config::constraint("database_on");
                 self::$instance = new PDO('mysql:host=' . $host . ';dbname=' . $db, $username, $password, array(
                     PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
                 ));
@@ -32,17 +33,15 @@ class Database_PDO
             return self::$instance;
         }
         catch(PDOException $e){
-            //$boostack->setConfig("database_on",FALSE);
             // WRITE into log file
             if(!Config::get("developmentMode")){// go to mantainance page
                 Utils::goToMaintenance();
             }
             else {
-                echo "An error occurred connection:". $e->getMessage()."<br/";
+                echo "An error occurred connection:". $e->getMessage()."<br/>";
                 exit();
             }
         }
-
     }
 }
 

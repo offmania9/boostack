@@ -19,7 +19,7 @@ class Config {
     public static function constraint($configKey, $configvalue = true)
     {
         if(isset(self::$configs[$configKey]) && self::$configs[$configKey] == $configvalue) return true;
-        throw new Exception_Misconfiguration("You must enable '".$configKey."' configuration attribute");
+            throw new Exception_Misconfiguration("You must enable '".$configKey."' configuration attribute");
     }
 
 }

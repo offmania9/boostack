@@ -44,14 +44,18 @@ if ($envContent === FALSE) {
     }
     $old = umask(0);
     if (@file_put_contents($finalEnvPath, $envContent) === FALSE) {
-        $finalSetupMessageError = "message: env/env.php -> failed to open stream: Permission denied. <br/><br/>Solution: add write access to 'env' folder";
+        $finalSetupMessageError = "message: config/env/env.php -> failed to open stream: Permission denied. <br/><br/>Solution: add write access to 'config/env' folder";
     }
 }
 
 if ($env_parameters["database_on"]=="true" && $finalSetupMessageError=="") {
     try {
+        require_once("../config/env/env.php");
+
         require_once("../core/classes/Utils.Class.php");
         require_once("../core/classes/Boostack.Class.php");
+        require_once("../core/classes/Exception/Exception_Misconfiguration.Class.php");
+        require_once("../core/classes/Config.Class.php");
         require_once("../core/classes/Database/Database_PDO.Class.php");
         require_once("../core/classes/BaseClass.Class.php");
         require_once("../core/classes/User.Class.php");
@@ -62,6 +66,7 @@ if ($env_parameters["database_on"]=="true" && $finalSetupMessageError=="") {
         require_once("../core/classes/LogLevel.Class.php");
         require_once("../core/classes/FileLogger.Class.php");
 
+        Config::initConfig();
         $db0 = new PDO('mysql:host=' . $env_parameters["db_host"] . ';dbname=' . $env_parameters["db_name"], $env_parameters["db_username"], $env_parameters["db_password"], array(
             PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
         ));
