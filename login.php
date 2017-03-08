@@ -19,10 +19,10 @@ require_once $boostack->registerTemplateFile("boostack/header.phtml");
 
 try {
     Config::constraint("session_on");
-    $user = $request->getPostParam("btk_usr");
-    $password = $request->getPostParam("btk_pwd");
+    $user = Request::getPostParam("btk_usr");
+    $password = Request::getPostParam("btk_pwd");
     if ($user != null && $password != null) {
-        $rememberMe = (Config::get('cookie_on') && $request->getPostParam("rememberme") == '1') ? true : false;
+        $rememberMe = (Config::get('cookie_on') && Request::getPostParam("rememberme") == '1') ? true : false;
         if (Config::get('csrf_on')) $objSession->CSRFCheckValidity($_POST);
         $loginResult = Auth::loginByUsernameAndPlainPassword($user, $password, $rememberMe);
         if ($loginResult->hasError()) {

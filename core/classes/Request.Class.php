@@ -2,45 +2,37 @@
 
 class Request
 {
-    private static $instance = NULL;
 
-    static function getInstance()
+    public static function getPostParam($param)
     {
-        if (self::$instance == NULL)
-            self::$instance = new Request();
-        return self::$instance;
+        return isset($_POST) && !empty($_POST[$param]) ? Utils::sanitizeInput($_POST[$param]) : null;
     }
 
-    public function getPostParam($param)
+    public static function getQueryParam($param)
     {
-        return !empty($_POST[$param]) ? Utils::sanitizeInput($_POST[$param]) : null;
+        return isset($_GET) && !empty($_GET[$param]) ? Utils::sanitizeInput($_GET[$param]) : null;
     }
 
-    public function getQueryParam($param)
+    public static function getCookieParam($param)
     {
-        return !empty($_GET[$param]) ? Utils::sanitizeInput($_GET[$param]) : null;
+        return isset($_COOKIE) && !empty($_COOKIE[$param]) ? Utils::sanitizeInput($_COOKIE[$param]) : null;
     }
 
-    public function getCookieParam($param)
+    public static function getFileParam($param)
     {
-        return !empty($_COOKIE[$param]) ? Utils::sanitizeInput($_COOKIE[$param]) : null;
-    }
-
-    public function getFileParam($param)
-    {
-        if ($_FILES[$param]["size"] > Config::get("max_upload_generalfile_size"))
+        if (isset($_FILES) && !empty($_FILES[$param]) && $_FILES[$param]["size"] > Config::get("max_upload_generalfile_size"))
             return null;
         return $_FILES[$param];
     }
 
-    public function getRequestParam($param)
+    public static function getRequestParam($param)
     {
-        return !empty($_REQUEST[$param]) ? Utils::sanitizeInput($_REQUEST[$param]) : null;
+        return isset($_REQUEST) && !empty($_REQUEST[$param]) ? Utils::sanitizeInput($_REQUEST[$param]) : null;
     }
 
-    public function getServerParam($param)
+    public static function getServerParam($param)
     {
-        return !empty($_SERVER[$param]) ? Utils::sanitizeInput($_SERVER[$param]) : null;
+        return isset($_SERVER) && !empty($_SERVER[$param]) ? Utils::sanitizeInput($_SERVER[$param]) : null;
     }
 
 }

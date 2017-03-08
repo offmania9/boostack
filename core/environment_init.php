@@ -24,14 +24,13 @@ if ($config['developmentMode']) {
 Config::initConfig();
 $boostack = Boostack::getInstance();
 $CURRENTUSER = NULL;
-$request = Request::getInstance();
 if (Config::get('database_on')) {
     Database_PDO::getInstance($database['host'], $database['name'], $database['username'], $database['password']);
     if (Config::get('session_on')) {
         $objSession = (Config::get('csrf_on')) ? new Session_CSRF() : new Session_HTTP();
-        if (Config::get('cookie_on') && $request->getCookieParam(Config::get('cookie_name')) != NULL) {
+        if (Config::get('cookie_on') && Request::getCookieParam(Config::get('cookie_name')) != NULL) {
             //user not logged in but remember-me cookie exists then try to perform loginByCookie function
-            $c = $request->getCookieParam(Config::get('cookie_name'));
+            $c = Request::getCookieParam(Config::get('cookie_name'));
             if (!Auth::isLoggedIn() && $c !== "")
                 if (!Auth::loginByCookie($c)) //cookie is set but wrong (manually edited)
                     Auth::logout();
