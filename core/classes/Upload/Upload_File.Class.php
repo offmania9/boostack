@@ -8,7 +8,6 @@
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
  * @version 3.0
  */
-require_once ("extension_mimetypes.inc.php");
 
 class Upload_File
 {

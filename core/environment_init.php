@@ -4,7 +4,7 @@ if ($envPath && is_file($envPath)) {
     require_once $envPath;
 } else {
     header("Location: setup");
-    echo "Choose an environment configuration file into '/core/env' folder (local.env.php, staging.env.php or production.env.php) and rename it into 'env.php'.";
+    echo "Copy '/setup/sample.env.php' into '/config/env/' and rename it into 'env.php'.";
     exit();
 }
 require_once(ROOTPATH . "config/env/global.env.php");
