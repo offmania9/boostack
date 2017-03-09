@@ -12,7 +12,6 @@ class Config {
 
     public static function get($configKey)
     {
-        self::$configs++;
         return isset(self::$configs[$configKey]) ? self::$configs[$configKey] : "";
     }
 
