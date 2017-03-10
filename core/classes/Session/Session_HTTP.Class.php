@@ -234,14 +234,21 @@ class Session_HTTP
         return false;
     }
 
+    /**
+     * Metodo invocato automaticamente in modo sincrono dal Garbage Collector di PHP
+     * @param $maxlifetime autoiniettato dalle config di PHP
+     * @return bool
+     */
     private function _session_gc_method($maxlifetime)
     {
-        $old = time() - $maxlifetime;
-        $sql = 'DELETE FROM ' . $this->http_session_table . ' WHERE last_impression < '.$old;
-        $result = $this->dbhandle->prepare($sql);
-        if ($result->execute())
-            return true;
-        return false;
+        return true;
+//        $old = time() - $maxlifetime;
+//        /* Cancella tutte le sessioni scadute tranne quella corrente */
+//        $sql = 'DELETE FROM ' . $this->http_session_table . ' WHERE last_impression < '.$old.' AND id <> '.$this->native_session_id;
+//        $result = $this->dbhandle->prepare($sql);
+//        if ($result->execute())
+//            return true;
+//        return false;
     }
 }
 ?>
