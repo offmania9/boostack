@@ -29,9 +29,10 @@ $env_parameters = [
 ];
 
 $exampleEnvName = "sample.env.php";
+$exampleEnvPath = "/../config/env/";
 $outputEnvName = "env.php";
 $envPath = "/../config/env/";
-$exampleEnvPath = realpath($exampleEnvName);
+$exampleEnvPath = realpath(__DIR__.$exampleEnvPath)."/".$exampleEnvName;
 $finalEnvPath = realpath(__DIR__ . $envPath) . "/" . $outputEnvName;
 
 $envContent = @file_get_contents($exampleEnvPath);

@@ -50,11 +50,6 @@ $config['google_recaptcha-endpoint']= "https://www.google.com/recaptcha/api/site
 $config['reCaptcha_public'] = "6LfCzxQUAAAAAJwvPlEHpsHCMdLxeFsKhwON5Epl";       //recaptcha key
 $config['reCaptcha_private'] = "6LfCzxQUAAAAALgBGC2ZHI8GYXq7UDQkvFTf8M2C";      //recaptcha key
 
-$config["google_2factor"] = FALSE;
-$config["google_2factor_delay"] = 2;
-$config["google_2factor_qrName"] = "Reag";
-
-
 /**
  * COOKIES
  */
