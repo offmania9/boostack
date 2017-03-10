@@ -28,7 +28,7 @@ $CURRENTUSER = NULL;
 if (Config::get('database_on')) {
     Database_PDO::getInstance($database['host'], $database['name'], $database['username'], $database['password']);
     if (Config::get('session_on')) {
-        $objSession = (Config::get('csrf_on')) ? new Session_CSRF() : new Session_HTTP();
+        $objSession = (Config::get('csrf_on')) ? new Session_CSRF(Config::get('session_timeout'), Config::get('session_lifespan')) : new Session_HTTP(Config::get('session_timeout'), Config::get('session_lifespan'));
         if (Config::get('cookie_on') && Request::hasCookieParam(Config::get('cookie_name')) && Request::getCookieParam(Config::get('cookie_name')) != NULL) {
             //user not logged in but remember-me cookie exists then try to perform loginByCookie function
             $c = Request::getCookieParam(Config::get('cookie_name'));

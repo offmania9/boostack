@@ -23,6 +23,8 @@ $database['password'] = '[db_password]';
  */
 $config['session_on'] = [session_on];   // enable or disable Sessions (TRUE need $database_on=TRUE)
 $config['csrf_on'] = TRUE;      // enable or disable CSRF validation (TRUE need $database_on=TRUE AND $session_on=TRUE)
+$config['session_timeout'] = 3600;
+$config['session_lifespan'] = 4600;
 
 /**
  * LOG
