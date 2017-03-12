@@ -10,18 +10,51 @@
  */
 class User_Entity extends BaseClass
 {
+    /**
+     * @var
+     */
     protected $active;
+    /**
+     * @var
+     */
     protected $privilege;
+    /**
+     * @var
+     */
     protected $full_name;
+    /**
+     * @var
+     */
     protected $username;
+    /**
+     * @var
+     */
     protected $pwd;
+    /**
+     * @var
+     */
     protected $email;
+    /**
+     * @var
+     */
     protected $last_access;
+    /**
+     * @var
+     */
     protected $session_cookie;
+    /**
+     * @var
+     */
     protected $pic_square;
 
+    /**
+     *
+     */
     const TABLENAME = "boostack_user";
 
+    /**
+     * @var array
+     */
     protected $default_values = [
         "active" => "0",
         "privilege" => 3,
@@ -34,10 +67,18 @@ class User_Entity extends BaseClass
         "pic_square" => "",
     ];
 
+    /**
+     * User_Entity constructor.
+     * @param null $id
+     */
     public function __construct($id = null) {
         parent::init($id);
     }
 
+    /**
+     * @param $property_name
+     * @param $val
+     */
     public function __set($property_name, $val)
     {
         if($property_name == "pwd") {
@@ -46,6 +87,9 @@ class User_Entity extends BaseClass
         parent::__set($property_name, $val);
     }
 
+    /**
+     * @param array $array
+     */
     protected function prepare($array = array())
     {
         if(empty($array["id"]) && !empty($array["pwd"])) {
@@ -54,12 +98,19 @@ class User_Entity extends BaseClass
         parent::prepare($array);
     }
 
+    /**
+     * @return array|mixed
+     */
     public function jsonSerialize() {
         $vars = parent::jsonSerialize();
         $vars["id"] = $this->id;
         return $vars;
     }
 
+    /**
+     * @param $cleanPassword
+     * @return bool|string
+     */
     public function passwordToHash($cleanPassword)
     {
         if (version_compare(PHP_VERSION, '5.5.0') >= 0)
@@ -68,6 +119,12 @@ class User_Entity extends BaseClass
             return hash("sha512", $cleanPassword);
     }
 
+    /**
+     * @param $email
+     * @param bool $throwException
+     * @return bool
+     * @throws Exception
+     */
     public function getUserIDByEmail($email, $throwException = true)
     {
         $sql = "SELECT id FROM ".self::TABLENAME." WHERE email ='" . $email . "' ";
@@ -81,6 +138,12 @@ class User_Entity extends BaseClass
         return $q2[0];
     }
 
+    /**
+     * @param $id
+     * @param bool $throwException
+     * @return bool
+     * @throws Exception
+     */
     public static function existById($id, $throwException = true)
     {
         $exist = parent::exist($id);
@@ -89,6 +152,12 @@ class User_Entity extends BaseClass
         return $exist;
     }
 
+    /**
+     * @param $email
+     * @param bool $throwException
+     * @return bool
+     * @throws Exception
+     */
     public static function existsByEmail($email, $throwException = true)
     {
         $pdo = Database_PDO::getInstance();
@@ -104,6 +173,12 @@ class User_Entity extends BaseClass
         return true;
     }
 
+    /**
+     * @param $username
+     * @param bool $throwException
+     * @return bool
+     * @throws Exception
+     */
     public static function existsByUsername($username, $throwException = true)
     {
         $pdo = Database_PDO::getInstance();
@@ -119,6 +194,10 @@ class User_Entity extends BaseClass
         return true;
     }
 
+    /**
+     * @param $cookieValue
+     * @return bool
+     */
     public static function getCredentialByCookie($cookieValue) {
         $pdo = Database_PDO::getInstance();
         $query = "SELECT username,pwd FROM ".self::TABLENAME." WHERE session_cookie = :cookie ";
@@ -132,6 +211,10 @@ class User_Entity extends BaseClass
         return false;
     }
 
+    /**
+     * @param $email
+     * @return bool
+     */
     public static function getActiveCredentialByEmail($email) {
         $pdo = Database_PDO::getInstance();
         $query = "SELECT id,pwd FROM ".self::TABLENAME." WHERE email = :email AND active = '1' ";
@@ -145,6 +228,10 @@ class User_Entity extends BaseClass
         return false;
     }
 
+    /**
+     * @param $username
+     * @return bool
+     */
     public static function getActiveCredentialByUsername($username) {
         $pdo = Database_PDO::getInstance();
         $query = "SELECT id,pwd FROM ".self::TABLENAME." WHERE username = :username AND active = '1' ";
@@ -158,6 +245,11 @@ class User_Entity extends BaseClass
         return false;
     }
 
+    /**
+     * @param $email
+     * @param $username
+     * @return bool
+     */
     public static function getActiveCredentialByEmailOrUsername($email, $username) {
         $pdo = Database_PDO::getInstance();
         $query = "SELECT id,pwd FROM ".self::TABLENAME." WHERE (username = :username OR email = :email) AND active = '1' ";
@@ -172,6 +264,11 @@ class User_Entity extends BaseClass
         return false;
     }
 
+    /**
+     * @param $email
+     * @param $password
+     * @return bool
+     */
     public static function getActiveIdByEmailAndPassword($email, $password) {
         $pdo = Database_PDO::getInstance();
         $query = "SELECT id FROM ".self::TABLENAME." WHERE email = :email AND pwd = :password AND active = '1' ";
@@ -186,6 +283,11 @@ class User_Entity extends BaseClass
         return false;
     }
 
+    /**
+     * @param $username
+     * @param $password
+     * @return bool
+     */
     public static function getActiveIdByUsernameAndPassword($username, $password) {
         $pdo = Database_PDO::getInstance();
         $query = "SELECT id FROM ".self::TABLENAME." WHERE username = :username AND pwd = :password AND active = '1' ";
@@ -200,6 +302,12 @@ class User_Entity extends BaseClass
         return false;
     }
 
+    /**
+     * @param $email
+     * @param $username
+     * @param $password
+     * @return bool
+     */
     public static function getActiveIdByEmailOrUsernameAndPassword($email, $username, $password) {
         $pdo = Database_PDO::getInstance();
         $query = "SELECT id FROM ".self::TABLENAME." WHERE (username = :username OR email = :email) AND pwd = :password AND active = '1' ";

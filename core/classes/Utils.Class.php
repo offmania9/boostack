@@ -10,6 +10,11 @@
  */
 class Utils
 {
+    /**
+     * @param $array
+     * @param string $encoding
+     * @return array|string
+     */
     public static function sanitizeInput($array, $encoding = 'UTF-8')
     {
         if (is_array($array)) {
@@ -26,6 +31,9 @@ class Utils
             return htmlspecialchars($array, ENT_QUOTES | ENT_HTML401, $encoding);
     }
 
+    /**
+     * @param $className
+     */
     public static function autoloadClass($className)
     {
         $cn = explode("_", $className);
@@ -48,6 +56,9 @@ class Utils
                 require_once($pathcustom . $filename);
     }
 
+    /**
+     * @return array|false|string
+     */
     public static function getIpAddress()
     {
         $ip = getenv('HTTP_CLIENT_IP') ?:
@@ -59,27 +70,47 @@ class Utils
         return $ip;
     }
 
+    /**
+     * @param $pwd
+     * @return int
+     */
     public static function isStrongPassword($pwd){
         return preg_match("#.*^(?=.{8,20})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$#", $pwd);
     }
 
+    /**
+     * @return array|string
+     */
     public static function getUserAgent()
     {
         return Utils::sanitizeInput($_SERVER["HTTP_USER_AGENT"]);
     }
 
+    /**
+     * @param $currentUser
+     * @param $privilegeLevel
+     */
     public static function checkPrivilege($currentUser, $privilegeLevel)
     {
         if (!hasPrivilege($currentUser, $privilegeLevel))
             goToError();
     }
 
+    /**
+     * @param $currentUser
+     * @param $privilegeLevel
+     */
     public static function checkControllerPrivilege($currentUser, $privilegeLevel)
     {
         if (!hasPrivilege($currentUser, $privilegeLevel))
             exit();
     }
 
+    /**
+     * @param $currentUser
+     * @param $privilegeLevel
+     * @return bool
+     */
     public static function hasPrivilege($currentUser, $privilegeLevel)
     {
         if ($currentUser == null)
@@ -91,6 +122,9 @@ class Utils
         return true;
     }
 
+    /**
+     *
+     */
     public static function goToError()
     {
         global $boostack;
@@ -98,6 +132,9 @@ class Utils
         exit();
     }
 
+    /**
+     *
+     */
     public static function goToLogout()
     {
         global $boostack;
@@ -105,6 +142,9 @@ class Utils
         exit();
     }
 
+    /**
+     * @param null $callbackURL
+     */
     public static function goToLogin($callbackURL = NULL)
     {
         global $boostack, $objSession;
@@ -115,12 +155,19 @@ class Utils
         exit();
     }
 
+    /**
+     * @param $URL
+     */
     public static function goToUrl($URL)
     {
         header("Location: " . $URL);
         exit();
     }
 
+    /**
+     * @param $timeLastRequest
+     * @return bool
+     */
     public static function checkAcceptedTimeFromLastRequest($timeLastRequest)
     {
         $secondsAccepted = Config::get("seconds_accepted_between_requests");
@@ -129,6 +176,9 @@ class Utils
         return false;
     }
 
+    /**
+     * @param $var
+     */
     public static function debug($var)
     {
         ini_set('display_errors', 1);
@@ -137,6 +187,10 @@ class Utils
         echo '</pre>';
     }
 
+    /**
+     * @param $string
+     * @return string
+     */
     public static function removeAccents($string)
     {
         $string = trim($string);
@@ -213,6 +267,10 @@ class Utils
         return $string;
     }
 
+    /**
+     * @param $code
+     * @return mixed
+     */
     public static function getFileErrorDescription($code)
     {
         $errors = array(
@@ -228,6 +286,10 @@ class Utils
         return $errors[$code];
     }
 
+    /**
+     * @param $timestamp
+     * @return string
+     */
     public static function timestampToDate($timestamp)
     {
         if ($timestamp > 0) {
@@ -240,6 +302,10 @@ class Utils
         }
     }
 
+    /**
+     * @param $datetime_timestamp
+     * @return string
+     */
     public static function getElapsedTime($datetime_timestamp)
     {
         $et = getDateTimeTimestamp(getDateTime()) - $datetime_timestamp;
@@ -259,6 +325,10 @@ class Utils
         return $res;
     }
 
+    /**
+     * @param $email
+     * @return bool
+     */
     public static function checkEmailFormat($email)
     {
         $regexp = "/^[a-z0-9]+([_\\.-][a-z0-9]+)*@([a-z0-9]+([\.-][a-z0-9]+)*)+\\.[a-z]{2,}$/i";
@@ -268,6 +338,9 @@ class Utils
         return true;
     }
 
+    /**
+     *
+     */
     public static function goToMaintenance()
     {
         $boostack = Boostack::getInstance();
@@ -275,6 +348,11 @@ class Utils
         exit();
     }
 
+    /**
+     * @param int $length
+     * @param int $strength
+     * @return string
+     */
     public static function passwordGenerator($length = 9, $strength = 0)
     {
         $vowels = 'aeuy';
@@ -305,6 +383,10 @@ class Utils
         return $password;
     }
 
+    /**
+     * @param $length
+     * @return string
+     */
     public static function getRandomString($length)
     {
         $chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -316,6 +398,11 @@ class Utils
         return $randomString;
     }
 
+    /**
+     * @param $length
+     * @param string $keyspace
+     * @return string
+     */
     public static function getSecureRandomString($length, $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
     {
         $str = '';
@@ -326,6 +413,13 @@ class Utils
         return $str;
     }
 
+    /**
+     * @param $string
+     * @param string $fieldname
+     * @param bool $throwException
+     * @return bool
+     * @throws Exception
+     */
     public static function checkStringFormat($string, $fieldname="Password", $throwException = true)
     {
         if ($string == "" || strlen($string) < 6){
@@ -339,11 +433,18 @@ class Utils
     /*
     *  Genera il valore del remember-me cookie
     */
+    /**
+     * @return string
+     */
     public static function generateCookieHash()
     {
         return  md5(time()).md5(Utils::getIpAddress() . Utils::getUserAgent());
     }
 
+    /**
+     * @param $cookieValue
+     * @return bool
+     */
     public static function checkCookieHashValidity($cookieValue)
     {
         return substr($cookieValue,32) == md5(Utils::getIpAddress().Utils::getUserAgent());

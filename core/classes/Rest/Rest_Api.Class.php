@@ -9,8 +9,15 @@
  * @version 3.0
  */
 require_once 'classes/Rest/Rest_Api_Abstract.Class.php';
+
+/**
+ * Class Rest_Api
+ */
 class Rest_Api extends Rest_Api_Abstract
 {
+    /**
+     * @return array|string
+     */
     protected function getTest() {
         $res = array();
         if ($this->method == 'GET') {
@@ -21,6 +28,9 @@ class Rest_Api extends Rest_Api_Abstract
         return $res;
     }
 
+    /**
+     * @return array|string
+     */
     protected function getFilteredData() {
         $res = array();
         if ($this->method == 'POST') {

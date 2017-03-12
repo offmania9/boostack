@@ -10,42 +10,87 @@
  */
 class CurlRequest {
 
+    /**
+     * @var string
+     */
     private $endpoint = "";
+    /**
+     * @var bool
+     */
     private $is_post = true;
+    /**
+     * @var bool
+     */
     private $return_transfer = true;
+    /**
+     * @var string
+     */
     private $encoding = "";
+    /**
+     * @var array
+     */
     private $getFields = array();
+    /**
+     * @var array
+     */
     private $postFields = array();
+    /**
+     * @var array
+     */
     private $customHeader = array();
 
+    /**
+     * CurlRequest constructor.
+     */
     public function __construct() {
 
     }
 
+    /**
+     * @param $endpoint
+     */
     public function setEndpoint($endpoint) {
         $this->endpoint = $endpoint;
     }
 
+    /**
+     * @param $isPost
+     */
     public function setIsPost($isPost) {
         $this->is_post = $isPost;
     }
 
+    /**
+     * @param $returnTransfer
+     */
     public function setReturnTransfer($returnTransfer) {
         $this->return_transfer = $returnTransfer;
     }
 
+    /**
+     * @param $fields
+     */
     public function setGetFields($fields) {
         $this->getFields = $fields;
     }
 
+    /**
+     * @param $fields
+     */
     public function setPostFields($fields) {
         $this->postFields = $fields;
     }
 
+    /**
+     * @param $data
+     */
     public function setCustomHeader($data) {
         $this->customHeader = $data;
     }
 
+    /**
+     * @return MessageBag
+     */
     public function send() {
         $response = new MessageBag();
 
@@ -83,20 +128,4 @@ class CurlRequest {
         curl_close($ch);
         return $response;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

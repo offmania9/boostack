@@ -11,22 +11,50 @@
 class Database_AccessLogger
 {
 
+    /**
+     * @var string
+     */
     private $username;
 
+    /**
+     * @var array|false|string
+     */
     private $ip;
 
+    /**
+     * @var array|string
+     */
     private $useragent;
 
+    /**
+     * @var array|string
+     */
     private $referrer;
 
+    /**
+     * @var array|string
+     */
     private $query;
 
+    /**
+     * @var null|PDO
+     */
     private $pdo;
 
+    /**
+     * @var null
+     */
     private static $instance = NULL;
 
+    /**
+     *
+     */
     const TABLENAME = "boostack_log";
 
+    /**
+     * Database_AccessLogger constructor.
+     * @param null $objUser
+     */
     private function __construct($objUser = NULL)
     {
         $this->pdo = Database_PDO::getInstance();
@@ -37,6 +65,10 @@ class Database_AccessLogger
         $this->query = Utils::sanitizeInput(getenv('REQUEST_URI'));
     }
 
+    /**
+     * @param null $message
+     * @param string $level
+     */
     public function Log($message = NULL, $level = "information")
     {
         if(!in_array($level,Config::get("log_enabledTypes")))
@@ -59,9 +91,16 @@ class Database_AccessLogger
         $this->pdo->prepare($sql)->execute();
     }
 
+    /**
+     *
+     */
     private function __clone()
     {}
 
+    /**
+     * @param null $objUser
+     * @return Database_AccessLogger|null
+     */
     static function getInstance($objUser = NULL)
     {
         if (self::$instance == NULL)
@@ -70,6 +109,9 @@ class Database_AccessLogger
         return self::$instance;
     }
 
+    /**
+     * @return array
+     */
     public function get()
     {
         $sql = "SELECT * FROM " . self::TABLENAME . " ORDER BY datetime DESC";

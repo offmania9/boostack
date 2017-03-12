@@ -1,11 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 ">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 ">
 	<url>
-		<loc>http://www.boostack.com</loc>
-		<lastmod>2015-06-07</lastmod>
-		<changefreq>always</changefreq>
+		<loc>https://boostack.com/</loc>
+		<lastmod>2017-03-09</lastmod>
+		<changefreq>Weekly</changefreq>
+		<priority>1.0</priority>
+	</url>
+	<url>
+		<loc>https://www.boostack.com/</loc>
+		<lastmod>2017-03-09</lastmod>
+		<changefreq>Weekly</changefreq>
+		<priority>1.0</priority>
+	</url>
+	<url>
+		<loc>https://boostack.com/download</loc>
+		<lastmod>2017-03-09</lastmod>
+		<changefreq>Weekly</changefreq>
+		<priority>1.0</priority>
+	</url>
+	<url>
+		<loc>https://boostack.com/home</loc>
+		<lastmod>2017-03-09</lastmod>
+		<changefreq>Weekly</changefreq>
+		<priority>1.0</priority>
+	</url>
+	<url>
+		<loc>https://boostack.com/docs/database</loc>
+		<lastmod>2017-03-09</lastmod>
+		<changefreq>Daily</changefreq>
+		<priority>1.0</priority>
+	</url>
+	<url>
+		<loc>https://boostack.com/docs/emails</loc>
+		<lastmod>2017-03-09</lastmod>
+		<changefreq>Daily</changefreq>
+		<priority>1.0</priority>
+	</url>
+	<url>
+		<loc>https://boostack.com/docs/introduction</loc>
+		<lastmod>2017-03-09</lastmod>
+		<changefreq>Daily</changefreq>
+		<priority>1.0</priority>
+	</url>
+	<url>
+		<loc>https://boostack.com/docs/languages</loc>
+		<lastmod>2017-03-09</lastmod>
+		<changefreq>Daily</changefreq>
+		<priority>1.0</priority>
+	</url>
+	<url>
+		<loc>https://boostack.com/docs/logging</loc>
+		<lastmod>2017-03-09</lastmod>
+		<changefreq>Daily</changefreq>
+		<priority>1.0</priority>
+	</url>
+	<url>
+		<loc>https://boostack.com/docs/mobile</loc>
+		<lastmod>2017-03-09</lastmod>
+		<changefreq>Daily</changefreq>
+		<priority>1.0</priority>
+	</url>
+	<url>
+		<loc>https://boostack.com/docs/sessions</loc>
+		<lastmod>2017-03-09</lastmod>
+		<changefreq>Daily</changefreq>
+		<priority>1.0</priority>
+	</url>
+	<url>
+		<loc>https://boostack.com/docs/social</loc>
+		<lastmod>2017-03-09</lastmod>
+		<changefreq>Daily</changefreq>
+		<priority>1.0</priority>
+	</url>
+	<url>
+		<loc>https://boostack.com/docs/upload</loc>
+		<lastmod>2017-03-09</lastmod>
+		<changefreq>Daily</changefreq>
+		<priority>1.0</priority>
+	</url>
+	<url>
+		<loc>https://boostack.com/docs/users</loc>
+		<lastmod>2017-03-09</lastmod>
+		<changefreq>Daily</changefreq>
 		<priority>1.0</priority>
 	</url>
 </urlset>

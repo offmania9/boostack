@@ -10,23 +10,70 @@
  */
 class Email_Basic {
 
+    /**
+     * @var
+     */
     private $from_mail;
+    /**
+     * @var string
+     */
     private $from_name;
+    /**
+     * @var string
+     */
     private $reply_to_mail;
+    /**
+     * @var string
+     */
     private $reply_to_name;
+    /**
+     * @var string
+     */
     private $subject;
+    /**
+     * @var array
+     */
     private $cc = array();
+    /**
+     * @var array
+     */
     private $bcc = array();
+    /**
+     * @var string
+     */
     private $headers;
+    /**
+     * @var array
+     */
     private $attachment = array();
+    /**
+     * @var string
+     */
     private $message;
+    /**
+     * @var
+     */
     private $message_clean;
+    /**
+     * @var
+     */
     private $date_send;
 
+    /**
+     * @var array
+     */
     private $to_list = array();
 
+    /**
+     * @var string
+     */
     private $mime_boundary;
 
+    /**
+     * Email_Basic constructor.
+     * @param $options
+     * @throws Exception
+     */
     public function __construct($options) {
 
         if(empty($options["from_mail"])) throw new Exception("Missing 'from_mail' parameter");
@@ -82,11 +129,18 @@ class Email_Basic {
 
     }
 
+    /**
+     * @param $emailaddress
+     */
     public function AddAddressToList($emailaddress){
         $this->to_list[] = $emailaddress;
     }
 
-    public function addAttachment($path,$type){
+    /**
+     * @param $path
+     * @param $type
+     */
+    public function addAttachment($path, $type){
 
         $this->attachment[] = $path;
         $data ="";
@@ -105,6 +159,9 @@ class Email_Basic {
             chunk_split(base64_encode($data)) . "\n\n";
     }
 
+    /**
+     * @return bool
+     */
     public function Send(){
         $this->message .= "--".$this->mime_boundary."--\n";
         $this->message = wordwrap($this->message, 70, "\r\n");
@@ -118,6 +175,10 @@ class Email_Basic {
         return true;
     }
 
+    /**
+     * @param $property_name
+     * @return null
+     */
     public function __get($property_name) {
         if(isset($this->$property_name)) {
             return($this->$property_name);
@@ -127,6 +188,10 @@ class Email_Basic {
         }
     }
 
+    /**
+     * @param $property_name
+     * @param $val
+     */
     public function __set($property_name, $val) {
 
         $this->$property_name = $val;

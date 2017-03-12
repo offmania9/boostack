@@ -10,10 +10,22 @@
  */
 class Validator {
 
+    /**
+     * @var
+     */
     private $error;
+    /**
+     * @var
+     */
     private $errorMessages;
 
+    /**
+     *
+     */
     const RULES_SEPARATOR = "|";
+    /**
+     *
+     */
     const INTRA_RULES_SEPARATOR = ":";
 
     /**
@@ -182,6 +194,10 @@ class Validator {
         return $res;
     }
 
+    /**
+     * @param $input
+     * @return bool
+     */
     public static function numeric($input) {
         $res = true;
         if(is_array($input)) {
@@ -196,6 +212,10 @@ class Validator {
         return $res;
     }
 
+    /**
+     * @param $input
+     * @return bool|int
+     */
     public static function alphanumeric($input) {
         $res = true;
         if(is_array($input)) {
@@ -210,6 +230,10 @@ class Validator {
         return $res;
     }
 
+    /**
+     * @param $input
+     * @return bool|int
+     */
     public static function integer($input) {
         $res = true;
         if(is_array($input)) {
@@ -224,6 +248,10 @@ class Validator {
         return $res;
     }
 
+    /**
+     * @param $input
+     * @return bool|int
+     */
     public static function float($input) {
         $res = true;
         if(is_array($input)) {
@@ -238,28 +266,54 @@ class Validator {
         return $res;
     }
 
-    public static function in($elem,$array) {
+    /**
+     * @param $elem
+     * @param $array
+     * @return bool
+     */
+    public static function in($elem, $array) {
         return in_array($elem,$array);
     }
 
+    /**
+     * @param $input
+     * @return bool
+     */
     public static function email($input) {
         return is_string($input) && filter_var($input, FILTER_VALIDATE_EMAIL);
     }
 
+    /**
+     * @param $input
+     * @return bool
+     */
     public static function phone($input) {
         // TODO find regex for phone numbers
         return true;
     }
 
+    /**
+     * @param $password
+     * @return bool
+     */
     public static function password($password) {
         return !empty($password) && (strlen($password) >= Config::get("password_min_length")) && (strlen($password) <= Config::get("password_max_length"));
     }
 
+    /**
+     * @param $username
+     * @return bool
+     */
     public static function username($username) {
         return !empty($username) && (strlen($username) >= Config::get("username_min_length")) && (strlen($username) <= Config::get("username_max_length"));
     }
 
-    public function required($input,$array) {
+    /**
+     * @param $input
+     * @param $array
+     * @return bool
+     */
+    public function required($input, $array) {
         return array_key_exists($input,$array);
     }
 
@@ -270,6 +324,9 @@ class Validator {
         $this->errorMessages[$key]["message"][] = $message;
     }
 
+    /**
+     * @return mixed
+     */
     private function hasError() {
         return $this->error;
     }

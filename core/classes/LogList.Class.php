@@ -10,12 +10,21 @@
  */
 class LogList extends BaseList {
 
+    /**
+     *
+     */
     const BASE_CLASS = Log::class;
 
+    /**
+     * LogList constructor.
+     */
     public function __construct() {
         parent::init();
     }
 
+    /**
+     * @return bool
+     */
     public function truncate(){
         global $boostack;
         $res=true;
@@ -33,6 +42,9 @@ class LogList extends BaseList {
         return $res;
     }
 
+    /**
+     * @return mixed
+     */
     public function getItemsArray(){
         return $this->items;
     }

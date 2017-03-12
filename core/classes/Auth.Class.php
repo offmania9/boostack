@@ -10,11 +10,23 @@
  */
 class Auth {
 
+    /**
+     *
+     */
     const LOCK_TIMER = -1;
+    /**
+     *
+     */
     const LOCK_RECAPTCHA = -2;
 
     /*
      * Esegue il login dell'utente con username e password in chiaro
+     */
+    /**
+     * @param $username
+     * @param $password
+     * @param bool $cookieRememberMe
+     * @return MessageBag
      */
     public static function loginByUsernameAndPlainPassword($username, $password, $cookieRememberMe = false)
     {
@@ -66,6 +78,9 @@ class Auth {
     /*
      * Esegue il login dell'utente con userID passato come parametero
      */
+    /**
+     * @param $userID
+     */
     public static function loginByUserID($userID)
     {
         if(!Auth::isLoggedIn()) {
@@ -77,6 +92,10 @@ class Auth {
     /*  Esegue il login dell'utente con il "remember-me cookie"
      *
      *  @param $cookieValue valore del cookie
+     */
+    /**
+     * @param $cookieValue
+     * @return bool
      */
     public static function loginByCookie($cookieValue)
     {
@@ -101,12 +120,18 @@ class Auth {
         return false;
     }
 
+    /**
+     * @return mixed
+     */
     public static function isLoggedIn()
     {
         global $objSession;
         return $objSession->IsLoggedIn();
     }
 
+    /**
+     * @return bool
+     */
     public static function logout()
     {
         global $objSession, $boostack;
@@ -132,30 +157,45 @@ class Auth {
         return false;
     }
 
+    /**
+     * @return mixed
+     */
     public static function getLastTry()
     {
         global $objSession;
         return $objSession->LastTryLogin;
     }
 
+    /**
+     *
+     */
     public static function impressLastTry()
     {
         global $objSession;
         $objSession->LastTryLogin = time();
     }
 
+    /**
+     * @return mixed
+     */
     public static function getUserLoggedObject()
     {
         global $objSession;
         return $objSession->GetUserObject();
     }
 
+    /**
+     * @return bool
+     */
     public static function isTimerLocked()
     {
         global $objSession;
         return Config::get("lockStrategy_on") && Config::get("login_lockStrategy") == "timer" && $objSession->failed_login_count >= Config::get("login_maxAttempts") && !self::checkAcceptedTimeFromLastLogin(self::getLastTry());
     }
 
+    /**
+     * @return bool
+     */
     public static function haveToShowCaptcha()
     {
         global $objSession;
@@ -163,6 +203,14 @@ class Auth {
 
     }
 
+    /**
+     * @param $username
+     * @param $password
+     * @param $cookieRememberMe
+     * @param bool $throwException
+     * @return bool
+     * @throws Exception
+     */
     private static function checkAndLogin($username, $password, $cookieRememberMe, $throwException = true)
     {
         global $objSession, $boostack;
@@ -211,6 +259,12 @@ class Auth {
         return true;
     }
 
+    /**
+     * @param $strUsername
+     * @param $strPlainPassword
+     * @param string $hashedPassword
+     * @return bool
+     */
     private static function login($strUsername, $strPlainPassword, $hashedPassword = "")
     {
         global $objSession;
@@ -245,6 +299,11 @@ class Auth {
         return false;
     }
 
+    /**
+     * @param $boostack
+     * @param $response
+     * @return bool
+     */
     private static function reCaptchaVerify($boostack, $response)
     {
         $reCaptcha_private = Config::get("reCaptcha_private");
@@ -261,6 +320,10 @@ class Auth {
         return(!$response->hasError() && $a["success"]);
     }
 
+    /**
+     * @param $lastLogin
+     * @return bool
+     */
     private static function checkAcceptedTimeFromLastLogin($lastLogin)
     {
         return $lastLogin != 0 && (time() - $lastLogin > Config::get("login_secondsFormBlocked"));

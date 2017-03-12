@@ -10,28 +10,61 @@
  */
 class Boostack
 {
-
     // global url used all over boostack.
+    /**
+     * @var string
+     */
     protected $url;
 
+    /**
+     * @var string
+     */
     protected $developmentMode;
 
+    /**
+     * @var
+     */
     protected $config;
 
+    /**
+     * @var
+     */
     protected $labels;
 
+    /**
+     *
+     */
     const cssUrl = "assets/css/";
 
+    /**
+     *
+     */
     const jsUrl = "assets/js/";
 
+    /**
+     *
+     */
     const imgUrl = "assets/img/";
 
+    /**
+     *
+     */
     const templateUrl = "template/";
 
+    /**
+     *
+     */
     const mailTemplatePath = "template/mail/";
 
+    /**
+     * @var null
+     */
     private static $instance = NULL;
+
     // #############################################################
+    /**
+     * Boostack constructor.
+     */
     private function __construct()
     {
         if (Config::get('developmentMode')) {
@@ -44,9 +77,15 @@ class Boostack
         $this->developmentMode = Config::get('developmentMode');
     }
 
+    /**
+     *
+     */
     private function __clone()
     {}
 
+    /**
+     * @return Boostack|null
+     */
     static function getInstance()
     {
         if (self::$instance == NULL)
@@ -54,8 +93,9 @@ class Boostack
         return self::$instance;
     }
 
-    /*
-     *
+    /**
+     * @param $key
+     * @return array|mixed|string
      */
     public function getLabel($key) {
         if(is_array($this->labels)) {
@@ -74,8 +114,8 @@ class Boostack
         return "";
     }
 
-    /*
-     *
+    /**
+     * @param $fileName
      */
     public function registerScriptFile($fileName)
     {
@@ -84,32 +124,34 @@ class Boostack
         ?><script type="text/javascript" src="<?=$this->url.self::jsUrl.$fileName;?>"></script><?php
     }
 
-    /*
-     *
+    /**
+     * @param $fileName
+     * @return string
      */
     public function registerTemplateFile($fileName)
     {
         return ROOTPATH.self::templateUrl.$fileName;
     }
 
-    /*
-     *
+    /**
+     * @param $fileName
+     * @return string
      */
     public function registerImgFile($fileName)
     {
-    	return $this->url.self::imgUrl.$fileName;
+        return $this->url.self::imgUrl.$fileName;
     }
 
-    /*
-     *
+    /**
+     * @param $fileURL
      */
     public function registerAbsoluteScriptFile($fileURL)
     {
         ?><script type="text/javascript" src="<?=$fileURL?>"></script><?php
     }
 
-    /*
-     *
+    /**
+     * @param $fileName
      */
     public function registerCssFile($fileName)
     {
@@ -118,16 +160,16 @@ class Boostack
         echo '<link href="'.$this->url.self::cssUrl.$fileName.'" rel="stylesheet" type="text/css"/>';
     }
 
-    /*
-     *
+    /**
+     * @param $fileURL
      */
     public function registerAbsoluteCssFile($fileURL)
     {
         ?><link href="<?=$fileURL?>" rel="stylesheet" type="text/css"><?php
     }
 
-    /*
-     *
+    /**
+     * @param $fileName
      */
     public function registerCoreServerFile($fileName)
     {
@@ -137,15 +179,16 @@ class Boostack
         require_once ($f);
     }
 
-    /*
-     *
+    /**
+     * @param string $titlePrepend
      */
     public function renderOpenHtmlHeadTags($titlePrepend = "")
     {
         echo '<!DOCTYPE html>'
-             .'<html lang="'.Config::get('html_lang').'"'
-             .'xmlns:og="https://opengraphprotocol.org/schema/" xmlns:fb="https://www.facebook.com/2008/fbml">'
-             .'<head>';
+            .'<html lang="'.Config::get('html_lang').'" '
+            //.'xmlns:og="https://opengraphprotocol.org/schema/" xmlns:fb="https://www.facebook.com/2008/fbml"'
+            .'>'
+            .'<head>';
         $this->registerAllDefaultMetaTags($titlePrepend);
         $this->registerAllDefaultCssFiles();
         echo '</head><body>';
@@ -153,8 +196,9 @@ class Boostack
             require $this->registerTemplateFile("boostack/setup_exists_header.phtml");
     }
 
-    /*
-     *
+    /**
+     * @param $virtualPath
+     * @return string
      */
     public function getFriendlyUrl($virtualPath)
     {
@@ -168,8 +212,8 @@ class Boostack
         return $this->url . $virtualPath;
     }
 
-    /*
-     *
+    /**
+     * @param bool $noToken
      */
     public function renderCloseHtmlTag($noToken = false)
     {
@@ -196,9 +240,15 @@ class Boostack
         echo "<![endif]-->";
         ?>
         <div id="fb-root"></div><div class="overlay"></div><div class="loading"></div></body></html>
-		<?php
+        <?php
     }
 
+    /**
+     * @param string $logMesg
+     * @param string $level
+     * @param string $type
+     * @throws Exception
+     */
     public function writeLog($logMesg = "", $level = LogLevel::Information, $type = LogType::DB) {
         global $CURRENTUSER;
         switch ($type) {
@@ -215,7 +265,13 @@ class Boostack
         }
     }
 
-    public function getMailTemplate($mail,$parameters = null) {
+    /**
+     * @param $mail
+     * @param null $parameters
+     * @return mixed|string
+     * @throws Exception
+     */
+    public function getMailTemplate($mail, $parameters = null) {
         $file = ROOTPATH.self::mailTemplatePath.$mail;
         if(!file_exists($file)) throw new Exception("Mail templating file ($file) not found");
         $template = file_get_contents($file);
@@ -225,23 +281,25 @@ class Boostack
         return $template;
     }
 
-    /*
-     *
+    /**
+     * @param $property_name
+     * @return null
      */
     public function __get($property_name)
     {
         return isset($this->$property_name)?$this->$property_name:NULL;
     }
 
-    /*
-     *
+    /**
+     * @param $property_name
+     * @param $val
      */
     public function __set($property_name, $val)
     {
         $this->$property_name = $val;
     }
 
-    /*
+    /**
      *
      */
     public function registerAllDefaultCssFiles()
@@ -254,47 +312,46 @@ class Boostack
         }
     }
 
-    /*
-     *
+    /**
+     * @param string $titlePrepend
      */
     public function registerAllDefaultMetaTags($titlePrepend = "")
-{   ?>
-<meta charset="utf-8"/><meta name="viewport" content="<?=Config::get('viewport')?>"/>
-<?php
-if ($this->facebookMetaTag) {
-    ?>
-    <meta property="og:title" content="<?=Config::get('og_title')?>" />
-    <meta property="og:type" content="<?=Config::get('og_type')?>" />
-    <meta property="og:url" content="<?=$this->url?>" />
-    <meta property="og:image" content="<?=$this->url.Config::get("url_logo");?>" />
-    <meta property="og:description" content="<?=Config::get('site_description');?>" />
-    <?php
-if (Config::get('fb_app_id') != "") {
-?>
-    <meta property="fb:app_id" content="<?=Config::get('fb_app_id')?>" /><?php
+    {   ?>
+        <meta charset="utf-8"/><meta name="viewport" content="<?=Config::get('viewport')?>"/>
+        <?php
+        if (Config::get('facebookMetaTag')) {
+            ?>
+            <meta property="og:title" content="<?=Config::get('og_title')?>" />
+            <meta property="og:type" content="<?=Config::get('og_type')?>" />
+            <meta property="og:url" content="<?=Config::get('og_url')?>" />
+            <meta property="og:image" content="<?=Config::get('og_image')?>" />
+            <meta property="og:description" content="<?=Config::get('og_description')?>" />
+            <?php
+            if (Config::get('fb_app_id') != "") {
+                ?>
+                <meta property="fb:app_id" content="<?=Config::get('fb_app_id')?>" /><?php
+            }
+            ?><?php
+            if (Config::get('fb_app_id') != "") {
+                ?>
+                <meta property="fb:admins" content="<?=Config::get('fb_admins')?>" /><?php }?>
+            <?php
+        }
+        ?><title><?=($titlePrepend!="")?$titlePrepend." | ":""?><?=Config::get('site_title');?></title>
+        <meta name="description" content="<?=Config::get('site_description')?>"/>
+        <meta name="author" content="<?=Config::get('site_author')?>"/>
+        <meta content="<?=Config::get('site_keywords');?>" name="Keywords" />
+        <meta content="INDEX, FOLLOW" name="ROBOTS" />
+        <link rel="shortcut icon" href="<?=$this->url.Config::get('site_shortcuticon');?>" />
+        <link rel="image_src" href="<?=$this->url.Config::get('url_logo');?>" />
+        <link rel="apple-touch-icon" sizes="144x144" href="<?=$this->url.Config::get('appletouchicon_144');?>"/>
+        <link rel="apple-touch-icon" sizes="114x114" href="<?=$this->url.Config::get('appletouchicon_114');?>"/>
+        <link rel="apple-touch-icon" sizes="72x72" href="<?=$this->url.Config::get('appletouchicon_72');?>"/>
+        <link rel="apple-touch-icon" href="<?=$this->url.Config::get('appletouchicon_def');?>"/>
+        <meta name="apple-mobile-web-app-title" content="<?=$this->url.Config::get('sitename')?>"/>
+        <base href="<?=$this->url?>" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <?php
+    }
 }
-?><?php
-if (Config::get('fb_app_id') != "") {
-?>
-    <meta property="fb:admins" content="<?=Config::get('fb_admins')?>" /><?php }?>
-<?php
-}
-?><title><?=($titlePrepend!="")?$titlePrepend." | ":""?><?=Config::get('site_title');?> | <?=Config::get('project_sitename')?></title>
-<meta name="description" content="<?=Config::get('site_description')?>"/>
-<meta name="author" content="<?=Config::get('site_author')?>"/>
-<meta content="<?=Config::get('site_keywords');?>" name="Keywords" />
-<meta content="INDEX, FOLLOW" name="ROBOTS" />
-<link rel="shortcut icon" href="<?=$this->url.Config::get('site_shortcuticon');?>" />
-<link rel="image_src" href="<?=$this->url.Config::get('url_logo');?>" />
-<link rel="apple-touch-icon" sizes="144x144" href="<?=$this->url.Config::get('appletouchicon_144');?>"/>
-<link rel="apple-touch-icon" sizes="114x114" href="<?=$this->url.Config::get('appletouchicon_114');?>"/>
-<link rel="apple-touch-icon" sizes="72x72" href="<?=$this->url.Config::get('appletouchicon_72');?>"/>
-<link rel="apple-touch-icon" href="<?=$this->url.Config::get('appletouchicon_def');?>"/>
-<meta name="apple-mobile-web-app-title" content="<?=$this->url.Config::get('sitename')?>"/>
-<base href="<?=$this->url?>" />
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<?php
-}
-}
-
 ?>

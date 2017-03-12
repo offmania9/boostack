@@ -12,16 +12,43 @@
 class User_Social extends BaseClass
 {
 
+    /**
+     * @var
+     */
     protected $type;
+    /**
+     * @var
+     */
     protected $uid;
+    /**
+     * @var
+     */
     protected $uid_token;
+    /**
+     * @var
+     */
     protected $uid_token_secret;
+    /**
+     * @var
+     */
     protected $autosharing;
+    /**
+     * @var
+     */
     protected $website;
+    /**
+     * @var
+     */
     protected $extra;
 
+    /**
+     *
+     */
     const TABLENAME = "boostack_user_social";
 
+    /**
+     * @var array
+     */
     protected $default_values = [
         "type" => "",
         "uid" => "",
@@ -32,6 +59,10 @@ class User_Social extends BaseClass
         "extra" => "",
     ];
 
+    /**
+     * User_Social constructor.
+     * @param null $id
+     */
     public function __construct($id = null)
     {
         parent::init($id);

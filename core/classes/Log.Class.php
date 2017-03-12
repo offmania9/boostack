@@ -9,17 +9,47 @@
  * @version 3.0
  */
 class Log extends BaseClass implements JsonSerializable{
+    /**
+     * @var
+     */
     protected $level;
+    /**
+     * @var
+     */
     protected $datetime;
+    /**
+     * @var
+     */
     protected $username;
+    /**
+     * @var
+     */
     protected $ip;
+    /**
+     * @var
+     */
     protected $useragent;
+    /**
+     * @var
+     */
     protected $referrer;
+    /**
+     * @var
+     */
     protected $query;
+    /**
+     * @var
+     */
     protected $message;
 
+    /**
+     *
+     */
     const TABLENAME = "boostack_log";
 
+    /**
+     * @var array
+     */
     protected $default_values = [
         "id" => "",
         "level" => "information",
@@ -32,10 +62,17 @@ class Log extends BaseClass implements JsonSerializable{
         "message" => "",
     ];
 
+    /**
+     * Log constructor.
+     * @param null $id
+     */
     public function __construct($id = NULL) {
         parent::init($id);
     }
 
+    /**
+     * @return array
+     */
     public function jsonSerialize() {
         $data_log = array();
         $data_log["id"] = $this->id;
@@ -51,6 +88,9 @@ class Log extends BaseClass implements JsonSerializable{
         return $data_log;
     }
 
+    /**
+     * @return array
+     */
     public function getAttrListForSearch()
     {
         $data_log = array();

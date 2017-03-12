@@ -10,11 +10,29 @@
  */
 abstract class BaseClass implements JsonSerializable {
 
+    /**
+     * @var
+     */
     protected $id;
+    /**
+     * @var
+     */
     protected $pdo; // TODO: static? Find a way to automatically inject db instance into this field?
+    /**
+     * @var array
+     */
     protected $default_values = [];
+    /**
+     * @var array
+     */
     protected $system_excluded = ['id','default_values','system_excluded','custom_excluded','pdo'];
+    /**
+     * @var array
+     */
     protected $custom_excluded = [];
+    /**
+     *
+     */
     const TABLENAME = "";
 
 
@@ -43,6 +61,10 @@ abstract class BaseClass implements JsonSerializable {
         return true;
     }
 
+    /**
+     * @param $array
+     * @return bool
+     */
     public function clearAndFill($array){
         $defaultValuesKeys = array_keys($this->default_values);
         $inputKeys = array_keys($array);
@@ -253,6 +275,10 @@ abstract class BaseClass implements JsonSerializable {
         return $attributes;
     }
 
+    /**
+     * @param array $array
+     * @throws Exception
+     */
     protected function prepare($array = array()) {
         $defaultValuesKeys = array_keys($this->default_values);
         $inputKeys = array_keys($array);
@@ -271,6 +297,9 @@ abstract class BaseClass implements JsonSerializable {
         }
     }
 
+    /**
+     * @return bool
+     */
     private function insert() {
 
         $objVars = get_object_vars($this);
@@ -303,6 +332,10 @@ abstract class BaseClass implements JsonSerializable {
         return true;
     }
 
+    /**
+     * @param $id
+     * @return bool
+     */
     protected function insertWithID($id) {
         $objVars = get_object_vars($this);
         $objVars["id"] = $id;
@@ -337,6 +370,9 @@ abstract class BaseClass implements JsonSerializable {
         return true;
     }
 
+    /**
+     * @return bool
+     */
     private function update() {
         $objVars = get_object_vars($this);
 
@@ -362,6 +398,5 @@ abstract class BaseClass implements JsonSerializable {
 
         return true;
     }
-
 }
 ?>

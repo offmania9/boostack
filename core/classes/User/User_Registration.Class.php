@@ -11,14 +11,35 @@
  */
 class User_Registration extends BaseClass
 {
+    /**
+     * @var
+     */
     protected $activation_date;
+    /**
+     * @var
+     */
     protected $access_code;
+    /**
+     * @var
+     */
     protected $ip;
+    /**
+     * @var
+     */
     protected $join_date;
+    /**
+     * @var
+     */
     protected $join_idconfirm;
 
+    /**
+     *
+     */
     const TABLENAME = "boostack_user_registration";
 
+    /**
+     * @var array
+     */
     protected $default_values = [
         "activation_date" => 0,
         "access_code" => "",
@@ -27,6 +48,10 @@ class User_Registration extends BaseClass
         "join_idconfirm" => "",
     ];
 
+    /**
+     * User_Registration constructor.
+     * @param null $id
+     */
     public function __construct($id = null)
     {
         parent::init($id);

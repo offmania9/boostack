@@ -1,11 +1,23 @@
 <?php
 
+/**
+ * Class FileLogger
+ */
 class FileLogger {
 
+    /**
+     * @var null
+     */
     private static $instance = NULL;
 
+    /**
+     * @var string
+     */
     private $logFile = __DIR__."/../../logs/log.txt";
 
+    /**
+     * FileLogger constructor.
+     */
     private function __construct()
     {
         $path = dirname($this->logFile);
@@ -14,6 +26,9 @@ class FileLogger {
         }
     }
 
+    /**
+     * @return FileLogger|null
+     */
     public static function getInstance()
     {
         if (self::$instance == NULL)
@@ -22,6 +37,11 @@ class FileLogger {
         return self::$instance;
     }
 
+    /**
+     * @param null $message
+     * @param string $level
+     * @throws Exception
+     */
     public function log($message = NULL, $level = "information")
     {
         $logFile = fopen($this->logFile, "a");

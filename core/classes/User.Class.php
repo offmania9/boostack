@@ -10,8 +10,17 @@
  */
 class User implements JsonSerializable {
 
+    /**
+     * @var null
+     */
     protected $id = null;
+    /**
+     * @var null|PDO
+     */
     protected $pdo = null;
+    /**
+     * @var array
+     */
     protected $objects = [
         User_Entity::class => null,
         User_Social::class => null,
@@ -19,6 +28,9 @@ class User implements JsonSerializable {
         User_Info::class => null,
     ];
 
+    /**
+     * @var array
+     */
     protected $attributes = array();
 
     /**
@@ -52,6 +64,9 @@ class User implements JsonSerializable {
         }
     }
 
+    /**
+     * @param $id
+     */
     public function load($id) {
         $this->id = $id;
     }
@@ -135,6 +150,9 @@ class User implements JsonSerializable {
         return $objectInstance->$property;
     }
 
+    /**
+     * @return array
+     */
     public function jsonSerialize()
     {
         return array_merge(
@@ -152,46 +170,97 @@ class User implements JsonSerializable {
 //        ];
     }
 
+    /**
+     * @param $id
+     * @param bool $throwException
+     * @return bool
+     */
     public static function existById($id, $throwException = true) {
         return User_Entity::existById($id, $throwException);
     }
 
+    /**
+     * @param $email
+     * @param bool $throwException
+     * @return bool
+     */
     public static function existsByEmail($email, $throwException = true) {
         return User_Entity::existsByEmail($email, $throwException);
     }
 
+    /**
+     * @param $username
+     * @param bool $throwException
+     * @return bool
+     */
     public static function existsByUsername($username, $throwException = true) {
         return User_Entity::existsByUsername($username, $throwException);
     }
 
+    /**
+     * @param $cookieValue
+     * @return bool
+     */
     public static function getCredentialByCookie($cookieValue) {
         return User_Entity::getCredentialByCookie($cookieValue);
     }
 
+    /**
+     * @param $email
+     * @return bool
+     */
     public static function getActiveCredentialByEmail($email) {
         return User_Entity::getActiveCredentialByEmail($email);
     }
 
+    /**
+     * @param $username
+     * @return bool
+     */
     public static function getActiveCredentialByUsername($username) {
         return User_Entity::getActiveCredentialByUsername($username);
     }
 
+    /**
+     * @param $email
+     * @param $username
+     * @return bool
+     */
     public static function getActiveCredentialByEmailOrUsername($email, $username) {
         return User_Entity::getActiveCredentialByEmailOrUsername($email, $username);
     }
 
+    /**
+     * @param $email
+     * @param $password
+     * @return bool
+     */
     public static function getActiveIdByEmailAndPassword($email, $password) {
         return User_Entity::getActiveIdByEmailAndPassword($email, $password);
     }
 
+    /**
+     * @param $username
+     * @param $password
+     * @return bool
+     */
     public static function getActiveIdByUsernameAndPassword($username, $password) {
         return User_Entity::getActiveIdByUsernameAndPassword($username, $password);
     }
 
+    /**
+     * @param $email
+     * @param $username
+     * @param $password
+     * @return bool
+     */
     public static function getActiveIdByEmailOrUsernameAndPassword($email, $username, $password) {
         return User_Entity::getActiveIdByEmailOrUsernameAndPassword($email, $username, $password);
     }
 
+    /**
+     *
+     */
     public function refreshRememberMeCookie() {
         $cookieHash = Utils::generateCookieHash();
         $this->session_cookie = $cookieHash;

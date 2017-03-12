@@ -12,24 +12,56 @@
 class Session_HTTP
 {
 
+    /**
+     * @var array|string
+     */
     private $php_session_id;
 
+    /**
+     * @var
+     */
     private $native_session_id;
 
+    /**
+     * @var null|PDO
+     */
     private $dbhandle;
 
+    /**
+     * @var
+     */
     private $logged_in;
 
+    /**
+     * @var
+     */
     private $user_id;
 
+    /**
+     * @var int
+     */
     private $session_timeout = 0;
 
+    /**
+     * @var int
+     */
     private $session_lifespan = 0;
 
+    /**
+     * @var string
+     */
     private $http_session_table = "boostack_http_session";
 
+    /**
+     * @var string
+     */
     private $session_variable = "boostack_session_variable";
 
+    /**
+     * Session_HTTP constructor.
+     * @param int $timeout
+     * @param int $lifespan
+     */
     public function __construct($timeout = 3600, $lifespan = 4600)
     {
         $this->dbhandle = Database_PDO::getInstance();
@@ -92,17 +124,29 @@ class Session_HTTP
         $this->Impress();
     }
 
+    /**
+     * @param $save_path
+     * @param $session_name
+     * @return bool
+     */
     private function _session_open_method($save_path, $session_name)
     {
         return true;
     }
 
+    /**
+     * @return bool
+     */
     public function _session_close_method()
     {
         $this->dbhandle = NULL;
         return true;
     }
 
+    /**
+     * @param $id
+     * @return string
+     */
     public function _session_read_method($id)
     {
         $this->php_session_id = $id;
@@ -133,6 +177,9 @@ class Session_HTTP
         return("");
     }
 
+    /**
+     *
+     */
     public function Impress()
     {
         if ($this->native_session_id) {
@@ -141,11 +188,17 @@ class Session_HTTP
         }
     }
 
+    /**
+     * @return mixed
+     */
     public function IsLoggedIn()
     {
         return ($this->logged_in);
     }
 
+    /**
+     * @return bool
+     */
     public function GetUserID()
     {
         if ($this->logged_in) {
@@ -155,6 +208,9 @@ class Session_HTTP
         }
     }
 
+    /**
+     * @return null|User
+     */
     public function GetUserObject()
     {
         if ($this->logged_in) {
@@ -166,11 +222,17 @@ class Session_HTTP
         return NULL;
     }
 
+    /**
+     * @return array|string
+     */
     public function GetSessionIdentifier()
     {
         return ($this->php_session_id);
     }
 
+    /**
+     * @return bool
+     */
     public function logoutUser() {
         $sql = "UPDATE " . $this->http_session_table . " SET logged_in = 'f', user_id = '1' WHERE id = " . $this->native_session_id;
         $result = $this->dbhandle->prepare($sql);
@@ -180,6 +242,9 @@ class Session_HTTP
         return true;
     }
 
+    /**
+     * @param $userID
+     */
     public function loginUser($userID) {
         $this->user_id = $userID;
         $this->logged_in = true;
@@ -188,6 +253,10 @@ class Session_HTTP
         $result->execute();
     }
 
+    /**
+     * @param $nm
+     * @return mixed|string
+     */
     public function __get($nm)
     {
         $sql = "SELECT variable_value FROM " . $this->session_variable . "
@@ -203,6 +272,10 @@ class Session_HTTP
         }
     }
 
+    /**
+     * @param $nm
+     * @param $val
+     */
     public function __set($nm, $val)
     {
         $strSer = serialize($val);
@@ -221,11 +294,20 @@ class Session_HTTP
         $result->execute();
     }
 
+    /**
+     * @param $id
+     * @param $sess_data
+     * @return bool
+     */
     public function _session_write_method($id, $sess_data)
     {
         return true;
     }
 
+    /**
+     * @param $id
+     * @return bool
+     */
     private function _session_destroy_method($id)
     {
         $sql = "DELETE FROM " . $this->http_session_table . " WHERE ascii_session_id = '$id'";

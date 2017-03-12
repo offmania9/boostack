@@ -11,30 +11,69 @@
 class Upload_Image
 {
 
+    /**
+     * @var
+     */
     private $source;
 
+    /**
+     * @var string
+     */
     private $name;
 
+    /**
+     * @var null
+     */
     private $visual_name;
 
+    /**
+     * @var
+     */
     private $type;
 
+    /**
+     * @var float|int
+     */
     private $size;
 
+    /**
+     * @var
+     */
     private $tmp_name;
 
+    /**
+     * @var string
+     */
     private $path;
 
+    /**
+     * @var
+     */
     private $extension;
 
+    /**
+     * @var
+     */
     private $height;
 
+    /**
+     * @var
+     */
     private $width;
 
+    /**
+     * @var
+     */
     private $filter;
 
+    /**
+     * @var string
+     */
     private $preview_path;
 
+    /**
+     * @var array
+     */
     private $image_types = array(
         "image/gif",
         "image/jpeg",
@@ -43,6 +82,18 @@ class Upload_Image
         "image/png"
     );
 
+    /**
+     * Upload_Image constructor.
+     * @param $file
+     * @param $destination_folder
+     * @param bool $exitifexist
+     * @param null $target_name
+     * @param null $visual_name
+     * @param null $resize
+     * @param null $preview_size
+     * @param null $filter
+     * @throws Exception
+     */
     public function __construct($file, $destination_folder, $exitifexist = true, $target_name = NULL, $visual_name = NULL, $resize = NULL, $preview_size = NULL, $filter = NULL)
     {
         // if($this->constraints($file)){
@@ -93,6 +144,11 @@ class Upload_Image
         // }
     }
 
+    /**
+     * @param $file
+     * @return bool
+     * @throws Exception
+     */
     public function constraints($file)
     {
         global $boostack, $MAX_UPLOAD_IMAGE_SIZE, $MAX_UPLOAD_PDF_SIZE, $MAX_UPLOAD_NAMEFILE_LENGTH, $MAX_UPLOAD_GENERALFILE_SIZE, $mime_types;
@@ -108,11 +164,18 @@ class Upload_Image
         throw new Exception("Unknown file. <br />" . $mime_types["" . $file["type"]] . $file["type"]);
     }
 
+    /**
+     * @return bool
+     */
     public function remove()
     {
         return unlink($this->path);
     }
 
+    /**
+     * @param $property_name
+     * @return null
+     */
     public function __get($property_name)
     {
         if (isset($this->$property_name)) {
@@ -122,11 +185,19 @@ class Upload_Image
         }
     }
 
+    /**
+     * @param $property_name
+     * @param $val
+     */
     public function __set($property_name, $val)
     {
         $this->$property_name = $val;
     }
 
+    /**
+     * @param $height
+     * @param null $filter
+     */
     function resizeToHeight($height, $filter = NULL)
     {
         $ratio = $height / $this->height;
@@ -134,6 +205,10 @@ class Upload_Image
         $this->resize($width, $height, $filter);
     }
 
+    /**
+     * @param $width
+     * @param null $filter
+     */
     function resizeToWidth($width, $filter = NULL)
     {
         $ratio = $width / $this->width;
@@ -141,6 +216,10 @@ class Upload_Image
         $this->resize($width, $height, $filter);
     }
 
+    /**
+     * @param $width
+     * @param $filter
+     */
     function previewResizeToWidth($width, $filter)
     {
         $ratio = $width / $this->width;
@@ -148,6 +227,9 @@ class Upload_Image
         $this->previewResize($width, $height, $filter);
     }
 
+    /**
+     * @param $scale
+     */
     function scale($scale)
     {
         $width = $this->width * $scale / 100;
@@ -155,6 +237,11 @@ class Upload_Image
         $this->resize($width, $height);
     }
 
+    /**
+     * @param $width
+     * @param $height
+     * @param null $filter
+     */
     function resize($width, $height, $filter = NULL)
     {
         $new_image = imagecreatetruecolor($width, $height);
@@ -204,6 +291,11 @@ class Upload_Image
         $this->path = $this->path;
     }
 
+    /**
+     * @param $width
+     * @param $height
+     * @param null $filter
+     */
     function previewResize($width, $height, $filter = NULL)
     {
         $new_image = imagecreatetruecolor($width, $height);

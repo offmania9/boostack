@@ -10,6 +10,9 @@
  */
 abstract class Rest_Api_Abstract
 {
+    /**
+     * @var string
+     */
     protected $method = '';
 
     /**
@@ -36,6 +39,11 @@ abstract class Rest_Api_Abstract
      */
     protected $args = Array();
 
+    /**
+     * Rest_Api_Abstract constructor.
+     * @param $request
+     * @throws Exception
+     */
     public function __construct($request)
     {
         header("Access-Control-Allow-Orgin: *"); // Allow for CORS
@@ -65,6 +73,9 @@ abstract class Rest_Api_Abstract
         }
     }
 
+    /**
+     * @return string
+     */
     public function processAPI()
     {
         if ((int)method_exists($this, $this->endpoint) > 0) {
@@ -73,12 +84,21 @@ abstract class Rest_Api_Abstract
         return $this->_response("No Endpoint: " . $this->endpoint, 404);
     }
 
+    /**
+     * @param $data
+     * @param int $status
+     * @return string
+     */
     private function _response($data, $status = 200)
     {
         header("HTTP/1.1 " . $status . " " . $this->_requestStatus($status));
         return json_encode($data);
     }
 
+    /**
+     * @param $code
+     * @return mixed
+     */
     private function _requestStatus($code)
     {
         $status = array(

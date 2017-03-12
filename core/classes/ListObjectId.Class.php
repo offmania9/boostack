@@ -11,23 +11,40 @@
 class ListObjectId
 {
 
+    /**
+     * @var null
+     */
     private $oid_list;
 
+    /**
+     * ListObjectId constructor.
+     * @param null $array_objid
+     */
     public function __construct($array_objid = null)
     {
         $this->oid_list = $array_objid;
     }
 
+    /**
+     * @param $val
+     */
     public function Add($val)
     {
         $this->oid_list[] = $val;
     }
 
+    /**
+     * @return null
+     */
     public function getList()
     {
         return $this->oid_list;
     }
 
+    /**
+     * @param $property_name
+     * @return null
+     */
     public function __get($property_name)
     {
         if (isset($this->$property_name)) {
@@ -37,6 +54,10 @@ class ListObjectId
         }
     }
 
+    /**
+     * @param $property_name
+     * @param $val
+     */
     public function __set($property_name, $val)
     {
         $this->$property_name = $val;

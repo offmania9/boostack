@@ -10,12 +10,30 @@
  */
 class UserList extends BaseList {
 
+    /**
+     * @var null|PDO
+     */
     protected $pdo = null;
+    /**
+     * @var array|null
+     */
     protected $items = null;
+    /**
+     * @var array|null
+     */
     protected $objects = null;
+    /**
+     * @var
+     */
     protected $baseClassName = User::class;
 
+    /**
+     * @var null
+     */
     protected $mainTablename = null;
+    /**
+     * @var array
+     */
     protected $otherTablenames = array();
 
     /**

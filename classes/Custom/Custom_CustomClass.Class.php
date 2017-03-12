@@ -10,8 +10,14 @@
  */
 class Custom_CustomClass
 {
+    /**
+     * @var
+     */
     private $customvar;
 
+    /**
+     * Custom_CustomClass constructor.
+     */
     public function __construct()
     {
 

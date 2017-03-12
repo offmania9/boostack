@@ -11,15 +11,31 @@
 class Database_PDO
 {
 
+    /**
+     * @var null
+     */
     private static $instance = null;
 
 
+    /**
+     * Database_PDO constructor.
+     */
     private function __construct()
     {}
 
+    /**
+     *
+     */
     private function __clone()
     {}
 
+    /**
+     * @param null $host
+     * @param null $db
+     * @param null $username
+     * @param null $password
+     * @return null|PDO
+     */
     public static function getInstance($host = null, $db = null, $username = null, $password = null)
     {
         try {

@@ -10,9 +10,18 @@
  */
 class Language {
 
+    /**
+     *
+     */
     const LANGUAGE_FILES_PATH = "lang/";
+    /**
+     *
+     */
     const LANGUAGE_FILES_EXTENSION = ".inc.json";
 
+    /**
+     * @return array|null|string
+     */
     public static function getLanguage() {
         global $objSession;
         $defaultLanguage = Config::get("language_default");
@@ -38,6 +47,9 @@ class Language {
         return $defaultLanguage;
     }
 
+    /**
+     * @param $lang
+     */
     public static function setSessionLanguage($lang) {
         global $objSession;
         Config::constraint("session_on");
@@ -45,6 +57,11 @@ class Language {
         $objSession->SESS_LANGUAGE = $lang;
     }
 
+    /**
+     * @param $lang
+     * @return string
+     * @throws Exception
+     */
     public static function findLanguageFile($lang) {
         $filePath = ROOTPATH.self::LANGUAGE_FILES_PATH.$lang.self::LANGUAGE_FILES_EXTENSION;
         if(is_file($filePath)) {
@@ -53,6 +70,10 @@ class Language {
         throw new Exception("Language file ".$filePath." not found");
     }
 
+    /**
+     * @param $file
+     * @return mixed
+     */
     public static function readAndDecodeLanguageFile($file) {
         $jsonFileContent = file_get_contents($file);
         $decodedFileContent = json_decode($jsonFileContent, true);

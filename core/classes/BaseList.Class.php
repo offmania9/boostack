@@ -10,17 +10,38 @@
  */
 abstract class BaseList implements IteratorAggregate, JsonSerializable {
 
+    /**
+     * @var
+     */
     protected $items;
+    /**
+     * @var
+     */
     protected $pdo;
+    /**
+     * @var
+     */
     protected $baseClassName;
+    /**
+     * @var
+     */
     protected $baseClassTablename;
 
     /** List items object class */
     const BASE_CLASS = "";
 
+    /**
+     *
+     */
     const ORDER_ASC = "ASC";
+    /**
+     *
+     */
     const ORDER_DESC = "DESC";
 
+    /**
+     *
+     */
     protected function init() {
         $this->pdo = Database_PDO::getInstance();
         $this->items = [];
@@ -37,22 +58,37 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable {
         return new ArrayIterator($this->items);
     }
 
+    /**
+     * @return mixed
+     */
     public function getItemsArray() {
         return $this->items;
     }
 
+    /**
+     * @return int
+     */
     public function size() {
         return count($this->items);
     }
 
+    /**
+     * @return bool
+     */
     public function isEmpty() {
         return count($this->items) == 0;
     }
 
+    /**
+     * @param $element
+     */
     public function add($element) {
         $this->items[] = $element;
     }
 
+    /**
+     * @return mixed
+     */
     public function toArray() {
         return $this->items;
     }
@@ -170,15 +206,28 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable {
         }
     }
 
+    /**
+     * @param $key
+     * @return bool
+     */
     public function haskey($key) {
         return array_key_exists($key,$this->items);
     }
 
+    /**
+     * @param $key
+     * @param bool $shift
+     * @return bool
+     */
     protected function remove($key, $shift = true) {
         // TODO
         return true;
     }
 
+    /**
+     * @param $key
+     * @return mixed
+     */
     public function get($key) {
         return $this->items[$key];
     }
@@ -196,6 +245,9 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable {
         }
     }
 
+    /**
+     * @return int
+     */
     public function loadAll() {
         try {
             $sql = "SELECT * FROM " . $this->baseClassTablename;

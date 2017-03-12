@@ -10,15 +10,28 @@
  */
 require ROOTPATH .'vendor/autoload.php';
 //use Mailgun\Mailgun;
+
 class Email_Mailgun extends Email_Basic {
 
+    /**
+     * @var string
+     */
     private $key = "YOUR-API-KEY";
+    /**
+     * @var string
+     */
     private $domain = "YOUR-DOMAIN";
 
+    /**
+     * @param $path
+     */
     public function addAttachmentPath($path) {
         $this->attachment = array_merge($this->attachment, array($path));
     }
 
+    /**
+     * @return bool
+     */
     public function send(){
         $mgClient = new Mailgun($this->key);
         $domain = $this->domain;

@@ -12,17 +12,32 @@
 class Session_CSRF extends Session_HTTP
 {
 
+    /**
+     * @var string
+     */
     private $CSRFDefaultKey = "BCSRFT";
 
+    /**
+     * @var int
+     */
     private $CSRFRandomStringLength = 32;
 
+    /**
+     * @var bool
+     */
     private $newTokenGeneration = false;
 
+    /**
+     * @return string
+     */
     public function CSRFRenderHiddenField()
     {
         return "<input type=\"hidden\" name=\"" . $this->CSRFDefaultKey. "\" id=\"" . $this->CSRFDefaultKey . "\"  class=\"CSRFcheck\" value=\"" . self::CSRFTokenGenerator() . "\"/>";
     }
 
+    /**
+     * @return string
+     */
     public function CSRFTokenGenerator()
     {
         $key = $this->CSRFDefaultKey;
@@ -31,11 +46,22 @@ class Session_CSRF extends Session_HTTP
         return $token;
     }
 
+    /**
+     * @return string
+     */
     protected static function getRequestInfo()
     {
         return sha1(Utils::sanitizeInput(Utils::getIpAddress() . Utils::getUserAgent()));
     }
 
+    /**
+     * @param $postArray
+     * @param null $timespan
+     * @param bool $oneTimeToken
+     * @param bool $throwException
+     * @return bool
+     * @throws Exception
+     */
     protected function CSRFCheckTokenValidity($postArray, $timespan = null, $oneTimeToken = false, $throwException = true)
     {
         $key = $this->CSRFDefaultKey; // get token value from dbsession
@@ -83,6 +109,9 @@ class Session_CSRF extends Session_HTTP
         return true;
     }
 
+    /**
+     * @return null|string
+     */
     public function CSRCTokenInvalidation(){
         $res = NULL;
         $key = $this->CSRFDefaultKey;
@@ -93,6 +122,14 @@ class Session_CSRF extends Session_HTTP
         return $res;
     }
 
+    /**
+     * @param $postArray
+     * @param null $timespan
+     * @param bool $oneTimeToken
+     * @param bool $throwException
+     * @return bool
+     * @throws Exception
+     */
     public function CSRFCheckValidity($postArray, $timespan = null, $oneTimeToken = false, $throwException = true){
         try {
             return $this->CSRFCheckTokenValidity($postArray, $timespan, $oneTimeToken, $throwException);

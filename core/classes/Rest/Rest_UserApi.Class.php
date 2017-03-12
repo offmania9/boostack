@@ -9,12 +9,24 @@
  * @version 3.0
  */
 require_once 'classes/Rest/Rest_Api_Abstract.Class.php';
+
 class Rest_UserApi extends Rest_Api_Abstract
 {
-    private $privateKey = "iuRJ-8hcN-nXXc-sT3f"; 
-    
+    /**
+     * @var string
+     */
+    private $privateKey = "iuRJ-8hcN-nXXc-sT3f";
+
+    /**
+     * @var string
+     */
     private $hashType = "sha256";
-    
+
+    /**
+     * Rest_UserApi constructor.
+     * @param $request
+     * @param $origin
+     */
     public function __construct($request, $origin) {
         parent::__construct($request);
     }
@@ -39,8 +51,12 @@ class Rest_UserApi extends Rest_Api_Abstract
 //            return "Only accepts GET requests";
 //        }
 //     }
-	
-	 protected function authenticate($getstr) {
+
+    /**
+     * @param $getstr
+     * @return string
+     */
+    protected function authenticate($getstr) {
         if ($this->method == 'GET') {
 			$authid = $getstr[0];
 			$token = $getstr[1];
@@ -52,8 +68,12 @@ class Rest_UserApi extends Rest_Api_Abstract
             return "Only accepts GET requests";
         }
      }
-     
-     protected function tokenGenerator($authid) {
+
+    /**
+     * @param $authid
+     * @return string
+     */
+    protected function tokenGenerator($authid) {
          return base64_encode(hash_hmac($this->hashType, $authid, $this->privateKey));
      }
      

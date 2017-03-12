@@ -20,7 +20,7 @@ $config["project_mission"] = "Boostack.com - Improve your development and build 
 
 // global Html meta tags
 $config["viewport"] = "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0";
-$config["site_title"] = "Boostack - a full stack web layer for PHP";
+$config["site_title"] = "Boostack - a full stack Framework for PHP";
 $config["site_keywords"] = "boostack, php, framework, website, productive, simplicity, seo, secure, mysql, open-source"; // comma separated
 $config["site_description"] = "Improve your development and build a modern website in minutes";
 $config["site_author"] = "stefano spagnolo";
@@ -35,8 +35,11 @@ $config["html_lang"] = "en";
 
 // Facebook Metatags. OpenGraph
 $config["facebookMetaTag"] = TRUE; // enable or disable Facebook meta tags
-$config["og_type"] = "product";
-$config["og_title"] = "Boostack.com - Improve your development and build a modern website in minutes";
+$config["og_type"] = "website";
+$config["og_title"] = $config["site_title"];
+$config["og_url"] = $config['url'];
+$config["og_image"] = $config['url'].$config["url_logo_full"];
+$config["og_description"] = $config["site_description"];
 $config["fb_app_id"] = "";
 $config["fb_app_secret"] = "";
 $config["fb_admins"] = "";
@@ -48,12 +51,10 @@ $config["gplus"] = "https://plus.google.com/+BoostackFramework/";
 // css & js
 $config["default_js_files"] = array("lib/require.js","helpers.js","init.js");
 $config["default_ie_js_files"] = array("lib/html5shiv.js","lib/respond.js");
-$config["default_css_files"] = array("lib/bootstrap.css","lib/animate.css","style.css",/*"custom.css"*/);
+$config["default_css_files"] = array("lib/bootstrap.css","lib/animate.css","style.css");/*,"custom.css"*/
 
-$_MONTHS = array("","Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre");
 CONST PRIVILEGE_SYSTEM = 0;
 CONST PRIVILEGE_SUPERADMIN = 1;
 CONST PRIVILEGE_ADMIN = 2;
 CONST PRIVILEGE_USER = 3;
-
 ?>
