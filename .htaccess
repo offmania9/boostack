@@ -99,6 +99,9 @@ RewriteCond %{QUERY_STRING} _REQUEST(=|[|\%[0-9A-Z]{0,2})[OR]
 
 # Redirect all blocked request to error page
 RewriteRule ^(.*)$ error.php [F,L]
+
+RewriteCond %{HTTP_USER_AGENT} libwww-perl.*
+RewriteRule .* ? [F,L]
 </IfModule>
 
 <IfModule mod_gzip.c>
@@ -201,6 +204,8 @@ RewriteRule ^(.*)$ error.php [F,L]
        Header set Cache-Control "max-age=0, no-cache, no-store, must-revalidate"
        Header set Pragma "no-cache"
        Header set Expires "Wed, 11 Jan 1984 05:00:00 GMT"
+       BrowserMatch MSIE ie
+       Header set X-UA-Compatible "IE=Edge,chrome=1" env=ie
     </filesMatch>
 
     Header unset ETag
