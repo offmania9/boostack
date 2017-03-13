@@ -37,7 +37,7 @@ class UserList extends BaseList {
     protected $otherTablenames = array();
 
     /**
-     * Crea una nuovai stanza della classe, salvando le tabelle del database associate con le relative classi passate come parametro.
+     * Crea una nuova stanza della classe, salvando le tabelle del database associate con le relative classi passate come parametro.
      */
     public function __construct($classes = array(User_Entity::class)) {
         $this->pdo = Database_PDO::getInstance();

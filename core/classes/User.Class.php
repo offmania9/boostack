@@ -43,7 +43,7 @@ class User implements JsonSerializable {
             if(empty($object)) {
                 $object = new $class();
                 foreach($object->getAttributes() as $attribute) {
-                    $this->attributes[$attribute] = $object;
+                    $this->attributes[$attribute] = $class;
                 }
             }
         }
@@ -128,7 +128,8 @@ class User implements JsonSerializable {
     public function __set($property, $value) {
         if(!isset($this->attributes[$property]))
             throw new Exception("Field $property not found");
-        $objectInstance = $this->attributes[$property];
+        $className = $this->attributes[$property];
+        $objectInstance = $this->objects[$className];
         if(!empty($this->id) && empty($objectInstance->id)) {
             $objectInstance->load($this->id);
         }
@@ -143,7 +144,8 @@ class User implements JsonSerializable {
         if($property == "id") return $this->id;
         if(!isset($this->attributes[$property]))
             throw new Exception("Field $property not found");
-        $objectInstance = $this->attributes[$property];
+        $className = $this->attributes[$property];
+        $objectInstance = $this->objects[$className];
         if(!empty($this->id) && empty($objectInstance->id)) {
             $objectInstance->load($this->id);
         }
