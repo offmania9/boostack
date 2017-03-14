@@ -309,6 +309,16 @@ class Validator {
     }
 
     /**
+     * @param $filename
+     * @return int
+     */
+    public static function filename($filename) {
+        //$regex = '/^(([a-zA-Z]:|\\)\\)?(((\.)|(\.\.)|([^\\/:*?"|<>. ](([^\\/:*?"|<>. ])|([^\\/:*?"|<>]*[^\\/:*?"|<>. ]))?))\\)*[^\\/:*?"|<>. ](([^\\/:*?"|<>. ])|([^\\/:*?"|<>]*[^\\/:*?"|<>. ]))?$/i';  OWASP
+        $regex = '/^[\w-\d]{1}[\w-\d\s\.]*(\.){1}(\w)+$/i';
+        return preg_match($regex,$filename);
+    }
+
+    /**
      * @param $input
      * @param $array
      * @return bool
