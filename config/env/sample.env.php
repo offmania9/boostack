@@ -83,12 +83,13 @@ $config["mail_noreply"] = "no-reply@boostack.com";
 $config["mail_maintenance"] = "mntn@boostack.com";
 
 /**
- * IMAGES
+ * FILES AND IMAGES
  */
-$config["default_images_path"] = "img/";
 $config["max_upload_image_size"] = 2097152; // 2 MB
-$config["max_upload_namefile_length"] = 100;
-$config["max_upload_generalfile_size"] = 4194304; // 4 MB
+$config["max_upload_filename_length"] = 100;
+$config["max_upload_filesize"] = 4194304; // 4 MB
+$config["allowed_file_upload_types"] = array(/* TODO */);
+$config["allowed_file_upload_extensions"] = array(/* TODO */);
 
 /**
  * DATES AND TIMES
