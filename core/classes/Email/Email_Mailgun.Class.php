@@ -9,18 +9,9 @@
  * @version 3.0
  */
 require ROOTPATH .'vendor/autoload.php';
-//use Mailgun\Mailgun;
+use Mailgun\Mailgun;
 
 class Email_Mailgun extends Email_Basic {
-
-    /**
-     * @var string
-     */
-    private $key = "YOUR-API-KEY";
-    /**
-     * @var string
-     */
-    private $domain = "YOUR-DOMAIN";
 
     /**
      * @param $path
@@ -33,8 +24,8 @@ class Email_Mailgun extends Email_Basic {
      * @return bool
      */
     public function send(){
-        $mgClient = new Mailgun($this->key);
-        $domain = $this->domain;
+        $mgClient = new Mailgun(Config::get("mailgun_key"));
+        $domain = Config::get("mailgun_domain");
         $harr = array(
             'from'    => $this->from_name.' <'.$this->from_mail.'>',
             'subject' => $this->subject,

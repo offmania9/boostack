@@ -21,11 +21,13 @@ class Config {
 
     /**
      * @param $configKey
-     * @return string
+     * @return mixed
+     * @throws Exception_Misconfiguration
      */
     public static function get($configKey)
     {
-        return isset(self::$configs[$configKey]) ? self::$configs[$configKey] : "";
+        if(isset(self::$configs[$configKey])) return self::$configs[$configKey];
+        throw new Exception_Misconfiguration("Configuration attribute '".$configKey."' not found'");
     }
 
     /**
@@ -37,7 +39,7 @@ class Config {
     public static function constraint($configKey, $configvalue = true)
     {
         if(isset(self::$configs[$configKey]) && self::$configs[$configKey] == $configvalue) return true;
-            throw new Exception_Misconfiguration("You must enable '".$configKey."' configuration attribute");
+        throw new Exception_Misconfiguration("You must enable '".$configKey."' configuration attribute");
     }
 
 }
