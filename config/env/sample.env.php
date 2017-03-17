@@ -8,6 +8,7 @@ define('ROOTPATH', $_SERVER['DOCUMENT_ROOT'] . "[rootpath]");
 $config['protocol'] = isSecureProtocol() ? 'https://' : 'http://';
 $config['url'] = $config['protocol']."[url]";
 $config['developmentMode'] = TRUE;
+$config['setupFolderExists'] = FALSE;
 
 /**
  * DATABASE
@@ -94,8 +95,8 @@ $config["allowed_file_upload_extensions"] = array(/* TODO */);
 /**
  * DATES AND TIMES
  */
+$config["default_datetime_format"] = "d-m-Y H:i:s";
 date_default_timezone_set('UTC');
-$CURRENT_DATETIME_FORMAT = "d-m-Y H:i:s";
 
 /**
  * SECURITY

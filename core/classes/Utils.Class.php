@@ -293,12 +293,11 @@ class Utils
     public static function timestampToDate($timestamp)
     {
         if ($timestamp > 0) {
-            global $CURRENT_DATETIME_FORMAT;
-            //return date($CURRENT_DATETIME_FORMAT, $timestamp);
+            //return date(Config::get("default_datetime_format"), $timestamp);
             $date = new DateTime();
             $date->setTimestamp($timestamp);
             $date->setTimezone(new DateTimeZone('Europe/Rome'));
-            return $date->format($CURRENT_DATETIME_FORMAT);
+            return $date->format(Config::get("default_datetime_format"));
         }
     }
 
