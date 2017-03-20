@@ -1,0 +1,2 @@
+User-agent: *
+Sitemap: https://www.boostack.com/sitemap.xml
