@@ -36,7 +36,6 @@ ErrorDocument 503 /boostack/maintenance.php
 #ErrorDocument 500 https://boostack.com/error.php?code=500
 #ErrorDocument 503 https://boostack.com/maintenance.php
 
-
 ###### RULES
 # Block access to "hidden" directories whose names begin with a period
 <IfModule mod_rewrite.c>
