@@ -275,7 +275,6 @@ footer {
 
 @media screen and (max-width: 568px) {
   section.disclaimer h2 {
-    margin-bottom: 1em;
     padding: 10px;
     font-size: 2.8em;
     line-height: 50px; }
@@ -283,6 +282,9 @@ footer {
       font-size: 0.5em;
       padding-bottom: 50px;
       line-height: 10px; }
+
+  section.disclaimer .download {
+    margin-top: 25px; }
 
   header ul {
     padding: 0px; }
