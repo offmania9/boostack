@@ -18,10 +18,6 @@ AddDefaultCharset utf-8
 # set the server administrator email
 SetEnv SERVER_ADMIN info@boostack.com
 
-#from boostack.com to www.boostack.com
-#RewriteCond %{HTTP_HOST} ^http://www.boostack.com [NC]
-#RewriteRule ^(.*)$ boostack.com/$1 [L,R=301]
-
 #AuthType Basic
 #AuthName "Authentication Required"
 #AuthUserFile /var/www/html/boostack/.htpasswd
@@ -48,12 +44,25 @@ ErrorDocument 503 /boostack/maintenance.php
 Options +FollowSymlinks -MultiViews
 
 RewriteEngine on
+#--------- redirect to hhtps
+#First rewrite any request to the wrong domain to use the correct one (here www.)
+#RewriteCond %{HTTP_HOST} !^www\.
+#RewriteRule ^(.*)$ https://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+#Now, rewrite to HTTPS:
+#RewriteCond %{HTTPS} off
+#RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+#--------- end redirect to hhtps
+
+#from boostack.com to www.boostack.com
+#RewriteCond %{HTTP_HOST} ^http://www.boostack.com [NC]
+#RewriteRule ^(.*)$ boostack.com/$1 [L,R=301]
+
 #---------
 RewriteCond %{DOCUMENT_ROOT}/boostack/maintenance.php -f
 RewriteCond %{DOCUMENT_ROOT}/boostack/maintenance.enable -f
 RewriteCond %{SCRIPT_FILENAME} !maintenance.php
 RewriteRule ^.*$ /maintenance.php [R=503,L]
-#----------------
+#----------
 # Block access to "hidden" directories whose names begin with a period
     RewriteCond %{SCRIPT_FILENAME} -d
     RewriteCond %{SCRIPT_FILENAME} -f
@@ -65,9 +74,10 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_URI} (.+)/$
 RewriteRule ^ %1 [R=301,L]
 # end Remove trailing slash
+
 # multilanguage in url es. boostack.com/en/page
-RewriteRule ^(..)/(.*)$  $2?lang=$1 [L]
-RewriteRule ^(..)$ index.php?lang=$1 [L]
+#RewriteRule ^(..)/(.*)$  $2?lang=$1 [L]
+#RewriteRule ^(..)$ index.php?lang=$1 [L]
 # end multilanguage
 RewriteRule ^home$ index.php [L]
 RewriteRule ^setup$ /setup/index.php [L]
