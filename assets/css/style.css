@@ -274,11 +274,12 @@ footer {
     background-color: #0d2456 \9; }
 
 @media screen and (max-width: 568px) {
-  section.disclaimer h1 {
+  section.disclaimer h2 {
+    margin-bottom: 1em;
     padding: 10px;
     font-size: 2.8em;
     line-height: 50px; }
-    section.disclaimer h1 > .smaller {
+    section.disclaimer h2 > .smaller {
       font-size: 0.5em;
       padding-bottom: 50px;
       line-height: 10px; }
@@ -380,5 +381,3 @@ footer {
   @media screen and (max-width: 640px) {
     .cookie-bar #btn-close {
       right: 1rem; } }
-
-/*# sourceMappingURL=style.css.map */
