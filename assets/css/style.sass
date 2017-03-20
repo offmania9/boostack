@@ -67,8 +67,6 @@ h1, h2
   padding: 0
 
 h1, h2, h3, h4, blockquote, q
-  font-family: "open sans", arial, sans-serif
-  font-weight: 300
   color: #333
 
 a
@@ -78,13 +76,6 @@ a
 
 hr
   border-top: 1px solid #E2E2E2
-
-ul
-//list-style: none
-
-li
-//padding: 5px
-//padding-left: 30px
 
 .header
   margin-top: 20px
@@ -105,11 +96,16 @@ header
 .header h1
   padding-top: 5px
 
+.header h1 .projectName
+  margin-left: 10px
+  vertical-align: middle
+
 header li
   display: inline-block
   padding: 10px
   border-radius: 4px
   font-size: 16px
+  font-weight: 300
   &.active
     background-color: #f7f7f7
   &:hover
@@ -118,19 +114,24 @@ header li
   a:hover
     text-decoration: none
 
+p
+  font-weight: 300
+b
+  font-weight: 400
 section
   &.disclaimer
-    h1
+    h2
       color: #ffffff
       padding: 60px
       line-height: 60px
       font-size: 3.4em
       text-shadow: 0 2px 4px rgba(0, 0, 0, 0.25)
-    &.sectionTitle h1
+      font-weight: 300
+    &.sectionTitle h2
       padding: 10px
-    h1
+    h2
       .title
-        color: #6f6f6f
+        color: #171616
         text-shadow: 0 2px 4px rgba(251, 247, 255, 0.26)
       > .smaller
         font-size: 35px
@@ -152,7 +153,7 @@ section
     margin-bottom: 50px
     margin-top: 5px
     padding: 15px
-    font-weight: 200
+    font-weight: 300
     color: #000
     background-color: #fff
     border-color: #cccccc
@@ -169,7 +170,7 @@ section
     margin-top: 30px
     p
       font-size: 16px
-    h2
+    h3
       text-align: center
       padding: 5px
       padding-bottom: 15px
@@ -221,6 +222,9 @@ section
       section
         margin: 20px
 
+h5
+  font-weight: 300
+
 footer
   background-color: #f0f0f0
   border-top: 1px solid #E2E2E2
@@ -229,6 +233,7 @@ footer
   padding-bottom: 30px
   .copy
     padding-top: 20px
+    font-weight: 300
 
 .overlay
   position: absolute
@@ -304,3 +309,5 @@ footer
       padding-right: 10px
       &:first-child
         padding-left: 0px
+
+@import "_cookie"

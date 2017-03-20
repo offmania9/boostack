@@ -1,6 +1,6 @@
 {
-    "projectName":"BOOSTACK",
-    "mainDescription":"is a full stack web layer for PHP",
+    "projectName":"Boostack",
+    "mainDescription":"is a full stack <span>Framework</span> for PHP",
     "mission":"Improve your development and build a modern website in minutes",
     "downloadBoostack":"Download Boostack",
     "navigation":{
@@ -19,21 +19,22 @@
         "secure":"Secure"
     },
     "featuresDescriptions":{
-        "fast":"Boostack is a full stack web layer for PHP built for developers<\/b> who need a simple layer to create modern website in minutes.",
-        "freedom":"No framework, no naming conventions, use your own coding and naming<\/b>. Boostack is a minimal layer of code that lets you use your creativity.",
-        "simplicity":"Boostack is a lightweight and flexible layer that provides a robust set of features for web and mobile applications<\/b>.",
-        "seo":"Boostack integrate SEO features<\/b> for meta data: rich snippets, openGraph, internal linking, schema markup, social media and more.",
-        "extensible":"Create your project with Boostack and start coding. Extend all php classes and build quickly<\/b> simple or complex web-based apps.",
-        "secure":"Built on PHP - MySql - HTML5 - CSS3 - JQuery Boostack runs on secure and fast-loading code for optimal performance<\/b>."
+        "fast":"Boostack is a full stack framework for PHP <b>built for developers</b> who need a simple layer to create modern website in minutes.",
+        "freedom":"No naming conventions, <b>use your own coding and naming</b>. Boostack is a minimal layer of code that lets you use your creativity.",
+        "simplicity":"Boostack is a lightweight and flexible framework that provides a robust set of features for <b>web and mobile applications</b>.",
+        "seo":"Boostack <b>integrate SEO features<\/b> for meta data: rich snippets, openGraph, internal linking, schema markup, social media and more.",
+        "extensible":"Create your project with Boostack framework and start coding. Extend all php classes and <b>build quickly</b> simple or complex web-based apps.",
+        "secure":"Built on PHP - MySql - HTML5 - CSS3 - JQuery Boostack runs on secure and fast-loading code for <b>optimal performance</b>."
     },
-    "inclusions":"Simple to configure it. It contains JQuery, JQuery TE, Animate.css and Bootstrap.",
+    "inclusions":"Simple to configure it.",
+    "inclusions2":"It contains JQuery, Animate.css and Bootstrap.",
     "download":{
         "howto":"How to get Boostack",
-        "howtoDescription":"Boostack is available open-source under the MIT<\/a> license.We recommend using the latest version of PHP and Mysql (Boostack allows you to develop even without using Mysql).",
+        "howtoDescription":"Boostack is available open-source under the <a href=\"https://github.com/offmania9/Boostack/blob/master/LICENSE\" target=\"_blank\">MIT</a> license.<br/>We recommend using the latest version of PHP and Mysql (Boostack allows you to develop even without using Mysql).",
         "downloadit":"Download it!",
-        "downloaditDescription":"Option 1: Get the latest official version<\/b>You can download HERE<\/a><\/b> a zipped file of the development version.Option 2: Get the latest development version<\/b>The latest and greatest Boostack version is the one that\u2019s in our Git repository (https:\/\/github.com\/offmania9\/Boostack<\/a>).This is only for experienced users who want to try incoming changes and help identify bugs before an official release.Get it using this shell command, which requires Git: git clone https:\/\/github.com\/offmania9\/Boostack.git<\/code>",
+        "downloaditDescription":"<b>Option 1: Get the latest official version</b><br/>You can download <b><a href=\"https://boostack.com/downloadLatest\">HERE</a></b> a zipped file of the development version.<br/><br/><b>Option 2: Get the latest development version</b><br/>The latest and greatest Boostack version is the one that\u2019s in our Git repository (<a href=\"https://github.com/offmania9/Boostack\" target=\"_blank\">https://github.com/offmania9/Boostack</a>).<br/>This is only for experienced users who want to try incoming changes and help identify bugs before an official release.<br/>Get it using this shell command, which requires Git: <code>git clone https://github.com/offmania9/Boostack.git</code>",
         "after":"After you get it",
-        "afterDescription":"See the Documentation<\/a> for further instructions."
+        "afterDescription":"See the <a href=\"docs/introduction\">Documentation</a> for further instructions."
     },
     "login":{
         "signin":"Sign In",
@@ -48,5 +49,5 @@
         "attention":"Attention!",
         "urlnotfound":"The requested URL was not found on this server."
     },
-    "license":"is licensed under MIT<\/a>."
+    "license":"is licensed under <a href=\"https://github.com/offmania9/Boostack/blob/master/LICENSE\" target=\"_blank\">MIT</a>."
 }

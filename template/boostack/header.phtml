@@ -3,7 +3,8 @@
 		<div class="col-md-4 col-xs-12">
 			<a class="brandlink" href="<?=$boostack->url;?>">
 				<h1>
-					<img alt="" src="<?=$boostack->registerImgFile('boostack_logo_xs2.png');?>" /> <?=$boostack->getLabel("projectName");?>
+					<img alt="" title="<?=$boostack->getLabel("projectName");?>" src="<?=$boostack->registerImgFile('boostack_logo_xs2.png');?>" />
+                    <span class="projectName"><?=$boostack->getLabel("projectName");?></span>
             	</h1>
 			</a>
 		</div>

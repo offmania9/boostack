@@ -16,13 +16,14 @@ $config["url_logo_dark"] = $config["url_assets_img"]."boostack_logo_x210.png";
 $config["sitename"] = "Boostack.com";
 $config["project_name"] = "Boostack";
 $config["project_sitename"] = "Boostack.com";
+$config["project_version"] = "3.0";
 $config["project_mission"] = "Boostack.com - Improve your development and build a modern website in minutes";
 
 // global Html meta tags
 $config["viewport"] = "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0";
 $config["site_title"] = "Boostack - a full stack Framework for PHP";
 $config["site_keywords"] = "boostack, php, framework, website, productive, simplicity, seo, secure, mysql, open-source"; // comma separated
-$config["site_description"] = "Improve your development and build a modern website in minutes";
+$config["site_description"] = "A full stack Framework for PHP. Improve your development and build a modern website in minutes";
 $config["site_author"] = "stefano spagnolo";
 $config["site_shortcuticon"] = $config["url_assets_img"]."favicon.ico";
 $config["appletouchicon_144"] = $config["url_assets_img"]."apple-touch-icon-144-precomposed.png";
@@ -38,7 +39,7 @@ $config["facebookMetaTag"] = TRUE; // enable or disable Facebook meta tags
 $config["og_type"] = "website";
 $config["og_title"] = $config["site_title"];
 $config["og_url"] = $config['url'];
-$config["og_image"] = $config['url'].$config["url_logo_full"];
+$config["og_image"] = $config['url'].$config["url_logo"];
 $config["og_description"] = $config["site_description"];
 $config["fb_app_id"] = "";
 $config["fb_app_secret"] = "";

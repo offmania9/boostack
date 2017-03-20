@@ -53,8 +53,6 @@ h1, h2 {
   padding: 0; }
 
 h1, h2, h3, h4, blockquote, q {
-  font-family: "open sans", arial, sans-serif;
-  font-weight: 300;
   color: #333; }
 
 a {
@@ -84,11 +82,16 @@ header {
 .header h1 {
   padding-top: 5px; }
 
+.header h1 .projectName {
+  margin-left: 10px;
+  vertical-align: middle; }
+
 header li {
   display: inline-block;
   padding: 10px;
   border-radius: 4px;
-  font-size: 16px; }
+  font-size: 16px;
+  font-weight: 300; }
   header li.active {
     background-color: #f7f7f7; }
   header li:hover {
@@ -97,18 +100,25 @@ header li {
   header li a:hover {
     text-decoration: none; }
 
-section.disclaimer h1 {
+p {
+  font-weight: 300; }
+
+b {
+  font-weight: 400; }
+
+section.disclaimer h2 {
   color: #ffffff;
   padding: 60px;
   line-height: 60px;
   font-size: 3.4em;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.25); }
-section.disclaimer.sectionTitle h1 {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+  font-weight: 300; }
+section.disclaimer.sectionTitle h2 {
   padding: 10px; }
-section.disclaimer h1 .title {
-  color: #6f6f6f;
+section.disclaimer h2 .title {
+  color: #171616;
   text-shadow: 0 2px 4px rgba(251, 247, 255, 0.26); }
-section.disclaimer h1 > .smaller {
+section.disclaimer h2 > .smaller {
   font-size: 35px; }
 section.disclaimer .download {
   margin-top: -25px;
@@ -128,7 +138,7 @@ section.features .download {
   margin-bottom: 50px;
   margin-top: 5px;
   padding: 15px;
-  font-weight: 200;
+  font-weight: 300;
   color: #000;
   background-color: #fff;
   border-color: #cccccc;
@@ -145,11 +155,11 @@ section.features {
   margin-top: 30px; }
   section.features p {
     font-size: 16px; }
-  section.features h2 {
+  section.features h3 {
     text-align: center;
     padding: 5px;
     padding-bottom: 15px; }
-    section.features h2 span {
+    section.features h3 span {
       border-bottom: 2px solid #84c441; }
 section.download .description, section.documentation .description {
   padding-bottom: 15px;
@@ -192,6 +202,9 @@ section.documentation .documentationInnerContent p {
 section.documentation .documentation section {
   margin: 20px; }
 
+h5 {
+  font-weight: 300; }
+
 footer {
   background-color: #f0f0f0;
   border-top: 1px solid #E2E2E2;
@@ -199,7 +212,8 @@ footer {
   padding-top: 30px;
   padding-bottom: 30px; }
   footer .copy {
-    padding-top: 20px; }
+    padding-top: 20px;
+    font-weight: 300; }
 
 .overlay {
   position: absolute;
@@ -275,3 +289,96 @@ footer {
     padding-right: 10px; }
     header li:first-child {
       padding-left: 0px; } }
+/*!
+ * / Copyright (c) 2017. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+ * / Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+ * / Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+ * / Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+ * / Vestibulum commodo. Ut rhoncus gravida arcu.
+ * / */
+.cookie-bar {
+  position: fixed;
+  z-index: 998;
+  bottom: 2em;
+  right: 2em;
+  left: 2em;
+  color: #333;
+  text-align: center;
+  -webkit-transition: -webkit-transform 250ms;
+  -moz-transition: -moz-transform 250ms;
+  -ms-transition: -ms-transform 250ms;
+  -o-transition: -o-transform 250ms;
+  transition: transform 250ms; }
+  .cookie-bar > .inner {
+    padding: 1.4em 4.8em;
+    position: relative;
+    background: #f5f5f5;
+    display: inline-block;
+    text-align: left; }
+    @media screen and (max-width: 640px) {
+      .cookie-bar > .inner {
+        padding: 1rem 2.9rem; } }
+
+.clearfix:before, .clearfix:after {
+  content: " ";
+  display: table; }
+
+.cookie-icon {
+  position: absolute;
+  top: 50%;
+  left: 0.95em;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  transform: translateY(-50%);
+  width: 2.75em;
+  padding-top: 2.6875em;
+  height: 0;
+  background-size: 100% 100%;
+  -webkit-background-size: 100% 100%;
+  -moz-background-size: 100% 100%;
+  -o-background-size: 100% 100%;
+  background-size: 100% 100%; }
+
+.cookie-bar .wysiwyg {
+  font-size: 0.8em; }
+
+.wysiwyg a {
+  -webkit-transition: color 150ms;
+  -moz-transition: color 150ms;
+  -ms-transition: color 150ms;
+  -o-transition: color 150ms;
+  transition: color 150ms;
+  text-decoration: underline; }
+
+.cookie-bar #btn-close {
+  position: absolute;
+  right: 1em;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  transform: translateY(-50%);
+  color: #333;
+  -webkit-transition: opacity 150ms;
+  -moz-transition: opacity 150ms;
+  -ms-transition: opacity 150ms;
+  -o-transition: opacity 150ms;
+  transition: opacity 150ms;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  filter: alpha(opacity=100);
+  -moz-opacity: 1;
+  -khtml-opacity: 1;
+  opacity: 1;
+  font-size: 2em;
+  font-weight: 300;
+  height: 3rem; }
+  .cookie-bar #btn-close i {
+    font-size: 160%; }
+  @media screen and (max-width: 640px) {
+    .cookie-bar #btn-close {
+      right: 1rem; } }
+
+/*# sourceMappingURL=style.css.map */
