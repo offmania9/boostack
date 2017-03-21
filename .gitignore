@@ -7,3 +7,5 @@ logs
 !/logs/.htaccess
 vendor
 !/vendor/.htaccess
+/composer.lock
+/assets/css/style.css.map
