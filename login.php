@@ -21,9 +21,9 @@ try {
     if (Request::hasPostParam("btk_usr") && Request::hasPostParam("btk_pwd")) {
         $user = Request::getPostParam("btk_usr");
         $password = Request::getPostParam("btk_pwd");
-        $rememberMe = (Config::get('cookie_on') && Request::getPostParam("rememberme") == '1') ? true : false;
+        $rememberMe = (Config::get('cookie_on') && Request::hasPostParam("rememberme") && Request::getPostParam("rememberme") == '1') ? true : false;
         if (Config::get('csrf_on'))
-            $objSession->CSRFCheckValidity($_POST);
+            $objSession->CSRFCheckValidity(Request::getPostArray());
         $loginResult = Auth::loginByUsernameAndPlainPassword($user, $password, $rememberMe);
         if ($loginResult->hasError()) {
             $errorMessage = $loginResult->getErrorMessage();

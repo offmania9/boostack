@@ -97,6 +97,14 @@ class Request
     }
 
     /**
+     * @return array|string
+     */
+    public static function getPostArray()
+    {
+        return Utils::sanitizeInput(self::$post);
+    }
+
+    /**
      * @param $param
      * @return bool
      */
@@ -113,6 +121,14 @@ class Request
     {
         $rt = RequestType::QUERY;
         return Utils::sanitizeInput(self::get($rt,$param));
+    }
+
+    /**
+     * @return array|string
+     */
+    public static function getQueryArray()
+    {
+        return Utils::sanitizeInput(self::$query);
     }
 
     /**
@@ -135,6 +151,14 @@ class Request
     }
 
     /**
+     * @return array|string
+     */
+    public static function getServerArray()
+    {
+        return Utils::sanitizeInput(self::$server);
+    }
+
+    /**
      * @param $param
      * @return bool
      */
@@ -151,6 +175,14 @@ class Request
     {
         $rt = RequestType::COOKIE;
         return Utils::sanitizeInput(self::get($rt,$param));
+    }
+
+    /**
+     * @return array|string
+     */
+    public static function getCookieArray()
+    {
+        return Utils::sanitizeInput(self::$cookie);
     }
 
     /**
@@ -173,6 +205,14 @@ class Request
     }
 
     /**
+     * @return array|string
+     */
+    public static function getRequestArray()
+    {
+        return Utils::sanitizeInput(self::$request);
+    }
+
+    /**
      * @param $param
      * @return bool
      */
@@ -189,6 +229,14 @@ class Request
     {
         $rt = RequestType::FILES;
         return Utils::sanitizeInput(self::get($rt,$param));
+    }
+
+    /**
+     * @return array|string
+     */
+    public static function getFilesArray()
+    {
+        return Utils::sanitizeInput(self::$files);
     }
 }
 ?>
