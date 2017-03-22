@@ -63,6 +63,11 @@ a {
 hr {
   border-top: 1px solid #E2E2E2; }
 
+pre {
+  font-size: 11px;
+  border: 0;
+  padding: 15px; }
+
 .header {
   margin-top: 20px;
   margin-bottom: 20px; }
@@ -292,6 +297,12 @@ footer {
     padding-right: 10px; }
     header li:first-child {
       padding-left: 0px; } }
+.documentation h3 {
+  margin-top: 50px;
+  margin-bottom: 20px; }
+.documentation .documentationMenu li {
+  margin: 10px 0; }
+
 /*!
  * / Copyright (c) 2017. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
  * / Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
@@ -383,3 +394,5 @@ footer {
   @media screen and (max-width: 640px) {
     .cookie-bar #btn-close {
       right: 1rem; } }
+
+/*# sourceMappingURL=style.css.map */

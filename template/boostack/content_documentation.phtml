@@ -13,48 +13,50 @@
 		<div class="row description">
 			<div class="col-md-3">
 				<ul class="list-unstyled documentationMenu">
-					<li><a href="<?=$boostack->getFriendlyUrl("docs/introduction")?>">Introduction</a>
+                    <li><a href="<?=$boostack->getFriendlyUrl("docs/setup")?>">Setup</a>
+                    <li><a href="<?=$boostack->getFriendlyUrl("docs/directory-structure")?>">Directory structure</a>
+                    <li><a href="<?=$boostack->getFriendlyUrl("docs/controllers")?>">Controllers</a>
 						<!--<ul>
                             <li><a href="<?#$boostack->getFriendlyUrl("docs/introduction")?>">Install</a></li>
                         </ul>--></li>
-					<li><a href="<?=$boostack->getFriendlyUrl("docs/database")?>">Database</a></li>
-					<li><a href="<?=$boostack->getFriendlyUrl("docs/logging")?>">Logging</a></li>
-					<li><a href="<?=$boostack->getFriendlyUrl("docs/users")?>">Users</a></li>
-					<li><a href="<?=$boostack->getFriendlyUrl("docs/sessions")?>">Sessions</a></li>
-					<li><a href="<?=$boostack->getFriendlyUrl("docs/languages")?>">Languages</a></li>
-					<li><a href="<?=$boostack->getFriendlyUrl("docs/emails")?>">Emails</a></li>
-					<li><a href="<?=$boostack->getFriendlyUrl("docs/mobile")?>">Mobile</a></li>
-					<li><a href="<?=$boostack->getFriendlyUrl("docs/upload")?>">Upload</a></li>
-					<li><a href="<?=$boostack->getFriendlyUrl("docs/social")?>">Social</a></li>
-					<li>____</li>
-                    <li><a href="<?=$boostack->getFriendlyUrl("docs/requirements")?>">Requisiti</a>
-                    <li><a href="<?=$boostack->getFriendlyUrl("docs/requirements")?>">Environment</a>
-                    <li><a href="<?=$boostack->getFriendlyUrl("docs/requirements")?>">Sass</a>
-                    <li><a href="<?=$boostack->getFriendlyUrl("docs/requirements")?>">Require JS</a>
-                    <li><a href="<?=$boostack->getFriendlyUrl("docs/requirements")?>">BaseClass & BaseList</a>
-                    <li><a href="<?=$boostack->getFriendlyUrl("docs/requirements")?>">Validator</a>
-                    <li><a href="<?=$boostack->getFriendlyUrl("docs/requirements")?>">Message Bag</a>
+<!--					<li><a href="--><?//=$boostack->getFriendlyUrl("docs/database")?><!--">Database</a></li>-->
+<!--					<li><a href="--><?//=$boostack->getFriendlyUrl("docs/logging")?><!--">Logging</a></li>-->
+<!--					<li><a href="--><?//=$boostack->getFriendlyUrl("docs/users")?><!--">Users</a></li>-->
+<!--					<li><a href="--><?//=$boostack->getFriendlyUrl("docs/sessions")?><!--">Sessions</a></li>-->
+<!--					<li><a href="--><?//=$boostack->getFriendlyUrl("docs/languages")?><!--">Languages</a></li>-->
+<!--					<li><a href="--><?//=$boostack->getFriendlyUrl("docs/emails")?><!--">Emails</a></li>-->
+<!--					<li><a href="--><?//=$boostack->getFriendlyUrl("docs/mobile")?><!--">Mobile</a></li>-->
+<!--					<li><a href="--><?//=$boostack->getFriendlyUrl("docs/upload")?><!--">Upload</a></li>-->
+<!--					<li><a href="--><?//=$boostack->getFriendlyUrl("docs/social")?><!--">Social</a></li>-->
+<!--					<li>____</li>-->
+<!---->
+<!--                    <li><a href="--><?//=$boostack->getFriendlyUrl("docs/requirements")?><!--">Environment</a>-->
+<!--                    <li><a href="--><?//=$boostack->getFriendlyUrl("docs/requirements")?><!--">Sass</a>-->
+<!--                    <li><a href="--><?//=$boostack->getFriendlyUrl("docs/requirements")?><!--">Require JS</a>-->
+<!--                    <li><a href="--><?//=$boostack->getFriendlyUrl("docs/requirements")?><!--">BaseClass & BaseList</a>-->
+<!--                    <li><a href="--><?//=$boostack->getFriendlyUrl("docs/requirements")?><!--">Validator</a>-->
+<!--                    <li><a href="--><?//=$boostack->getFriendlyUrl("docs/requirements")?><!--">Message Bag</a>-->
 				</ul>
 			</div>
 			<div class="col-md-9 documentationInnerContent">
                 <?php
                 switch (Utils::sanitizeInput($_GET["docpath"])) {
-                    case "requirements":
-                        require ("template/boostack/documentation/requirements.phtml");
+                    case "setup":
+                        require ("template/boostack/documentation/setup.phtml");
                         break;
                     case "introduction":
                         {
                             require ("template/boostack/documentation/introduction.phtml");
                             break;
                         }
-                    case "database":
+                    case "directory-structure":
                         {
-                            require ("template/boostack/documentation/database.phtml");
+                            require ("template/boostack/documentation/directory_structure.phtml");
                             break;
                         }
-                    case "logging":
+                    case "controllers":
                         {
-                            require ("template/boostack/documentation/logging.phtml");
+                            require ("template/boostack/documentation/controllers.phtml");
                             break;
                         }
                     case "users":
@@ -94,7 +96,7 @@
                         }
                     default:
                         {
-                            require ("template/boostack/documentation/introduction.phtml");
+                            require ("template/boostack/documentation/setup.phtml");
                             break;
                         }
                 }
