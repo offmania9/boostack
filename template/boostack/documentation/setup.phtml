@@ -1,8 +1,9 @@
-<h3>Server Requirements</h3>
+<h3 id="ServerRequirements">Server Requirements</h3>
 <section>
     <p>General requirements</p>
     <ul>
         <li><code>PHP >= 5.6</code></li>
+        <li><code>Short tag enabled into php.ini (short_open_tag = On)</code></li>
         <li><code>PDO PHP Extension</code></li>
     </ul>
     <p>Apache modules enabled (httpd.conf):</p>
@@ -18,15 +19,15 @@
         </li>
     </ul>
     <p>Virtual host configuration:</p>
-    <pre>   &lt;Directory /var/www/html&gt;
-            Options Indexes FollowSymLinks MultiViews
-            AllowOverride All
-            Order allow,deny
-            allow from all
-        &lt;/Directory&gt;</pre>
+    <pre>&lt;Directory /var/www/html&gt;
+    Options FollowSymLinks MultiViews
+    AllowOverride All
+    Order allow,deny
+    allow from all
+&lt;/Directory&gt;</pre>
 </section>
 
-<h3>Installation</h3>
+<h3 id="Installation">Installation</h3>
 <section>
     <p>Via Composer</p>
     <pre>composer require offmania9/boostack</pre>
@@ -34,25 +35,28 @@
     <a href="https://github.com/offmania9/boostack" target="_blank">https://github.com/offmania9/boostack</a>
 </section>
 
-<h3>Automatic Configuration</h3>
+<h3 id="AutomaticConfiguration">Automatic Configuration</h3>
 <section>
     <p>Go to</p>
     <pre>http://&lt;your_local_path_to_boostack_installation&gt;/setup</pre>
     <p>and begin the automated setup procedure.</p>
-    <p>At first, the setup wil check for the PHP and Apache configurations</p>
-    <img src="<?= $boostack->registerImgFile("boostack_setup_1.png") ?>" class="img-responsive">
+    <p>At first, the setup will check for the PHP and Apache configurations</p>
+    <img src="<?= $boostack->registerImgFile("boostack_setup_1.jpg") ?>" alt="Boostack Setup 1"/>
     <p>Then you will be prompted to insert your environment configuration parameters</p>
-    <img src="<?= $boostack->registerImgFile("boostack_setup_2.png") ?>" class="img-responsive">
-    <p>When the setup procedure is ended, you will see a message that remember you to delete or rename "setup" folder from the project.</p>
-    <img src="<?= $boostack->registerImgFile("boostack_setup_3.png") ?>" class="img-responsive">
+    <img src="<?= $boostack->registerImgFile("boostack_setup_2.jpg") ?>" alt="Boostack Setup 2"/>
+    <p>When the setup procedure is ended, you will see a message that remember you to delete or rename "setup" folder
+        from the project.</p>
+    <img src="<?= $boostack->registerImgFile("boostack_setup_3.jpg") ?>" alt="Boostack Setup 3"/>
 </section>
 
-<h3>Manual Configuration</h3>
-<p>Alternatively to the automatic setup, you can proceed with manual configuration by copying and renaming the file <code>config/env/sample.env.php</code>
+<h3 id="ManualConfiguration">Manual Configuration</h3>
+<p>Alternatively to the automatic setup, you can proceed with manual configuration by copying and renaming the file
+    <code>config/env/sample.env.php</code>
     to <code>config/env/env.php</code> and fill it with your preferred configurations.</p>
 
-<h3>Friendly URLs Configuration</h3>
-<p>Boostack includes a <code>.htaccess</code> file that is used to provide friendly URLs without the file extension .php in the path.</p>
+<h3 id="FriendlyURLsConfiguration">Friendly URLs Configuration</h3>
+<p>Boostack includes a <code>.htaccess</code> file that is used to provide friendly URLs without the file extension .php
+    in the path.</p>
 <p>There are the one served by default:</p>
 <pre>RewriteRule ^home$ index.php [L]
 RewriteRule ^setup$ /setup/index.php [L]
@@ -64,17 +68,19 @@ RewriteRule ^registration$ registration.php [L]
 RewriteRule ^logout$ logout.php [L]
 RewriteRule ^api/([^\.]+)$ api.php?request=$1 [L]</pre>
 
-<h3>Accessing Configuration Values</h3>
-<p>You may easily access your configuration values using the <code>Config</code> class from anywhere in your application.</p>
+<h3 id="AccessingConfigurationValues">Accessing Configuration Values</h3>
+<p>You may easily access your configuration values using the <code>Config</code> class from anywhere in your
+    application.</p>
 <pre>Config::get("configuration_key")</pre>
 
-<h3>Development Mode</h3>
+<h3 id="DevelopmentMode">Development Mode</h3>
 <p>
-    When your application is in development mode, errors and exceptions will be displayed for all requests into your application.
+    When your application is in development mode, errors and exceptions will be displayed for all requests into your
+    application.
     This makes it easy to debug your application while coding.
     You can edit the development mode configuration in the <code>config/env/env.php</code> file.
     To check if the application is in development mode, you can use:
-    <pre>
+<pre>
     if(Config::get('developmentMode')) {
         ...
     }

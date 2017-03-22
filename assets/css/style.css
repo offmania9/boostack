@@ -1,3 +1,12 @@
+/**
+ * Boostack: custom.css
+ * ========================================================================
+ * Copyright 2014-2017 Spagnolo Stefano
+ * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
+ * ========================================================================
+ * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
+ * @version 3.0
+ */
 /* lato-100 - latin */
 @font-face {
   font-family: "Lato";
@@ -186,6 +195,11 @@ section.download a {
   section.download a:active, section.download a:visited, section.download a:hover {
     color: #84c441;
     text-decoration: underline; }
+section.documentation h3 {
+  margin-bottom: 20px;
+  margin-top: 50px; }
+  section.documentation h3:first-child {
+    margin-top: 0px; }
 section.documentation a {
   color: #84c441;
   text-decoration: underline; }
@@ -200,12 +214,20 @@ section.documentation .documentationMenu a {
     color: #72a938;
     font-weight: bold;
     text-decoration: none; }
+section.documentation .documentationMenu li {
+  padding-bottom: 3px; }
+section.documentation .documentationMenu li ul li a {
+  font-weight: 400; }
 section.documentation .documentationInnerContent h2 {
   padding-bottom: 20px; }
 section.documentation .documentationInnerContent p {
   padding: 0px; }
+section.documentation .documentationInnerContent li {
+  padding-bottom: 10px; }
 section.documentation .documentation section {
   margin: 20px; }
+section.documentation .documentation .documentationMenu li {
+  margin: 10px 0; }
 
 h5 {
   font-weight: 300; }
@@ -297,19 +319,6 @@ footer {
     padding-right: 10px; }
     header li:first-child {
       padding-left: 0px; } }
-.documentation h3 {
-  margin-top: 50px;
-  margin-bottom: 20px; }
-.documentation .documentationMenu li {
-  margin: 10px 0; }
-
-/*!
- * / Copyright (c) 2017. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
- * / Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
- * / Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
- * / Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
- * / Vestibulum commodo. Ut rhoncus gravida arcu.
- * / */
 .cookie-bar {
   position: fixed;
   z-index: 998;
@@ -367,8 +376,6 @@ footer {
   text-decoration: underline; }
 
 .cookie-bar #btn-close {
-  position: absolute;
-  right: 1em;
   top: 50%;
   -webkit-transform: translateY(-50%);
   -moz-transform: translateY(-50%);
