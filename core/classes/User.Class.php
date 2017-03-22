@@ -76,14 +76,14 @@ class User implements JsonSerializable {
      * Se è presente l'id, invoca la save delle sotto-istanze.
      * Altrimenti, salva la prima istanza ottenento l'id auto-incrementale e successivamente salva le altre istanze con lo stesso id.
      */
-    public function save() {
+    public function save($forcedID = null) {
         try {
             $this->pdo->beginTransaction();
             if(empty($this->id)) {
                 $first = true;
                 foreach($this->objects as $object) {
                     if($first) {
-                        $object->save();
+                        $object->save($forcedID);
                         $first = false;
                         $this->id = $object->id;
                     } else {
