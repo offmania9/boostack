@@ -47,7 +47,7 @@
                                     name="btk_pwd" placeholder="Password" value="" />
                             </div>
 
-                            <? if(Auth::haveToShowCaptcha()): ?>
+                            <?php if(Auth::haveToShowCaptcha()): ?>
                                 <script type="text/javascript" src="https://www.google.com/recaptcha/api.js"></script>
                                 <script>
                                     var captchaResult = false;
@@ -60,7 +60,7 @@
                                          data-sitekey="<?= Config::get("reCaptcha_public") ?>"></div>
                                 </div>
                                 <br>
-                            <? endif; ?>
+                            <?php endif; ?>
 
                             <p id="form-validation-error" class="text-danger"></p>
 
