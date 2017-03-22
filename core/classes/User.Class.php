@@ -111,9 +111,13 @@ class User implements JsonSerializable {
      */
     public function delete() {
         try {
+            if(empty($this->id)) throw new Exception("Instance must have 'id' field to be deleted");
             $this->pdo->beginTransaction();
-            foreach($this->objects as $object) {
-                $object->delete();
+            foreach($this->objects as $objectInstance) {
+                if(empty($objectInstance->id) && $objectInstance->exist($this->id)) {
+                    $objectInstance->load($this->id);
+                }
+                $objectInstance->delete();
             }
             $this->pdo->commit();
         } catch(Exception $e) {
