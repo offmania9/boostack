@@ -204,6 +204,15 @@ class User implements JsonSerializable {
     }
 
     /**
+     * @param $email
+     * @param bool $throwException
+     * @return bool
+     */
+    public static function getUserIDByEmail($email, $throwException = true) {
+        return User_Entity::existsByUsername($email, $throwException);
+    }
+
+    /**
      * @param $cookieValue
      * @return bool
      */
