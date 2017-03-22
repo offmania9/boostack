@@ -30,9 +30,9 @@
   "inclusions2":"It contains JQuery, Animate.css and Bootstrap.",
   "download":{
     "howto":"How to get Boostack",
-    "howtoDescription":"Boostack is available open-source under the <a href=\"https://github.com/offmania9/Boostack/blob/master/LICENSE\" target=\"_blank\" title=\"Boostack github\">MIT</a> license.<br/>We recommend using the latest version of PHP and Mysql (Boostack allows you to develop even without using Mysql).",
+    "howtoDescription":"Boostack is available open-source under the <a href=\"https://github.com/offmania9/boostack/blob/master/LICENSE\" target=\"_blank\" title=\"Boostack github\">MIT</a> license.<br/>We recommend using the latest version of PHP and Mysql (Boostack allows you to develop even without using Mysql).",
     "downloadit":"Download it!",
-    "downloaditDescription":"<b>Option 1: Get the latest official version</b><br/>You can download <b><a href=\"https://boostack.com/downloadLatest\" title=\"Download Boostack\">HERE</a></b> a zipped file of the development version.<br/><br/><b>Option 2: Get the latest development version</b><br/>The latest and greatest Boostack version is the one that\u2019s in our Git repository (<a href=\"https://github.com/offmania9/Boostack\" target=\"_blank\">https://github.com/offmania9/Boostack</a>).<br/>This is only for experienced users who want to try incoming changes and help identify bugs before an official release.<br/>Get it using this shell command, which requires Git: <code>git clone https://github.com/offmania9/Boostack.git</code>",
+    "downloaditDescription":"<b>Option 1: Get the latest official version</b><br/>You can download <b><a href=\"https://boostack.com/downloadLatest\" title=\"Download Boostack\">HERE</a></b> a zipped file of the development version.<br/><br/><b>Option 2: Get the latest development version</b><br/>The latest and greatest Boostack version is the one that\u2019s in our Git repository (<a href=\"https://github.com/offmania9/boostack\" target=\"_blank\">https://github.com/offmania9/boostack</a>).<br/>This is only for experienced users who want to try incoming changes and help identify bugs before an official release.<br/>Get it using this shell command, which requires Git: <code>git clone https://github.com/offmania9/boostack.git</code>",
     "after":"After you get it",
     "afterDescription":"See the <a href=\"docs/introduction\" title=\"Boostack Documentation\">Documentation</a> for further instructions."
   },
@@ -49,5 +49,5 @@
     "attention":"Attention!",
     "urlnotfound":"The requested URL was not found on this server."
   },
-  "license":"is licensed under <a href=\"https://github.com/offmania9/Boostack/blob/master/LICENSE\" target=\"_blank\" title=\"Boostack github\">MIT</a>."
+  "license":"is licensed under <a href=\"https://github.com/offmania9/boostack/blob/master/LICENSE\" target=\"_blank\" title=\"Boostack github\">MIT</a>."
 }

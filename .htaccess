@@ -87,6 +87,7 @@ RewriteRule ^login$ login.php [L]
 RewriteRule ^registration$ registration.php [L]
 RewriteRule ^logout$ logout.php [L]
 RewriteRule ^api/([^\.]+)$ api.php?request=$1 [L]
+RewriteRule ^downloadLatest$ downloadlatest.php [L]
 
 # proc/self/environ? no!
 RewriteCond %{QUERY_STRING} proc/self/environ [OR]
