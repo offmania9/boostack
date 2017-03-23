@@ -49,12 +49,12 @@ function checkDB(){
         cache: false,
         complete: function (response, status) {
             if(response.responseText=="success") {
-                $("#btnCheckDB").text("Test Database: Success");
-                $("#btnCheckDB").attr("class", "btn btn-success btn-sm");
+                $("#dbStatus").text(" Success");
+                $("#dbStatusIcon").attr("class", "glyphicon glyphicon-ok");
             }
             else {
-                $("#btnCheckDB").text("Test Database: Failure");
-                $("#btnCheckDB").attr("class", "btn btn-danger btn-sm");
+                $("#dbStatus").text(" Failure");
+                $("#dbStatusIcon").attr("class", "glyphicon glyphicon-remove");
             }
         }
     })
