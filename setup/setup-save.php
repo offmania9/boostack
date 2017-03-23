@@ -16,16 +16,21 @@ $env_parameters = [
     "current_environment" => "local",
     "rootpath" => $input['rootpath'],
     "url" => rtrim($input['url'], "/") . '/',
+    'protocol' => $input['protocol'],
     "database_on" => $input['db-active'],
+    "driver_pdo" => $input["driver-pdo"],
     "db_host" => $input['db-host'],
     "db_name" => $input['db-name'],
     "db_username" => $input['db-username'],
     "db_password" => $input['db-password'],
     "session_on" => $input['db-session-active'],
+    'csrf_on' => $input['csrf-active'],
     "cookie_on" => $input['db-cookie-active'],
     "cookie_expire" => $input['db-cookie-expired'],
     "cookie_name" => $input['db-cookie-name'],
-    "log_on" => $input['db-log-active']
+    "log_on" => $input['db-log-active'],
+    "lockStrategy_on" => $input["lockStrategy_on"],
+    "lockStrategy_type" => $input["lockStrategy_type"]
 ];
 
 $exampleEnvName = "sample.env.php";
@@ -52,30 +57,38 @@ if ($envContent === FALSE) {
 if ($env_parameters["database_on"]=="true" && $finalSetupMessageError=="") {
     try {
         require_once("../config/env/env.php");
-
         require_once("../core/classes/Utils.Class.php");
-        require_once("../core/classes/Boostack.Class.php");
-        require_once("../core/classes/Exception/Exception_Misconfiguration.Class.php");
-        require_once("../core/classes/Config.Class.php");
-        require_once("../core/classes/Database/Database_PDO.Class.php");
-        require_once("../core/classes/BaseClass.Class.php");
-        require_once("../core/classes/User.Class.php");
-        require_once("../core/classes/User/User_Entity.Class.php");
-        require_once("../core/classes/User/User_Info.Class.php");
-        require_once("../core/classes/User/User_Registration.Class.php");
-        require_once("../core/classes/User/User_Social.Class.php");
-        require_once("../core/classes/LogLevel.Class.php");
-        require_once("../core/classes/FileLogger.Class.php");
+        spl_autoload_register('Utils::autoloadClass');
 
         Config::initConfig();
-        $db0 = new PDO('mysql:host=' . $env_parameters["db_host"] . ';dbname=' . $env_parameters["db_name"], $env_parameters["db_username"], $env_parameters["db_password"], array(
-            PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
-        ));
-        $db0->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        if ($_POST["dump-active"] == "true") {
+            try{
+                $db0 = new PDO('mysql:host=' . $env_parameters["db_host"] . ';dbname=' . $env_parameters["db_name"], $env_parameters["db_username"], $env_parameters["db_password"], array(
+                    PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
+                ));
+                $db0->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $db = Database_PDO::getInstance($env_parameters["db_host"], $env_parameters["db_name"], $env_parameters["db_username"], $env_parameters["db_password"]);
-        $sql = file_get_contents('boostack_dump.sql');
-        $qr = $db->exec($sql);
+                $db = Database_PDO::getInstance($env_parameters["db_host"], $env_parameters["db_name"], $env_parameters["db_username"], $env_parameters["db_password"]);
+                $sql = file_get_contents('boostack_dump.sql');
+                $qr = $db->exec($sql);
+            } catch (PDOException $e) {
+                $finalSetupMessageError = "Database Error. Message: " . $e->getMessage();
+                unlink($finalEnvPath);
+            }
+        }
+
+        $users = array();
+        $users[0] = "user@boostack.com";
+        $users[1] = "admin@boostack.com";
+        $users[2] = "superadmin@boostack.com";
+        foreach ($users as $user) {
+            while (User::existsByEmail($user, false)) {
+                $id = User::getUserIDByEmail($user, false);
+                $toDelete = new User();
+                $toDelete->load($id);
+                $toDelete->delete();
+            }
+        }
 
         $u = new User();
         $u->username = "boostack";
@@ -87,7 +100,7 @@ if ($env_parameters["database_on"]=="true" && $finalSetupMessageError=="") {
         $u->first_name = "Boostack";
         $u->company = "Boostack";
         $u->last_name = "System";
-        $u->save();
+        $u->save(1);
 
         $u = new User();
         $u->username = "boostackuser";
@@ -100,7 +113,7 @@ if ($env_parameters["database_on"]=="true" && $finalSetupMessageError=="") {
         $u->first_name = "Boostack";
         $u->company = "Boostack";
         $u->last_name = "User";
-        $u->save();
+        $u->save(2);
 
         $u = new User();
         $u->username = "boostackadmin";
@@ -113,7 +126,7 @@ if ($env_parameters["database_on"]=="true" && $finalSetupMessageError=="") {
         $u->first_name = "Boostack";
         $u->company = "Boostack";
         $u->last_name = "Admin";
-        $u->save();
+        $u->save(3);
 
         $u = new User();
         $u->username = "boostacksuperadmin";
@@ -126,11 +139,7 @@ if ($env_parameters["database_on"]=="true" && $finalSetupMessageError=="") {
         $u->first_name = "Boostack";
         $u->company = "Boostack";
         $u->last_name = "SuperAdmin";
-        $u->save();
-
-    } catch (PDOException $e) {
-        $finalSetupMessageError = "Database Error. Message: " . $e->getMessage();
-        unlink($finalEnvPath);
+        $u->save(4);
     }
      catch (Exception $e2) {
         $finalSetupMessageError = "Error. Message: " . $e2->getMessage();

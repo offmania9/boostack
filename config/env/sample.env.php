@@ -5,7 +5,7 @@
  */
 define('CURRENT_ENVIRONMENT', "[current_environment]");     // 'local' | 'staging' | 'production'
 define('ROOTPATH', $_SERVER['DOCUMENT_ROOT'] . "[rootpath]");
-$config['protocol'] = isSecureProtocol() ? 'https://' : 'http://';
+$config['protocol'] = '[protocol]://';
 $config['url'] = $config['protocol']."[url]";
 $config['developmentMode'] = TRUE;
 $config['setupFolderExists'] = FALSE;
@@ -14,6 +14,7 @@ $config['setupFolderExists'] = FALSE;
  * DATABASE
  */
 $config['database_on'] = [database_on];      // enable or disable Mysql database
+$config['driver_pdo'] = "[driver_pdo]";
 $database['host'] = '[db_host]';
 $database['name'] = '[db_name]';
 $database['username'] = '[db_username]';
@@ -23,7 +24,8 @@ $database['password'] = '[db_password]';
  * SESSION
  */
 $config['session_on'] = [session_on];   // enable or disable Sessions (TRUE need $database_on=TRUE)
-$config['csrf_on'] = TRUE;      // enable or disable CSRF validation (TRUE need $database_on=TRUE AND $session_on=TRUE)
+$config['csrf_on'] = [csrf_on];      // enable or disable CSRF validation (TRUE need $database_on=TRUE AND $session_on=TRUE)
+$config['csrf_timeout'] = 600;
 $config['session_timeout'] = 3600;
 $config['session_lifespan'] = 4600;
 
@@ -40,12 +42,12 @@ $config['log_enabledTypes'] =
 $config['userToLogin'] = "username";    // Username field for login process: "username" | "email" | "both"
 
 $config['username_min_length'] = 5;
-$config['username_max_length'] = 18;
+$config['username_max_length'] = 64;
 $config['password_min_length'] = 6;
 $config['password_max_length'] = 12;
 
-$config['lockStrategy_on'] = FALSE;
-$config['login_lockStrategy'] = "timer"; // "timer" | "recaptcha" | FALSE (if you set timer remember to set login_secondsFormBlocked)
+$config['lockStrategy_on'] = [lockStrategy_on];
+$config['login_lockStrategy'] = '[lockStrategy_type]'; // "timer" | "recaptcha" | FALSE (if you set timer remember to set login_secondsFormBlocked)
 $config['login_secondsFormBlocked'] = 180;
 $config['login_maxAttempts'] = 3;
 $config['login_secondsFormBlocked'] = 10;
@@ -113,8 +115,8 @@ $config['geolocation_on'] = FALSE;  // enable or disable Geolocalization
  */
 // TODO
 
-function isSecureProtocol($forceTrueForReverseProxy = false) {
-    return $forceTrueForReverseProxy || (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443;
-}
+//function isSecureProtocol($forceTrueForReverseProxy = false) {
+//    return $forceTrueForReverseProxy || (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443;
+//}
 
 ?>
