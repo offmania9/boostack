@@ -7,97 +7,50 @@
 		</div>
 	</div>
 </section>
-
 <section class="documentation centerContent">
 	<div class="container">
 		<div class="row description">
 			<div class="col-md-3">
 				<ul class="list-unstyled documentationMenu">
-					<li><a href="<?=$boostack->getFriendlyUrl("docs/introduction")?>">Introduction</a>
-						<!--<ul>
-                            <li><a href="<?#$boostack->getFriendlyUrl("docs/introduction")?>">Install</a></li>
-                        </ul>--></li>
-					<li><a href="<?=$boostack->getFriendlyUrl("docs/database")?>">Database</a></li>
-					<li><a href="<?=$boostack->getFriendlyUrl("docs/logging")?>">Logging</a></li>
-					<li><a href="<?=$boostack->getFriendlyUrl("docs/users")?>">Users</a></li>
-					<li><a href="<?=$boostack->getFriendlyUrl("docs/sessions")?>">Sessions</a></li>
-					<li><a href="<?=$boostack->getFriendlyUrl("docs/languages")?>">Languages</a></li>
-					<li><a href="<?=$boostack->getFriendlyUrl("docs/emails")?>">Emails</a></li>
-					<li><a href="<?=$boostack->getFriendlyUrl("docs/mobile")?>">Mobile</a></li>
-					<li><a href="<?=$boostack->getFriendlyUrl("docs/upload")?>">Upload</a></li>
-					<li><a href="<?=$boostack->getFriendlyUrl("docs/social")?>">Social</a></li>
-					<li>____</li>
-                    <li><a href="<?=$boostack->getFriendlyUrl("docs/requirements")?>">Requisiti</a>
-                    <li><a href="<?=$boostack->getFriendlyUrl("docs/requirements")?>">Environment</a>
-                    <li><a href="<?=$boostack->getFriendlyUrl("docs/requirements")?>">Sass</a>
-                    <li><a href="<?=$boostack->getFriendlyUrl("docs/requirements")?>">Require JS</a>
-                    <li><a href="<?=$boostack->getFriendlyUrl("docs/requirements")?>">BaseClass & BaseList</a>
-                    <li><a href="<?=$boostack->getFriendlyUrl("docs/requirements")?>">Validator</a>
-                    <li><a href="<?=$boostack->getFriendlyUrl("docs/requirements")?>">Message Bag</a>
+                    <li><a href="<?=$boostack->getFriendlyUrl("docs/setup")?>">Setup</a>
+                        <ul>
+                            <li><a title="Server Requirements" href="<?=$boostack->getFriendlyUrl("docs/setup#ServerRequirements")?>">Server Requirements</a></li>
+                            <li><a title="Installation" href="<?=$boostack->getFriendlyUrl("docs/setup#Installation")?>">Installation</a></li>
+                            <li><a title="Automatic Configuration" href="<?=$boostack->getFriendlyUrl("docs/setup#AutomaticConfiguration")?>">Automatic Configuration</a></li>
+                            <li><a title="Manual Configuration" href="<?=$boostack->getFriendlyUrl("docs/setup#ManualConfiguration")?>">Manual Configuration</a></li>
+                            <li><a title="Friendly URLs Configuration" href="<?=$boostack->getFriendlyUrl("docs/setup#FriendlyURLsConfiguration")?>">Friendly URLs Configuration</a></li>
+                            <li><a title="Accessing Configuration Values" href="<?=$boostack->getFriendlyUrl("docs/setup#AccessingConfigurationValues")?>">Accessing Configuration Values</a></li>
+                            <li><a title="Development Mode" href="<?=$boostack->getFriendlyUrl("docs/setup#DevelopmentMode")?>">Development Mode</a></li>
+                        </ul>
+                    </li>
+                    <li><a title="Directory structure" href="<?=$boostack->getFriendlyUrl("docs/directory-structure")?>">Directory structure</a></li>
+                    <li><a title="Controllers" href="<?=$boostack->getFriendlyUrl("docs/controllers")?>">Controllers</a></li>
 				</ul>
 			</div>
 			<div class="col-md-9 documentationInnerContent">
                 <?php
-                switch (Utils::sanitizeInput($_GET["docpath"])) {
-                    case "requirements":
-                        require ("template/boostack/documentation/requirements.phtml");
-                        break;
-                    case "introduction":
-                        {
-                            require ("template/boostack/documentation/introduction.phtml");
+                $defaultPage = "template/boostack/documentation/setup.phtml";
+                if(Request::hasQueryParam("docpath")) {
+                    switch (Request::getQueryParam("docpath")) {
+                        case "setup": {
+                            require("template/boostack/documentation/setup.phtml");
                             break;
                         }
-                    case "database":
-                        {
-                            require ("template/boostack/documentation/database.phtml");
+                        case "directory-structure": {
+                            require("template/boostack/documentation/directory_structure.phtml");
                             break;
                         }
-                    case "logging":
-                        {
-                            require ("template/boostack/documentation/logging.phtml");
+                        case "controllers": {
+                            require("template/boostack/documentation/controllers.phtml");
                             break;
                         }
-                    case "users":
-                        {
-                            require ("template/boostack/documentation/users.phtml");
-                            break;
+                        default: {
+                            require($defaultPage);
                         }
-                    case "sessions":
-                        {
-                            require ("template/boostack/documentation/sessions.phtml");
-                            break;
-                        }
-                    case "emails":
-                        {
-                            require ("template/boostack/documentation/emails.phtml");
-                            break;
-                        }
-                    case "languages":
-                        {
-                            require ("template/boostack/documentation/languages.phtml");
-                            break;
-                        }
-                    case "mobile":
-                        {
-                            require ("template/boostack/documentation/mobile.phtml");
-                            break;
-                        }
-                    case "upload":
-                        {
-                            require ("template/boostack/documentation/upload.phtml");
-                            break;
-                        }
-                    case "social":
-                        {
-                            require ("template/boostack/documentation/social.phtml");
-                            break;
-                        }
-                    default:
-                        {
-                            require ("template/boostack/documentation/introduction.phtml");
-                            break;
-                        }
+                    }
                 }
+                else
+                    require($defaultPage);
                 ?>
             </div>
 		</div>

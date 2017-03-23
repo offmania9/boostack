@@ -1,0 +1,15 @@
+<h3>Controllers</h3>
+<p>Controllers can be found in the root folder of the project.</p>
+<p>Ax example of default controllers provided by Boostack are <code>index.php</code> or <code>login.php</code></p>
+<p>To create a new controller, you can create a brand new file in the root folder of your project and follow the logic above:</p>
+<pre>&lt;?php
+    require_once "core/environment_init.php";
+    $boostack->renderOpenHtmlHeadTags("&lt;your_page_title&gt;");
+
+    // INSERT HERE YOUR LOGIC
+
+    // REQUIRE HERE YOUR TEMPLATE FILES WITH $boostack->registerTemplateFile("&lt;your_template_file&gt;")
+    // for example require_once $boostack->registerTemplateFile("boostack/header.phtml");
+
+    $boostack->renderCloseHtmlTag();
+?&gt;</pre>
