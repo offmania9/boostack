@@ -125,15 +125,17 @@ class User_Entity extends BaseClass
      * @return bool
      * @throws Exception
      */
-    public function getUserIDByEmail($email, $throwException = true)
+    public static function getUserIDByEmail($email, $throwException = true)
     {
+        $pdo = Database_PDO::getInstance();
         $sql = "SELECT id FROM ".self::TABLENAME." WHERE email ='" . $email . "' ";
-        $q = $this->pdo->query($sql);
+        $q = $pdo->query($sql);
         $q2 = $q->fetch();
-        if ($q->rowCount() == 0)
+        if ($q->rowCount() == 0) {
             if ($throwException)
-                throw new Exception("Attention! User or Email not found.",0);
-        return false;
+                throw new Exception("Attention! User or Email not found.", 0);
+            return false;
+        }
         
         return $q2[0];
     }

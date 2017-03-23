@@ -45,6 +45,7 @@ class Session_CSRF extends Session_HTTP
                 $timespan = Config::get("csrf_timeout");
                 $decodedToken = base64_decode($this->$key);
                 $decodedToken_timestamp = intval(substr($decodedToken, -10));
+                // check token validity, if expired, i generate a new one
                 if ($decodedToken_timestamp + $timespan < time())
                     $this->CSRFTokenInvalidation();
             }
@@ -134,8 +135,6 @@ class Session_CSRF extends Session_HTTP
 
     /**
      * @param $postArray
-     * @param null $timespan
-     * @param bool $oneTimeToken
      * @param bool $throwException
      * @return bool
      * @throws Exception

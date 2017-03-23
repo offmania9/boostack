@@ -110,8 +110,8 @@ class User implements JsonSerializable {
      * Rimuove tutte le sotto-istanze dell'utente dal database.
      */
     public function delete() {
+        if(empty($this->id)) throw new Exception("Instance must have 'id' field to be deleted");
         try {
-            if(empty($this->id)) throw new Exception("Instance must have 'id' field to be deleted");
             $this->pdo->beginTransaction();
             foreach($this->objects as $objectInstance) {
                 if(empty($objectInstance->id) && $objectInstance->exist($this->id)) {
@@ -209,7 +209,7 @@ class User implements JsonSerializable {
      * @return bool
      */
     public static function getUserIDByEmail($email, $throwException = true) {
-        return User_Entity::existsByUsername($email, $throwException);
+        return User_Entity::getUserIDByEmail($email, $throwException);
     }
 
     /**

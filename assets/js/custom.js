@@ -49,12 +49,12 @@ function checkDB(){
         cache: false,
         complete: function (response, status) {
             if(response.responseText=="success") {
-                $("#dbStatus").attr("class", "col-md-push-2 glyphicon glyphicon-ok");
                 $("#dbStatus").text(" Success");
+                $("#dbStatusIcon").attr("class", "glyphicon glyphicon-ok");
             }
             else {
-                $("#dbStatus").attr("class", "col-md-push-2 glyphicon glyphicon-remove");
                 $("#dbStatus").text(" Failure");
+                $("#dbStatusIcon").attr("class", "glyphicon glyphicon-remove");
             }
         }
     })
