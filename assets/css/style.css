@@ -218,12 +218,17 @@ section.documentation .documentationMenu li {
   padding-bottom: 3px; }
 section.documentation .documentationMenu li ul li a {
   font-weight: 400; }
+section.documentation .documentationMenu .title {
+  padding: 10px 0; }
+section.documentation .documentationMenu .item {
+  margin-left: 20px; }
 section.documentation .documentationInnerContent h2 {
   padding-bottom: 20px; }
 section.documentation .documentationInnerContent p {
   padding: 0px; }
 section.documentation .documentationInnerContent li {
-  padding-bottom: 10px; }
+  padding-bottom: 10px;
+  font-weight: 300; }
 section.documentation .documentation section {
   margin: 20px; }
 section.documentation .documentation .documentationMenu li {
@@ -376,6 +381,8 @@ footer {
   text-decoration: underline; }
 
 .cookie-bar #btn-close {
+  position: absolute;
+  right: 1em;
   top: 50%;
   -webkit-transform: translateY(-50%);
   -moz-transform: translateY(-50%);
