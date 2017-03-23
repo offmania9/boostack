@@ -23,10 +23,5 @@
       "email": "alessio.debernardi22@gmail.com"
     }
   ],
-  "license": "MIT",
-  "extra": {
-  "branch-alias": {
-    "dev-master": "2.4.x-dev"
-  }
- }
+  "license": "MIT"
 }
