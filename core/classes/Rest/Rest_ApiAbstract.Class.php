@@ -8,7 +8,8 @@
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
  * @version 3.0
  */
-abstract class Rest_Api_Abstract
+
+abstract class Rest_ApiAbstract
 {
     /**
      * @var string

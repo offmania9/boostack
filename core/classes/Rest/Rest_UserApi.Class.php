@@ -8,9 +8,8 @@
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
  * @version 3.0
  */
-require_once 'classes/Rest/Rest_Api_Abstract.Class.php';
 
-class Rest_UserApi extends Rest_Api_Abstract
+class Rest_UserApi extends Rest_ApiAbstract
 {
     /**
      * @var string
