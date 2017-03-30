@@ -38,37 +38,5 @@
 <!--[if lt IE 9]>        <script type="text/javascript" src="../assets/js/html5shiv.js"></script>
         <script type="text/javascript" src="../assets/js/respond.min.js"></script>
         -->
-<script type="text/javascript">
-    $(document).ready(function(){
-        if($(".setup tr.danger").size()>0){
-            $(".setup .setupInstaller, .setup #initsetup-btn").hide();
-        }
-        $("input[name$='db-active']").click(function() {
-            var dbItems = $("input[name^='db-']").parents(".form-group:not('.noHide')");
-            if($(this).val()=="true"){
-                dbItems.show();
-                $("input[id$='db-session-true']").trigger("click");
-                $("input[id$='db-cookie-true']").trigger("click");
-                $("input[id$='db-log-true']").trigger("click");
-            }
-            else{
-                dbItems.hide();
-                $("input[id$='db-session-false']").trigger("click");
-                $("input[id$='db-cookie-false']").trigger("click");
-                $("input[id$='db-log-false']").trigger("click");
-            }
-        });
-        $("input[name$='db-session-active']").click(function() {
-            if($(this).val()=="false")
-                $("input[id$='db-cookie-false']").trigger("click");
-        });
-        $("input[name$='db-cookie-active']").click(function() {
-            var dbItems = $("input[name^='db-cookie']").parents(".form-group:not('.noHideCookie')");
-            if($(this).val()=="true")
-                dbItems.show();
-            else
-                dbItems.hide();
-        });
-    });
-</script>
+<script type="text/javascript" src="setup.js"></script>
 </body></html>

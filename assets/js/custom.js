@@ -33,29 +33,3 @@ function showscreen(){
 		$(".overlay").fadeOut("slow");
 		$(".loading").fadeOut("slow");
 }
-
-function checkDB(){
-    event.preventDefault();
-    var data = {"host" : $("#db-host").val(),
-                "driver_pdo" : $("#driver-pdo").val(),
-                "dbname" : $("#db-name").val(),
-                "username" : $("#db-username").val(),
-                "password" : $("#db-password").val()};
-    $.ajax({
-        type: "POST",
-        url: "/setup/dbTest.php",
-        data: data,
-        dataType: "json",
-        cache: false,
-        complete: function (response, status) {
-            if(response.responseText=="success") {
-                $("#dbStatus").text(" Success");
-                $("#dbStatusIcon").attr("class", "glyphicon glyphicon-ok");
-            }
-            else {
-                $("#dbStatus").text(" Failure");
-                $("#dbStatusIcon").attr("class", "glyphicon glyphicon-remove");
-            }
-        }
-    })
-}
