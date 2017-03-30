@@ -83,7 +83,7 @@ function checkDB(){
                 $("#dbStatusIcon").attr("class", "glyphicon glyphicon-ok");
             }
             else {
-                $("#dbStatus").text(" Failure");
+                $("#dbStatus").text(" Failure: " + response.responseText);
                 $("#dbStatusIcon").attr("class", "glyphicon glyphicon-remove");
             }
         }
