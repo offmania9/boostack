@@ -108,10 +108,11 @@ abstract class BaseClass implements JsonSerializable {
      * @param $id
      * @return bool
      */
-    public function exist($id) {
+    public static function exist($id) {
         try {
+            $pdo = Database_PDO::getInstance();
             $sql = "SELECT id FROM " . static::TABLENAME . " WHERE id = :id";
-            $q = $this->pdo->prepare($sql);
+            $q = $pdo->prepare($sql);
             $q->bindValue(':id', $id);
             $q->execute();
             $result = $q->fetch(PDO::FETCH_ASSOC);
