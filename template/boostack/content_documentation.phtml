@@ -28,7 +28,12 @@
                     <li class="title">Code</li>
                     <li class="item"><a title="Models" href="<?=$boostack->getFriendlyUrl("docs/models")?>">Models</a></li>
                     <li class="item"><a title="Controllers" href="<?=$boostack->getFriendlyUrl("docs/controllers")?>">Controllers</a></li>
-				</ul>
+                    <li class="item"><a title="Login Security" href="<?=$boostack->getFriendlyUrl("docs/loginSecurity#lockStrategies")?>">Login Security</a>
+                        <ul>
+                            <li><a title="Timer" href="<?=$boostack->getFriendlyUrl("docs/loginSecurity#Timer")?>">Timer</a></li>
+                            <li><a title="Recaptcha" href="<?=$boostack->getFriendlyUrl("docs/loginSecurity#Recaptcha")?>">Google Recaptcha</a></li>
+                        </ul>
+                    </li>
 			</div>
 			<div class="col-md-9 documentationInnerContent">
                 <?php
@@ -49,6 +54,10 @@
                         }
                         case "models": {
                             require("template/boostack/documentation/models.phtml");
+                            break;
+                        }
+                        case "loginSecurity": {
+                            require("template/boostack/documentation/loginSecurity.phtml");
                             break;
                         }
                         default: {
