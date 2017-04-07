@@ -225,14 +225,14 @@ if (!empty($_POST)) { ?>
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label for="dump-true" class="col-sm-2 control-label">Import Dump?</label>
+                                                <label for="db-dump-true" class="col-sm-2 control-label">Auto Import Dump?</label>
                                                 <div class="col-sm-8">
                                                     <label class="radio-inline">
-                                                        <input type="radio" name="dump-active" id="dump-true" value="true"> Yes
+                                                        <input type="radio" name="db-dump-active" id="db-dump-true" value="true" checked> Yes
                                                     </label>
                                                     <label class="radio-inline">
-                                                        <input type="radio" name="dump-active" id="dump-false"
-                                                               value="false" checked> No
+                                                        <input type="radio" name="db-dump-active" id="db-dump-false"
+                                                               value="false"> No
                                                     </label>
                                                 </div>
                                             </div>
@@ -258,7 +258,7 @@ if (!empty($_POST)) { ?>
                                                            placeholder="boostack" value="boostack">
                                                 </div>
                                             </div>
-                                            <div class="form-group">
+                                            <div class="form-group hidden">
                                                 <label for="db-name" class="col-sm-2 control-label">Table Prefix</label>
                                                 <div class="col-sm-8">
                                                     <input type="text" class="form-control" id="db-table-prefix"
@@ -286,7 +286,7 @@ if (!empty($_POST)) { ?>
                                                 <label for="db-test" class="col-sm-2 control-label">Test Database</label>
                                                 <div class="col-sm-8">
                                                     <button id="btnCheckDB" class="btn btn-primary btn-xs" onclick="checkDB()">Test Database</button>
-                                                    &ensp;&ensp;<span id="dbStatusIcon" class="glyphicon glyphicon-cog"></span><span id="dbStatus"> Pending</span>
+                                                    &ensp;&ensp;<span id="dbStatusIcon"></span><span id="dbStatus"></span>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -312,13 +312,13 @@ if (!empty($_POST)) { ?>
                                                        class="col-sm-2 control-label">CSRF</label>
                                                 <div class="col-sm-8">
                                                     <label class="radio-inline">
-                                                        <input type="radio" name="csrf-active"
+                                                        <input type="radio" name="db-csrf-active"
                                                                id="csrf-true"
                                                                value="true"
                                                                checked> Yes
                                                     </label>
                                                     <label class="radio-inline">
-                                                        <input type="radio" name="csrf-active"
+                                                        <input type="radio" name="db-csrf-active"
                                                                id="csrf-false"
                                                                value="false"> No
                                                     </label>
@@ -378,29 +378,60 @@ if (!empty($_POST)) { ?>
                                                 <label for="lockStrategy-on-true" class="col-sm-2 control-label">Login Lock Strategy</label>
                                                 <div class="col-sm-8">
                                                     <label class="radio-inline">
-                                                        <input type="radio" name="lockStrategy_on" id="lockStrategy-on-true"
-                                                               value="true"
-                                                               checked> Yes
+                                                        <input type="radio" name="db-lockStrategy_on" id="lockStrategy-on-true"
+                                                               value="true"> Yes
                                                     </label>
                                                     <label class="radio-inline">
-                                                        <input type="radio" name="lockStrategy_on" id="lockStrategy-on-false"
-                                                               value="false"> No
+                                                        <input type="radio" name="db-lockStrategy_on" id="lockStrategy-on-false"
+                                                               value="false" checked> No
                                                     </label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="login_max_attempts" class="col-sm-2 control-label">Login Max Attempts</label>
+                                                <div class="col-sm-8">
+                                                    <span data-toggle="tooltip" data-placement="top" title="Max Login Attempts before user gets blocked before proceding with login">
+                                                        <input type="number" class="form-control" id="login_max_attempts" name="db-loginLock-max-attempts" min="0" max="10" value="3"/>
+                                                    </span>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <hr/>
                                                 <label for="lockStrategy-true" class="col-sm-2 control-label">Recaptcha or Timer?</label>
                                                 <div class="col-sm-8">
-                                                    <label class="radio-inline">
-                                                        <input type="radio" name="lockStrategy_type" id="recaptcha"
-                                                               value="recaptcha"
-                                                               checked> Recaptcha
-                                                    </label>
-                                                    <label class="radio-inline">
-                                                        <input type="radio" name="lockStrategy_type" id="timer"
-                                                               value="timer"> Timer
-                                                    </label>
+                                                    <span data-toggle="tooltip" data-placement="top" title="User login gets blocked with Google reCAPTCHA">
+                                                        <label class="radio-inline">
+                                                            <input type="radio" name="db-loginLock-type" id="recaptcha"
+                                                                   value="recaptcha"
+                                                                   > Recaptcha
+                                                        </label>
+                                                    </span>
+                                                    <span data-toggle="tooltip" data-placement="top" title="User login gets blocked for X seconds">
+                                                        <label class="radio-inline">
+                                                            <input type="radio" name="db-loginLock-type" id="timer"
+                                                                   value="timer"> Timer
+                                                        </label>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="recaptcha_public" class="col-sm-2 control-label">Public key recaptcha</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control" id="recaptcha_public" name="db-loginLock-recaptcha-public"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="recaptcha_private" class="col-sm-2 control-label">Private key recaptcha</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control" id="recaptcha_private" name="db-loginLock-recaptcha-private"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="timer_seconds" class="col-sm-2 control-label">Timer Seconds</label>
+                                                <div class="col-sm-8">
+                                                    <span data-toggle="tooltip" data-placement="top" title="Seconds user gets blocked before next attempt to login">
+                                                        <input type="number" class="form-control" id="timer_seconds" name="db-loginLock-timer-seconds" min="0" value="180"/>
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>

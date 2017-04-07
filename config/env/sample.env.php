@@ -48,12 +48,11 @@ $config['password_max_length'] = 12;
 
 $config['lockStrategy_on'] = [lockStrategy_on];
 $config['login_lockStrategy'] = '[lockStrategy_type]'; // "timer" | "recaptcha" | FALSE (if you set timer remember to set login_secondsFormBlocked)
-$config['login_secondsFormBlocked'] = 180;
-$config['login_maxAttempts'] = 3;
-$config['login_secondsFormBlocked'] = 10;
+$config['login_maxAttempts'] = "[login_max_attempts]";
+$config['login_secondsFormBlocked'] = "[login_seconds_blocked]";
 $config['google_recaptcha-endpoint']= "https://www.google.com/recaptcha/api/siteverify";        //ReCaptcha Google endpoint
-$config['reCaptcha_public'] = "6LfCzxQUAAAAAJwvPlEHpsHCMdLxeFsKhwON5Epl";       //recaptcha key
-$config['reCaptcha_private'] = "6LfCzxQUAAAAALgBGC2ZHI8GYXq7UDQkvFTf8M2C";      //recaptcha key
+$config['reCaptcha_public'] = "[recaptcha_public]";       //recaptcha key
+$config['reCaptcha_private'] = "[recaptcha_private]";      //recaptcha key
 
 /**
  * COOKIES

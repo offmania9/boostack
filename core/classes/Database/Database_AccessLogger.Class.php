@@ -87,8 +87,17 @@ class Database_AccessLogger
 
         $this->query = htmlspecialchars($this->query,ENT_QUOTES | ENT_HTML401,'UTF-8');
         $sql = "INSERT INTO " . self::TABLENAME . "  (id ,datetime , level, username, ip ,useragent ,referrer ,query ,message)
-				VALUES(NULL,'" . time() . "','".$level."','" . $this->username . "','" . $this->ip . "','" . $this->useragent . "','" . $this->referrer . "','" . $this->query . "','" . $message . "')";
-        $this->pdo->prepare($sql)->execute();
+				VALUES(NULL, :time , :level, :username, :ip , :useragent, :referrer, :query, :message)";
+        $q = $this->pdo->prepare($sql);
+        $q->bindValue(':time', time());
+        $q->bindValue(':level', $level);
+        $q->bindValue(':username', $this->username);
+        $q->bindValue(':ip', $this->ip);
+        $q->bindValue(':useragent', $this->useragent);
+        $q->bindValue(':referrer', $this->referrer);
+        $q->bindValue(':query', $this->query);
+        $q->bindValue(':message', $message);
+        $q->execute();
     }
 
     /**

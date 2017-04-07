@@ -24,13 +24,17 @@ $env_parameters = [
     "db_username" => $input['db-username'],
     "db_password" => $input['db-password'],
     "session_on" => $input['db-session-active'],
-    'csrf_on' => $input['csrf-active'],
+    'csrf_on' => $input['db-csrf-active'],
     "cookie_on" => $input['db-cookie-active'],
     "cookie_expire" => $input['db-cookie-expired'],
     "cookie_name" => $input['db-cookie-name'],
     "log_on" => $input['db-log-active'],
-    "lockStrategy_on" => $input["lockStrategy_on"],
-    "lockStrategy_type" => $input["lockStrategy_type"]
+    "lockStrategy_on" => $input["db-lockStrategy_on"],
+    "login_max_attempts" => $input["db-loginLock-max-attempts"],
+    "lockStrategy_type" => $input["db-loginLock-type"],
+    "recaptcha_public" => $input["db-loginLock-recaptcha-public"],
+    "recaptcha_private" => $input["db-loginLock-recaptcha-private"],
+    "login_seconds_blocked" => $input["db-loginLock-timer-seconds"]
 ];
 
 $exampleEnvName = "sample.env.php";
@@ -65,7 +69,7 @@ if ($env_parameters["database_on"] == "true" && $finalSetupMessageError == "") {
         $db = Database_PDO::getInstance($env_parameters["db_host"], $env_parameters["db_name"], $env_parameters["db_username"], $env_parameters["db_password"]);
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        if ($_POST["dump-active"] == "true") {
+        if ($_POST["db-dump-active"] == "true") {
             $sql = file_get_contents('boostack_dump.sql');
             $qr = $db->exec($sql);
 
