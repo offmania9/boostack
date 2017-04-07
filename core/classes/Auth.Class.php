@@ -62,7 +62,7 @@ class Auth {
                 throw new Exception("Password format not valid");
             Auth::impressLastTry();
             Utils::checkStringFormat($password);
-            if($isLockStrategyEnabled) $objSession->failed_login_count++;
+            if($isLockStrategyEnabled || ($isLockStrategyEnabled && Config::get('csrf_on') && $objSession->CSRFCheckValidity(Request::getPostArray(),false))) $objSession->failed_login_count++;
             Auth::checkAndLogin($username, $password, $cookieRememberMe, true);
             if($isLockStrategyEnabled) $objSession->failed_login_count = 0;
 
