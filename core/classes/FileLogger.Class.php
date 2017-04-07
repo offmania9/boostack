@@ -48,6 +48,12 @@ class FileLogger {
         if($logFile == false) {
             throw new Exception("Unable to open log file");
         }
+        $message = str_replace(array(
+            "\r\n",
+            "\n",
+            "\r"
+        ), "", $message);
+        $message = addslashes($message);
         $message = " [".$level."] ".$message."\n";
         fwrite($logFile, $message);
         fclose($logFile);
