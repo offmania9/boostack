@@ -218,18 +218,34 @@ RewriteRule .* ? [F,L]
        Header set X-UA-Compatible "IE=Edge,chrome=1" env=ie
     </filesMatch>
 
-    Header unset ETag
-    FileETag None
+
+    # enable X-XSS-Protection  for Internet Explorer 8 and newer
+    Header set X-XSS-Protection: "1; mode=block"
+
+    # hide server header (apache and php version)
+    Header unset Server
+
     Header unset Last-Modified
     Header unset X-UA-Compatible
     Header set X-UA-Compatible "IE=Edge,chrome=1"
     Header append Vary: Accept-Encoding
     Header unset Server
     Header unset X-Powered-By
+    FileETag None
+    Header unset ETag
 
-    # Secure Your Web Site from Clickjacking Attack
-    Header append X-FRAME-OPTIONS "SAMEORIGIN"
-    Header set X-XSS-Protection "1; mode=block"
+    # Only allow JavaScript from the same domain to be run.
+    # don't allow inline JavaScript to run.
+    Header set X-Content-Security-Policy "allow 'self';"
+
+    # Don't allow any pages to be framed by my site or any others
+    Header set X-Frame-Options DENY
+
+    # Add Secure and HTTP only attributes to cookies
+    Header edit Set-Cookie ^(.*)$ $1;HttpOnly;Secure
+
+    # prevent Clickjacking Attack
+    Header always append X-Frame-Options SAMEORIGIN
 
 </ifModule>
 
