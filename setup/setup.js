@@ -73,7 +73,7 @@ function checkDB(){
         "password" : $("#db-password").val()};
     $.ajax({
         type: "POST",
-        url: "/setup/dbTest.php",
+        url: "dbTest.php",
         data: data,
         dataType: "json",
         cache: false,
