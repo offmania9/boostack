@@ -89,7 +89,12 @@ class Session_HTTP
         ));
         
         if (isset($_COOKIE["PHPSESSID"])) {
-            $this->php_session_id = Utils::sanitizeInput($_COOKIE["PHPSESSID"]);
+            if(strlen(Utils::sanitizeInput($_COOKIE["PHPSESSID"])) <= 32){
+                $this->php_session_id = Utils::sanitizeInput($_COOKIE["PHPSESSID"]);
+            }
+            else {
+                unset($_COOKIE["PHPSESSID"]);
+            }
         }
         $datetime_now = time();
         $sql = "SELECT created,last_impression FROM " . $this->http_session_table . "
