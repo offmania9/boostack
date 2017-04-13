@@ -9,21 +9,21 @@ class FileLogger {
      * @var null
      */
     private static $instance = NULL;
-
-    /**
-     * @var string
-     */
-    private $logFile = __DIR__."/../../logs/log.txt";
+    private static $log_file = NULL;
 
     /**
      * FileLogger constructor.
      */
     private function __construct()
     {
-        $path = dirname($this->logFile);
+        $file = Config::get("log_file");
+        $path = dirname($file);
         if (!file_exists($path)) {
-            mkdir($path, 0777, true);
+            if(!is_writable($path)) throw new Exception("Failed to create log directory");
+            $mkdirRes = mkdir($path, 0777, true);
+            if(!$mkdirRes) throw new Exception("Failed to create log directory");
         }
+        self::$log_file = $file;
     }
 
     /**
@@ -44,7 +44,7 @@ class FileLogger {
      */
     public function log($message = NULL, $level = "information")
     {
-        $logFile = fopen($this->logFile, "a");
+        $logFile = fopen(self::$log_file, "a");
         if($logFile == false) {
             throw new Exception("Unable to open log file");
         }

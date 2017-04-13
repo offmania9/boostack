@@ -33,6 +33,7 @@ $config['session_lifespan'] = 4600;
  * LOG
  */
 $config['log_on'] = [log_on];       // enable or disable boostack Log (#TRUE need $database_on=TRUE)
+$config['log_file'] = ROOTPATH."logs/log.txt";
 $config['log_enabledTypes'] =
     array('error','failure','information','success','warning','user','cronjob');  //(Enable logging options ['error','failure','information','success','warning','user']
 
