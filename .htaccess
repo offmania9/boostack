@@ -242,6 +242,7 @@ RewriteRule .* ? [F,L]
     Header set X-Frame-Options DENY
 
     # Add Secure and HTTP only attributes to cookies
+    # TODO add 'secure' when using Https
     Header edit Set-Cookie ^(.*)$ $1;HttpOnly
 
     # prevent Clickjacking Attack
