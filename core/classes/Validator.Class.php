@@ -220,12 +220,12 @@ class Validator {
         $res = true;
         if(is_array($input)) {
             foreach($input as $elem) {
-                if(!preg_match('/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]+$/',$elem) && $res) {
+                if(!preg_match('/^[A-Za-z0-9 _]*[A-Za-z0-9_]+$/',$elem) && $res) {
                     $res = false;
                 }
             }
         } else {
-            $res = preg_match('/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]+$/',$input);
+            $res = preg_match('/^[A-Za-z0-9 _]*[A-Za-z0-9_]+$/',$input);
         }
         return $res;
     }
