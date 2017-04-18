@@ -25,7 +25,7 @@ $database['password'] = '[db_password]';
  */
 $config['session_on'] = [session_on];   // enable or disable Sessions (TRUE need $database_on=TRUE)
 $config['csrf_on'] = [csrf_on];      // enable or disable CSRF validation (TRUE need $database_on=TRUE AND $session_on=TRUE)
-$config['csrf_timeout'] = 600;
+$config['csrf_timeout'] = 3600;
 $config['session_timeout'] = 3600;
 $config['session_lifespan'] = 4600;
 
@@ -45,7 +45,7 @@ $config['userToLogin'] = "username";    // Username field for login process: "us
 $config['username_min_length'] = 5;
 $config['username_max_length'] = 64;
 $config['password_min_length'] = 6;
-$config['password_max_length'] = 12;
+$config['password_max_length'] = 80;
 
 $config['lockStrategy_on'] = [lockStrategy_on];
 $config['login_lockStrategy'] = '[lockStrategy_type]'; // "timer" | "recaptcha" | FALSE (if you set timer remember to set login_secondsFormBlocked)
