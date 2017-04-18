@@ -174,9 +174,8 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable {
 
             $queryNumberResult = intval($result[0]);
             $maxPage = floor($queryNumberResult / $numitem) + 1;
-            if ($currentPage >= $maxPage){
-                $maxPage = floor($queryNumberResult / 25) + 1;
-                $currentPage = 1;
+            if ($currentPage > $maxPage){
+                throw new Exception("Current page exceed max page");
             };
 
             if ($orderColumn != NULL) {
