@@ -96,6 +96,10 @@ $envPath = realpath(__DIR__."/../config/env/");
 $isWritebleEnvFolder = is_writable_r($envPath);
 if(!$isWritebleEnvFolder)
     $requirements_satisfaction = false;
+$logPath = realpath(__DIR__."/../logs/");
+$isWritebleLogFolder = is_writable_r($logPath);
+if(!$isWritebleLogFolder)
+    $requirements_satisfaction = false;
 
 require_once "content_setup.phtml";
 

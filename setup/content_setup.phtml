@@ -118,6 +118,11 @@ if (!empty($_POST)) { ?>
                                                 <td>Give write permission to '<?php echo exec('whoami') ?>' user</td>
                                                 <td><?php echo $isWritebleEnvFolder ? "Writeble" : "Not Writeble" ?></td>
                                             </tr>
+                                            <tr class="<?php echo $isWritebleLogFolder ? "success" : "danger" ?>">
+                                                <td>Write access to 'log' folder</td>
+                                                <td>Give write permission to '<?php echo exec('whoami') ?>' user</td>
+                                                <td><?php echo $isWritebleLogFolder ? "Writeble" : "Not Writeble" ?></td>
+                                            </tr>
                                             </tbody>
                                         </table>
                                         <h4>Apache Modules</h4>
