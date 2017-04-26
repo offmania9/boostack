@@ -28,7 +28,7 @@ class LogList extends BaseList {
     public function truncate(){
         global $boostack;
         $res=true;
-        $sql = "TRUNCATE " . static::TABLENAME ;
+        $sql = "TRUNCATE " . $this->baseClassName;
         try {
             $q = $this->pdo->prepare($sql);
             $q->execute();
