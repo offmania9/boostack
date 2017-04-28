@@ -55,4 +55,6 @@ if (Config::get('mobile_on')) {
     }
 }
 
+require_once(ROOTPATH . "startupCustom.php");
+
 ?>

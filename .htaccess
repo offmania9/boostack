@@ -186,7 +186,7 @@ RewriteRule .* ? [F,L]
 </IfModule>
 
 
-<FilesMatch "\.(htaccess|htpasswd|ini|phps|fla|psd|log|sh|sql|inc|phtml|inc.php|Class.php)$">
+<FilesMatch "\.(htaccess|htpasswd|ini|phps|fla|psd|log|sh|sql|inc|phtml|inc.php|Class.php)|startupCustom.php$">
     Order Allow,Deny
     Deny from all
 </FilesMatch>
