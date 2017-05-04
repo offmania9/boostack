@@ -107,5 +107,21 @@ class Log extends BaseClass implements JsonSerializable{
         return $data_log;
 
     }
+
+    public static function write($logMesg = "", $level = LogLevel::Information, $type = LogType::DB) {
+        global $CURRENTUSER;
+        switch ($type) {
+            case LogType::DB:
+                if (Config::get('database_on') && Config::get('log_on'))
+                    Database_AccessLogger::getInstance($CURRENTUSER)->Log($logMesg, $level);
+                break;
+            case LogType::File:
+                if (Config::get('log_on'))
+                    FileLogger::getInstance()->log($logMesg, $level);
+                break;
+            default:
+                throw new Exception("Log type not found");
+        }
+    }
 }
 ?>

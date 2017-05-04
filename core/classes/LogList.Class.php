@@ -36,7 +36,7 @@ class LogList extends BaseList {
         }
         catch (Exception $e)
         {
-            $boostack->writeLog('LogList -> truncate -> Caught exception: '.$e->getMessage());
+            Log::write('LogList -> truncate -> Caught exception: '.$e->getMessage());
             $res = false;
         }
         return $res;

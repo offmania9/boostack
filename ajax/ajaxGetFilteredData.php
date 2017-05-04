@@ -37,7 +37,7 @@ try {
     }
 } catch (Exception $e) {
     $res->setError($e->getMessage());
-    $boostack->writeLog('request not valid'.$e->getMessage(),"error");
+    Log::write('request not valid'.$e->getMessage(),"error");
 }
 
 echo $res->toJSON();

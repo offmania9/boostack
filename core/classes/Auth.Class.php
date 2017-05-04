@@ -67,7 +67,7 @@ class Auth {
             if($isLockStrategyEnabled) $objSession->failed_login_count = 0;
 
         } catch (Exception $e) {
-            $boostack->writeLog("Login.php : ".$e->getMessage()." trace:".$e->getTraceAsString(),"user");
+            Log::write("Login.php : ".$e->getMessage()." trace:".$e->getTraceAsString(),"user");
             $result->setError($e->getMessage());
             $result->setCode($e->getCode());
         }
@@ -109,13 +109,13 @@ class Auth {
                     $userObject->refreshRememberMeCookie();
                     return true;
                 } else {
-                    $boostack->writeLog("checkCookieHashValidity(" . $cookieValue . "): false - IP:" . Utils::getIpAddress(),"user");
+                    Log::write("checkCookieHashValidity(" . $cookieValue . "): false - IP:" . Utils::getIpAddress(),"user");
                 }
             }
         } catch (PDOException $e) {
-            $boostack->writeLog('Session_HTTP -> loginByCookie -> PDOException: ' . $e->getMessage(), "error");
+            Log::write('Session_HTTP -> loginByCookie -> PDOException: ' . $e->getMessage(), "error");
         } catch (Exception $b) {
-            $boostack->writeLog('Session_HTTP -> loginByCookie -> Exception: ' . $b->getMessage(), "error");
+            Log::write('Session_HTTP -> loginByCookie -> Exception: ' . $b->getMessage(), "error");
         }
         return false;
     }
@@ -138,7 +138,7 @@ class Auth {
         try {
             if(self::isLoggedIn()) {
                 if (Config::get("session_on") && isset($objSession) && self::isLoggedIn()){
-                    $boostack->writeLog("[Logout] uid: ".$objSession->GetUserID(),"user");
+                    Log::write("[Logout] uid: ".$objSession->GetUserID(),"user");
                     $objSession->logoutUser();
                 }
                 if (Config::get("cookie_on")) {
@@ -150,9 +150,9 @@ class Auth {
                 return true;
             }
         } catch (PDOException $e) {
-            $boostack->writeLog('Session_HTTP -> LogOut -> PDOException: ' . $e->getMessage(), "error");
+            Log::write('Session_HTTP -> LogOut -> PDOException: ' . $e->getMessage(), "error");
         } catch (Exception $b) {
-            $boostack->writeLog('Session_HTTP -> LogOut -> Exception: ' . $b->getMessage(), "error");
+            Log::write('Session_HTTP -> LogOut -> Exception: ' . $b->getMessage(), "error");
         }
         return false;
     }
@@ -216,7 +216,7 @@ class Auth {
         global $objSession, $boostack;
         if (Config::get("userToLogin") == "email") {
             if (!User::existsByEmail($username)) {
-                $boostack->writeLog("Auth -> checkAndLogin: User doesn't exist by Email Address", "user");
+                Log::write("Auth -> checkAndLogin: User doesn't exist by Email Address", "user");
                 if ($throwException)
                     throw new Exception("Username or password not valid.", 6);
                 return false;
@@ -225,7 +225,7 @@ class Auth {
 
         if (Config::get("userToLogin") == "username") {
             if (!User::existsByUsername($username)) {
-                $boostack->writeLog("Auth -> checkAndLogin: User doesn't exist by Username", "user");
+                Log::write("Auth -> checkAndLogin: User doesn't exist by Username", "user");
                 if ($throwException)
                     throw new Exception("Username or password not valid.", 6);
                 return false;
@@ -234,7 +234,7 @@ class Auth {
 
         if(Config::get("userToLogin") == "both") {
             if(!User::existsByEmail($username,false) && !User::existsByUsername($username,false)) {
-                $boostack->writeLog("Auth -> tryLogin: User doesn't exist by Username and by email", "user");
+                Log::write("Auth -> tryLogin: User doesn't exist by Username and by email", "user");
                 if ($throwException)
                     throw new Exception("Username or password not valid.", 6);
                 return false;
@@ -245,7 +245,7 @@ class Auth {
         self::login($username, $password);
 
         if (!self::isLoggedIn()){
-            $boostack->writeLog("Auth -> checkAndLogin: Username or password not valid.","user");
+            Log::write("Auth -> checkAndLogin: Username or password not valid.","user");
             if ($throwException)
                 throw new Exception("Username or password not valid.",5);
             return false;
@@ -255,7 +255,7 @@ class Auth {
             $user = $objSession->GetUserObject();
             $user->refreshRememberMeCookie();
         }
-        $boostack->writeLog("[Login] uid: ".$objSession->GetUserID(),"user");
+        Log::write("[Login] uid: ".$objSession->GetUserID(),"user");
         return true;
     }
 
@@ -292,9 +292,9 @@ class Auth {
                 }
             }
         } catch (PDOException $e) {
-            Boostack::getInstance()->writeLog('LogList -> view -> Caught PDOException: '.$e->getMessage(),"error");
+            Log::write('LogList -> view -> Caught PDOException: '.$e->getMessage(),"error");
         } catch ( Exception $b ) {
-            Boostack::getInstance()->writeLog('LogList -> view -> Caught Exception: '.$b->getMessage(),"error");
+            Log::write('LogList -> view -> Caught Exception: '.$b->getMessage(),"error");
         }
         return false;
     }
