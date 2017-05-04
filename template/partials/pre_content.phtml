@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="<?= Config::get('html_lang') ?>"> <!--xmlns:og="https://opengraphprotocol.org/schema/" xmlns:fb="https://www.facebook.com/2008/fbml"-->
+    <head>
+        <meta charset="utf-8"/><meta name="viewport" content="<?=Config::get('viewport')?>"/>
+        <?php if(Config::get('facebookMetaTag')): ?>
+            <meta property="og:title" content="<?=Config::get('og_title')?>" />
+            <meta property="og:type" content="<?=Config::get('og_type')?>" />
+            <meta property="og:url" content="<?=Config::get('og_url')?>" />
+            <meta property="og:image" content="<?=Config::get('og_image')?>" />
+            <meta property="og:description" content="<?=Config::get('og_description')?>" />
+            <?php if(Config::get('fb_app_id') != ""): ?>
+                <meta property="fb:app_id" content="<?=Config::get('fb_app_id')?>" />
+            <?php endif; ?>
+            <?php if(Config::get('fb_app_id') != ""): ?>
+                <meta property="fb:admins" content="<?=Config::get('fb_admins')?>" />
+            <?php endif; ?>
+        <?php endif; ?>
+
+        <title><?= isset($pageTitle) ? $pageTitle." | ".Config::get('site_title') : Config::get('site_title'); ?></title>
+        <meta name="description" content="<?=Config::get('site_description')?>"/>
+        <meta name="author" content="<?=Config::get('site_author')?>"/>
+        <meta content="<?=Config::get('site_keywords');?>" name="Keywords" />
+        <meta content="INDEX, FOLLOW" name="ROBOTS" />
+
+        <link rel="shortcut icon" href="<?= Config::get('url').Config::get('site_shortcuticon'); ?>" />
+        <link rel="image_src" href="<?= Config::get('url').Config::get('url_logo'); ?>" />
+        <link rel="apple-touch-icon" sizes="144x144" href="<?= Config::get('url').Config::get('appletouchicon_144'); ?>"/>
+        <link rel="apple-touch-icon" sizes="114x114" href="<?= Config::get('url').Config::get('appletouchicon_114'); ?>"/>
+        <link rel="apple-touch-icon" sizes="72x72" href="<?= Config::get('url').Config::get('appletouchicon_72'); ?>"/>
+        <link rel="apple-touch-icon" href="<?= Config::get('url').Config::get('appletouchicon_def'); ?>"/>
+        <meta name="apple-mobile-web-app-title" content="<?= Config::get('url').Config::get('sitename'); ?>"/>
+        <base href="<?= Config::get('url') ?>" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+
+        <?php  Template::renderDefaultCSSFiles(); ?>
+
+    </head>
+    <body>
+
+    <?php if(Config::get('setupFolderExists') && Config::get('setupFolderExists')): ?>
+        <?php require "setup_exists_header.phtml"; ?>
+    <?php endif; ?>

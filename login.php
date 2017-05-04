@@ -9,13 +9,10 @@
  * @version 3.0
  */
 
-// #######################
 require_once "core/environment_init.php";
-$boostack->renderOpenHtmlHeadTags("Home");
-// #######################
+
 $errorMessage = "";
 $errorCode = null;
-require_once $boostack->registerTemplateFile("boostack/header.phtml");
 try {
     Config::constraint("session_on");
     if (Request::hasPostParam("btk_usr") && Request::hasPostParam("btk_pwd")) {
@@ -33,15 +30,12 @@ try {
 } catch(Exception $e) {
     $errorMessage = $e->getMessage();
 }
+
 if (Auth::isLoggedIn())
-    require_once $boostack->registerTemplateFile("boostack/content_login_logged.phtml");
+    Template::render("login_logged.phtml");
 else
-    require_once $boostack->registerTemplateFile("boostack/content_login.phtml");
+    Template::render("login.phtml", array(
+        "errorMessage" => $errorMessage
+    ));
 
-require_once $boostack->registerTemplateFile("boostack/footer.phtml");
-
-// #######################
-$boostack->renderCloseHtmlTag();
-$boostack->writeLog("Login Page");
-// #######################
 ?>

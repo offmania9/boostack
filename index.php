@@ -9,20 +9,8 @@
  * @version 3.0
  */
 
-// #######################
 require_once "core/environment_init.php";
-$boostack->renderOpenHtmlHeadTags("Home");
-// #######################
 
-require_once $boostack->registerTemplateFile("boostack/header.phtml");
+Template::render("index.phtml");
 
-require_once $boostack->registerTemplateFile("boostack/content_index_out.phtml");
-
-require_once $boostack->registerTemplateFile("boostack/footer.phtml");
-
-
-// #######################
-$boostack->renderCloseHtmlTag();
-$boostack->writeLog("Homepage Page", LogLevel::Information);
-// #######################
 ?>

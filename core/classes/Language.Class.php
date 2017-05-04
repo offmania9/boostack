@@ -10,19 +10,37 @@
  */
 class Language {
 
-    /**
-     *
-     */
     const LANGUAGE_FILES_PATH = "lang/";
-    /**
-     *
-     */
+
     const LANGUAGE_FILES_EXTENSION = ".inc.json";
 
-    /**
-     * @return array|null|string
-     */
-    public static function getLanguage() {
+    private static $translatedLabels = null;
+
+    public static function init() {
+        $language = self::findLanguage();
+        $translatedLabels = Language::readAndDecodeLanguageFile($language);
+        if(Config::get('session_on')) Language::setSessionLanguage($language);
+        self::$translatedLabels = $translatedLabels;
+    }
+
+    public static function translate($key) {
+        if(is_array(self::$translatedLabels)) {
+            $k = explode(".", $key);
+            if(count($k) > 0) {
+                $tempArray = self::$translatedLabels;
+                foreach($k as $key) {
+                    if(!empty($tempArray[$key]))
+                        $tempArray = $tempArray[$key];
+                    else
+                        return "";
+                }
+                return $tempArray;
+            }
+        }
+        return "";
+    }
+
+    private static function findLanguage() {
         global $objSession;
         $defaultLanguage = Config::get("language_default");
         $language = null;
@@ -47,35 +65,17 @@ class Language {
         return $defaultLanguage;
     }
 
-    /**
-     * @param $lang
-     */
-    public static function setSessionLanguage($lang) {
+    private static function setSessionLanguage($lang) {
         global $objSession;
         Config::constraint("session_on");
         Config::constraint("database_on");
         $objSession->SESS_LANGUAGE = $lang;
     }
 
-    /**
-     * @param $lang
-     * @return string
-     * @throws Exception
-     */
-    public static function findLanguageFile($lang) {
+    private static function readAndDecodeLanguageFile($lang) {
         $filePath = ROOTPATH.self::LANGUAGE_FILES_PATH.$lang.self::LANGUAGE_FILES_EXTENSION;
-        if(is_file($filePath)) {
-            return $filePath;
-        }
-        throw new Exception("Language file ".$filePath." not found");
-    }
-
-    /**
-     * @param $file
-     * @return mixed
-     */
-    public static function readAndDecodeLanguageFile($file) {
-        $jsonFileContent = file_get_contents($file);
+        if(!is_file($filePath)) throw new Exception("Language file ".$filePath." not found");
+        $jsonFileContent = file_get_contents($filePath);
         $decodedFileContent = json_decode($jsonFileContent, true);
         return $decodedFileContent;
     }

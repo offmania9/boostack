@@ -1,0 +1,82 @@
+<section class="disclaimer">
+    <div class="line">
+        <div class="container">
+            <div class="row">
+                <h2>
+                    <span class="fadeInLeft animated"><span class="title"><?= Language::translate("projectName");?></span> <?= Language::translate("mainDescription");?></span><br />
+                    <span class="animated fadeInDown smaller"><?= Language::translate("mission");?></span>
+                </h2>
+            </div>
+            <div class="row text-center animated fadeInUp">
+                <a title="Download Boostack" href="<?= Template::getFriendlyUrl("download")?>"
+                   class="btn btn-lg download"><?= Language::translate("downloadBoostack");?> <?=Config::get("project_version");?></a>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="features">
+    <div class="container animated fadeIn">
+        <div class="row">
+            <div class="col-md-4">
+                <h3>
+                    <span><?= Language::translate("featuresTitles.fast");?></span>
+                </h3>
+                <p>
+                    <?= Language::translate("featuresDescriptions.fast");?>
+                </p>
+            </div>
+            <div class="col-md-4">
+                <h3>
+                    <span><?= Language::translate("featuresTitles.freedom");?></span>
+                </h3>
+                <p>
+                    <?= Language::translate("featuresDescriptions.freedom");?>
+                </p>
+            </div>
+            <div class="col-md-4">
+                <h3>
+                    <span><?= Language::translate("featuresTitles.simplicity");?></span>
+                </h3>
+                <p>
+                    <?= Language::translate("featuresDescriptions.simplicity");?>
+                </p>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-4">
+                <h3>
+                    <span><?= Language::translate("featuresTitles.seo");?></span>
+                </h3>
+                <p>
+                    <?= Language::translate("featuresDescriptions.seo");?>
+                </p>
+            </div>
+            <div class="col-md-4">
+                <h3>
+                    <span><?= Language::translate("featuresTitles.extensible");?></span>
+                </h3>
+                <p>
+                    <?= Language::translate("featuresDescriptions.extensible");?>
+                </p>
+            </div>
+            <div class="col-md-4">
+                <h3>
+                    <span><?= Language::translate("featuresTitles.secure");?></span>
+                </h3>
+                <p>
+                    <?= Language::translate("featuresDescriptions.secure");?>
+                </p>
+            </div>
+        </div>
+
+        <div class="row text-center">
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
+            <h4><?= Language::translate("inclusions")?></h4>
+            <h5><?= Language::translate("inclusions2")?></h5>
+            <a title="Download Boostack" href="<?= Template::getFriendlyUrl("download")?>"
+               class="btn btn-lg download"><?= Language::translate("downloadBoostack");?> <?=Config::get("project_version");?></a>
+        </div>
+    </div>
+</section>

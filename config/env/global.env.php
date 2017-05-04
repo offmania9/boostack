@@ -50,6 +50,12 @@ $config["twitter"] = "@getBoostack";
 $config["gplus"] = "https://plus.google.com/+BoostackFramework/";
 
 // css & js
+
+$config["css_path"] = "assets/css/";
+$config["js_path"] = "assets/js/";
+$config["image_path"] = "assets/img/";
+$config["mail_template_path"] = "template/mail/";
+
 $config["default_js_files"] = array("lib/require.js","helpers.js","init.js");
 $config["default_ie_js_files"] = array("lib/html5shiv.js","lib/respond.js");
 $config["default_css_files"] = array("lib/bootstrap.css","lib/animate.css","style.css");/*,"custom.css"*/

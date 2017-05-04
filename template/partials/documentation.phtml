@@ -1,0 +1,75 @@
+<section class="disclaimer sectionTitle">
+	<div class="line">
+		<div class="container">
+			<div class="row">
+				<h2><?= Language::translate("navigation.documentation");?></h2>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="documentation centerContent">
+	<div class="container">
+		<div class="row description">
+			<div class="col-md-3">
+				<ul class="list-unstyled documentationMenu">
+                    <li class="title">Getting Started</li>
+                    <li class="item"><a href="<?= Template::getFriendlyUrl("docs/setup")?>">Setup</a>
+                        <ul>
+                            <li><a title="Server Requirements" href="<?= Template::getFriendlyUrl("docs/setup#ServerRequirements")?>">Server Requirements</a></li>
+                            <li><a title="Installation" href="<?= Template::getFriendlyUrl("docs/setup#Installation")?>">Installation</a></li>
+                            <li><a title="Automatic Configuration" href="<?= Template::getFriendlyUrl("docs/setup#AutomaticConfiguration")?>">Automatic Configuration</a></li>
+                            <li><a title="Manual Configuration" href="<?= Template::getFriendlyUrl("docs/setup#ManualConfiguration")?>">Manual Configuration</a></li>
+                            <li><a title="Friendly URLs Configuration" href="<?= Template::getFriendlyUrl("docs/setup#FriendlyURLsConfiguration")?>">Friendly URLs Configuration</a></li>
+                            <li><a title="Accessing Configuration Values" href="<?= Template::getFriendlyUrl("docs/setup#AccessingConfigurationValues")?>">Accessing Configuration Values</a></li>
+                            <li><a title="Development Mode" href="<?= Template::getFriendlyUrl("docs/setup#DevelopmentMode")?>">Development Mode</a></li>
+                            <li><a title="Server Configuration" href="<?= Template::getFriendlyUrl("docs/setup#ServerConfiguration")?>">Server Configuration</a></li>
+                        </ul>
+                    </li>
+                    <li class="item"><a title="Directory structure" href="<?= Template::getFriendlyUrl("docs/directory-structure")?>">Directory structure</a></li>
+                    <li class="title">Code</li>
+                    <li class="item"><a title="Models" href="<?= Template::getFriendlyUrl("docs/models")?>">Models</a></li>
+                    <li class="item"><a title="Controllers" href="<?= Template::getFriendlyUrl("docs/controllers")?>">Controllers</a></li>
+                    <li class="item"><a title="Login Security" href="<?= Template::getFriendlyUrl("docs/loginSecurity#lockStrategies")?>">Login Security</a>
+                        <ul>
+                            <li><a title="Timer" href="<?= Template::getFriendlyUrl("docs/loginSecurity#Timer")?>">Timer</a></li>
+                            <li><a title="Recaptcha" href="<?= Template::getFriendlyUrl("docs/loginSecurity#Recaptcha")?>">Google Recaptcha</a></li>
+                        </ul>
+                    </li>
+			</div>
+			<div class="col-md-9 documentationInnerContent">
+                <?php
+                $defaultPage = "template/boostack/documentation/setup.phtml";
+                if(Request::hasQueryParam("docpath")) {
+                    switch (Request::getQueryParam("docpath")) {
+                        case "setup": {
+                            require "documentation/setup.phtml";
+                            break;
+                        }
+                        case "directory-structure": {
+                            require "documentation/directory_structure.phtml";
+                            break;
+                        }
+                        case "controllers": {
+                            require "documentation/controllers.phtml";
+                            break;
+                        }
+                        case "models": {
+                            require "documentation/models.phtml";
+                            break;
+                        }
+                        case "loginSecurity": {
+                            require "documentation/loginSecurity.phtml";
+                            break;
+                        }
+                        default: {
+                            require $defaultPage;
+                        }
+                    }
+                }
+                else
+                    require $defaultPage;
+                ?>
+            </div>
+		</div>
+	</div>
+</section>

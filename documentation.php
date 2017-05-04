@@ -8,19 +8,9 @@
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
  * @version 3.0
  */
-// #######################
+
 require_once "core/environment_init.php";
-$boostack->renderOpenHtmlHeadTags("Documentation");
-// #######################
 
-require_once $boostack->registerTemplateFile("boostack/header.phtml");
+Template::render("documentation.phtml");
 
-require_once $boostack->registerTemplateFile("boostack/content_documentation.phtml");
-
-require_once $boostack->registerTemplateFile("boostack/footer.phtml");
-
-// #######################
-$boostack->renderCloseHtmlTag();
-$boostack->writeLog("Documentation Page");
-// #######################
 ?>

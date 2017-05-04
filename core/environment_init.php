@@ -22,7 +22,15 @@ if ($config['developmentMode']) {
 }
 Config::initConfig();
 Request::init();
-$boostack = Boostack::getInstance();
+
+// TODO: delete?
+if (Config::get('developmentMode')) {
+    if (! ini_get('zlib.output_compression') && substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') && ! in_array('ob_gzhandler', ob_list_handlers()))
+        ob_start("ob_gzhandler");
+    else
+        ob_start();
+}
+
 $CURRENTUSER = NULL;
 if (Config::get('database_on')) {
     Database_PDO::getInstance($database['host'], $database['name'], $database['username'], $database['password']);
@@ -41,11 +49,7 @@ if (Config::get('database_on')) {
 }
 
 if (Config::get('language_on')) {
-    $language = Language::getLanguage();
-    $languageFile = Language::findLanguageFile($language);
-    $translatedLabels = Language::readAndDecodeLanguageFile($languageFile);
-    if(Config::get('session_on')) Language::setSessionLanguage($language);
-    $boostack->labels = $translatedLabels;
+    Language::init();
 }
 if (Config::get('mobile_on')) {
     $detect = new Mobile_Detect();

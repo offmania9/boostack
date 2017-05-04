@@ -9,16 +9,11 @@
  * @version 3.0
  */
 
-// #######################
 require_once "core/environment_init.php";
-$boostack->renderOpenHtmlHeadTags("Registration");
-// #######################
 
-require_once $boostack->registerTemplateFile("boostack/header.phtml");
-
+$registrationError = "";
 try {
     Config::constraint("session_on");
-    $registrationError = "";
     if (Request::hasPostParam('email') && Request::hasPostParam('psw1') && Request::hasPostParam('psw2')) {
         $email = Request::getPostParam('email');
         $psw1 = Request::getPostParam('psw1');
@@ -45,15 +40,11 @@ try {
 }
 
 if (Auth::isLoggedIn()) {
-    require_once $boostack->registerTemplateFile("boostack/content_login_logged.phtml");
+    Template::render("login_logged.phtml");
 } else {
-    require_once $boostack->registerTemplateFile("boostack/content_registration.phtml");
+    Template::render("registration.phtml", array(
+        "registrationError" => $registrationError
+    ));
 }
 
-require_once $boostack->registerTemplateFile("boostack/footer.phtml");
-
-// #######################
-$boostack->renderCloseHtmlTag();
-$boostack->writeLog("Registration Page");
-// #######################
 ?>
