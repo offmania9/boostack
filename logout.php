@@ -8,8 +8,11 @@
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
  * @version 3.0
  */
+
 require_once "core/environment_init.php";
+
 Auth::logout();
-header("location: " . $boostack->url);
+header("location: " . Config::get("url"));
 exit();
+
 ?>
