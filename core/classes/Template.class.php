@@ -3,7 +3,7 @@
 class Template {
 
     public static function render($template, $values = null) {
-        $templatePath = ROOTPATH."template/";
+        $templatePath = ROOTPATH.Config::get('template_path');
         if($values !== null) {
             foreach ($values as $valueName => $value) {
                 ${$valueName} = $value;

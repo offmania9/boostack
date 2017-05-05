@@ -54,6 +54,7 @@ $config["gplus"] = "https://plus.google.com/+BoostackFramework/";
 $config["css_path"] = "assets/css/";
 $config["js_path"] = "assets/js/";
 $config["image_path"] = "assets/img/";
+$config["template_path"] = "template/";
 $config["mail_template_path"] = "template/mail/";
 
 $config["default_js_files"] = array("lib/require.js","helpers.js","init.js");
