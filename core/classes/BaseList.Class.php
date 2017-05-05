@@ -86,6 +86,10 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable {
         $this->items[] = $element;
     }
 
+    public function clear() {
+        $this->items = [];
+    }
+
     /**
      * @return mixed
      */
@@ -203,32 +207,6 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable {
             Logger::write($pdoEx,Logger::LEVEL_ERROR, Logger::DRIVER_FILE);
             throw new PDOException("Database Exception. Please see log file.");
         }
-    }
-
-    /**
-     * @param $key
-     * @return bool
-     */
-    public function haskey($key) {
-        return array_key_exists($key,$this->items);
-    }
-
-    /**
-     * @param $key
-     * @param bool $shift
-     * @return bool
-     */
-    protected function remove($key, $shift = true) {
-        // TODO
-        return true;
-    }
-
-    /**
-     * @param $key
-     * @return mixed
-     */
-    public function get($key) {
-        return $this->items[$key];
     }
 
     /**
