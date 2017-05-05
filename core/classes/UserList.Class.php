@@ -65,7 +65,7 @@ class UserList extends BaseList {
             $countResult = count($queryResults);
             return $countResult;
         } catch (PDOException $pdoEx) {
-            FileLogger::getInstance()->log($pdoEx);
+            Logger::write($pdoEx,Logger::LEVEL_ERROR, Logger::DRIVER_FILE);
             throw new PDOException("Database Exception. Please see log file.");
         }
     }
@@ -172,7 +172,7 @@ class UserList extends BaseList {
             $this->fill($queryResults);
             return $queryNumberResult;
         } catch (PDOException $pdoEx) {
-            FileLogger::getInstance()->log($pdoEx);
+            Logger::write($pdoEx,Logger::LEVEL_ERROR, Logger::DRIVER_FILE);
             throw new PDOException("Database Exception. Please see log file.");
         }
     }

@@ -143,7 +143,7 @@ class Session_CSRF extends Session_HTTP
         try {
             return $this->CSRFCheckTokenValidity($postArray, $throwException);
         } catch(Exception $e) {
-            Log::write('Session_CSRF -> CSRFCheckValidity -> Caught exception: '.$e->getMessage().$e->getTraceAsString(),"error");
+            Logger::write('Session_CSRF -> CSRFCheckValidity -> Caught exception: '.$e->getMessage().$e->getTraceAsString(),Logger::LEVEL_ERROR);
             throw new Exception('Invalid CSRF token');
         }
     }

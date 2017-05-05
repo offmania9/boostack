@@ -36,7 +36,7 @@ class LogList extends BaseList {
         }
         catch (Exception $e)
         {
-            Log::write('LogList -> truncate -> Caught exception: '.$e->getMessage());
+            Logger::write('LogList -> truncate -> Caught exception: '.$e->getMessage());
             $res = false;
         }
         return $res;

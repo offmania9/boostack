@@ -1,6 +1,6 @@
 <?php
 /**
- * Boostack: Database_AccessLogger.Class.php
+ * Boostack: Log_Database.Class.php
  * ========================================================================
  * Copyright 2014-2017 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
@@ -8,7 +8,7 @@
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
  * @version 3.0
  */
-class Database_AccessLogger
+class Log_Database
 {
 
     /**
@@ -52,7 +52,7 @@ class Database_AccessLogger
     const TABLENAME = "boostack_log";
 
     /**
-     * Database_AccessLogger constructor.
+     * Log_Database constructor.
      * @param null $objUser
      */
     private function __construct($objUser = NULL)
@@ -108,13 +108,13 @@ class Database_AccessLogger
 
     /**
      * @param null $objUser
-     * @return Database_AccessLogger|null
+     * @return Log_Database|null
      */
     static function getInstance($objUser = NULL)
     {
         if (self::$instance == NULL)
-            self::$instance = new Database_AccessLogger($objUser);
-        
+            self::$instance = new Log_Database($objUser);
+
         return self::$instance;
     }
 
@@ -127,7 +127,7 @@ class Database_AccessLogger
         $q = $this->pdo->prepare($sql)->execute();
         while ($res = $q->fetch(PDO::FETCH_ASSOC))
             $res2[] = $res['datetime'] . " - " . $res['username'] . " - " . $res['message'] . " - " . $res['ip'] . " - " . substr($res['useragent'], 0, 10) . " - " . $res['query'];
-        
+
         return $res2;
     }
 }

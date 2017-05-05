@@ -1,10 +1,10 @@
 <?php
 
-class FileLogger {
+class Log_File {
 
     private static $instance = NULL;
 
-    private $logFile = __DIR__."/../../logs/log.txt";
+    private $logFile = ROOTPATH."logs/log.txt";
 
     private function __construct()
     {
@@ -18,12 +18,12 @@ class FileLogger {
     public static function getInstance()
     {
         if (self::$instance == NULL)
-            self::$instance = new FileLogger();
+            self::$instance = new Log_File();
 
         return self::$instance;
     }
 
-    public function log($message = NULL, $level = "information")
+    public function log($message = NULL, $level = Logger::LEVEL_INFORMATION)
     {
         $logFile = fopen($this->logFile, "a");
         if($logFile == false) {
