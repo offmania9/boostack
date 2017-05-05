@@ -57,17 +57,6 @@ class Template {
         return Config::get('url').Config::get('image_path').$image;
     }
 
-    public static function getFriendlyUrl($virtualPath) {
-        if(Config::get('session_on')){
-            global $objSession;
-            $langUrl = $objSession->SESS_LANGUAGE."/";
-            if(!Config::get('show_default_language_in_URL') && $objSession->SESS_LANGUAGE == Config::get('language_default'))
-                $langUrl = "";
-            return Config::get('url') . $langUrl . $virtualPath;
-        }
-        return Config::get('url') . $virtualPath;
-    }
-
     public static function getMailTemplate($mail, $parameters = null) {
         $file = ROOTPATH.Config::get('mail_template_path').$mail;
         if(!file_exists($file)) throw new Exception("Mail templating file ($file) not found");

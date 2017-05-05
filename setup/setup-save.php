@@ -64,7 +64,7 @@ if ($env_parameters["database_on"] == "true" && $finalSetupMessageError == "") {
         require_once("../core/classes/Utils.Class.php");
         spl_autoload_register('Utils::autoloadClass');
 
-        Config::initConfig();
+        Config::init();
 
         $db = Database_PDO::getInstance($env_parameters["db_host"], $env_parameters["db_name"], $env_parameters["db_username"], $env_parameters["db_password"]);
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

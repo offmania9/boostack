@@ -13,7 +13,7 @@ class Config {
     /**
      *
      */
-    public static function initConfig()
+    public static function init()
     {
         global $config;
         self::$configs = $config;

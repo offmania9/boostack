@@ -2,7 +2,7 @@
     <div class="line">
         <div class="container">
             <div class="row">
-                <h1><?= Language::translate("error.attention"); ?></h1>
+                <h1><?= Language::getLabel("error.attention"); ?></h1>
             </div>
         </div>
     </div>
@@ -11,7 +11,7 @@
 <section class="download centerContent">
     <div class="container">
         <div class="row description">
-            <h2><?= Language::translate("error.urlnotfound"); ?></h2>
+            <h2><?= Language::getLabel("error.urlnotfound"); ?></h2>
             <p>
                 <a href="<?= Config::get("url"); ?>"><?= Config::get("url"); ?></a>
             </p>

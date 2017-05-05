@@ -449,4 +449,15 @@ class Utils
         return substr($cookieValue,32) == md5(Utils::getIpAddress().Utils::getUserAgent());
     }
 
+    public static function getFriendlyUrl($virtualPath) {
+        if(Config::get('session_on')){
+            global $objSession;
+            $langUrl = $objSession->SESS_LANGUAGE."/";
+            if(!Config::get('show_default_language_in_URL') && $objSession->SESS_LANGUAGE == Config::get('language_default'))
+                $langUrl = "";
+            return Config::get('url') . $langUrl . $virtualPath;
+        }
+        return Config::get('url') . $virtualPath;
+    }
+
 }

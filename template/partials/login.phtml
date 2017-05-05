@@ -2,7 +2,7 @@
     <div class="line">
         <div class="container">
             <div class="row">
-                <h2><?= Language::translate("navigation.login");?></h2>
+                <h2><?= Language::getLabel("navigation.login");?></h2>
             </div>
         </div>
     </div>
@@ -15,12 +15,12 @@
             <div class="panel panel-success">
                 <div class="panel-heading">
                     <div class="pull-right">
-                        <small> <a href="<?= Template::getFriendlyUrl("login");?>">
-                                <?= Language::translate("login.forgotpwd");?>
+                        <small> <a href="<?= Utils::getFriendlyUrl("login");?>">
+                                <?= Language::getLabel("login.forgotpwd");?>
                             </a>
                         </small>
                     </div>
-                    <div class="panel-title"><?= Language::translate("login.signin");?></div>
+                    <div class="panel-title"><?= Language::getLabel("login.signin");?></div>
                 </div>
 
                 <div class="panel-body">
@@ -28,7 +28,7 @@
                     <?php if(!Auth::isTimerLocked()): ?>
                         <div id="login-alert" class="alert alert-danger col-sm-12 <?= $errorMessage == "" ? "hidden" : "" ?>"><?= $errorMessage; ?></div>
                         <form id="loginform"
-                              action="<?= Template::getFriendlyUrl("login");?>" name="loginform"
+                              action="<?= Utils::getFriendlyUrl("login");?>" name="loginform"
                               class="form-horizontal" method="post" role="form">
 
                             <div style="margin-bottom: 25px; margin-top: 25px;"
@@ -66,14 +66,14 @@
 
                             <div class="input-group">
                                 <div class="checkbox">
-                                    <label> <input id="login-remember" type="checkbox" name="rememberme" value="1" /><?= Language::translate("login.rememberme");?>
+                                    <label> <input id="login-remember" type="checkbox" name="rememberme" value="1" /><?= Language::getLabel("login.rememberme");?>
                                     </label>
                                 </div>
                             </div>
 
                             <div style="margin-top: 10px" class="form-group">
                                 <div class="col-sm-12 controls">
-                                    <input type="button" id="btn-login" class="btn btn-default" value="<?= Language::translate("login.login");?>" />
+                                    <input type="button" id="btn-login" class="btn btn-default" value="<?= Language::getLabel("login.login");?>" />
 
                                 </div>
                             </div>
@@ -82,7 +82,7 @@
                                 <div class="col-md-12 control">
                                     <div style="border-top: 1px solid #888; padding-top: 15px;">
                                         <small>
-                                            <a href="<?= Template::getFriendlyUrl("registration");?>"><?= Language::translate("login.donthaveaccount");?></a>
+                                            <a href="<?= Utils::getFriendlyUrl("registration");?>"><?= Language::getLabel("login.donthaveaccount");?></a>
                                         </small>
                                     </div>
                                 </div>

@@ -3,13 +3,13 @@
         <div class="container">
             <div class="row">
                 <h2>
-                    <span class="fadeInLeft animated"><span class="title"><?= Language::translate("projectName");?></span> <?= Language::translate("mainDescription");?></span><br />
-                    <span class="animated fadeInDown smaller"><?= Language::translate("mission");?></span>
+                    <span class="fadeInLeft animated"><span class="title"><?= Language::getLabel("projectName");?></span> <?= Language::getLabel("mainDescription");?></span><br />
+                    <span class="animated fadeInDown smaller"><?= Language::getLabel("mission");?></span>
                 </h2>
             </div>
             <div class="row text-center animated fadeInUp">
-                <a title="Download Boostack" href="<?= Template::getFriendlyUrl("download")?>"
-                   class="btn btn-lg download"><?= Language::translate("downloadBoostack");?> <?=Config::get("project_version");?></a>
+                <a title="Download Boostack" href="<?= Utils::getFriendlyUrl("download")?>"
+                   class="btn btn-lg download"><?= Language::getLabel("downloadBoostack");?> <?=Config::get("project_version");?></a>
             </div>
         </div>
     </div>
@@ -19,26 +19,26 @@
         <div class="row">
             <div class="col-md-4">
                 <h3>
-                    <span><?= Language::translate("featuresTitles.fast");?></span>
+                    <span><?= Language::getLabel("featuresTitles.fast");?></span>
                 </h3>
                 <p>
-                    <?= Language::translate("featuresDescriptions.fast");?>
+                    <?= Language::getLabel("featuresDescriptions.fast");?>
                 </p>
             </div>
             <div class="col-md-4">
                 <h3>
-                    <span><?= Language::translate("featuresTitles.freedom");?></span>
+                    <span><?= Language::getLabel("featuresTitles.freedom");?></span>
                 </h3>
                 <p>
-                    <?= Language::translate("featuresDescriptions.freedom");?>
+                    <?= Language::getLabel("featuresDescriptions.freedom");?>
                 </p>
             </div>
             <div class="col-md-4">
                 <h3>
-                    <span><?= Language::translate("featuresTitles.simplicity");?></span>
+                    <span><?= Language::getLabel("featuresTitles.simplicity");?></span>
                 </h3>
                 <p>
-                    <?= Language::translate("featuresDescriptions.simplicity");?>
+                    <?= Language::getLabel("featuresDescriptions.simplicity");?>
                 </p>
             </div>
         </div>
@@ -46,26 +46,26 @@
         <div class="row">
             <div class="col-md-4">
                 <h3>
-                    <span><?= Language::translate("featuresTitles.seo");?></span>
+                    <span><?= Language::getLabel("featuresTitles.seo");?></span>
                 </h3>
                 <p>
-                    <?= Language::translate("featuresDescriptions.seo");?>
+                    <?= Language::getLabel("featuresDescriptions.seo");?>
                 </p>
             </div>
             <div class="col-md-4">
                 <h3>
-                    <span><?= Language::translate("featuresTitles.extensible");?></span>
+                    <span><?= Language::getLabel("featuresTitles.extensible");?></span>
                 </h3>
                 <p>
-                    <?= Language::translate("featuresDescriptions.extensible");?>
+                    <?= Language::getLabel("featuresDescriptions.extensible");?>
                 </p>
             </div>
             <div class="col-md-4">
                 <h3>
-                    <span><?= Language::translate("featuresTitles.secure");?></span>
+                    <span><?= Language::getLabel("featuresTitles.secure");?></span>
                 </h3>
                 <p>
-                    <?= Language::translate("featuresDescriptions.secure");?>
+                    <?= Language::getLabel("featuresDescriptions.secure");?>
                 </p>
             </div>
         </div>
@@ -73,10 +73,10 @@
         <div class="row text-center">
             <p>&nbsp;</p>
             <p>&nbsp;</p>
-            <h4><?= Language::translate("inclusions")?></h4>
-            <h5><?= Language::translate("inclusions2")?></h5>
-            <a title="Download Boostack" href="<?= Template::getFriendlyUrl("download")?>"
-               class="btn btn-lg download"><?= Language::translate("downloadBoostack");?> <?=Config::get("project_version");?></a>
+            <h4><?= Language::getLabel("inclusions")?></h4>
+            <h5><?= Language::getLabel("inclusions2")?></h5>
+            <a title="Download Boostack" href="<?= Utils::getFriendlyUrl("download")?>"
+               class="btn btn-lg download"><?= Language::getLabel("downloadBoostack");?> <?=Config::get("project_version");?></a>
         </div>
     </div>
 </section>

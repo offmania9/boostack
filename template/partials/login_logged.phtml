@@ -2,7 +2,7 @@
     <div class="line">
         <div class="container">
             <div class="row">
-                <h2><?= Language::translate("navigation.login");?></h2>
+                <h2><?= Language::getLabel("navigation.login");?></h2>
             </div>
         </div>
     </div>
@@ -14,12 +14,12 @@
              class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
             <div class="panel panel-success">
                 <div class="panel-heading">
-                    <div class="panel-title"><?= Language::translate("login.loggedin");?></div>
+                    <div class="panel-title"><?= Language::getLabel("login.loggedin");?></div>
                 </div>
                 <div class="panel-body">
 
                     <div class="text-center col-sm-12">
-                        <a class="btn btn-sm danger" href="<?= Template::getFriendlyUrl("logout")?>">Logout</a></div>
+                        <a class="btn btn-sm danger" href="<?= Utils::getFriendlyUrl("logout")?>">Logout</a></div>
                 </div>
             </div>
         </div>

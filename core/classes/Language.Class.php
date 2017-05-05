@@ -18,12 +18,12 @@ class Language {
 
     public static function init() {
         $language = self::findLanguage();
-        $translatedLabels = Language::readAndDecodeLanguageFile($language);
+        $translatedLabels = Language::getLabelsFromLanguage($language);
         if(Config::get('session_on')) Language::setSessionLanguage($language);
         self::$translatedLabels = $translatedLabels;
     }
 
-    public static function translate($key) {
+    public static function getLabel($key) {
         if(is_array(self::$translatedLabels)) {
             $k = explode(".", $key);
             if(count($k) > 0) {
@@ -72,7 +72,7 @@ class Language {
         $objSession->SESS_LANGUAGE = $lang;
     }
 
-    private static function readAndDecodeLanguageFile($lang) {
+    private static function getLabelsFromLanguage($lang) {
         $filePath = ROOTPATH.self::LANGUAGE_FILES_PATH.$lang.self::LANGUAGE_FILES_EXTENSION;
         if(!is_file($filePath)) throw new Exception("Language file ".$filePath." not found");
         $jsonFileContent = file_get_contents($filePath);
