@@ -29,6 +29,7 @@
                     <li class="title">Code</li>
                     <li class="item"><a title="Models" href="<?= Utils::getFriendlyUrl("docs/models")?>">Models</a></li>
                     <li class="item"><a title="Controllers" href="<?= Utils::getFriendlyUrl("docs/controllers")?>">Controllers</a></li>
+                    <li class="item"><a title="Template" href="<?= Utils::getFriendlyUrl("docs/template")?>">Template</a></li>
                     <li class="item"><a title="Login Security" href="<?= Utils::getFriendlyUrl("docs/loginSecurity#lockStrategies")?>">Login Security</a>
                         <ul>
                             <li><a title="Timer" href="<?= Utils::getFriendlyUrl("docs/loginSecurity#Timer")?>">Timer</a></li>
@@ -38,7 +39,7 @@
 			</div>
 			<div class="col-md-9 documentationInnerContent">
                 <?php
-                $defaultPage = "template/boostack/documentation/setup.phtml";
+                $defaultPage = "documentation/setup.phtml";
                 if(Request::hasQueryParam("docpath")) {
                     switch (Request::getQueryParam("docpath")) {
                         case "setup": {
