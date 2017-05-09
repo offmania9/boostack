@@ -1,15 +1,12 @@
         <?php if(Config::get('session_on') && Config::get('csrf_on')): ?>
             <?php global $objSession; echo $objSession->CSRFRenderHiddenField(); ?>
         <?php endif; ?>
-
         <script type="text/javascript">
             var rootUrl = "<?= Config::get("url") ?>";
             var developmentMode = "<?= Config::get('developmentMode') ?>";
         </script>
-
         <?php Template::renderDefaultJSFiles(); ?>
-        <?php Template::renderDefaultIEJSFiles(); ?>
-
+        <?php Template::renderCustomJSFiles(); ?>
         <div id="fb-root"></div>
         <div class="overlay"></div>
         <div class="loading"></div>

@@ -31,9 +31,8 @@
         <meta name="apple-mobile-web-app-title" content="<?= Config::get('url').Config::get('sitename'); ?>"/>
         <base href="<?= Config::get('url') ?>" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
-
         <?php  Template::renderDefaultCSSFiles(); ?>
-
+        <?php  Template::renderCustomCSSFiles(); ?>
     </head>
     <body>
 
