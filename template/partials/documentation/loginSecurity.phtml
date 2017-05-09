@@ -49,11 +49,10 @@
             <p>
                 In the template .phtml file we dont show the login by using this syntax:
             </p>
-            <pre>
-                if(!Auth::isTimerLocked()):
-                    //Login form goes here.
-                endif;
-            </pre>
+<pre><code>if(!Auth::isTimerLocked()):
+    //Login form goes here.
+endif;
+</code></pre>
             <p>
                 In the <code>loginByUsernameAndPlainPassword</code> function located in
                 <code>core/classes/Auth.Class.php</code> the login process gets blocked if the function
@@ -74,14 +73,14 @@
             <p>
                 For what concerns the HTML part:
             </p>
-            <xmp>
-                <script type="text/javascript" src="https://www.google.com/recaptcha/api.js"></script>
-                <div id="reCaptcha-align">
-                    <div name="response" class="g-recaptcha" data-callback="verifyCaptcha"
-                         data-sitekey=”yoursite-publickey">
-                    </div>
-                </div>
-            </xmp>
+<pre><code>&lt;script type=&quot;text/javascript&quot; src=&quot;https://www.google.com/recaptcha/api.js&quot;&gt;&lt;/script&gt;
+&lt;div id=&quot;reCaptcha-align&quot;&gt;
+    &lt;div name=&quot;response&quot; class=&quot;g-recaptcha&quot; data-callback=&quot;verifyCaptcha&quot; data-sitekey=&rdquo;yoursite-publickey&quot;&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+
+
             <p>
                 The important thing about this simple <code>div</code> and the google’s recaptcha api import is the
                 <code>data-callback</code> function that will be used to verify “front-end” side to know if the user
@@ -92,12 +91,11 @@
             <p>
                 For what concerns the Javascript part:
             </p>
-            <pre>
-                var captchaResult = false;
-                function verifyCaptcha(response){
-                    if(response) captchaResult = true;
-                }
-            </pre>
+<pre><code>var captchaResult = false;
+function verifyCaptcha(response){
+    if(response) captchaResult = true;
+}
+</code></pre>
             <p>
                 This is the js function that will be invoked when the reCAPTCHA is completed and will verify
                 that the response given is correct.
@@ -114,7 +112,7 @@
                 you want to check that the response was not manipulated; so we need a validation by making a <code>CURL</code>
                 to the google recaptcha endpoint set in <code>env.php</code> : <code>https://www.google.com/recaptcha/api/siteverify</code>
             </p>
-            <pre>$recaptchaResponse = self::reCaptchaVerify($boostack, $_POST["g-recaptcha-response"]);</pre>
+            <pre><code>$recaptchaResponse = self::reCaptchaVerify($boostack, $_POST["g-recaptcha-response"]);</code></pre>
             <p>
                 We invoke the <code>reCaptchaVerify</code> function that returns true in case of success, false in case
                 of failure; it makes a CURL request to the google endpoint and validate it by decoding the json response.

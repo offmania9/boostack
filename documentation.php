@@ -11,6 +11,7 @@
 
 require_once "core/environment_init.php";
 
+Template::addCssFile("lib/atom-one-light.min.css");
 Template::render("documentation.phtml");
 
 ?>

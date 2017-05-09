@@ -2,12 +2,10 @@
 <section>
     <p><code>BaseClass</code> provides powerful methods to allow your custom classes to use a database table. To start
     using the benefits, your class must extends the <code>BaseClass</code>:</p>
-    <pre>
-        &lt;?php
-            class &lt;Your_Class&gt; extends BaseClass {
-                ...
-            }
-        ?&gt;</pre>
+<pre><code>class &lt;Your_Class&gt; extends BaseClass {
+    ...
+}
+</code></pre>
     <p>Then, all you need to do is to declare some pre-defined variables:</p>
     <ul>
         <li>
@@ -29,18 +27,16 @@
     </ul>
     <p>In the class constructor, you have to invoke the <code>init</code> method of the <code>BaseClass</code>
     and, optionally, it can accept an <code>$id</code> parameter to automatically load the instance with that ID:</p>
-    <pre>
-        public function __construct($id = NULL) {
-            parent::init($id);
-        }
-    </pre>
+<pre><code>public function __construct($id = NULL) {
+    parent::init($id);
+}
+</code></pre>
     <p>Optionally, you can declare some variables that are not linked with the database table. This kind of variables are excluded from every
         operation that involves database (insert and update).<br>For that, you can declare you custom variable
     and then the <code>$custom_excluded</code> instance variable that must contains all of this attributes name. <br> For example:</p>
-    <pre>
-        protected $myVar;  // variable not in the database table
-        protected $custom_excluded = ["myVar"];
-    </pre>
+<pre><code>protected $myVar;  // variable not in the database table
+protected $custom_excluded = ["myVar"];
+</code></pre>
 
     <h4>Available Methods</h4>
     <ul>
