@@ -3,6 +3,7 @@ var CSRFCheckManager = null;
 var cookieMessageModule = null;
 var loginModule = null;
 var registrationModule = null;
+var logListModule = null;
 
 var initLibrary = function() {
 
@@ -41,6 +42,14 @@ var initLibrary = function() {
             if (registrationModule != null) return;
             registrationModule = new m();
             registrationModule.init();
+        });
+    }
+
+    if (getElementsByClassName("logList").length) {
+        require(["module/logListModule"], function (m) {
+            if (logListModule != null) return;
+            logListModule = new m();
+            logListModule.init();
         });
     }
 

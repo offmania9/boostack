@@ -7,23 +7,65 @@ if (!(Config::get('session_on') && Auth::isLoggedIn())) return false;
 $res = new MessageBag();
 
 try {
-    $filterPage = (!empty($_POST["filterPage"])) ? Utils::sanitizeInput($_POST["filterPage"]) : null;
-    $result = array();
+    $filterPage = Request::hasPostParam("filterPage") ? Request::getPostParam("filterPage") : null;
+    $currentPage = Request::hasPostParam("currentPage") ? Request::getPostParam("currentPage") : 1;
+    $perPage = Request::hasPostParam("perPage") ? Request::getPostParam("perPage") : 25;
+    $orderBy = Request::hasPostParam("orderBy") ? Request::getPostParam("orderBy") : null;
+    $orderType = Request::hasPostParam("orderType") ? Request::getPostParam("orderType") : null;
+    $field = Request::hasPostParam("field") ? Request::getPostParam("field") : null;
+    $input = Request::hasPostParam("input") ? Request::getPostParam("input") : null;
+    $rule = Request::hasPostParam("rule") ? Request::getPostParam("rule") : null;
+    $filters = Request::hasPostParam("filters") ? Request::getPostParam("filters") : null;
+
+    if (!Validator::numeric($currentPage))
+        throw new Exception("error currentpage");
+    if (!Validator::numeric($perPage))
+        throw new Exception("error perpage");
+    if (!Validator::onlyCharNumbersUnderscore($orderBy))
+        throw new Exception("error orderby");
+    if (!(!empty($orderType) && ($orderType == 'ASC' || $orderType == 'DESC')))
+        throw new Exception("error orderType");
+
     $fieldViewArray = array();
-    $currentPage = (!empty($_POST["currentPage"])) ? Utils::sanitizeInput($_POST["currentPage"]) : 1;
-    $perPage = (!empty($_POST["perPage"])) ? Utils::sanitizeInput($_POST["perPage"]) : 10;
-    $orderBy = (!empty($_POST["orderBy"])) ? Utils::sanitizeInput($_POST["orderBy"]) : null;
-    $orderType = (!empty($_POST["orderType"])) ? Utils::sanitizeInput($_POST["orderType"]) : null;
-    $field = (!empty($_POST["field"])) ? Utils::sanitizeInput($_POST["field"]) : null;
-    $input = (isset($_POST["input"])) ? Utils::sanitizeInput($_POST["input"]) : null;
-    $rule = (!empty($_POST["rule"])) ? Utils::sanitizeInput($_POST["rule"]) : null;
+
+    if (empty($filters)) { //single filter
+        $field = Request::hasPostParam('field') && !empty(Request::getPostParam("field")) ? Request::getPostParam("field") : $error = "field not valid";
+        $input = Request::hasPostParam("input") ? Request::getPostParam("input") : $error = "input not valid";
+        $rule = Request::hasPostParam('rule') && !empty(Request::getPostParam("rule")) ? Request::getPostParam("rule") : $error = "rule not valid";
+        if (!Validator::onlyCharNumbersUnderscore($field))
+            throw new Exception("error field");
+        if (!(Validator::alphanumeric($input) || Validator::numeric($input)))
+            throw new Exception("error input");
+        if (!Validator::operators($rule))
+            throw new Exception("error rule");
+        $fieldViewArray[] = array($field, $rule, $input);
+    } else { //multiple filter
+        foreach ($filters as $filter) {
+            if (!Validator::onlyCharNumbersUnderscore($filter["field"]))
+                throw new Exception("error field");
+            if (!(Validator::alphanumeric($filter["input"]) || Validator::numeric($filter["input"])))
+                throw new Exception("error input");
+            if (!Validator::operators($filter["rule"]))
+                throw new Exception("error rule");
+            $fieldViewArray[] = array($filter["field"], $filter["rule"], $filter["input"]);
+        }
+    }
+
     if ($filterPage != null) {
         switch ($filterPage) {
+            case "logList":
+                $logList = new LogList();
+                $data = $logList->view($fieldViewArray, $orderBy, $orderType, $perPage, $currentPage);
+                saveFilterDataInSession("filter_log", $fieldViewArray,$orderBy,$orderType,$perPage,$currentPage);
+                $result["totalitem"] = $data;
+                $result["items"] = $logList->getItemsArray();
+                ($data != null) ? $res->setData($result) : $res->setError("Nessun dato disponibile");
+                break;
             case "userList":
-                $usersList = new User_List();
-                $fieldViewArray[] = array($field, $rule, $input);
                 $fieldViewArray[] = array("privilege", ">=", $CURRENTUSER->privilege);
-                $data = $usersList->view($fieldViewArray,$orderBy,$orderType,$perPage,$currentPage);
+                $usersList = new UserList();
+                $data = $usersList->view($fieldViewArray, $orderBy, $orderType, $perPage, $currentPage);
+                saveFilterDataInSession("filter_users", $fieldViewArray,$orderBy,$orderType,$perPage,$currentPage);
                 $result["totalitem"] = $data;
                 $result["items"] = $usersList->getItemsArray();
                 ($data != null) ? $res->setData($result) : $res->setError("Nessun dato disponibile");
@@ -35,10 +77,28 @@ try {
     } else {
         $res->setError("Nessuna azione disponibile");
     }
+} catch(Exception_Validation $ev){
+    $res->setError($e->getMessage());
+    $boostack->writeLog('Validation exception: '.$e->getMessage(),"error");
 } catch (Exception $e) {
     $res->setError($e->getMessage());
-    $boostack->writeLog('request not valid'.$e->getMessage(),"error");
+    $boostack->writeLog('Request not valid: '.$e->getMessage(),"error");
 }
 
 echo $res->toJSON();
+
+function saveFilterDataInSession($type, $fieldViewArray, $orderBy, $orderType, $perPage, $currentPage) {
+    global $objSession;
+    foreach($fieldViewArray as &$fields) {
+        $fields[1] = htmlspecialchars_decode($fields[1]);
+    }
+    $data = [
+        "fields" => $fieldViewArray,
+        "orderBy" => $orderBy,
+        "orderType" => $orderType,
+        "perPage" => $perPage,
+        "currentPage" => $currentPage,
+    ];
+    $objSession->$type = $data;
+}
 ?>

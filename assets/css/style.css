@@ -324,6 +324,12 @@ footer {
     padding-right: 10px; }
     header li:first-child {
       padding-left: 0px; } }
+.selectField {
+  min-width: 200px; }
+
+.selectCondition {
+  min-width: 200px; }
+
 .cookie-bar {
   position: fixed;
   z-index: 998;

@@ -1,0 +1,59 @@
+<section class="disclaimer sectionTitle">
+    <div class="line">
+        <div class="container">
+            <div class="row">
+                <h2><?=$boostack->getLabel("navigation.log");?></h2>
+            </div>
+        </div>
+    </div>
+</section>
+
+<input type="hidden" id="filterJson" value="<?= htmlspecialchars($filterField_Log)?>"/>
+            <input type="hidden" id="log_filter" value="<?= htmlspecialchars(json_encode($objSession->filter_log)) ?>"/>
+<p>&nbsp;</p>
+<section class="logList centerContent">
+    <div id="logBox" class="">
+        <div class="container">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <? require("filter.phtml");?>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                        <thead>
+                        <tr class="tableHeader">
+                            <th filterType="" fieldname="id" class="" title="Id">Id&nbsp;<span class="glyphicon sortingOrder"></span></th>
+                            <th filterType="" fieldname="level" class="" title="Level">Level&nbsp;<span class="glyphicon sortingOrder"></span></th>
+                            <th filterType="" fieldname="datetime" class="" title="Date and Time">Date and Time&nbsp;<span class="glyphicon sortingOrder"></span></th>
+                            <th filterType="" fieldname="ip" class="" title="IP">IP&nbsp;<span class="glyphicon sortingOrder"></span></th>
+                            <th filterType="" fieldname="useragent" class="" title="Useragent">Useragent&nbsp;<span class="glyphicon sortingOrder"></span></th>
+                            <th filterType="" fieldname="referrer" class="" title="Referrer">Referrer&nbsp;<span class="glyphicon sortingOrder"></span></th>
+                            <th filterType="" fieldname="query" class="" title="Query">Query&nbsp;<span class="glyphicon sortingOrder"></span></th>
+                            <th filterType="" fieldname="message" class="" title="Message">Message&nbsp;<span class="glyphicon sortingOrder"></span></th>
+                        </tr>
+                        </thead>
+                        <tbody class="tableToPaste">
+                        <tr>
+                            <td colspan="12" class="hidden">
+                                <small class="noData">Nessun dato disponibile</small>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tr class="tableToCopy hidden">
+                            <td class="id"></td>
+                            <td class="level"></td>
+                            <td class="datetime"></td>
+                            <td class="ip"></td>
+                            <td class="useragent"></td>
+                            <td class="referrer"></td>
+                            <td class="query"></td>
+                            <td class="message"></td>
+                        </tr>
+                    </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
