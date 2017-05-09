@@ -4,10 +4,11 @@ class Log_File {
 
     private static $instance = NULL;
 
-    private $logFile = ROOTPATH."logs/log.txt";
+    private $logFile;
 
     private function __construct()
     {
+        $this->logFile = ROOTPATH.Config::get("log_file");
         $path = dirname($this->logFile);
         if (!file_exists($path))
             exit("Error: unable to find log dir");
