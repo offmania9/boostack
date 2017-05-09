@@ -42,6 +42,7 @@ require.config({
     paths: {
         jquery: 'lib/jquery.min',
         bootstrap: 'lib/bootstrap.min',
+        highlight: 'lib/highlight.min'
     },
     shim: {
         bootstrap: {
