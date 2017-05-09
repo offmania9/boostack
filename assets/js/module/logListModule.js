@@ -48,7 +48,6 @@ define(['jquery'], function($) {
             bindSubmitForm();
             bindDynamicFilter();
             deleteFilter();
-            ajaxGetFilteredData();
         }
 
         function submitFilters(){
@@ -148,7 +147,6 @@ define(['jquery'], function($) {
                             var optionRules = jsonFilters[x][0]["rule"].split(",");
                             for(y in optionRules)
                                 $(select).append("<option value='"+optionRules[y]+"'>"+rules[optionRules[y]]+"</option>")
-                            $(fieldFormGroup).siblings(".filterTypeRegex").val(jsonFilters[x][0]["filter"]);
                             if(jsonFilters[x][0]["valueType"] == "select"){
                                 var inputId = $(fieldFormGroup).siblings(".input").find("input").attr("id");
                                 $(fieldFormGroup).siblings(".input").empty();
@@ -416,6 +414,7 @@ define(['jquery'], function($) {
                 $(conditions[i]).val(filterCondition).trigger("change");
                 $(values[i]).val(filterValue);
             }
+            ajaxGetFilteredData()
         }
 
         return {

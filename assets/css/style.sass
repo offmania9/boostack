@@ -352,4 +352,40 @@ footer
 .selectCondition
   min-width: 200px
 
+.glyphicon-sort-by-asc:before
+  content: "\e155"
+
+.glyphicon-sort-by-desc:before
+  content: "\e156"
+
+.sortingTable
+  width: auto
+  display: inline-block
+  outline: none
+  height: 22px
+  -webkit-border-radius: 0
+  -moz-border-radius: 0
+  border-radius: 0
+
+.customPagination
+  margin: 0
+  display: inline-flex
+  .active
+    span
+      background-color: #ddd
+      color: black
+      border-color: #ddd
+      &:hover
+        border-color: #ddd
+        background-color: #ccc
+  li
+    list-style-type: none
+    span
+      color: black
+      padding: 1px 8px 3px 8px
+      font-size: 14px
+      cursor: pointer
+      &:hover
+        background-color: #ccc
+
 @import "_cookie"
