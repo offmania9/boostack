@@ -92,8 +92,8 @@ class Utils
      */
     public static function checkPrivilege($currentUser, $privilegeLevel)
     {
-        if (!hasPrivilege($currentUser, $privilegeLevel))
-            goToError();
+        if (!self::hasPrivilege($currentUser, $privilegeLevel))
+            self::goToError();
     }
 
     /**
@@ -102,7 +102,7 @@ class Utils
      */
     public static function checkControllerPrivilege($currentUser, $privilegeLevel)
     {
-        if (!hasPrivilege($currentUser, $privilegeLevel))
+        if (!self::hasPrivilege($currentUser, $privilegeLevel))
             exit();
     }
 
@@ -342,8 +342,7 @@ class Utils
      */
     public static function goToMaintenance()
     {
-        $boostack = Boostack::getInstance();
-        header("Location: " . $boostack->url . Config::get("url_maintenance"));
+        header("Location: " . Config::get ("url"). Config::get("url_maintenance"));
         exit();
     }
 

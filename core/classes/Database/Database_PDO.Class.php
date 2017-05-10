@@ -47,9 +47,8 @@ class Database_PDO
                 self::$instance->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             }
             return self::$instance;
-        }
-        catch(PDOException $e){
-            // WRITE into log file
+        } catch(PDOException $e){
+            Logger::write($e,Logger::LEVEL_ERROR, Logger::DRIVER_FILE);
             if(!Config::get("developmentMode")){// go to mantainance page
                 Utils::goToMaintenance();
             }
