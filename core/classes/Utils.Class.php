@@ -83,7 +83,7 @@ class Utils
      */
     public static function getUserAgent()
     {
-        return Utils::sanitizeInput($_SERVER["HTTP_USER_AGENT"]);
+        return Request::hasServerParam("HTTP_USER_AGENT") ? Request::getServerParam("HTTP_USER_AGENT") : null;
     }
 
     /**
