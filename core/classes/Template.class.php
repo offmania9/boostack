@@ -6,13 +6,16 @@ class Template {
     private static $customJsFiles;
 
     public static function render($template, $values = null) {
-        $templatePath = ROOTPATH.Config::get('template_path');
+        $templateDir = ROOTPATH.Config::get('template_path');
+        $templateFile = $templateDir.$template;
+        if(!file_exists($templateFile))
+            throw new Exception_FileNotFound("Template file ".$templateFile. "not found");
         if($values !== null) {
             foreach ($values as $valueName => $value) {
                 ${$valueName} = $value;
             }
         }
-        require $templatePath.$template;
+        require $templateFile;
     }
 
     public static function renderDefaultJSFiles() {
