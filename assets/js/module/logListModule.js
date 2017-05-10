@@ -384,7 +384,10 @@ define(['jquery'], function($) {
 
         function initializeFilterFromSession(element) {
             var sessionFilters = JSON.parse($(element).val());
-            if(sessionFilters == "") return false;
+            if(sessionFilters == "") {
+                ajaxGetFilteredData();
+                return false;
+            }
             var filterName = null;
             var filterCondition = null;
             var filterValue = null;

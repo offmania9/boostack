@@ -5,6 +5,8 @@
 		<li><a title="Documentation" href="<?=$boostack->getFriendlyUrl("docs/setup");?>"><?=$boostack->getLabel("navigation.documentation");?></a></li>
 		<li><a title="Login" href="<?=$boostack->getFriendlyUrl("login");?>"><?=$boostack->getLabel("navigation.login");?></a></li>
 		<li><a title="Registration" href="<?=$boostack->getFriendlyUrl("registration");?>"><?=$boostack->getLabel("navigation.registration");?></a></li>
-		<li><a title="Log" href="<?=$boostack->getFriendlyUrl("log");?>"><?=$boostack->getLabel("navigation.log");?></a></li>
+		<?php if (Utils::hasPrivilege($CURRENTUSER, PRIVILEGE_SUPERADMIN)): ?>
+            <li><a title="Log" href="<?=$boostack->getFriendlyUrl("log");?>"><?=$boostack->getLabel("navigation.log");?></a></li>
+        <? endif; ?>
 	</ul>
 </header>
