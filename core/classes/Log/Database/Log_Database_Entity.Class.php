@@ -1,6 +1,6 @@
 <?php
 /**
- * Boostack: Log.Class.php
+ * Boostack: Log_Database_Entity.Class.php
  * ========================================================================
  * Copyright 2014-2017 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
@@ -8,7 +8,7 @@
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
  * @version 3.0
  */
-class Log extends BaseClass implements JsonSerializable{
+class Log_Database_Entity extends BaseClass {
     /**
      * @var
      */

@@ -18,12 +18,12 @@ class Logger {
             case self::DRIVER_DATABASE:
                 if (Config::get('database_on') && Config::get('log_on')) {
                     $currentUser = Auth::getUserLoggedObject();
-                    Log_Database::getInstance($currentUser)->Log($message, $level);
+                    Log_Database_Writer::getInstance($currentUser)->Log($message, $level);
                 }
                 break;
             case self::DRIVER_FILE:
                 if (Config::get('log_on'))
-                    Log_File::getInstance()->log($message, $level);
+                    Log_File_Writer::getInstance()->log($message, $level);
                 break;
             default:
                 throw new Exception("Log type not found");

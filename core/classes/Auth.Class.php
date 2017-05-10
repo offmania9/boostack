@@ -67,7 +67,7 @@ class Auth {
             if($isLockStrategyEnabled) $objSession->failed_login_count = 0;
 
         } catch (Exception $e) {
-            Logger::write("Login.php : ".$e->getMessage()." trace:".$e->getTraceAsString(),Logger::LEVEL_USER);
+            Logger::write($e,Logger::LEVEL_USER);
             $result->setError($e->getMessage());
             $result->setCode($e->getCode());
         }
@@ -113,9 +113,9 @@ class Auth {
                 }
             }
         } catch (PDOException $e) {
-            Logger::write('Session_HTTP -> loginByCookie -> PDOException: ' . $e->getMessage(), Logger::LEVEL_ERROR);
-        } catch (Exception $b) {
-            Logger::write('Session_HTTP -> loginByCookie -> Exception: ' . $b->getMessage(), Logger::LEVEL_ERROR);
+            Logger::write($e, Logger::LEVEL_ERROR);
+        } catch (Exception $e) {
+            Logger::write($e, Logger::LEVEL_ERROR);
         }
         return false;
     }
@@ -150,9 +150,9 @@ class Auth {
                 return true;
             }
         } catch (PDOException $e) {
-            Logger::write('Session_HTTP -> LogOut -> PDOException: ' . $e->getMessage(), Logger::LEVEL_ERROR);
-        } catch (Exception $b) {
-            Logger::write('Session_HTTP -> LogOut -> Exception: ' . $b->getMessage(), Logger::LEVEL_ERROR);
+            Logger::write($e, Logger::LEVEL_ERROR);
+        } catch (Exception $e) {
+            Logger::write($e, Logger::LEVEL_ERROR);
         }
         return false;
     }
@@ -292,9 +292,9 @@ class Auth {
                 }
             }
         } catch (PDOException $e) {
-            Logger::write('LogList -> view -> Caught PDOException: '.$e->getMessage(),Logger::LEVEL_ERROR);
-        } catch ( Exception $b ) {
-            Logger::write('LogList -> view -> Caught Exception: '.$b->getMessage(),Logger::LEVEL_ERROR);
+            Logger::write($e,Logger::LEVEL_ERROR);
+        } catch (Exception $e) {
+            Logger::write($e,Logger::LEVEL_ERROR);
         }
         return false;
     }

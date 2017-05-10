@@ -1,6 +1,6 @@
 <?php
 
-class Log_File {
+class Log_File_Writer {
 
     private static $instance = NULL;
 
@@ -19,7 +19,7 @@ class Log_File {
     public static function getInstance()
     {
         if (self::$instance == NULL)
-            self::$instance = new Log_File();
+            self::$instance = new Log_File_Writer();
 
         return self::$instance;
     }
