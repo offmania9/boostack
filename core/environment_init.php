@@ -31,7 +31,6 @@ if (Config::get('developmentMode')) {
         ob_start();
 }
 
-$CURRENTUSER = NULL;
 if (Config::get('database_on')) {
     Database_PDO::getInstance($database['host'], $database['name'], $database['username'], $database['password']);
     if (Config::get('session_on')) {
@@ -43,8 +42,6 @@ if (Config::get('database_on')) {
                 if (!Auth::loginByCookie($c)) //cookie is set but wrong (manually edited)
                     Auth::logout();
         }
-        $CURRENTUSER = Auth::getUserLoggedObject();
-
     }
 }
 

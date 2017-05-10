@@ -17,12 +17,13 @@ try {
     $field = (!empty($_POST["field"])) ? Utils::sanitizeInput($_POST["field"]) : null;
     $input = (isset($_POST["input"])) ? Utils::sanitizeInput($_POST["input"]) : null;
     $rule = (!empty($_POST["rule"])) ? Utils::sanitizeInput($_POST["rule"]) : null;
+    $currentUser = Auth::getUserLoggedObject();
     if ($filterPage != null) {
         switch ($filterPage) {
             case "userList":
                 $usersList = new User_List();
                 $fieldViewArray[] = array($field, $rule, $input);
-                $fieldViewArray[] = array("privilege", ">=", $CURRENTUSER->privilege);
+                $fieldViewArray[] = array("privilege", ">=", $currentUser->privilege);
                 $data = $usersList->view($fieldViewArray,$orderBy,$orderType,$perPage,$currentPage);
                 $result["totalitem"] = $data;
                 $result["items"] = $usersList->getItemsArray();
