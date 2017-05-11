@@ -16,9 +16,15 @@ class Logger {
     public static function write($message = "", $level = self::LEVEL_INFORMATION, $type = self::DRIVER_DATABASE) {
         switch ($type) {
             case self::DRIVER_DATABASE:
-                if (Config::get('database_on') && Config::get('log_on')) {
-                    $currentUser = Auth::getUserLoggedObject();
-                    Log_Database_Writer::getInstance($currentUser)->Log($message, $level);
+                if(Config::get('log_on')) {
+                    try {
+                        Config::constraint("'database_on'");
+                        $currentUser = Auth::getUserLoggedObject();
+                        Log_Database_Writer::getInstance($currentUser)->Log($message, $level);
+                    } catch(Exception $e) {
+                        Log_File_Writer::getInstance()->log($e, $level);
+                        Log_File_Writer::getInstance()->log($message, $level);
+                    }
                 }
                 break;
             case self::DRIVER_FILE:
