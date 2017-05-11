@@ -3,6 +3,7 @@
 /**
  * Class Exception_Misconfiguration
  */
-class Exception_Misconfiguration extends Exception {
+class Exception_Misconfiguration extends Exception
+{
 
 }

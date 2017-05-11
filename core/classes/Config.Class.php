@@ -3,7 +3,8 @@
 /**
  * Class Config
  */
-class Config {
+class Config
+{
 
     /**
      * @var null

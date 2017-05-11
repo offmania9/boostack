@@ -8,7 +8,8 @@
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
  * @version 3.0
  */
-abstract class BaseList implements IteratorAggregate, JsonSerializable {
+abstract class BaseList implements IteratorAggregate, JsonSerializable
+{
 
     /**
      * @var
@@ -42,7 +43,8 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable {
     /**
      *
      */
-    protected function init() {
+    protected function init()
+    {
         $this->pdo = Database_PDO::getInstance();
         $this->items = [];
         $this->baseClassName = static::BASE_CLASS;
@@ -54,39 +56,45 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable {
      * e.g. foreach($myList as $elem) ...
      * @return ArrayIterator
      */
-    public function getIterator() {
+    public function getIterator()
+    {
         return new ArrayIterator($this->items);
     }
 
     /**
      * @return mixed
      */
-    public function toArray() {
+    public function toArray()
+    {
         return $this->items;
     }
 
     /**
      * @return int
      */
-    public function size() {
+    public function size()
+    {
         return count($this->items);
     }
 
     /**
      * @return bool
      */
-    public function isEmpty() {
+    public function isEmpty()
+    {
         return count($this->items) == 0;
     }
 
     /**
      * @param $element
      */
-    public function add($element) {
+    public function add($element)
+    {
         $this->items[] = $element;
     }
 
-    public function clear() {
+    public function clear()
+    {
         $this->items = [];
     }
 
@@ -94,14 +102,16 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable {
      * This method is used when json_encode() is called
      * It expose "items" to the json_encode() function
      */
-    public function jsonSerialize() {
+    public function jsonSerialize()
+    {
         return $this->items;
     }
 
     /**
      * Retrieve values with field filtering, ordering and pagination
      */
-    public function view($fields = NULL, $orderColumn = NULL, $orderType = NULL, $numitem = 25, $currentPage = 1) {
+    public function view($fields = NULL, $orderColumn = NULL, $orderType = NULL, $numitem = 25, $currentPage = 1)
+    {
         try {
             $sql = "";
             $orderType = strtoupper($orderType);
@@ -207,7 +217,8 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable {
      * For example with query results
      * ex. $array = [ 0 => [ "field1" => "value1", .. ], 1 => [..] ]
      */
-    protected function fill($array) {
+    protected function fill($array)
+    {
         foreach ($array as $elem) {
             $baseClassInstance = new $this->baseClassName;
             $baseClassInstance->fill($elem);
@@ -218,7 +229,8 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable {
     /**
      * @return int
      */
-    public function loadAll() {
+    public function loadAll()
+    {
         try {
             $sql = "SELECT * FROM " . $this->baseClassTablename;
             $q = $this->pdo->prepare($sql);
@@ -233,7 +245,8 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable {
         }
     }
 
-    public function truncate() {
+    public function truncate()
+    {
         try {
             $sql = "TRUNCATE ".$this->baseClassTablename;
             $q = $this->pdo->prepare($sql);

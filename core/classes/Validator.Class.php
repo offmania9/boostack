@@ -8,7 +8,8 @@
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
  * @version 3.0
  */
-class Validator {
+class Validator
+{
 
     /**
      * @var
@@ -41,7 +42,8 @@ class Validator {
      * @return array|bool : ritorna true in caso di successo, altrimenti ritorna un array contenente
      * i campi che non hanno superato la validazione
      */
-    public function validate($input, $rules) {
+    public function validate($input, $rules)
+    {
         $this->error = false;
         $this->errorMessages = array();
 
@@ -106,7 +108,8 @@ class Validator {
      *  In: ogni elemento di values $validate->valueIn()
      *
      */
-    public function validateFormValues($input, $rules) {
+    public function validateFormValues($input, $rules)
+    {
         $this->error = false;
         $this->errorMessages = array();
 
@@ -180,7 +183,8 @@ class Validator {
      *  Ritornano true/false
      **/
 
-    public static function string($input) {
+    public static function string($input)
+    {
         $res = true;
         if(is_array($input)) {
             foreach($input as $elem) {
@@ -198,7 +202,8 @@ class Validator {
      * @param $input
      * @return bool
      */
-    public static function numeric($input) {
+    public static function numeric($input)
+    {
         $res = true;
         if(is_array($input)) {
             foreach($input as $elem) {
@@ -216,7 +221,8 @@ class Validator {
      * @param $input
      * @return bool|int
      */
-    public static function alphanumeric($input) {
+    public static function alphanumeric($input)
+    {
         $res = true;
         if(is_array($input)) {
             foreach($input as $elem) {
@@ -234,7 +240,8 @@ class Validator {
      * @param $input
      * @return bool|int
      */
-    public static function integer($input) {
+    public static function integer($input)
+    {
         $res = true;
         if(is_array($input)) {
             foreach($input as $elem) {
@@ -252,7 +259,8 @@ class Validator {
      * @param $input
      * @return bool|int
      */
-    public static function float($input) {
+    public static function float($input)
+    {
         $res = true;
         if(is_array($input)) {
             foreach($input as $elem) {
@@ -271,7 +279,8 @@ class Validator {
      * @param $array
      * @return bool
      */
-    public static function in($elem, $array) {
+    public static function in($elem, $array)
+    {
         return in_array($elem,$array);
     }
 
@@ -279,7 +288,8 @@ class Validator {
      * @param $input
      * @return bool
      */
-    public static function email($input) {
+    public static function email($input)
+    {
         return is_string($input) && filter_var($input, FILTER_VALIDATE_EMAIL);
     }
 
@@ -287,7 +297,8 @@ class Validator {
      * @param $input
      * @return bool
      */
-    public static function phone($input) {
+    public static function phone($input)
+    {
         // TODO find regex for phone numbers
         return true;
     }
@@ -296,7 +307,8 @@ class Validator {
      * @param $password
      * @return bool
      */
-    public static function password($password) {
+    public static function password($password)
+    {
         return !empty($password) && (strlen($password) >= Config::get("password_min_length")) && (strlen($password) <= Config::get("password_max_length"));
     }
 
@@ -304,7 +316,8 @@ class Validator {
      * @param $username
      * @return bool
      */
-    public static function username($username) {
+    public static function username($username)
+    {
         return !empty($username) && (strlen($username) >= Config::get("username_min_length")) && (strlen($username) <= Config::get("username_max_length"));
     }
 
@@ -312,7 +325,8 @@ class Validator {
      * @param $filename
      * @return int
      */
-    public static function filename($filename) {
+    public static function filename($filename)
+    {
         return true; // TODO find regex for filename
         // OWASP regex NOT WORK
         //$regex = '^(([a-zA-Z]:|\\)\\)?(((\.)|(\.\.)|([^\\/:*?"|<>. ](([^\\/:*?"|<>. ])|([^\\/:*?"|<>]*[^\\/:*?"|<>. ]))?))\\)*[^\\/:*?"|<>. ](([^\\/:*?"|<>. ])|([^\\/:*?"|<>]*[^\\/:*?"|<>. ]))?$';
@@ -325,13 +339,15 @@ class Validator {
      * @param $array
      * @return bool
      */
-    public function required($input, $array) {
+    public function required($input, $array)
+    {
         return array_key_exists($input,$array);
     }
 
     /** PRIVATE METHODS */
 
-    private function setError($key,$message) {
+    private function setError($key,$message)
+    {
         $this->error = true;
         $this->errorMessages[$key]["message"][] = $message;
     }
@@ -339,7 +355,8 @@ class Validator {
     /**
      * @return mixed
      */
-    private function hasError() {
+    private function hasError()
+    {
         return $this->error;
     }
 

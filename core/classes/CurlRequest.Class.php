@@ -8,7 +8,8 @@
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
  * @version 3.0
  */
-class CurlRequest {
+class CurlRequest
+{
 
     /**
      * @var string
@@ -42,56 +43,64 @@ class CurlRequest {
     /**
      * CurlRequest constructor.
      */
-    public function __construct() {
+    public function __construct()
+    {
 
     }
 
     /**
      * @param $endpoint
      */
-    public function setEndpoint($endpoint) {
+    public function setEndpoint($endpoint)
+    {
         $this->endpoint = $endpoint;
     }
 
     /**
      * @param $isPost
      */
-    public function setIsPost($isPost) {
+    public function setIsPost($isPost)
+    {
         $this->is_post = $isPost;
     }
 
     /**
      * @param $returnTransfer
      */
-    public function setReturnTransfer($returnTransfer) {
+    public function setReturnTransfer($returnTransfer)
+    {
         $this->return_transfer = $returnTransfer;
     }
 
     /**
      * @param $fields
      */
-    public function setGetFields($fields) {
+    public function setGetFields($fields)
+    {
         $this->getFields = $fields;
     }
 
     /**
      * @param $fields
      */
-    public function setPostFields($fields) {
+    public function setPostFields($fields)
+    {
         $this->postFields = $fields;
     }
 
     /**
      * @param $data
      */
-    public function setCustomHeader($data) {
+    public function setCustomHeader($data)
+    {
         $this->customHeader = $data;
     }
 
     /**
      * @return MessageBag
      */
-    public function send() {
+    public function send()
+    {
         $response = new MessageBag();
 
         $endpoint = $this->endpoint;

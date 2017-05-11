@@ -11,19 +11,22 @@
 require ROOTPATH .'vendor/autoload.php';
 use Mailgun\Mailgun;
 
-class Email_Mailgun extends Email_Basic {
+class Email_Mailgun extends Email_Basic
+{
 
     /**
      * @param $path
      */
-    public function addAttachmentPath($path) {
+    public function addAttachmentPath($path)
+    {
         $this->attachment = array_merge($this->attachment, array($path));
     }
 
     /**
      * @return bool
      */
-    public function send(){
+    public function send()
+    {
         $mgClient = new Mailgun(Config::get("mailgun_key"));
         $domain = Config::get("mailgun_domain");
         $harr = array(

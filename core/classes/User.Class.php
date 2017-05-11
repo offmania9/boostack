@@ -8,7 +8,8 @@
  * @author Alessio Debernardi
  * @version 3.0
  */
-class User implements JsonSerializable {
+class User implements JsonSerializable
+{
 
     /**
      * @var null
@@ -36,7 +37,8 @@ class User implements JsonSerializable {
     /**
      * Crea una nuova istanza della classe, istanziando i sotto-oggetti.
      */
-    public function __construct($id = null) {
+    public function __construct($id = null)
+    {
         $this->id = $id;
         $this->pdo = Database_PDO::getInstance();
         foreach ($this->objects as $class => &$object) {
@@ -53,7 +55,8 @@ class User implements JsonSerializable {
      * Riempie l'oggetto con l'array chiave-valore passato come parametro (invocando __get).
      * Se è presente l'id, lo setta in tutte le sotto-istanze.
      */
-    public function fill($array) {
+    public function fill($array)
+    {
         if(array_key_exists("id",$array)) {
             foreach($this->objects as $object) {
                 $object->id = $array["id"];
@@ -67,7 +70,8 @@ class User implements JsonSerializable {
     /**
      * @param $id
      */
-    public function load($id) {
+    public function load($id)
+    {
         $this->id = $id;
     }
 
@@ -76,7 +80,8 @@ class User implements JsonSerializable {
      * Se è presente l'id, invoca la save delle sotto-istanze.
      * Altrimenti, salva la prima istanza ottenento l'id auto-incrementale e successivamente salva le altre istanze con lo stesso id.
      */
-    public function save($forcedID = null) {
+    public function save($forcedID = null)
+    {
         try {
             $this->pdo->beginTransaction();
             if(empty($this->id)) {
@@ -109,7 +114,8 @@ class User implements JsonSerializable {
     /**
      * Rimuove tutte le sotto-istanze dell'utente dal database.
      */
-    public function delete() {
+    public function delete()
+    {
         if(empty($this->id)) throw new Exception("Instance must have 'id' field to be deleted");
         try {
             $this->pdo->beginTransaction();
@@ -129,7 +135,8 @@ class User implements JsonSerializable {
     /** Setta un attributo sulla relativa variabile d'istanza.
      * Se è presente l'id ma la relativa istanza non è ancora stata caricata, effettua la load.
      */
-    public function __set($property, $value) {
+    public function __set($property, $value)
+    {
         if(!isset($this->attributes[$property]))
             throw new Exception("Field $property not found");
         $className = $this->attributes[$property];
@@ -144,7 +151,8 @@ class User implements JsonSerializable {
      * Restituisce il valore di un attributo recuperandolo dalla relativa variabile d'istanza.
      * Se è presente l'id ma la relativa istanza non è ancora stata caricata, effettua la load.
      */
-    public function __get($property) {
+    public function __get($property)
+    {
         if($property == "id") return $this->id;
         if(!isset($this->attributes[$property]))
             throw new Exception("Field $property not found");
@@ -181,7 +189,8 @@ class User implements JsonSerializable {
      * @param bool $throwException
      * @return bool
      */
-    public static function existById($id, $throwException = true) {
+    public static function existById($id, $throwException = true)
+    {
         return User_Entity::existById($id, $throwException);
     }
 
@@ -190,7 +199,8 @@ class User implements JsonSerializable {
      * @param bool $throwException
      * @return bool
      */
-    public static function existsByEmail($email, $throwException = true) {
+    public static function existsByEmail($email, $throwException = true)
+    {
         return User_Entity::existsByEmail($email, $throwException);
     }
 
@@ -199,7 +209,8 @@ class User implements JsonSerializable {
      * @param bool $throwException
      * @return bool
      */
-    public static function existsByUsername($username, $throwException = true) {
+    public static function existsByUsername($username, $throwException = true)
+    {
         return User_Entity::existsByUsername($username, $throwException);
     }
 
@@ -208,7 +219,8 @@ class User implements JsonSerializable {
      * @param bool $throwException
      * @return bool
      */
-    public static function getUserIDByEmail($email, $throwException = true) {
+    public static function getUserIDByEmail($email, $throwException = true)
+    {
         return User_Entity::getUserIDByEmail($email, $throwException);
     }
 
@@ -216,7 +228,8 @@ class User implements JsonSerializable {
      * @param $cookieValue
      * @return bool
      */
-    public static function getCredentialByCookie($cookieValue) {
+    public static function getCredentialByCookie($cookieValue)
+    {
         return User_Entity::getCredentialByCookie($cookieValue);
     }
 
@@ -224,7 +237,8 @@ class User implements JsonSerializable {
      * @param $email
      * @return bool
      */
-    public static function getActiveCredentialByEmail($email) {
+    public static function getActiveCredentialByEmail($email)
+    {
         return User_Entity::getActiveCredentialByEmail($email);
     }
 
@@ -232,7 +246,8 @@ class User implements JsonSerializable {
      * @param $username
      * @return bool
      */
-    public static function getActiveCredentialByUsername($username) {
+    public static function getActiveCredentialByUsername($username)
+    {
         return User_Entity::getActiveCredentialByUsername($username);
     }
 
@@ -241,7 +256,8 @@ class User implements JsonSerializable {
      * @param $username
      * @return bool
      */
-    public static function getActiveCredentialByEmailOrUsername($email, $username) {
+    public static function getActiveCredentialByEmailOrUsername($email, $username)
+    {
         return User_Entity::getActiveCredentialByEmailOrUsername($email, $username);
     }
 
@@ -250,7 +266,8 @@ class User implements JsonSerializable {
      * @param $password
      * @return bool
      */
-    public static function getActiveIdByEmailAndPassword($email, $password) {
+    public static function getActiveIdByEmailAndPassword($email, $password)
+    {
         return User_Entity::getActiveIdByEmailAndPassword($email, $password);
     }
 
@@ -259,7 +276,8 @@ class User implements JsonSerializable {
      * @param $password
      * @return bool
      */
-    public static function getActiveIdByUsernameAndPassword($username, $password) {
+    public static function getActiveIdByUsernameAndPassword($username, $password)
+    {
         return User_Entity::getActiveIdByUsernameAndPassword($username, $password);
     }
 
@@ -269,14 +287,16 @@ class User implements JsonSerializable {
      * @param $password
      * @return bool
      */
-    public static function getActiveIdByEmailOrUsernameAndPassword($email, $username, $password) {
+    public static function getActiveIdByEmailOrUsernameAndPassword($email, $username, $password)
+    {
         return User_Entity::getActiveIdByEmailOrUsernameAndPassword($email, $username, $password);
     }
 
     /**
      *
      */
-    public function refreshRememberMeCookie() {
+    public function refreshRememberMeCookie()
+    {
         $cookieHash = Utils::generateCookieHash();
         $this->session_cookie = $cookieHash;
         $this->save();

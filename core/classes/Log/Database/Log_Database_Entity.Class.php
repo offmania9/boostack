@@ -8,7 +8,8 @@
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
  * @version 3.0
  */
-class Log_Database_Entity extends BaseClass {
+class Log_Database_Entity extends BaseClass
+{
     /**
      * @var
      */
@@ -66,14 +67,16 @@ class Log_Database_Entity extends BaseClass {
      * Log constructor.
      * @param null $id
      */
-    public function __construct($id = NULL) {
+    public function __construct($id = NULL)
+    {
         parent::init($id);
     }
 
     /**
      * @return array
      */
-    public function jsonSerialize() {
+    public function jsonSerialize()
+    {
         $data_log = array();
         $data_log["id"] = $this->id;
         $data_log["level"] = $this->level;

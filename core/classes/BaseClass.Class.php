@@ -8,7 +8,8 @@
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
  * @version 3.0
  */
-abstract class BaseClass implements JsonSerializable {
+abstract class BaseClass implements JsonSerializable
+{
 
     /**
      * @var
@@ -40,7 +41,8 @@ abstract class BaseClass implements JsonSerializable {
      * Init method: creates the PDO object.
      * Call this in your __construct() function with parent::init()
      */
-    protected function init($id = NULL) {
+    protected function init($id = NULL)
+    {
         $this->pdo = Database_PDO::getInstance();
         if($id !== NULL) {
             $this->load($id);
@@ -56,7 +58,8 @@ abstract class BaseClass implements JsonSerializable {
      * @return bool
      * @throws Exception
      */
-    public function fill($array) {
+    public function fill($array)
+    {
         $this->prepare($array);
         return true;
     }
@@ -65,7 +68,8 @@ abstract class BaseClass implements JsonSerializable {
      * @param $array
      * @return bool
      */
-    public function clearAndFill($array){
+    public function clearAndFill($array)
+    {
         $defaultValuesKeys = array_keys($this->default_values);
         $inputKeys = array_keys($array);
         $fieldsNotPresent = array_diff($inputKeys,$defaultValuesKeys,$this->system_excluded,$this->custom_excluded);
@@ -83,7 +87,8 @@ abstract class BaseClass implements JsonSerializable {
      * @return bool
      * @throws Exception
      */
-    public function load($id) {
+    public function load($id)
+    {
         try {
             $sql = "SELECT * FROM " . static::TABLENAME . " WHERE id = :id";
             $q = $this->pdo->prepare($sql);
@@ -108,7 +113,8 @@ abstract class BaseClass implements JsonSerializable {
      * @param $id
      * @return bool
      */
-    public static function exist($id) {
+    public static function exist($id)
+    {
         try {
             $pdo = Database_PDO::getInstance();
             $sql = "SELECT id FROM " . static::TABLENAME . " WHERE id = :id";
@@ -130,7 +136,8 @@ abstract class BaseClass implements JsonSerializable {
      *
      * @return bool
      */
-    public function save($forcedID = null) {
+    public function save($forcedID = null)
+    {
         try {
             if(empty($this->id)) {
                 if(empty($forcedID)) {
@@ -151,7 +158,8 @@ abstract class BaseClass implements JsonSerializable {
      *
      * @return bool
      */
-    public function delete() {
+    public function delete()
+    {
         try {
             $sql = "DELETE FROM " . static::TABLENAME . " WHERE id = :id";
             $q = $this->pdo->prepare($sql);
@@ -171,7 +179,8 @@ abstract class BaseClass implements JsonSerializable {
      * @return mixed
      * @throws Exception
      */
-    public function __get($property_name) {
+    public function __get($property_name)
+    {
         if (property_exists($this, $property_name)) {
             return $this->$property_name;
         } else {
@@ -186,7 +195,8 @@ abstract class BaseClass implements JsonSerializable {
      * @param $val
      * @throws Exception
      */
-    public function __set($property_name, $val) {
+    public function __set($property_name, $val)
+    {
         if (property_exists($this, $property_name)) {
             $this->$property_name = $val;
         } else {
@@ -197,7 +207,8 @@ abstract class BaseClass implements JsonSerializable {
     /**
      * Magic method used for isset() and empty() methods invoked outside the object on a protected/private field
      */
-    public function __isset($property_name) {
+    public function __isset($property_name)
+    {
         return isset($this->$property_name);
     }
 
@@ -206,7 +217,8 @@ abstract class BaseClass implements JsonSerializable {
      *
      * @return array
      */
-    public function __sleep() {
+    public function __sleep()
+    {
         $objVars = get_object_vars($this);
         $objVarsExported = array();
         foreach($objVars as $key => $value) {
@@ -220,7 +232,8 @@ abstract class BaseClass implements JsonSerializable {
      * Task performed after call of unserialize() method
      * e.g. reestablish any database connections, reinitialization tasks..
      */
-    public function __wakeup() {
+    public function __wakeup()
+    {
         $this->pdo = Database_PDO::getInstance();
     }
 
@@ -228,7 +241,8 @@ abstract class BaseClass implements JsonSerializable {
      * This method is used when json_encode() is called
      * It expose all the variable of the object to the json_encode() function
      */
-    public function jsonSerialize() {
+    public function jsonSerialize()
+    {
         $objVars = get_object_vars($this);
         $objVarsExported = array();
         foreach($objVars as $key => $value) {
@@ -241,7 +255,8 @@ abstract class BaseClass implements JsonSerializable {
     /**
      * Lock the table for read and write operations
      */
-    public function lockTable() {
+    public function lockTable()
+    {
         $sql = "LOCK TABLES ".static::TABLENAME." WRITE";
         $result = $this->pdo->prepare($sql);
         $result->execute();
@@ -250,7 +265,8 @@ abstract class BaseClass implements JsonSerializable {
     /**
      * Release all the locks for all the tables
      */
-    public function unlockTable() {
+    public function unlockTable()
+    {
         $sql = "UNLOCK TABLES";
         $result = $this->pdo->prepare($sql);
         $result->execute();
@@ -259,14 +275,16 @@ abstract class BaseClass implements JsonSerializable {
     /**
      * Return the object database table
      */
-    public function getTablename() {
+    public function getTablename()
+    {
         return static::TABLENAME;
     }
 
     /**
      * Return the list of object attributes
      */
-    public function getAttributes() {
+    public function getAttributes()
+    {
         $objVars = get_object_vars($this);
         $attributes = array();
         foreach($objVars as $key => $value) {
@@ -280,7 +298,8 @@ abstract class BaseClass implements JsonSerializable {
      * @param array $array
      * @throws Exception
      */
-    protected function prepare($array = array()) {
+    protected function prepare($array = array())
+    {
         $defaultValuesKeys = array_keys($this->default_values);
         $inputKeys = array_keys($array);
         $fieldsNotPresent = array_diff($inputKeys,$defaultValuesKeys,$this->system_excluded,$this->custom_excluded);
@@ -301,7 +320,8 @@ abstract class BaseClass implements JsonSerializable {
     /**
      * @return bool
      */
-    private function insert() {
+    private function insert()
+    {
 
         $objVars = get_object_vars($this);
         //var_dump($objVars);
@@ -337,7 +357,8 @@ abstract class BaseClass implements JsonSerializable {
      * @param $id
      * @return bool
      */
-    protected function insertWithID($id) {
+    protected function insertWithID($id)
+    {
         $objVars = get_object_vars($this);
         $objVars["id"] = $id;
 
@@ -374,7 +395,8 @@ abstract class BaseClass implements JsonSerializable {
     /**
      * @return bool
      */
-    private function update() {
+    private function update()
+    {
         $objVars = get_object_vars($this);
 
         $query = "UPDATE ".static::TABLENAME." SET ";

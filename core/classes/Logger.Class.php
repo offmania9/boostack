@@ -1,6 +1,7 @@
 <?php
 
-class Logger {
+class Logger
+{
 
     const DRIVER_FILE = "log_driver_file";
     const DRIVER_DATABASE = "log_driver_database";
@@ -13,7 +14,8 @@ class Logger {
     const LEVEL_USER = "user";
     const LEVEL_CRONJOB = "cronjob";
 
-    public static function write($message = "", $level = self::LEVEL_INFORMATION, $type = self::DRIVER_DATABASE) {
+    public static function write($message = "", $level = self::LEVEL_INFORMATION, $type = self::DRIVER_DATABASE)
+    {
         switch ($type) {
             case self::DRIVER_DATABASE:
                 if(Config::get('log_on')) {

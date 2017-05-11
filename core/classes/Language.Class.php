@@ -8,7 +8,8 @@
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
  * @version 3.0
  */
-class Language {
+class Language
+{
 
     const LANGUAGE_FILES_PATH = "lang/";
 
@@ -16,14 +17,16 @@ class Language {
 
     private static $translatedLabels = null;
 
-    public static function init() {
+    public static function init()
+    {
         $language = self::findLanguage();
         $translatedLabels = Language::getLabelsFromLanguage($language);
         if(Config::get('session_on')) Language::setSessionLanguage($language);
         self::$translatedLabels = $translatedLabels;
     }
 
-    public static function getLabel($key) {
+    public static function getLabel($key)
+    {
         if(is_array(self::$translatedLabels)) {
             $k = explode(".", $key);
             if(count($k) > 0) {
@@ -40,7 +43,8 @@ class Language {
         return "";
     }
 
-    private static function findLanguage() {
+    private static function findLanguage()
+    {
         global $objSession;
         $defaultLanguage = Config::get("language_default");
         $language = null;
@@ -65,14 +69,16 @@ class Language {
         return $defaultLanguage;
     }
 
-    private static function setSessionLanguage($lang) {
+    private static function setSessionLanguage($lang)
+    {
         global $objSession;
         Config::constraint("session_on");
         Config::constraint("database_on");
         $objSession->SESS_LANGUAGE = $lang;
     }
 
-    private static function getLabelsFromLanguage($lang) {
+    private static function getLabelsFromLanguage($lang)
+    {
         $filePath = ROOTPATH.self::LANGUAGE_FILES_PATH.$lang.self::LANGUAGE_FILES_EXTENSION;
         if(!is_file($filePath)) throw new Exception("Language file ".$filePath." not found");
         $jsonFileContent = file_get_contents($filePath);

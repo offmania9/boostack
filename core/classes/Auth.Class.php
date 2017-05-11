@@ -8,7 +8,8 @@
  * @author Alessio Debernardi
  * @version 3.0
  */
-class Auth {
+class Auth
+{
 
     /**
      *

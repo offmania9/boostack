@@ -8,7 +8,8 @@
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
  * @version 3.0
  */
-class Log_Database_List extends BaseList {
+class Log_Database_List extends BaseList
+{
 
     /**
      *
@@ -18,7 +19,8 @@ class Log_Database_List extends BaseList {
     /**
      * LogList constructor.
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::init();
     }
 

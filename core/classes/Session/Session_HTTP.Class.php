@@ -238,7 +238,8 @@ class Session_HTTP
     /**
      * @return bool
      */
-    public function logoutUser() {
+    public function logoutUser()
+    {
         $sql = "UPDATE " . $this->http_session_table . " SET logged_in = 'f', user_id = '1' WHERE id = " . $this->native_session_id;
         $result = $this->dbhandle->query($sql);
         $this->logged_in = false;
@@ -249,7 +250,8 @@ class Session_HTTP
     /**
      * @param $userID
      */
-    public function loginUser($userID) {
+    public function loginUser($userID)
+    {
         $this->user_id = $userID;
         $this->logged_in = true;
         $sql = "UPDATE " . $this->http_session_table . " SET logged_in = 't', user_id = '" . $this->user_id . "' WHERE id='" . $this->native_session_id . "'";

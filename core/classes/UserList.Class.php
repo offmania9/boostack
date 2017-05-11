@@ -8,7 +8,8 @@
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
  * @version 3.0
  */
-class UserList extends BaseList {
+class UserList extends BaseList
+{
 
     /**
      * @var null|PDO
@@ -39,7 +40,8 @@ class UserList extends BaseList {
     /**
      * Crea una nuova stanza della classe, salvando le tabelle del database associate con le relative classi passate come parametro.
      */
-    public function __construct($classes = array(User_Entity::class)) {
+    public function __construct($classes = array(User_Entity::class))
+    {
         $this->pdo = Database_PDO::getInstance();
         $this->items = [];
         $this->objects = $classes;
@@ -55,7 +57,8 @@ class UserList extends BaseList {
     /**
      * Esegue il load di tutti gli elementi presenti nella tabella.
      */
-    public function loadAll() {
+    public function loadAll()
+    {
         try {
             $sql = "SELECT * ".$this->getSQLFromJoinPart();
             $q = $this->pdo->prepare($sql);
@@ -73,7 +76,8 @@ class UserList extends BaseList {
     /**
      * Esegue il load degli elementi che rispettano i filtri passati come parametro
      */
-    public function view($fields = NULL, $orderColumn = NULL, $orderType = NULL, $numitem = 25, $currentPage = 1) {
+    public function view($fields = NULL, $orderColumn = NULL, $orderType = NULL, $numitem = 25, $currentPage = 1)
+    {
         try {
             $sql = "";
             $orderType = strtoupper($orderType);
@@ -181,7 +185,8 @@ class UserList extends BaseList {
      * Riempie l'oggetto con un array contentente a sua volta un array di attributi per ogni istanza, richiamando la fill del singolo oggetto.
      * Di default, la password (se presente tra i parametri) viene esclusa in modo da non causare un nuovo re-hash.
      */
-    protected function fill($array, $excludePwd = true) {
+    protected function fill($array, $excludePwd = true)
+    {
         foreach ($array as $elem) {
             $baseClassInstance = new $this->baseClassName;
             // escludo la password in modo da non hasharla ogni volta
@@ -194,7 +199,8 @@ class UserList extends BaseList {
     /**
      * Genera la parte di query contenente il FROM inserendo eventuali JOIN nel caso siano incluse più classi.
      */
-    private function getSQLFromJoinPart() {
+    private function getSQLFromJoinPart()
+    {
         $sql = " FROM " . $this->mainTablename;
         $otherTablenamesCount = count($this->otherTablenames);
         if($otherTablenamesCount > 0) {

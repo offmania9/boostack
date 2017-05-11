@@ -2,7 +2,8 @@
 
 // TODO include phpseclib
 
-class SFTPConnection {
+class SFTPConnection
+{
 
     private $port = 22;
     private $timeout = 10;

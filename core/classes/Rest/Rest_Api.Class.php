@@ -14,7 +14,8 @@ class Rest_Api extends Rest_ApiAbstract
     /**
      * @return array|string
      */
-    protected function getTest() {
+    protected function getTest()
+    {
         $res = array();
         if ($this->method == 'GET') {
             $res = array("visible","1");
@@ -27,7 +28,8 @@ class Rest_Api extends Rest_ApiAbstract
     /**
      * @return array|string
      */
-    protected function getFilteredData() {
+    protected function getFilteredData()
+    {
         $res = array();
         if ($this->method == 'POST') {
             $res = array("visible","1");

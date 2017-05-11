@@ -1,6 +1,7 @@
 <?php
 
-class CsvReader {
+class CsvReader
+{
 
     const DEFAULT_DELIMITER = ",";
     const DEFAULT_LINES_OFFSET = 0;

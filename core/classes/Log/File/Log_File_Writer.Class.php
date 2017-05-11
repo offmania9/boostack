@@ -1,6 +1,7 @@
 <?php
 
-class Log_File_Writer {
+class Log_File_Writer
+{
 
     private static $instance = NULL;
 

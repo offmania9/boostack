@@ -8,7 +8,8 @@
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
  * @version 3.0
  */
-class MessageBag implements JsonSerializable {
+class MessageBag implements JsonSerializable
+{
 
     /**
      * @var bool
@@ -30,7 +31,8 @@ class MessageBag implements JsonSerializable {
     /**
      * MessageBag constructor.
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->error = false;
         $this->message = NULL;
         $this->data = NULL;
@@ -39,7 +41,8 @@ class MessageBag implements JsonSerializable {
     /**
      * @param $message
      */
-    public function setError($message) {
+    public function setError($message)
+    {
         $this->error = true;
         $this->message = $message;
     }
@@ -47,56 +50,64 @@ class MessageBag implements JsonSerializable {
     /**
      * @param $data
      */
-    public function setData($data) {
+    public function setData($data)
+    {
         $this->data = $data;
     }
 
     /**
      * @param $code
      */
-    public function setCode($code) {
+    public function setCode($code)
+    {
         $this->code = $code;
     }
 
     /**
      * @return null
      */
-    public function getData() {
+    public function getData()
+    {
         return $this->data;
     }
 
     /**
      * @return mixed
      */
-    public function getCode() {
+    public function getCode()
+    {
         return $this->code;
     }
 
     /**
      *
      */
-    public function removeError() {
+    public function removeError()
+    {
         $this->error = false;
     }
 
     /**
      * @return bool
      */
-    public function hasError() {
+    public function hasError()
+    {
         return $this->error;
     }
 
     /**
      * @return null
      */
-    public function getErrorMessage() {
+    public function getErrorMessage()
+    {
         return $this->message;
     }
 
     /**
      * @return array
      */
-    public function jsonSerialize() {
+    public function jsonSerialize()
+    {
         return [
             "error" => $this->error,
             "code" => $this->code,
@@ -108,7 +119,8 @@ class MessageBag implements JsonSerializable {
     /**
      * @return string
      */
-    public function toJSON() {
+    public function toJSON()
+    {
         return json_encode(self::jsonSerialize());
     }
 }

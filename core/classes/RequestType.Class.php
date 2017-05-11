@@ -8,8 +8,8 @@
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
  * @version 3.0
  */
-class RequestType  {//extends SplEnum
-
+class RequestType
+{
     const QUERY = "query";
     const POST = "post";
     const REQUEST = "request";

@@ -26,7 +26,8 @@ class Rest_UserApi extends Rest_ApiAbstract
      * @param $request
      * @param $origin
      */
-    public function __construct($request, $origin) {
+    public function __construct($request, $origin)
+    {
         parent::__construct($request);
     }
 
@@ -55,7 +56,8 @@ class Rest_UserApi extends Rest_ApiAbstract
      * @param $getstr
      * @return string
      */
-    protected function authenticate($getstr) {
+    protected function authenticate($getstr)
+    {
         if ($this->method == 'GET') {
 			$authid = $getstr[0];
 			$token = $getstr[1];
@@ -72,7 +74,8 @@ class Rest_UserApi extends Rest_ApiAbstract
      * @param $authid
      * @return string
      */
-    protected function tokenGenerator($authid) {
+    protected function tokenGenerator($authid)
+    {
          return base64_encode(hash_hmac($this->hashType, $authid, $this->privateKey));
      }
      

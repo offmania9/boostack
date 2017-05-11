@@ -123,7 +123,8 @@ class Session_CSRF extends Session_HTTP
     /**
      * @return null|string
      */
-    public function CSRFTokenInvalidation(){
+    public function CSRFTokenInvalidation()
+    {
         $res = NULL;
         $key = $this->CSRFDefaultKey;
         $this->$key = null;
@@ -139,7 +140,8 @@ class Session_CSRF extends Session_HTTP
      * @return bool
      * @throws Exception
      */
-    public function CSRFCheckValidity($postArray, $throwException = true){
+    public function CSRFCheckValidity($postArray, $throwException = true)
+    {
         try {
             return $this->CSRFCheckTokenValidity($postArray, $throwException);
         } catch(Exception $e) {
