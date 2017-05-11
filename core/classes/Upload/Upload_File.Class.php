@@ -41,10 +41,6 @@ class Upload_File
     /**
      * Upload_File constructor.
      * @param $file
-     * @param $destination_folder
-     * @param bool $exitifexist
-     * @param null $target_name
-     * @param null $visual_name
      * @throws Exception
      */
     public function __construct($file)
@@ -60,19 +56,27 @@ class Upload_File
     }
 
     /**
-     * @param $file
+     * @param null $maxSize
+     * @param null $maxFilenameLength
+     * @param null $allowedTypes
+     * @param null $allowedExtensions
      * @return bool
      * @throws Exception
      */
-    public function constraints()
+    public function constraints($maxSize = null, $maxFilenameLength = null, $allowedTypes = null, $allowedExtensions = null)
     {
-        if($this->size > Config::get("max_upload_filesize"))
+        $validFilesize = empty($maxSize) ? Config::get("max_upload_filesize") : $maxSize;
+        $validFilenameLength = empty($maxFilenameLength) ? Config::get("max_upload_filename_length") : $maxFilenameLength;
+        $validTypes = empty($allowedTypes) ? Config::get("allowed_file_upload_types") : $allowedTypes;
+        $validExtensions = empty($allowedExtensions) ? Config::get("allowed_file_upload_extensions") : $allowedExtensions;
+
+        if($this->size > $validFilesize)
             throw new Exception("File exceed maximum size");
-        if(strlen($this->name) > Config::get("max_upload_filename_length"))
+        if(strlen($this->name) > $validFilenameLength)
             throw new Exception("Filename too long");
-        if(!in_array($this->type, Config::get("allowed_file_upload_types")))
+        if(!in_array($this->type, $validTypes))
             throw new Exception("Filetype not valid");
-        if (!in_array($this->extension, Config::get("allowed_file_upload_extensions")))
+        if (!in_array($this->extension, $validExtensions))
             throw new Exception("File extension not valid");
         if (!Validator::filename($this->name))
             throw new Exception("Filename not valid");
@@ -84,6 +88,7 @@ class Upload_File
      * @param $filename
      * @param int $permission
      * @param bool $overwriteIfExist
+     * @return bool
      * @throws Exception
      */
     public function moveTo($path, $filename, $permission = 0755, $overwriteIfExist = false)
@@ -102,10 +107,6 @@ class Upload_File
         return true;
     }
 
-    /**
-     * @param $code
-     * @return string
-     */
     private function errorCodeToMessage($code)
     {
         switch ($code) {
@@ -136,7 +137,6 @@ class Upload_File
         }
         return $message;
     }
-
 
 }
 ?>

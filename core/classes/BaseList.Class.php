@@ -61,7 +61,7 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable {
     /**
      * @return mixed
      */
-    public function getItemsArray() {
+    public function toArray() {
         return $this->items;
     }
 
@@ -88,13 +88,6 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable {
 
     public function clear() {
         $this->items = [];
-    }
-
-    /**
-     * @return mixed
-     */
-    public function toArray() {
-        return $this->items;
     }
 
     /**
@@ -239,5 +232,18 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable {
             throw new PDOException("Database Exception. Please see log file.");
         }
     }
+
+    public function truncate() {
+        try {
+            $sql = "TRUNCATE ".$this->baseClassTablename;
+            $q = $this->pdo->prepare($sql);
+            $q->execute();
+            $this->items = array();
+        } catch (PDOException $pdoEx) {
+            Logger::write($pdoEx,Logger::LEVEL_ERROR, Logger::DRIVER_FILE);
+            throw new PDOException("Database Exception. Please see log file.");
+        }
+    }
+
 }
 ?>

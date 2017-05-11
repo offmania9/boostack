@@ -22,30 +22,4 @@ class Log_Database_List extends BaseList {
         parent::init();
     }
 
-    /**
-     * @return bool
-     */
-    public function truncate(){
-        global $boostack;
-        $res=true;
-        $sql = "TRUNCATE " . $this->baseClassName;
-        try {
-            $q = $this->pdo->prepare($sql);
-            $q->execute();
-            $this->items = [];
-        }
-        catch (Exception $e)
-        {
-            Logger::write('LogList -> truncate -> Caught exception: '.$e->getMessage());
-            $res = false;
-        }
-        return $res;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getItemsArray(){
-        return $this->items;
-    }
 }
