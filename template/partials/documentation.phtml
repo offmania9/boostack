@@ -14,30 +14,35 @@
 				<ul class="list-unstyled documentationMenu">
                     <li class="title">Getting Started</li>
                     <li class="item"><a href="<?= Utils::getFriendlyUrl("docs/setup")?>">Setup</a>
-                        <ul>
-                            <li><a title="Server Requirements" href="<?= Utils::getFriendlyUrl("docs/setup#ServerRequirements")?>">Server Requirements</a></li>
-                            <li><a title="Installation" href="<?= Utils::getFriendlyUrl("docs/setup#Installation")?>">Installation</a></li>
-                            <li><a title="Automatic Configuration" href="<?= Utils::getFriendlyUrl("docs/setup#AutomaticConfiguration")?>">Automatic Configuration</a></li>
-                            <li><a title="Manual Configuration" href="<?= Utils::getFriendlyUrl("docs/setup#ManualConfiguration")?>">Manual Configuration</a></li>
-                            <li><a title="Friendly URLs Configuration" href="<?= Utils::getFriendlyUrl("docs/setup#FriendlyURLsConfiguration")?>">Friendly URLs Configuration</a></li>
-                            <li><a title="Accessing Configuration Values" href="<?= Utils::getFriendlyUrl("docs/setup#AccessingConfigurationValues")?>">Accessing Configuration Values</a></li>
-                            <li><a title="Development Mode" href="<?= Utils::getFriendlyUrl("docs/setup#DevelopmentMode")?>">Development Mode</a></li>
-                            <li><a title="Server Configuration" href="<?= Utils::getFriendlyUrl("docs/setup#ServerConfiguration")?>">Server Configuration</a></li>
+                        <ul class="list-unstyled">
+                            <li class="item"><a title="Server Requirements" href="<?= Utils::getFriendlyUrl("docs/setup#ServerRequirements")?>">Server Requirements</a></li>
+                            <li class="item"><a title="Installation" href="<?= Utils::getFriendlyUrl("docs/setup#Installation")?>">Installation</a></li>
+                            <li class="item"><a title="Automatic Configuration" href="<?= Utils::getFriendlyUrl("docs/setup#AutomaticConfiguration")?>">Automatic Configuration</a></li>
+                            <li class="item"><a title="Manual Configuration" href="<?= Utils::getFriendlyUrl("docs/setup#ManualConfiguration")?>">Manual Configuration</a></li>
+                            <li class="item"><a title="Friendly URLs Configuration" href="<?= Utils::getFriendlyUrl("docs/setup#FriendlyURLsConfiguration")?>">Friendly URLs Configuration</a></li>
+                            <li class="item"><a title="Accessing Configuration Values" href="<?= Utils::getFriendlyUrl("docs/setup#AccessingConfigurationValues")?>">Accessing Configuration Values</a></li>
+                            <li class="item"><a title="Development Mode" href="<?= Utils::getFriendlyUrl("docs/setup#DevelopmentMode")?>">Development Mode</a></li>
+                            <li class="item"><a title="Server Configuration" href="<?= Utils::getFriendlyUrl("docs/setup#ServerConfiguration")?>">Server Configuration</a></li>
                         </ul>
                     </li>
                     <li class="item"><a title="Directory structure" href="<?= Utils::getFriendlyUrl("docs/directory-structure")?>">Directory structure</a></li>
-                    <li class="title">Code</li>
+                    <li class="title">Architecture</li>
                     <li class="item"><a title="Models" href="<?= Utils::getFriendlyUrl("docs/models")?>">Models</a></li>
                     <li class="item"><a title="Controllers" href="<?= Utils::getFriendlyUrl("docs/controllers")?>">Controllers</a></li>
                     <li class="item"><a title="Template" href="<?= Utils::getFriendlyUrl("docs/template")?>">Template</a></li>
-                    <li class="item"><a title="Login Security" href="<?= Utils::getFriendlyUrl("docs/loginSecurity#lockStrategies")?>">Login Security</a>
-                        <ul>
-                            <li><a title="Timer" href="<?= Utils::getFriendlyUrl("docs/loginSecurity#Timer")?>">Timer</a></li>
-                            <li><a title="Recaptcha" href="<?= Utils::getFriendlyUrl("docs/loginSecurity#Recaptcha")?>">Google Recaptcha</a></li>
-                        </ul>
-                    </li>
+                    <li class="title">Utilities</li>
+                    <li class="item"><a title="" href="<?= Utils::getFriendlyUrl("")?>">Auth</a>
+                        <ul class="list-unstyled">
+                            <li class="item"><a title="Timer" href="<?= Utils::getFriendlyUrl("docs/loginSecurity#Timer")?>">Timer</a></li>
+                            <li class="item"><a title="Recaptcha" href="<?= Utils::getFriendlyUrl("docs/loginSecurity#Recaptcha")?>">Google Recaptcha</a></li>
+                        </ul></li>
+                    <li class="item"><a title="" href="<?= Utils::getFriendlyUrl("")?>">Users</a></li>
+                    <li class="item"><a title="" href="<?= Utils::getFriendlyUrl("")?>">Session</a></li>
+                    <li class="item"><a title="" href="<?= Utils::getFriendlyUrl("")?>">CURL</a></li>
+                    <li class="item"><a title="" href="<?= Utils::getFriendlyUrl("")?>">Log</a></li>
+                    <li class="item"><a title="" href="<?= Utils::getFriendlyUrl("")?>">Validator</a></li>
 			</div>
-			<div class="col-md-9 documentationInnerContent">
+			<div class="col-md-6 documentationInnerContent">
                 <?php
                 $defaultPage = "documentation/setup.phtml";
                 if(Request::hasQueryParam("docpath")) {
@@ -71,6 +76,7 @@
                     require $defaultPage;
                 ?>
             </div>
+            <div class="col-md-3"></div>
 		</div>
 	</div>
 </section>

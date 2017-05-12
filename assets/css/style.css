@@ -319,6 +319,10 @@ footer {
     padding-right: 10px; }
     header li:first-child {
       padding-left: 0px; } }
+pre {
+  border: 0;
+  background-color: #fafafa; }
+
 .cookie-bar {
   position: fixed;
   z-index: 998;
