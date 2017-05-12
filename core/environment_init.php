@@ -8,7 +8,7 @@ if ($envPath && is_file($envPath)) {
 }
 require_once(ROOTPATH . "config/env/global.env.php");
 require_once(ROOTPATH . "core/classes/Utils.Class.php");
-require_once(ROOTPATH . "core/libs/helpers.php");
+require_once(ROOTPATH . "core/global_functions.php");
 spl_autoload_register('Utils::autoloadClass');
 if ($config['developmentMode']) {
     error_reporting(E_ALL);
