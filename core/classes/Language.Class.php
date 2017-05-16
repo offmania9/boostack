@@ -8,12 +8,9 @@
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
  * @version 3.0
  */
+
 class Language
 {
-
-    const LANGUAGE_FILES_PATH = "lang/";
-
-    const LANGUAGE_FILES_EXTENSION = ".inc.json";
 
     private static $translatedLabels = null;
 
@@ -79,7 +76,7 @@ class Language
 
     private static function getLabelsFromLanguage($lang)
     {
-        $filePath = ROOTPATH.self::LANGUAGE_FILES_PATH.$lang.self::LANGUAGE_FILES_EXTENSION;
+        $filePath = ROOTPATH.Config::get("language_path").$lang.Config::get("language_file_extension");
         if(!is_file($filePath)) throw new Exception("Language file ".$filePath." not found");
         $jsonFileContent = file_get_contents($filePath);
         $decodedFileContent = json_decode($jsonFileContent, true);
