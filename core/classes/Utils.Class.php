@@ -129,8 +129,8 @@ class Utils
      */
     public static function goToError()
     {
-        global $boostack;
-        header("Location: $boostack->url");
+        $url = Config::get("url");
+        header("Location: $url");
         exit();
     }
 
@@ -139,8 +139,8 @@ class Utils
      */
     public static function goToLogout()
     {
-        global $boostack;
-        header("Location: " . $boostack->url . "logout");
+        $url = Config::get("url");
+        header("Location: " . $url . "logout");
         exit();
     }
 
@@ -149,11 +149,12 @@ class Utils
      */
     public static function goToLogin($callbackURL = NULL)
     {
-        global $boostack, $objSession;
+        global $objSession;
+        $url = Config::get("url");
         if ($callbackURL != NULL) {
             $objSession->loginCallbackURL = $callbackURL;
         }
-        header("Location: " . $boostack->url . "login");
+        header("Location: " . $url . "login");
         exit();
     }
 

@@ -34,7 +34,7 @@
         <?php  Template::renderDefaultCSSFiles(); ?>
         <?php  Template::renderCustomCSSFiles(); ?>
     </head>
-    <body>
+    <body class="<?= isset($bodyClasses) ? $bodyClasses : '' ?>">
 
     <?php if(Config::get('setupFolderExists') && Config::get('setupFolderExists')): ?>
         <?php require "setup_exists_header.phtml"; ?>
