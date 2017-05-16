@@ -29,7 +29,7 @@ class Logger
             case self::DRIVER_DATABASE:
                 if(Config::get('log_on')) {
                     try {
-                        Config::constraint("'database_on'");
+                        Config::constraint("database_on");
                         $currentUser = Auth::getUserLoggedObject();
                         Log_Database_Writer::getInstance($currentUser)->Log($message, $level);
                     } catch(Exception $e) {
