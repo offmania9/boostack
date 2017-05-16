@@ -6,10 +6,9 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 3.0
+ * @version 3.1
  */
 
-// #######################
 require_once "core/environment_init.php";
 
 if (! array_key_exists('HTTP_ORIGIN', $_SERVER))

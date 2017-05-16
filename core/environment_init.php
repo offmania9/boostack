@@ -1,4 +1,14 @@
 <?php
+/**
+ * Boostack: environment_init.php
+ * ========================================================================
+ * Copyright 2014-2017 Spagnolo Stefano
+ * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
+ * ========================================================================
+ * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
+ * @version 3.1
+ */
+
 $envPath = realpath(__DIR__ . "/../config/env/env.php");
 if ($envPath && is_file($envPath)) {
     require_once $envPath;

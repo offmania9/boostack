@@ -1,4 +1,13 @@
 <?php
+/**
+ * Boostack: SFTPConnection.Class.php
+ * ========================================================================
+ * Copyright 2014-2017 Spagnolo Stefano
+ * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
+ * ========================================================================
+ * @author Alessio Debernardi
+ * @version 3.1
+ */
 
 // TODO include phpseclib
 
