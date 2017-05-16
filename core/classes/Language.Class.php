@@ -49,8 +49,8 @@ class Language
         if(Config::get("language_force_default") == TRUE) {
             $language = $defaultLanguage;
         }
-        else if(!empty($_GET['lang'])) {
-            $language = Utils::sanitizeInput($_GET['lang']);
+        else if(!empty(Request::hasQueryParam("lang"))) {
+            $language = Request::getQueryParam("lang");
         }
 //        else {
 //            if (Config::get("session_on") && $objSession->SESS_LANGUAGE !== "") { // if is set in the user session

@@ -63,10 +63,10 @@ abstract class Rest_ApiAbstract
         
         switch ($this->method) {
             case 'POST':
-                $this->request = Utils::sanitizeInput($_POST);
+                $this->request = Request::getPostArray();
                 break;
             case 'GET':
-                $this->request = Utils::sanitizeInput($_GET);
+                $this->request = Request::getQueryArray();
                 break;
             default:
                 $this->_response('Invalid Method', 405);

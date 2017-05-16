@@ -80,7 +80,7 @@ class Log_Database_Writer
         $this->username = (! is_null($objUser)) ? $objUser->id : "Anonymous";
         $this->ip = Utils::getIpAddress();
         $this->useragent = Utils::sanitizeInput(getenv('HTTP_USER_AGENT'));
-        $this->referrer = isset($_SERVER["HTTP_REFERER"]) ? Utils::sanitizeInput($_SERVER["HTTP_REFERER"]) : "";
+        $this->referrer = Request::hasServerParam("HTTP_REFERER") ? Request::getServerParam("HTTP_REFERER") : "";
         $this->query = Utils::sanitizeInput(getenv('REQUEST_URI'));
     }
 

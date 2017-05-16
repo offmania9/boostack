@@ -7,16 +7,16 @@ if (!(Config::get('session_on') && Auth::isLoggedIn())) return false;
 $res = new MessageBag();
 
 try {
-    $filterPage = (!empty($_POST["filterPage"])) ? Utils::sanitizeInput($_POST["filterPage"]) : null;
+    $filterPage = Request::hasPostParam("filterPage") ? Request::getPostParam("filterPage") : null;
     $result = array();
     $fieldViewArray = array();
-    $currentPage = (!empty($_POST["currentPage"])) ? Utils::sanitizeInput($_POST["currentPage"]) : 1;
-    $perPage = (!empty($_POST["perPage"])) ? Utils::sanitizeInput($_POST["perPage"]) : 10;
-    $orderBy = (!empty($_POST["orderBy"])) ? Utils::sanitizeInput($_POST["orderBy"]) : null;
-    $orderType = (!empty($_POST["orderType"])) ? Utils::sanitizeInput($_POST["orderType"]) : null;
-    $field = (!empty($_POST["field"])) ? Utils::sanitizeInput($_POST["field"]) : null;
-    $input = (isset($_POST["input"])) ? Utils::sanitizeInput($_POST["input"]) : null;
-    $rule = (!empty($_POST["rule"])) ? Utils::sanitizeInput($_POST["rule"]) : null;
+    $currentPage = Request::hasPostParam("currentPage") ? Request::getPostParam("currentPage") : 1;
+    $perPage = Request::hasPostParam("perPage") ? Request::getPostParam("perPage") : 10;
+    $orderBy = Request::hasPostParam("orderBy") ? Request::getPostParam("orderBy") : null;
+    $orderType = Request::hasPostParam("orderType") ? Request::getPostParam("orderType") : null;
+    $field = Request::hasPostParam("field") ? Request::getPostParam("field") : null;
+    $input = Request::hasPostParam("input") ? Request::getPostParam("input") : null;
+    $rule = Request::hasPostParam("rule") ? Request::getPostParam("rule") : null;
     $currentUser = Auth::getUserLoggedObject();
     if ($filterPage != null) {
         switch ($filterPage) {

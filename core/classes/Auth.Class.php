@@ -50,9 +50,9 @@ class Auth
                     if($lockStrategy == "timer") {
                         if(!self::checkAcceptedTimeFromLastLogin(self::getLastTry())) throw new Exception("Too much login request. Wait some seconds", self::LOCK_TIMER);
                     } else if($lockStrategy == "recaptcha") {
-                        $recaptchaFormData = isset($_POST["g-recaptcha-response"]) ? $_POST["g-recaptcha-response"] : null;
+                        $recaptchaFormData = Request::hasPostParam("g-recaptcha-response") ? Request::getPostParam("g-recaptcha-response") : null;
                         if(empty($recaptchaFormData)) throw new Exception("Missing recaptcha data", self::LOCK_RECAPTCHA);
-                        $recaptchaResponse = self::reCaptchaVerify($boostack, $_POST["g-recaptcha-response"]);
+                        $recaptchaResponse = self::reCaptchaVerify($boostack, Request::getPostParam("g-recaptcha-response"));
                         if(!$recaptchaResponse) throw new Exception("Invalid reCaptcha", self::LOCK_RECAPTCHA);
                     }
                     $objSession->failed_login_count = 0;
