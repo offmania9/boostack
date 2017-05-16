@@ -72,15 +72,6 @@ class Utils
     }
 
     /**
-     * @param $pwd
-     * @return int
-     */
-    public static function isStrongPassword($pwd)
-    {
-        return preg_match("#.*^(?=.{8,20})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$#", $pwd);
-    }
-
-    /**
      * @return array|string
      */
     public static function getUserAgent()
@@ -180,17 +171,6 @@ class Utils
     }
 
     /**
-     * @param $var
-     */
-    public static function debug($var)
-    {
-        ini_set('display_errors', 1);
-        echo '<pre>';
-        var_dump($var);
-        echo '</pre>';
-    }
-
-    /**
      * @param $string
      * @return string
      */
@@ -271,25 +251,6 @@ class Utils
     }
 
     /**
-     * @param $code
-     * @return mixed
-     */
-    public static function getFileErrorDescription($code)
-    {
-        $errors = array(
-            0 => "There is no error, the file uploaded with success",
-            1 => "The uploaded file exceeds the upload_max_filesize directive in php.ini",
-            2 => "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form",
-            3 => "The uploaded file was only partially uploaded",
-            4 => "No file was uploaded",
-            6 => "Missing a temporary folder",
-            7 => 'Failed to write file to disk.',
-            8 => 'A PHP extension stopped the file upload.'
-        );
-        return $errors[$code];
-    }
-
-    /**
      * @param $timestamp
      * @return string
      */
@@ -325,19 +286,6 @@ class Utils
             $res = ($t > 1) ? "$t days ago" : "$t day ago";
         }
         return $res;
-    }
-
-    /**
-     * @param $email
-     * @return bool
-     */
-    public static function checkEmailFormat($email)
-    {
-        $regexp = "/^[a-z0-9]+([_\\.-][a-z0-9]+)*@([a-z0-9]+([\.-][a-z0-9]+)*)+\\.[a-z]{2,}$/i";
-        if ($email == "" || !preg_match($regexp, $email) || strlen($email >= 255)) {
-            return false;
-        }
-        return true;
     }
 
     /**
@@ -412,23 +360,6 @@ class Utils
             $str .= $keyspace[mt_rand(0, $max)];
         }
         return $str;
-    }
-
-    /**
-     * @param $string
-     * @param string $fieldname
-     * @param bool $throwException
-     * @return bool
-     * @throws Exception
-     */
-    public static function checkStringFormat($string, $fieldname="Password", $throwException = true)
-    {
-        if ($string == "" || strlen($string) < 6){
-            if ($throwException)
-                throw new Exception("Attention! ".$fieldname." value is wrong.",4);
-            return false;
-        }
-        return true;
     }
 
     /*

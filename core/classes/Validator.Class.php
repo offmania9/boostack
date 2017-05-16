@@ -294,6 +294,19 @@ class Validator
         return is_string($input) && filter_var($input, FILTER_VALIDATE_EMAIL);
     }
 
+//    /**
+//     * @param $email
+//     * @return bool
+//     */
+//    public static function checkEmailFormat($email)
+//    {
+//        $regexp = "/^[a-z0-9]+([_\\.-][a-z0-9]+)*@([a-z0-9]+([\.-][a-z0-9]+)*)+\\.[a-z]{2,}$/i";
+//        if ($email == "" || !preg_match($regexp, $email) || strlen($email >= 255)) {
+//            return false;
+//        }
+//        return true;
+//    }
+
     /**
      * @param $input
      * @return bool
@@ -311,6 +324,15 @@ class Validator
     public static function password($password)
     {
         return !empty($password) && (strlen($password) >= Config::get("password_min_length")) && (strlen($password) <= Config::get("password_max_length"));
+    }
+
+    /**
+     * @param $pwd
+     * @return int
+     */
+    public static function strongPassword($password)
+    {
+        return preg_match("#.*^(?=.{8,20})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$#", $password);
     }
 
     /**
