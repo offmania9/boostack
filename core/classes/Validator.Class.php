@@ -265,12 +265,12 @@ class Validator
         $res = true;
         if(is_array($input)) {
             foreach($input as $elem) {
-                if(!preg_match('[-+]?(\d*[.])?\d+',$elem) && $res) {
+                if(!preg_match('/^[-+]?(\d*[.])?\d+$/',$elem) && $res) {
                     $res = false;
                 }
             }
         } else {
-            $res = preg_match('[-+]?(\d*[.])?\d+',$input);
+            $res = preg_match('/^[-+]?(\d*[.])?\d+$/',$input);
         }
         return $res;
     }

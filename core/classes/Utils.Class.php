@@ -265,6 +265,13 @@ class Utils
         }
     }
 
+
+    public static function datetimeToTimestamp($inputDate, $originTimezone = "Europe/Rome", $resultTimezone = "Europe/Rome") {
+        $date = new DateTime($inputDate,new DateTimeZone($originTimezone));
+        $date->setTimezone(new DateTimeZone($resultTimezone));
+        return $date->getTimestamp();
+    }
+
     /**
      * @param $datetime_timestamp
      * @return string

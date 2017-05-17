@@ -17,6 +17,8 @@ class Template
 
     public static function render($template, $values = null)
     {
+        if(empty($template))
+            throw new Exception("Missing 'template' param");
         $templateDir = ROOTPATH.Config::get('template_path');
         $templateFile = $templateDir.$template;
         if(!file_exists($templateFile))
