@@ -199,6 +199,41 @@ class Validator
         return $res;
     }
 
+    //to validate strings containing only letters
+    public static function onlyChars($input)
+    {
+        return preg_match('/^[A-Za-z]+$/', $input);
+    }
+    //to validate strings containing only letters and space
+    public static function onlyCharsWithSpace($input)
+    {
+        return preg_match('/^[A-Za-zÀ-ÿ ]+$/', $input);
+    }
+
+    //to validate strings containing only letters, numbers or "-"
+    public static function onlyCharNumbersUnderscore($input)
+    {
+        return preg_match('/^[A-Za-z1-9_]+$/', $input);
+    }
+
+    //to validate address like google maps default address or simply letters, numbers, accents, "-", "_", "," and space
+    public static function address ($input)
+    {
+        return preg_match("/^[A-Za-z0-9À-ÿ _\-,]*[A-Za-z0-9À-ÿ][A-Za-z0-9À-ÿ _\-,]*$/", $input);
+    }
+
+    //to validate operators for view method
+    public static function operators($rule)
+    {
+        $rules = ["LIKE", "like", "&lt;&gt;", "=", "&lt;", "&lt;=", "&gt;", "&gt;="];
+        return in_array($rule , $rules);
+    }
+
+    public static function varchar_max_length ($input)
+    {
+        return strlen($input) < Config::get("varchar_max_length");
+    }
+
     /**
      * @param $input
      * @return bool

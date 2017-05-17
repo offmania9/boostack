@@ -238,5 +238,28 @@ class Request
     {
         return Utils::sanitizeInput(self::$files);
     }
+
+    public static function getUri()
+    {
+        return self::hasServerParam("REQUEST_URI") ? self::getServerParam("REQUEST_URI") : null;
+    }
+
+    public static function getFriendlyUri()
+    {
+        $documentRootSubdir = Config::get("document_root_subdir");
+        return substr(self::getUri(),strlen($documentRootSubdir)-1);
+    }
+
+    public static function getScriptName()
+    {
+        return self::hasServerParam("SCRIPT_NAME") ? self::getServerParam("SCRIPT_NAME") : null;
+    }
+
+    public static function getFriendlyScriptName()
+    {
+        $documentRootSubdir = Config::get("document_root_subdir");
+        return substr(self::getScriptName(),strlen($documentRootSubdir)-1);
+    }
+
 }
 ?>

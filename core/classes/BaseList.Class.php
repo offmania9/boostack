@@ -65,7 +65,7 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable
     /**
      * @return mixed
      */
-    public function toArray()
+    public function getItemsArray()
     {
         return $this->items;
     }
@@ -92,6 +92,26 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable
     public function add($element)
     {
         $this->items[] = $element;
+    }
+
+    public function haskey($key)
+    {
+        return array_key_exists($key,$this->items);
+    }
+
+    public function remove($key, $shift = true)
+    {
+        if(!$this->haskey($key))
+            return false;
+        unset($this->items[$key]);
+        if($shift)
+            $this->items = array_values($this->items);
+        return true;
+    }
+
+    public function get($key)
+    {
+        return $this->items[$key];
     }
 
     public function clear()
@@ -144,10 +164,6 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable
                             $sql .= "!= '" . $option[2] . "'";
                             break;
                         }
-                        case 'LIKE': {
-                            $sql .= $option[1] . " '%" . $option[2] . "%'";
-                            break;
-                        }
                         case '=': {
                             $sql .= $option[1] . " '" . $option[2] . "'";
                             break;
@@ -170,6 +186,14 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable
                         case '>=':
                         case '&GT;=': {
                             $sql .= ">= '" . $option[2] . "'";
+                            break;
+                        }
+                        case 'LIKE': {
+                            $sql .= $option[1] . " '%" . $option[2] . "%'";
+                            break;
+                        }
+                        case 'NOT LIKE': {
+                            $sql .= $option[1] . " '%" . $option[2] . "%'";
                             break;
                         }
                     }
