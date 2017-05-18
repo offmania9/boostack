@@ -32,7 +32,7 @@ class Auth
      */
     public static function loginByUsernameAndPlainPassword($username, $password, $cookieRememberMe = false)
     {
-        global $boostack,$objSession;
+        global $objSession;
         $result = new MessageBag();
         $isLockStrategyEnabled = Config::get("lockStrategy_on");
         $lockStrategy = Config::get("login_lockStrategy");
@@ -52,7 +52,7 @@ class Auth
                     } else if($lockStrategy == "recaptcha") {
                         $recaptchaFormData = Request::hasPostParam("g-recaptcha-response") ? Request::getPostParam("g-recaptcha-response") : null;
                         if(empty($recaptchaFormData)) throw new Exception("Missing recaptcha data", self::LOCK_RECAPTCHA);
-                        $recaptchaResponse = self::reCaptchaVerify($boostack, Request::getPostParam("g-recaptcha-response"));
+                        $recaptchaResponse = self::reCaptchaVerify(Request::getPostParam("g-recaptcha-response"));
                         if(!$recaptchaResponse) throw new Exception("Invalid reCaptcha", self::LOCK_RECAPTCHA);
                     }
                     $objSession->failed_login_count = 0;
@@ -84,8 +84,9 @@ class Auth
      */
     public static function loginByUserID($userID)
     {
+        $userClass = Config::get("use_custom_user_class") ? Config::get("custom_user_class") : User::class;
         if(!Auth::isLoggedIn()) {
-            $user = new User($userID);
+            $user = new $userClass($userID);
             self::login($user->username, "", $user->pwd);
         }
     }
@@ -100,9 +101,10 @@ class Auth
      */
     public static function loginByCookie($cookieValue)
     {
-        global $objSession, $boostack;
+        global $objSession;
         try {
-            $userCredentials = User::getCredentialByCookie($cookieValue);
+            $userClass = Config::get("use_custom_user_class") ? Config::get("custom_user_class") : User::class;
+            $userCredentials = $userClass::getCredentialByCookie($cookieValue);
             if($userCredentials != false) {
                 if (Utils::checkCookieHashValidity($cookieValue)) {
                     self::login($userCredentials["username"],"",$userCredentials["pwd"]);
@@ -135,7 +137,7 @@ class Auth
      */
     public static function logout()
     {
-        global $objSession, $boostack;
+        global $objSession;
         try {
             if(self::isLoggedIn()) {
                 if (Config::get("session_on") && isset($objSession) && self::isLoggedIn()){
@@ -214,9 +216,10 @@ class Auth
      */
     private static function checkAndLogin($username, $password, $cookieRememberMe, $throwException = true)
     {
-        global $objSession, $boostack;
+        global $objSession;
+        $userClass = Config::get("use_custom_user_class") ? Config::get("custom_user_class") : User::class;
         if (Config::get("userToLogin") == "email") {
-            if (!User::existsByEmail($username)) {
+            if (!$userClass::existsByEmail($username)) {
                 Logger::write("Auth -> checkAndLogin: User doesn't exist by Email Address", Log_Level::USER);
                 if ($throwException)
                     throw new Exception("Username or password not valid.", 6);
@@ -225,7 +228,7 @@ class Auth
         }
 
         if (Config::get("userToLogin") == "username") {
-            if (!User::existsByUsername($username)) {
+            if (!$userClass::existsByUsername($username)) {
                 Logger::write("Auth -> checkAndLogin: User doesn't exist by Username", Log_Level::USER);
                 if ($throwException)
                     throw new Exception("Username or password not valid.", 6);
@@ -234,7 +237,7 @@ class Auth
         }
 
         if(Config::get("userToLogin") == "both") {
-            if(!User::existsByEmail($username,false) && !User::existsByUsername($username,false)) {
+            if(!$userClass::existsByEmail($username,false) && !$userClass::existsByUsername($username,false)) {
                 Logger::write("Auth -> tryLogin: User doesn't exist by Username and by email", Log_Level::USER);
                 if ($throwException)
                     throw new Exception("Username or password not valid.", 6);
@@ -269,16 +272,17 @@ class Auth
     private static function login($strUsername, $strPlainPassword, $hashedPassword = "")
     {
         global $objSession;
+        $userClass = Config::get("use_custom_user_class") ? Config::get("custom_user_class") : User::class;
         try {
             switch (Config::get("userToLogin")) {
                 case "email":
-                    $userData = User::getActiveCredentialByEmail($strUsername);
+                    $userData = $userClass::getActiveCredentialByEmail($strUsername);
                     break;
                 case "both":
-                    $userData = User::getActiveCredentialByEmailOrUsername($strUsername, $strUsername);
+                    $userData = $userClass::getActiveCredentialByEmailOrUsername($strUsername, $strUsername);
                     break;
                 default:
-                    $userData = User::getActiveCredentialByUsername($strUsername);
+                    $userData = $userClass::getActiveCredentialByUsername($strUsername);
                     break;
             }
             if ($userData != false) {
@@ -286,7 +290,7 @@ class Auth
                 $userId = $userData["id"];
                 if ($hashedPassword == "" && password_verify($strPlainPassword, $userPwd) || $hashedPassword != "" && $hashedPassword == $userPwd) {
                     $objSession->loginUser($userId);
-                    $userObject = new User($userId);
+                    $userObject = new $userClass($userId);
                     $userObject->last_access = time();
                     $userObject->save();
                     return true;
@@ -301,11 +305,10 @@ class Auth
     }
 
     /**
-     * @param $boostack
      * @param $response
      * @return bool
      */
-    private static function reCaptchaVerify($boostack, $response)
+    private static function reCaptchaVerify($response)
     {
         $reCaptcha_private = Config::get("reCaptcha_private");
         $curlRequest = new CurlRequest();

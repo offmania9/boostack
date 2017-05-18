@@ -55,6 +55,9 @@ $config['google_recaptcha-endpoint']= "https://www.google.com/recaptcha/api/site
 $config['reCaptcha_public'] = "[recaptcha_public]";       //recaptcha key
 $config['reCaptcha_private'] = "[recaptcha_private]";      //recaptcha key
 
+$config['use_custom_user_class'] = false;
+$config['custom_user_class'] = '';
+
 /**
  * COOKIES
  */

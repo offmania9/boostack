@@ -219,9 +219,10 @@ class Session_HTTP
      */
     public function GetUserObject()
     {
+        $userClass = Config::get("use_custom_user_class") ? Config::get("custom_user_class") : User::class;
         if ($this->logged_in) {
-            if (class_exists("User_Entity")) {
-                $objUser = new User($this->user_id);
+            if (class_exists($userClass)) {
+                $objUser = new $userClass($this->user_id);
                 return ($objUser);
             }
         }
