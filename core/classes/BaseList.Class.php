@@ -232,7 +232,7 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable
 
             return $queryNumberResult;
         } catch (PDOException $pdoEx) {
-            Logger::write($pdoEx,Logger::LEVEL_ERROR, Logger::DRIVER_FILE);
+            Logger::write($pdoEx,Log_Level::ERROR, Log_Driver::FILE);
             throw new PDOException("Database Exception. Please see log file.");
         }
     }
@@ -265,7 +265,7 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable
             $countResult = count($queryResults);
             return $countResult;
         } catch (PDOException $pdoEx) {
-            Logger::write($pdoEx,Logger::LEVEL_ERROR, Logger::DRIVER_FILE);
+            Logger::write($pdoEx,Log_Level::ERROR, Log_Driver::FILE);
             throw new PDOException("Database Exception. Please see log file.");
         }
     }
@@ -278,7 +278,7 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable
             $q->execute();
             $this->items = array();
         } catch (PDOException $pdoEx) {
-            Logger::write($pdoEx,Logger::LEVEL_ERROR, Logger::DRIVER_FILE);
+            Logger::write($pdoEx,Log_Level::ERROR, Log_Driver::FILE);
             throw new PDOException("Database Exception. Please see log file.");
         }
     }

@@ -103,7 +103,7 @@ abstract class BaseClass implements JsonSerializable
             $this->id = $id;
             return true;
         } catch(PDOException $pdoEx) {
-            Logger::write($pdoEx,Logger::LEVEL_ERROR, Logger::DRIVER_FILE);
+            Logger::write($pdoEx,Log_Level::ERROR, Log_Driver::FILE);
             throw new PDOException("Database Exception. Please see log file.");
         }
     }
@@ -125,7 +125,7 @@ abstract class BaseClass implements JsonSerializable
             $result = $q->fetch(PDO::FETCH_ASSOC);
             return !empty($result);
         } catch(PDOException $pdoEx) {
-            Logger::write($pdoEx,Logger::LEVEL_ERROR, Logger::DRIVER_FILE);
+            Logger::write($pdoEx,Log_Level::ERROR, Log_Driver::FILE);
             throw new PDOException("Database Exception. Please see log file.");
         }
     }
@@ -149,7 +149,7 @@ abstract class BaseClass implements JsonSerializable
                 return $this->update();
             }
         } catch (PDOException $pdoEx) {
-            Logger::write($pdoEx,Logger::LEVEL_ERROR, Logger::DRIVER_FILE);
+            Logger::write($pdoEx,Log_Level::ERROR, Log_Driver::FILE);
             throw new PDOException("Database Exception. Please see log file.");
         }
     }
@@ -168,7 +168,7 @@ abstract class BaseClass implements JsonSerializable
             $q->execute();
             return ($q->rowCount() > 0);
         } catch (PDOException $pdoEx) {
-            Logger::write($pdoEx,Logger::LEVEL_ERROR, Logger::DRIVER_FILE);
+            Logger::write($pdoEx,Log_Level::ERROR, Log_Driver::FILE);
             throw new PDOException("Database Exception. Please see log file.");
         }
     }

@@ -49,7 +49,7 @@ class Database_PDO
             }
             return self::$instance;
         } catch(PDOException $e){
-            Logger::write($e,Logger::LEVEL_ERROR, Logger::DRIVER_FILE);
+            Logger::write($e,Log_Level::ERROR, Log_Driver::FILE);
             if(!Config::get("developmentMode")){// go to mantainance page
                 Utils::goToMaintenance();
             }

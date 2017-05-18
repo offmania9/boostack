@@ -38,7 +38,7 @@ try {
     }
 } catch (Exception $e) {
     $res->setError($e->getMessage());
-    Logger::write('request not valid'.$e->getMessage(),Logger::LEVEL_ERROR);
+    Logger::write('request not valid'.$e->getMessage(),Log_Level::ERROR);
 }
 
 echo $res->toJSON();

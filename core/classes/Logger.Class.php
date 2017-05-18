@@ -12,21 +12,10 @@
 class Logger
 {
 
-    const DRIVER_FILE = "log_driver_file";
-    const DRIVER_DATABASE = "log_driver_database";
-
-    const LEVEL_ERROR = "error";
-    const LEVEL_WARNING = "warning";
-    const LEVEL_FAILURE = "failure";
-    const LEVEL_INFORMATION = "information";
-    const LEVEL_SUCCESS = "success";
-    const LEVEL_USER = "user";
-    const LEVEL_CRONJOB = "cronjob";
-
-    public static function write($message = "", $level = self::LEVEL_INFORMATION, $type = self::DRIVER_DATABASE)
+    public static function write($message = "", $level = Log_Level::INFORMATION, $type = Log_Driver::DATABASE)
     {
         switch ($type) {
-            case self::DRIVER_DATABASE:
+            case Log_Driver::DATABASE:
                 if(Config::get('log_on')) {
                     try {
                         Config::constraint("database_on");
@@ -38,7 +27,7 @@ class Logger
                     }
                 }
                 break;
-            case self::DRIVER_FILE:
+            case Log_Driver::FILE:
                 if (Config::get('log_on'))
                     Log_File_Writer::getInstance()->log($message, $level);
                 break;

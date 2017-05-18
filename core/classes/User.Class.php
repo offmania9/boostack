@@ -106,7 +106,7 @@ class User implements JsonSerializable
             $this->pdo->commit();
         } catch(Exception $e) {
             $this->pdo->rollBack();
-            Logger::write($e->getMessage(),Logger::LEVEL_ERROR);
+            Logger::write($e->getMessage(),Log_Level::ERROR);
             throw $e;
         }
 
@@ -129,7 +129,7 @@ class User implements JsonSerializable
             $this->pdo->commit();
         } catch(Exception $e) {
             $this->pdo->rollBack();
-            Logger::write($e->getMessage(),Logger::LEVEL_ERROR);
+            Logger::write($e->getMessage(),Log_Level::ERROR);
         }
     }
 

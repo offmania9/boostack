@@ -68,7 +68,7 @@ class Auth
             if($isLockStrategyEnabled) $objSession->failed_login_count = 0;
 
         } catch (Exception $e) {
-            Logger::write($e,Logger::LEVEL_USER);
+            Logger::write($e,Log_Level::USER);
             $result->setError($e->getMessage());
             $result->setCode($e->getCode());
         }
@@ -110,13 +110,13 @@ class Auth
                     $userObject->refreshRememberMeCookie();
                     return true;
                 } else {
-                    Logger::write("checkCookieHashValidity(" . $cookieValue . "): false - IP:" . Utils::getIpAddress(),Logger::LEVEL_USER);
+                    Logger::write("checkCookieHashValidity(" . $cookieValue . "): false - IP:" . Utils::getIpAddress(),Log_Level::USER);
                 }
             }
         } catch (PDOException $e) {
-            Logger::write($e, Logger::LEVEL_ERROR);
+            Logger::write($e, Log_Level::ERROR);
         } catch (Exception $e) {
-            Logger::write($e, Logger::LEVEL_ERROR);
+            Logger::write($e, Log_Level::ERROR);
         }
         return false;
     }
@@ -139,7 +139,7 @@ class Auth
         try {
             if(self::isLoggedIn()) {
                 if (Config::get("session_on") && isset($objSession) && self::isLoggedIn()){
-                    Logger::write("[Logout] uid: ".$objSession->GetUserID(),Logger::LEVEL_USER);
+                    Logger::write("[Logout] uid: ".$objSession->GetUserID(),Log_Level::USER);
                     $objSession->logoutUser();
                 }
                 if (Config::get("cookie_on")) {
@@ -151,9 +151,9 @@ class Auth
                 return true;
             }
         } catch (PDOException $e) {
-            Logger::write($e, Logger::LEVEL_ERROR);
+            Logger::write($e, Log_Level::ERROR);
         } catch (Exception $e) {
-            Logger::write($e, Logger::LEVEL_ERROR);
+            Logger::write($e, Log_Level::ERROR);
         }
         return false;
     }
@@ -217,7 +217,7 @@ class Auth
         global $objSession, $boostack;
         if (Config::get("userToLogin") == "email") {
             if (!User::existsByEmail($username)) {
-                Logger::write("Auth -> checkAndLogin: User doesn't exist by Email Address", Logger::LEVEL_USER);
+                Logger::write("Auth -> checkAndLogin: User doesn't exist by Email Address", Log_Level::USER);
                 if ($throwException)
                     throw new Exception("Username or password not valid.", 6);
                 return false;
@@ -226,7 +226,7 @@ class Auth
 
         if (Config::get("userToLogin") == "username") {
             if (!User::existsByUsername($username)) {
-                Logger::write("Auth -> checkAndLogin: User doesn't exist by Username", Logger::LEVEL_USER);
+                Logger::write("Auth -> checkAndLogin: User doesn't exist by Username", Log_Level::USER);
                 if ($throwException)
                     throw new Exception("Username or password not valid.", 6);
                 return false;
@@ -235,7 +235,7 @@ class Auth
 
         if(Config::get("userToLogin") == "both") {
             if(!User::existsByEmail($username,false) && !User::existsByUsername($username,false)) {
-                Logger::write("Auth -> tryLogin: User doesn't exist by Username and by email", Logger::LEVEL_USER);
+                Logger::write("Auth -> tryLogin: User doesn't exist by Username and by email", Log_Level::USER);
                 if ($throwException)
                     throw new Exception("Username or password not valid.", 6);
                 return false;
@@ -246,7 +246,7 @@ class Auth
         self::login($username, $password);
 
         if (!self::isLoggedIn()){
-            Logger::write("Auth -> checkAndLogin: Username or password not valid.",Logger::LEVEL_USER);
+            Logger::write("Auth -> checkAndLogin: Username or password not valid.",Log_Level::USER);
             if ($throwException)
                 throw new Exception("Username or password not valid.",5);
             return false;
@@ -256,7 +256,7 @@ class Auth
             $user = $objSession->GetUserObject();
             $user->refreshRememberMeCookie();
         }
-        Logger::write("[Login] uid: ".$objSession->GetUserID(),Logger::LEVEL_USER);
+        Logger::write("[Login] uid: ".$objSession->GetUserID(),Log_Level::USER);
         return true;
     }
 
@@ -293,9 +293,9 @@ class Auth
                 }
             }
         } catch (PDOException $e) {
-            Logger::write($e,Logger::LEVEL_ERROR);
+            Logger::write($e,Log_Level::ERROR);
         } catch (Exception $e) {
-            Logger::write($e,Logger::LEVEL_ERROR);
+            Logger::write($e,Log_Level::ERROR);
         }
         return false;
     }

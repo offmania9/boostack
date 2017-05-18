@@ -34,7 +34,7 @@ class Log_File_Writer
         return self::$instance;
     }
 
-    public function log($message = NULL, $level = Logger::LEVEL_INFORMATION)
+    public function log($message = NULL, $level = Log_Level::INFORMATION)
     {
         $logFile = fopen($this->logFile, "a");
         if($logFile == false) {
