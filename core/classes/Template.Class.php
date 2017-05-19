@@ -11,10 +11,24 @@
 
 class Template
 {
-
+    /**
+     * @var
+     */
     private static $customCssFiles;
+
+    /**
+     * @var
+     */
     private static $customJsFiles;
 
+    /**
+     * Renderizza un file di template
+     *
+     * @param $template
+     * @param null $values
+     * @throws Exception
+     * @throws Exception_FileNotFound
+     */
     public static function render($template, $values = null)
     {
         if(empty($template))
@@ -31,6 +45,9 @@ class Template
         require $templateFile;
     }
 
+    /**
+     * Stampa i file JS di default specificati nelle configurazioni
+     */
     public static function renderDefaultJSFiles()
     {
         $defaultJsFiles = Config::get("default_js_files");
@@ -49,6 +66,9 @@ class Template
         }
     }
 
+    /**
+     * Stampa i file CSS di default specificati nelle configurazioni
+     */
     public static function renderDefaultCSSFiles()
     {
         $defaultCssFiles = Config::get("default_css_files");
@@ -59,6 +79,9 @@ class Template
         }
     }
 
+    /**
+     * Stampa i file CSS custom specificati on-the-fly
+     */
     public static function renderCustomCSSFiles()
     {
         if(!empty(self::$customCssFiles)) {
@@ -68,6 +91,9 @@ class Template
         }
     }
 
+    /**
+     * Stampa i file JS custom specificati on-the-fly
+     */
     public static function renderCustomJSFiles()
     {
         if(!empty(self::$customJsFiles)) {
@@ -77,6 +103,12 @@ class Template
         }
     }
 
+    /**
+     * Aggiunge un file CSS da renderizzare nel template
+     *
+     * @param $cssFile
+     * @param bool $isAbsolute
+     */
     public static function addCssFile($cssFile, $isAbsolute = false)
     {
         self::$customCssFiles[] = [
@@ -85,6 +117,12 @@ class Template
         ];
     }
 
+    /**
+     * Aggiunge un file JS da renderizzare nel template
+     *
+     * @param $jsFile
+     * @param bool $isAbsolute
+     */
     public static function addJsFile($jsFile, $isAbsolute = false)
     {
         self::$customJsFiles[] = [
@@ -93,6 +131,12 @@ class Template
         ];
     }
 
+    /**
+     * Stampa la stringa di inclusione del file JS specificato come parametro
+     *
+     * @param $file
+     * @param bool $isAbsolute
+     */
     public static function renderJSFile($file, $isAbsolute = false)
     {
         if($isAbsolute) {
@@ -104,6 +148,12 @@ class Template
         }
     }
 
+    /**
+     * Stampa la stringa di inclusione del file CSS specificato come parametro
+     *
+     * @param $file
+     * @param bool $isAbsolute
+     */
     public static function renderCSSFile($file, $isAbsolute = false)
     {
         if($isAbsolute) {
@@ -115,11 +165,25 @@ class Template
         }
     }
 
+    /**
+     * Ritorna l'URL assoluta dell'immagine specificata come parametro
+     *
+     * @param $image
+     * @return string
+     */
     public static function getImageLink($image)
     {
         return Config::get('url').Config::get('image_path').$image;
     }
 
+    /**
+     * Ritorna il template mail specificato come parametro
+     *
+     * @param $mail
+     * @param null $parameters
+     * @return bool|mixed|string
+     * @throws Exception
+     */
     public static function getMailTemplate($mail, $parameters = null)
     {
         $file = ROOTPATH.Config::get('mail_template_path').$mail;
