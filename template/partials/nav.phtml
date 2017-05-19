@@ -15,5 +15,8 @@
 		<li>
             <a title="Registration" href="<?= Utils::getFriendlyUrl("registration"); ?>"><?= Language::getLabel("navigation.registration"); ?></a>
         </li>
+        <?php if (Utils::hasPrivilege(Auth::getUserLoggedObject(), PRIVILEGE_SUPERADMIN)): ?>
+            <li><a title="Log" href="<?= Utils::getFriendlyUrl("log"); ?>"><?= Language::getLabel("navigation.log"); ?></a></li>
+        <? endif; ?>
 	</ul>
 </header>

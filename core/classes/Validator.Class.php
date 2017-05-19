@@ -199,38 +199,57 @@ class Validator
         return $res;
     }
 
-    //to validate strings containing only letters
-    public static function onlyChars($input)
-    {
+    /**
+     * @param $input
+     * @return int
+     * validate strings containing only letters
+     */
+    public static function onlyChars($input){
         return preg_match('/^[A-Za-z]+$/', $input);
     }
-    //to validate strings containing only letters and space
-    public static function onlyCharsWithSpace($input)
-    {
+
+    /**
+     * @param $input
+     * @return int
+     * validate strings containing only letters and space
+     */
+    public static function onlyCharsWithSpace($input){
         return preg_match('/^[A-Za-zÀ-ÿ ]+$/', $input);
     }
 
-    //to validate strings containing only letters, numbers or "-"
-    public static function onlyCharNumbersUnderscore($input)
-    {
+    /**
+     * @param $input
+     * @return int
+     * validate strings containing only letters, numbers or "-"
+     */
+    public static function onlyCharNumbersUnderscore($input){
         return preg_match('/^[A-Za-z1-9_]+$/', $input);
     }
 
-    //to validate address like google maps default address or simply letters, numbers, accents, "-", "_", "," and space
-    public static function address ($input)
-    {
+    /**
+     * @param $input
+     * @return int
+     * validate address like google maps default address or simply letters, numbers, accents, "-", "_", "," and space
+     */
+    public static function address ($input){
         return preg_match("/^[A-Za-z0-9À-ÿ _\-,]*[A-Za-z0-9À-ÿ][A-Za-z0-9À-ÿ _\-,]*$/", $input);
     }
 
-    //to validate operators for view method
-    public static function operators($rule)
-    {
-        $rules = ["LIKE", "like", "&lt;&gt;", "=", "&lt;", "&lt;=", "&gt;", "&gt;="];
+    /**
+     * @param $rule
+     * @return bool
+     * validate operators for view method
+     */
+    public static function operators($rule){
+        $rules = ["like", "not like", "&lt;&gt;", "=", "&lt;", "&lt;=", "&gt;", "&gt;="];
         return in_array($rule , $rules);
     }
 
-    public static function varchar_max_length ($input)
-    {
+    /**
+     * @param $input
+     * @return bool
+     */
+    public static function varchar_max_length ($input){
         return strlen($input) < Config::get("varchar_max_length");
     }
 
@@ -355,10 +374,18 @@ class Validator
     /**
      * @param $password
      * @return bool
+     * validate password to login (when its length is lower than a strong password)
      */
-    public static function password($password)
-    {
-        return !empty($password) && (strlen($password) >= Config::get("password_min_length")) && (strlen($password) <= Config::get("password_max_length"));
+    public static function password_login($password){
+        return !empty($password) && (strlen(html_entity_decode($password, ENT_QUOTES)) >= Config::get("password_min_length_login")) && (strlen(html_entity_decode($password, ENT_QUOTES)) <= Config::get("password_max_length"));
+    }
+
+    /**
+     * @param $password
+     * @return bool
+     */
+    public static function password($password) {
+        return !empty($password) && (strlen(html_entity_decode($password, ENT_QUOTES)) >= Config::get("password_min_length")) && (strlen(html_entity_decode($password, ENT_QUOTES)) <= Config::get("password_max_length"));
     }
 
     /**
@@ -389,7 +416,6 @@ class Validator
         // OWASP regex NOT WORK
         //$regex = '^(([a-zA-Z]:|\\)\\)?(((\.)|(\.\.)|([^\\/:*?"|<>. ](([^\\/:*?"|<>. ])|([^\\/:*?"|<>]*[^\\/:*?"|<>. ]))?))\\)*[^\\/:*?"|<>. ](([^\\/:*?"|<>. ])|([^\\/:*?"|<>]*[^\\/:*?"|<>. ]))?$';
         //$regex = '/^[\w-\d]{1}[\w-\d\s\.]*(\.){1}(\w)+$/i';
-        return preg_match($regex,$filename);
     }
 
     /**

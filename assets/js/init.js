@@ -4,6 +4,7 @@ var cookieMessageModule = null;
 var loginModule = null;
 var registrationModule = null;
 var documentationModule = null;
+var logListModule = null;
 
 var initLibrary = function() {
 
@@ -49,6 +50,14 @@ var initLibrary = function() {
         require(["module/documentationModule"], function (dm) {
             documentationModule = new dm();
             documentationModule.init();
+        });
+    }
+
+    if (getElementsByClassName("logList").length) {
+        require(["module/logListModule"], function (m) {
+            if (logListModule != null) return;
+            logListModule = new m();
+            logListModule.init();
         });
     }
 

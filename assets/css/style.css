@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /**
  * Boostack: custom.css
  * ========================================================================
@@ -322,6 +323,47 @@ footer {
 pre {
   border: 0;
   background-color: #fafafa; }
+
+.selectField {
+  min-width: 200px; }
+
+.selectCondition {
+  min-width: 200px; }
+
+.glyphicon-sort-by-asc:before {
+  content: ""; }
+
+.glyphicon-sort-by-desc:before {
+  content: ""; }
+
+.sortingTable {
+  width: auto;
+  display: inline-block;
+  outline: none;
+  height: 22px;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0; }
+
+.customPagination {
+  margin: 0;
+  display: inline-flex; }
+  .customPagination .active span {
+    background-color: #ddd;
+    color: black;
+    border-color: #ddd; }
+    .customPagination .active span:hover {
+      border-color: #ddd;
+      background-color: #ccc; }
+  .customPagination li {
+    list-style-type: none; }
+    .customPagination li span {
+      color: black;
+      padding: 1px 8px 3px 8px;
+      font-size: 14px;
+      cursor: pointer; }
+      .customPagination li span:hover {
+        background-color: #ccc; }
 
 .cookie-bar {
   position: fixed;

@@ -79,6 +79,63 @@ $config["fb_admins"] = "";
  * CUSTOM VARIABLES
  */
 
+$filterField_Log = '{
+ "id": [{
+   "canFilter":"true",
+   "rule":"like,not like,<>,=,<,<=,>,>=",
+   "filter":"numeric",
+   "valueType":"number"
+  }],
+  "level": [{
+   "canFilter":"true",
+   "rule":"like,not like,<>,=",
+   "filter":"text",
+   "valueType":"text"
+  }],
+ "datetime": [{
+   "canFilter":"true",
+   "rule":"like,not like,<>,=,<,<=,>,>=",
+   "filter":"numeric",
+   "valueType":"number"
+  }],
+  "username": [{
+   "canFilter":"true",
+   "rule":"like,not like,<>,=",
+   "filter":"text",
+   "valueType":"text"
+  }],
+  "ip": [{
+   "canFilter":"true",
+   "rule":"like,not like,<>,=",
+   "filter":"text",
+   "valueType":"text"
+  }],
+  "useragent": [{
+   "canFilter":"true",
+   "rule":"like,not like,<>,=",
+   "filter":"text",
+   "valueType":"text"
+  }],
+    "referrer": [{
+   "canFilter":"true",
+   "rule":"like,not like,<>,=",
+   "filter":"text",
+   "valueType":"text"
+  }],
+  "query": [{
+   "canFilter":"true",
+   "rule":"like,not like,<>,=",
+   "filter":"text",
+   "valueType":"text"
+  }],
+  "message": [{
+   "canFilter":"true",
+   "rule":"like,not like,<>,=",
+   "filter":"text",
+   "valueType":"text"
+  }]
+}';
+
 CONST PRIVILEGE_SYSTEM = 0;
 CONST PRIVILEGE_SUPERADMIN = 1;
 CONST PRIVILEGE_ADMIN = 2;
