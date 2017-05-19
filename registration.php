@@ -22,7 +22,7 @@ try {
         if (!Validator::email($email)) $registrationError = "Username format not valid";
         if (!Validator::password($psw1)) $registrationError = "Password format not valid";
         if (User::existsByEmail($email, false) || User::existsByUsername($email, false)) $registrationError = "Email already registered";
-        if (Config::get('csrf_on')) $objSession->CSRFCheckValidity(Request::getPostArray());
+        if (Config::get('csrf_on')) Session::CSRFCheckValidity(Request::getPostArray());
         if (strlen($registrationError) == 0) {
             $user = new User();
             $user->username = $email;

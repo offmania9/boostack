@@ -1,5 +1,5 @@
         <?php if(Config::get('session_on') && Config::get('csrf_on')): ?>
-            <?php global $objSession; echo $objSession->CSRFRenderHiddenField(); ?>
+            <?= Session::CSRFRenderHiddenField(); ?>
         <?php endif; ?>
         <script type="text/javascript">
             var rootUrl = "<?= Config::get("url") ?>";

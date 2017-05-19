@@ -42,7 +42,6 @@ class Language
 
     private static function findLanguage()
     {
-        global $objSession;
         $defaultLanguage = Config::get("language_default");
         $language = null;
 
@@ -53,8 +52,8 @@ class Language
             $language = Request::getQueryParam("lang");
         }
 //        else {
-//            if (Config::get("session_on") && $objSession->SESS_LANGUAGE !== "") { // if is set in the user session
-//                $language = $objSession->SESS_LANGUAGE;
+//            if (Config::get("session_on") && Session::get("SESS_LANGUAGE") !== "") { // if is set in the user session
+//                $language = Session::get("SESS_LANGUAGE");
 //            } else { // if isn't set in the user session, fetch it from browser
 //                if(isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
 //                    $language = explode(',', Utils::sanitizeInput($_SERVER['HTTP_ACCEPT_LANGUAGE']));
@@ -68,10 +67,9 @@ class Language
 
     private static function setSessionLanguage($lang)
     {
-        global $objSession;
         Config::constraint("session_on");
         Config::constraint("database_on");
-        $objSession->SESS_LANGUAGE = $lang;
+        Session::set("SESS_LANGUAGE",$lang);
     }
 
     private static function getLabelsFromLanguage($lang)

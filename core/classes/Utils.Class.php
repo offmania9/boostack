@@ -140,10 +140,9 @@ class Utils
      */
     public static function goToLogin($callbackURL = NULL)
     {
-        global $objSession;
         $url = Config::get("url");
         if ($callbackURL != NULL) {
-            $objSession->loginCallbackURL = $callbackURL;
+            Session::set("loginCallbackURL",$callbackURL);
         }
         header("Location: " . $url . "login");
         exit();
@@ -391,10 +390,9 @@ class Utils
 
     public static function getFriendlyUrl($virtualPath)
     {
-        if(Config::get('session_on')){
-            global $objSession;
-            $langUrl = $objSession->SESS_LANGUAGE."/";
-            if(!Config::get('show_default_language_in_URL') && $objSession->SESS_LANGUAGE == Config::get('language_default'))
+        if(Config::get('session_on')) {
+            $langUrl = Session::get("SESS_LANGUAGE")."/";
+            if(!Config::get('show_default_language_in_URL') && Session::get("SESS_LANGUAGE") == Config::get('language_default'))
                 $langUrl = "";
             return Config::get('url') . $langUrl . $virtualPath;
         }

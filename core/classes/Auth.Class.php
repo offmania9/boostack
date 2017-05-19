@@ -32,7 +32,6 @@ class Auth
      */
     public static function loginByUsernameAndPlainPassword($username, $password, $cookieRememberMe = false)
     {
-        global $objSession;
         $result = new MessageBag();
         $isLockStrategyEnabled = Config::get("lockStrategy_on");
         $lockStrategy = Config::get("login_lockStrategy");
@@ -45,8 +44,8 @@ class Auth
 
             /** LOCK STRATEGY CHECK **/
             if($isLockStrategyEnabled) {
-                if(!$objSession->failed_login_count) $objSession->failed_login_count = 0;
-                if($objSession->failed_login_count >= Config::get("login_maxAttempts")) {
+                if(!Session::get("failed_login_count")) Session::set("failed_login_count",0);
+                if(Session::get("failed_login_count") >= Config::get("login_maxAttempts")) {
                     if($lockStrategy == "timer") {
                         if(!self::checkAcceptedTimeFromLastLogin(self::getLastTry())) throw new Exception("Too much login request. Wait some seconds", self::LOCK_TIMER);
                     } else if($lockStrategy == "recaptcha") {
@@ -55,7 +54,7 @@ class Auth
                         $recaptchaResponse = self::reCaptchaVerify(Request::getPostParam("g-recaptcha-response"));
                         if(!$recaptchaResponse) throw new Exception("Invalid reCaptcha", self::LOCK_RECAPTCHA);
                     }
-                    $objSession->failed_login_count = 0;
+                    Session::set("failed_login_count",0);
                 }
             }
             if(!Validator::username($username))
@@ -63,9 +62,9 @@ class Auth
             if(!Validator::password($password))
                 throw new Exception("Password format not valid");
             Auth::impressLastTry();
-            if($isLockStrategyEnabled || ($isLockStrategyEnabled && Config::get('csrf_on') && $objSession->CSRFCheckValidity(Request::getPostArray(),false))) $objSession->failed_login_count++;
+            if($isLockStrategyEnabled || ($isLockStrategyEnabled && Config::get('csrf_on') && Session::CSRFCheckValidity(Request::getPostArray(),false))) Session::set("failed_login_count", Session::get("failed_login_count")+1);
             Auth::checkAndLogin($username, $password, $cookieRememberMe, true);
-            if($isLockStrategyEnabled) $objSession->failed_login_count = 0;
+            if($isLockStrategyEnabled) Session::set("failed_login_count",0);
 
         } catch (Exception $e) {
             Logger::write($e,Log_Level::USER);
@@ -101,14 +100,13 @@ class Auth
      */
     public static function loginByCookie($cookieValue)
     {
-        global $objSession;
         try {
             $userClass = Config::get("use_custom_user_class") ? Config::get("custom_user_class") : User::class;
             $userCredentials = $userClass::getCredentialByCookie($cookieValue);
             if($userCredentials != false) {
                 if (Utils::checkCookieHashValidity($cookieValue)) {
                     self::login($userCredentials["username"],"",$userCredentials["pwd"]);
-                    $userObject = $objSession->GetUserObject();
+                    $userObject = Session::getUserObject();
                     $userObject->refreshRememberMeCookie();
                     return true;
                 } else {
@@ -128,8 +126,7 @@ class Auth
      */
     public static function isLoggedIn()
     {
-        global $objSession;
-        return $objSession->IsLoggedIn();
+        return Session::isLoggedIn();
     }
 
     /**
@@ -137,13 +134,10 @@ class Auth
      */
     public static function logout()
     {
-        global $objSession;
         try {
             if(self::isLoggedIn()) {
-                if (Config::get("session_on") && isset($objSession) && self::isLoggedIn()){
-                    Logger::write("[Logout] uid: ".$objSession->GetUserID(),Log_Level::USER);
-                    $objSession->logoutUser();
-                }
+                Logger::write("[Logout] uid: ".Session::getUserID(),Log_Level::USER);
+                Session::logoutUser();
                 if (Config::get("cookie_on")) {
                     $cookieName = Config::get("cookie_name");
                     $cookieExpire = Config::get("cookie_expire");
@@ -165,8 +159,7 @@ class Auth
      */
     public static function getLastTry()
     {
-        global $objSession;
-        return $objSession->LastTryLogin;
+        return Session::get("LastTryLogin");
     }
 
     /**
@@ -174,8 +167,7 @@ class Auth
      */
     public static function impressLastTry()
     {
-        global $objSession;
-        $objSession->LastTryLogin = time();
+        Session::set("LastTryLogin", time());
     }
 
     /**
@@ -183,8 +175,7 @@ class Auth
      */
     public static function getUserLoggedObject()
     {
-        global $objSession;
-        return $objSession->GetUserObject();
+        return Session::getUserObject();
     }
 
     /**
@@ -192,8 +183,7 @@ class Auth
      */
     public static function isTimerLocked()
     {
-        global $objSession;
-        return Config::get("lockStrategy_on") && Config::get("login_lockStrategy") == "timer" && $objSession->failed_login_count >= Config::get("login_maxAttempts") && !self::checkAcceptedTimeFromLastLogin(self::getLastTry());
+        return Config::get("lockStrategy_on") && Config::get("login_lockStrategy") == "timer" && Session::get("failed_login_count") >= Config::get("login_maxAttempts") && !self::checkAcceptedTimeFromLastLogin(self::getLastTry());
     }
 
     /**
@@ -201,9 +191,7 @@ class Auth
      */
     public static function haveToShowCaptcha()
     {
-        global $objSession;
-        return Config::get("lockStrategy_on") && Config::get("login_lockStrategy") == "recaptcha" && $objSession->failed_login_count >= Config::get("login_maxAttempts");
-
+        return Config::get("lockStrategy_on") && Config::get("login_lockStrategy") == "recaptcha" && Session::get("failed_login_count") >= Config::get("login_maxAttempts");
     }
 
     /**
@@ -216,7 +204,6 @@ class Auth
      */
     private static function checkAndLogin($username, $password, $cookieRememberMe, $throwException = true)
     {
-        global $objSession;
         $userClass = Config::get("use_custom_user_class") ? Config::get("custom_user_class") : User::class;
         if (Config::get("userToLogin") == "email") {
             if (!$userClass::existsByEmail($username)) {
@@ -256,10 +243,10 @@ class Auth
         }
 
         if ($cookieRememberMe) {
-            $user = $objSession->GetUserObject();
+            $user = Session::getUserObject();
             $user->refreshRememberMeCookie();
         }
-        Logger::write("[Login] uid: ".$objSession->GetUserID(),Log_Level::USER);
+        Logger::write("[Login] uid: ".Session::getUserID(),Log_Level::USER);
         return true;
     }
 
@@ -271,7 +258,6 @@ class Auth
      */
     private static function login($strUsername, $strPlainPassword, $hashedPassword = "")
     {
-        global $objSession;
         $userClass = Config::get("use_custom_user_class") ? Config::get("custom_user_class") : User::class;
         try {
             switch (Config::get("userToLogin")) {
@@ -289,7 +275,7 @@ class Auth
                 $userPwd = $userData["pwd"];
                 $userId = $userData["id"];
                 if ($hashedPassword == "" && password_verify($strPlainPassword, $userPwd) || $hashedPassword != "" && $hashedPassword == $userPwd) {
-                    $objSession->loginUser($userId);
+                    Session::loginUser($userId);
                     $userObject = new $userClass($userId);
                     $userObject->last_access = time();
                     $userObject->save();
