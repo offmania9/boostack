@@ -175,7 +175,10 @@ class Auth
      */
     public static function getUserLoggedObject()
     {
-        return Session::getUserObject();
+        $ret = null;
+        if(Config::get("session_on"))
+            $ret = Session::getUserObject();
+        return $ret;
     }
 
     /**
