@@ -46,6 +46,21 @@ class Template
     }
 
     /**
+     * Renderizza una pagina di errore restituendo il relativo http response code
+     *
+     * @param $code
+     * @param null $template
+     * @param null $values
+     */
+    public static function renderErrorPage($code, $template = null, $values = null)
+    {
+        http_response_code($code);
+        $errorTemplate = $template != null ? $template : Config::get("default_error_page");
+        self::render($errorTemplate, $values);
+        die();
+    }
+
+    /**
      * Stampa i file JS di default specificati nelle configurazioni
      */
     public static function renderDefaultJSFiles()

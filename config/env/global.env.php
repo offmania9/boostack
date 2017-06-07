@@ -26,6 +26,7 @@ $config["default_js_files"] = array("lib/require.js","helpers.js","init.js");
 $config["default_ie_js_files"] = array("lib/html5shiv.js","lib/respond.js");
 $config["default_css_files"] = array("lib/bootstrap.css","lib/animate.css","style.css");/*,"custom.css"*/
 
+$config["default_error_page"] = "error.phtml";
 
 /**
  * GENERAL INFO & SEO
