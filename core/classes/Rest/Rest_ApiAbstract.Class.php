@@ -47,7 +47,7 @@ abstract class Rest_ApiAbstract
      */
     public function __construct($request)
     {
-        header("Access-Control-Allow-Orgin: *"); // Allow for CORS
+        header("Access-Control-Allow-Origin: *"); // Allow for CORS
         header("Access-Control-Allow-Methods: *");
         header("Content-Type: application/json");
         

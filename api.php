@@ -11,11 +11,13 @@
 
 require_once "core/environment_init.php";
 
-if (! array_key_exists('HTTP_ORIGIN', $_SERVER))
+if (! array_key_exists('HTTP_ORIGIN', $_SERVER)) {
     $_SERVER['HTTP_ORIGIN'] = $_SERVER['SERVER_NAME'];
+    Request::init();
+}
 
 try {
-    $api = new Rest_Api(Request::getRequestParam('request'), Request::getServerParam('HTTP_ORIGIN'));
+    $api = new Rest_Api(Request::getRequestParam('request'));
     echo $api->processAPI();
 }
 catch (Exception $e) {
