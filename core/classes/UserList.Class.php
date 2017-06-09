@@ -102,18 +102,16 @@ class UserList extends BaseList
                     if($count > 0) $sql .= $separator;
                     if ($option[0] == "datetime") {
                         $sql .= "FROM_UNIXTIME(" . $option[0] . ") ";
-                    } else
-                        if($option[0] == "id") $option[0] = $this->mainTablename.".id";
+                    } else {
+                        if($option[0] == "id")
+                            $option[0] = $this->mainTablename.".id";
+                    }
                     $sql .= $option[0] . " ";
                     $option[1] = strtoupper($option[1]);
                     switch ($option[1]) {
                         case '<>':
                         case '&LT;&GT;': {
                             $sql .= "!= '" . $option[2] . "'";
-                            break;
-                        }
-                        case 'LIKE': {
-                            $sql .= $option[1] . " '%" . $option[2] . "%'";
                             break;
                         }
                         case '=': {
@@ -140,11 +138,18 @@ class UserList extends BaseList
                             $sql .= ">= '" . $option[2] . "'";
                             break;
                         }
+                        case 'LIKE': {
+                            $sql .= $option[1] . " '%" . $option[2] . "%'";
+                            break;
+                        }
+                        case 'NOT LIKE': {
+                            $sql .= $option[1] . " '%" . $option[2] . "%'";
+                            break;
+                        }
                     }
                     $count++;
                 }
             }
-
 
             $q = $this->pdo->prepare($sqlCount . $sql);
             $q->execute();
@@ -152,10 +157,9 @@ class UserList extends BaseList
 
             $queryNumberResult = intval($result[0]);
             $maxPage = floor($queryNumberResult / $numitem) + 1;
-            if ($currentPage >= $maxPage){
-                $maxPage = floor($queryNumberResult / 25) + 1;
-                $currentPage = 1;
-            };
+            if ($currentPage > $maxPage){
+                throw new Exception("Current page exceed max page");
+            }
 
             if ($orderColumn != NULL) {
                 $sql .= " ORDER BY" . " " . $orderColumn;
@@ -174,7 +178,9 @@ class UserList extends BaseList
 
             $q->execute();
             $queryResults = $q->fetchAll(PDO::FETCH_ASSOC);
+
             $this->fill($queryResults);
+
             return $queryNumberResult;
         } catch (PDOException $pdoEx) {
             Logger::write($pdoEx,Log_Level::ERROR, Log_Driver::FILE);

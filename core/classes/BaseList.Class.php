@@ -200,6 +200,7 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable
                     $count++;
                 }
             }
+
             $q = $this->pdo->prepare($sqlCount . $sql);
             $q->execute();
             $result = $q->fetch();
@@ -208,7 +209,7 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable
             $maxPage = floor($queryNumberResult / $numitem) + 1;
             if ($currentPage > $maxPage){
                 throw new Exception("Current page exceed max page");
-            };
+            }
 
             if ($orderColumn != NULL) {
                 $sql .= " ORDER BY" . " " . $orderColumn;
