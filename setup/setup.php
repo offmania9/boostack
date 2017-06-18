@@ -3,13 +3,13 @@
 // CONFIGURATION
 $required_php_version = array(
     "5.6.00",
-    "50600",
+    "50600"
 );
 
 $apache_modules_required = array(
     "mod_rewrite",
     "mod_deflate",
-    "mod_headers",
+    "mod_headers"
 );
 $apache_modules_optional = array(
     "mod_setenvif",
@@ -17,25 +17,29 @@ $apache_modules_optional = array(
     "mod_expires",
     "mod_autoindex",
     "mod_include",
-    "mod_filter",
+    "mod_filter"
 );
 $php_extensions_required = array(
     "curl",
     "PDO",
     "json",
-    "session",
+    "session"
 );
 $php_configurations_required = array(
-    "short_open_tag" => true,
+    "short_open_tag" => true
 );
 
 // END CONFIGURATION
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 if (!defined('PHP_VERSION_ID')) {
     $version = explode('.', PHP_VERSION);
     define('PHP_VERSION_ID', ($version[0] * 10000 + $version[1] * 100 + $version[2]));
 }
 $phpVersion = phpversion();
+#apache_get_modules() is only available when the PHP is installed as a module and not as a CGI
 $apache_modules_loaded = apache_get_modules();
 $php_extensions_loaded = get_loaded_extensions();
 $php_configurations_loaded = ini_get_all();
