@@ -31,16 +31,16 @@
                     <li class="item"><a title="Controllers" href="<?= Utils::getFriendlyUrl("docs/controllers")?>">Controllers</a></li>
                     <li class="item"><a title="Template" href="<?= Utils::getFriendlyUrl("docs/template")?>">Template</a></li>
                     <li class="title">Utilities</li>
-                    <li class="item"><a title="" href="<?= Utils::getFriendlyUrl("")?>">Auth</a>
+                    <li class="item"><a title="" href="<?= Utils::getFriendlyUrl("docs/auth")?>">Auth</a>
                         <ul class="list-unstyled">
                             <li class="item"><a title="Timer" href="<?= Utils::getFriendlyUrl("docs/loginSecurity#Timer")?>">Timer</a></li>
                             <li class="item"><a title="Recaptcha" href="<?= Utils::getFriendlyUrl("docs/loginSecurity#Recaptcha")?>">Google Recaptcha</a></li>
                         </ul></li>
-                    <li class="item"><a title="" href="<?= Utils::getFriendlyUrl("")?>">Users</a></li>
-                    <li class="item"><a title="" href="<?= Utils::getFriendlyUrl("")?>">Session</a></li>
-                    <li class="item"><a title="" href="<?= Utils::getFriendlyUrl("")?>">CURL</a></li>
-                    <li class="item"><a title="" href="<?= Utils::getFriendlyUrl("")?>">Log</a></li>
-                    <li class="item"><a title="" href="<?= Utils::getFriendlyUrl("")?>">Validator</a></li>
+                    <li class="item"><a title="" href="<?= Utils::getFriendlyUrl("docs/users")?>">Users</a></li>
+                    <li class="item"><a title="" href="<?= Utils::getFriendlyUrl("docs/session")?>">Session</a></li>
+                    <li class="item"><a title="" href="<?= Utils::getFriendlyUrl("docs/curl")?>">CURL</a></li>
+                    <li class="item"><a title="" href="<?= Utils::getFriendlyUrl("docs/log")?>">Log</a></li>
+                    <li class="item"><a title="" href="<?= Utils::getFriendlyUrl("docs/validator")?>">Validator</a></li>
 			</div>
 			<div class="col-md-6 documentationInnerContent">
                 <?php
@@ -65,6 +65,34 @@
                         }
                         case "loginSecurity": {
                             require "documentation/loginSecurity.phtml";
+                            break;
+                        }
+                        case "template": {
+                            require "documentation/template.phtml";
+                            break;
+                        }
+                        case "auth": {
+                            require "documentation/auth.phtml";
+                            break;
+                        }
+                        case "users": {
+                            require "documentation/users.phtml";
+                            break;
+                        }
+                        case "session": {
+                            require "documentation/session.phtml";
+                            break;
+                        }
+                        case "curl": {
+                            require "documentation/curl.phtml";
+                            break;
+                        }
+                        case "log": {
+                            require "documentation/log.phtml";
+                            break;
+                        }
+                        case "validator": {
+                            require "documentation/validator.phtml";
                             break;
                         }
                         default: {

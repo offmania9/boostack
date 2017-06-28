@@ -60,4 +60,117 @@ protected $custom_excluded = ["myVar"];
     </ul>
 </section>
 <h3>BaseList</h3>
-// TODO
+<section>
+    <p><code>BaseList</code> provides powerful methods to allow your custom classes to use a database table as List. To start
+        using the benefits, your class must extends the <code>BaseList</code>:</p>
+    <pre><code>class &lt;Your_Class&gt; extends BaseList {
+    ...
+}
+</code></pre>
+    <p>To use BaseList you need to first declare the <code>BaseClass</code> table into a Constant</p>
+    <pre><code>CONST BASE_CLASS = <Your_Class>::class;</code></pre>
+    <p>Than initialize the constructor method of the BaseList class</p>
+    <pre><code>public function __construct(){
+            parent::init()
+}</code></pre>
+    <h4>Available Methods</h4>
+    <ul>
+        <li>
+            <code>
+                view($fields,$orderColumn,$orderType,$numitem,$currentPage).
+            </code><br/>
+            The view method can be used to obtain data from the table filtered and paginated
+            <pre><code>view($fields, $orderColumn, $orderType, $numitem, $currentPage);</code></pre><br/>
+            The view method accept only this type of parameter:
+            <ul>
+                <li>
+                    <code>$fields is a Array composed by three option: columnName, operator and the word to search.</code>
+                </li>
+                <li>
+                    <code>$orderColumn contain the name of column to order by.</code>
+                </li>
+                <li>
+                    <code>$orderType can be "ASC" or "DESC" to get data Ascended or Descended.</code>
+                </li>
+                <li>
+                    <code>$numitem container the Limit element of how much item to view.</code>
+                </li>
+                <li>
+                    <code>$currentPage contain the current page number according to the number of item to view.</code>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <code>
+                loadAll()
+            </code><br/>
+            Load from the database table all the item and return the number of item as result.
+        </li>
+        <li>
+            <code>
+                truncate()
+            </code><br/>
+            Used for truncate the database.
+        </li>
+        <li>
+            <code>
+                getIterator()
+            </code><br/>
+            If you are used loadAll method you can use getIterator method to iterate the list like an array.
+        </li>
+        <li>
+            <code>
+                getItemsArray()
+            </code><br/>
+            Return the database table item as array.
+        </li>
+        <li>
+            <code>
+                size()
+            </code><br/>
+            Return the number of items.
+        </li>
+        <li>
+            <code>
+                isEmpty()
+            </code><br/>
+            Return boolean if the table is empty.
+        </li>
+        <li>
+            <code>
+                jsonSerialize()
+            </code><br/>
+            This method is used when json_encode() is called, it expose "items" to the json_encode() function.
+        </li>
+        <li>
+            <code>
+                add($element)
+            </code><br/>
+            This method is used to add item into array.
+        </li>
+        <li>
+            <code>
+                get($key)
+            </code><br/>
+            This method is used to get item by key.
+        </li>
+        <li>
+            <code>
+                remove($key,$shift)
+            </code><br/>
+            This method is used to remove item from array.
+        </li>
+        <li>
+            <code>
+                clear()
+            </code><br/>
+            This method is used to clear the item array.
+        </li>
+        <li>
+            <code>
+                fill
+            </code><br/>
+            This method is used to Fill the list with an array of array of object fields
+        </li>
+    </ul>
+</section>

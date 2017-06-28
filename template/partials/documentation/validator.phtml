@@ -1,0 +1,81 @@
+<h3>Validator</h3>
+<p>Boostack comes with a Validator system.
+    It handles backend validation of all your data where you need.
+    This section of the documentation explains how to use it to suit your project’s needs.</p>
+<p>Below the explanation of all method you can use in your project</p>
+<ul>
+    <li><code>Validator::validate($input, $rules)</code><br/>
+    This method validate an associative array of value.<br/>
+        <b>$input</b>: is a associative array where the key correspond the name of the value in input.<br/>
+        <b>$rules</b>: is a associative array where the name correspond the type of field to validate.<br/>
+    This method return boolean: true in case of validate success, otherwise return an array containing the name of field that not pass the validation.</li>
+    <li><code>Validator::validateFormValues($input, $rules)</code><br/>
+        In <b>$input</b> put your form data, and <b>$rules</b> contain for every input the type of rule. Like this:
+        Format for input:<br/>
+        <code>$input[
+        0 => ["values" => ["your_value"]],<br/>
+            1 => ["values" => ["check_1","check_2"]]
+            ]</code><br/>
+        Format for rule:<br/>
+        <code>$rules[
+            0 => ["required|string"],<br/>
+            1 => ["Required|Min:1|Max:3"]
+            ]</code>
+        <br/>
+        Here is the list of rule you can use in your validator:<br/>
+        <code>
+            Required,
+            String,
+            Integer,
+            Float,
+            Min,
+            Max,
+            In
+        </code>
+    </li>
+    <li><code>Validator::string($input)</code><br/>
+        Use this method to validate an field that can only accept <b>string</b> as input</li>
+    <li><code>Validator::onlyChars($input)</code><br/>
+        Use this method to validate an field that can only accept <b>char</b> as input</li>
+    <li><code>Validator::onlyCharsWithSpace($input)</code><br/>
+        Use this method to validate an field that can only accept <b>char with space</b> as input</li>
+    <li><code>Validator::onlyCharNumbersUnderscore($input)</code>
+        Use this method to validate an field that can only accept <b>char with number and underscore</b> as input</li>
+    <li><code>Validator::address($input)</code><br/>
+        Use this method to validate an field that can only accept <b>address type</b> as input</li>
+    <li><code>Validator::operators($rule)</code><br/>
+        Use this method to validate an field that can only accept <b>operator</b> as input like: "like", "not like", "&lt;&gt;", "=", "&lt;", "&lt;=", "&gt;", "&gt;=".</li>
+    <li><code>Validator::varchar_max_length($input)</code><br/>
+        Use this method to validate an field that can only accept <b>max string length setup into env</b> as input</li>
+    <li><code>Validator::numeric($input)</code><br/>
+        Use this method to validate an field that can only accept <b>number</b> as input</li>
+    <li><code>Validator::alphanumeric($input)</code><br/>
+        Use this method to validate an field that can only accept <b>number and char</b> as input</li>
+    <li><code>Validator::integer($input)</code><br/>
+        Use this method to validate an field that can only accept <b>integer</b> as input</li>
+    <li><code>Validator::float($input)</code><br/>
+        Use this method to validate an field that can only accept <b>float</b> as input</li>
+    <li><code>Validator::in($elem, $array)</code><br/>
+        Use this method to validate an field that check if in the array the element is exists or not.</li>
+    <li><code>Validator::email($input)</code><br/>
+        Use this method to validate an field that can only accept <b>email</b> as input</li>
+    <li><code>Validator::phone($input)</code><br/>
+        (TODO)Use this method to validate an field that can only accept <b>phone</b> as input</li>
+    <li><code>Validator::password_login($password)</code><br/>
+        Use this method to validate an field that can only accept <b>password</b> as input</li>
+    <li><code>Validator::password($password)</code><br/>
+        Use this method to validate an field that can only accept <b>password</b> as input</li>
+    <li><code>Validator::strongPassword($password)</code><br/>
+        Use this method to validate an field that check if the password is a strong password</li>
+    <li><code>Validator::username($username)</code><br/>
+        Use this method to validate an field that can only accept <b>username format</b> as input</li>
+    <li><code>Validator::filename($filename)</code><br/>
+    (TODO)</li>
+    <li><code>Validator::required($input, $array)</code><br/>
+        Use this method to check if the input is in array or not</li>
+    <li><code>Validator::setError($key,$message)</code><br/>
+        This method set error for <code>Validator</code> class.
+    </li>
+    <li><code>Validator::hasError()</code><br/>
+    This method check if <code>Validator</code> class has error</li>
+</ul>
