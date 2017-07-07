@@ -173,7 +173,8 @@ section.features {
       border-bottom: 2px solid #84c441; }
 section.download .description, section.documentation .description {
   padding-bottom: 15px;
-  padding-top: 15px; }
+  padding-top: 15px;
+  margin-top: 30px; }
 section.download .description p, section.documentation .description p {
   padding: 10px;
   padding-top: 0px;

@@ -1,13 +1,11 @@
-<h3>Validator</h3>
-<p>Boostack comes with a Validator system.
-    It handles backend validation of all your data where you need.
-    This section of the documentation explains how to use it to suit your project’s needs.</p>
-<p>Below the explanation of all method you can use in your project</p>
+<h2>Validator</h2>
+<p>Validator handles backend validation of all your data, where you need.</p>
+<h4>Methods</h4>
 <ul>
     <li><code>Validator::validate($input, $rules)</code><br/>
-    This method validate an associative array of value.<br/>
-        <b>$input</b>: is a associative array where the key correspond the name of the value in input.<br/>
-        <b>$rules</b>: is a associative array where the name correspond the type of field to validate.<br/>
+    Validate an associative array of values.<br/>
+        <b>$input</b>: an associative array where the key correspond the name of the value in input.<br/>
+        <b>$rules</b>: an associative array where the name correspond the type of field to validate.<br/>
     This method return boolean: true in case of validate success, otherwise return an array containing the name of field that not pass the validation.</li>
     <li><code>Validator::validateFormValues($input, $rules)</code><br/>
         In <b>$input</b> put your form data, and <b>$rules</b> contain for every input the type of rule. Like this:
