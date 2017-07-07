@@ -106,11 +106,18 @@ class Session_HTTP
         $interval_last_impression = $datetime_now - intval($lease[1]);
 
         # check if current session is not expired (creation interval < lifespan and last impression interval < timeout or never impressed)
-        $stmt = "SELECT id FROM " . $this->http_session_table . " WHERE ascii_session_id = '" . $this->php_session_id . "' AND user_agent='" . Utils::getUserAgent() . "'
-                AND $interval_created < " . $this->session_lifespan . " AND ( $interval_last_impression <= " . $this->session_timeout . " OR last_impression = 0 ) ";
-
+        $stmt = "SELECT id FROM " . $this->http_session_table . " WHERE ascii_session_id = :sessionId AND user_agent = :userAgent
+                AND :intervalCreated < :sessionLifespan AND (:intervalLastImpression <= :sessionTimeout OR last_impression = 0) ";
+        $q = $this->dbhandle->prepare($stmt);
+        $q->bindValue(':sessionId', $this->php_session_id);
+        $q->bindValue(':userAgent', Utils::getUserAgent());
+        $q->bindValue(':intervalCreated', $interval_created, PDO::PARAM_INT);
+        $q->bindValue(':sessionLifespan', $this->session_lifespan, PDO::PARAM_INT);
+        $q->bindValue(':sessionTimeout', $this->session_timeout, PDO::PARAM_INT);
+        $q->bindValue(':intervalLastImpression', $interval_last_impression, PDO::PARAM_INT);
+        $q->execute();
         # if session is expired
-        if ($this->dbhandle->query($stmt)->rowCount() == 0) {
+        if ($q->rowCount() == 0) {
             # delete current session and all other expired sessions
             $sql = "DELETE FROM " . $this->http_session_table . " WHERE (ascii_session_id = '" . $this->php_session_id . "') OR ($datetime_now - created > '$this->session_lifespan')";
             $this->dbhandle->query($sql);
@@ -172,9 +179,15 @@ class Session_HTTP
         } else {
             $this->logged_in = false;
             # create session record into database
-            $sql = "INSERT INTO " . $this->http_session_table . "(id,ascii_session_id, logged_in,user_id, created, user_agent)
-							VALUES (NULL,'$id','f',1,'" . time() . "','" . Utils::getUserAgent() . "')";
-            $this->dbhandle->query($sql);
+            $sql = "INSERT INTO " . $this->http_session_table . "(id, ascii_session_id, logged_in, user_id, created, user_agent)
+							VALUES (NULL, :sessionId, :loggedIn, :userId, :createdAt, :userAgent)";
+            $q = $this->dbhandle->prepare($sql);
+            $q->bindValue(':sessionId', $id);
+            $q->bindValue(':loggedIn', "f");
+            $q->bindValue(':userId', 1);
+            $q->bindValue(':createdAt', time());
+            $q->bindValue(':userAgent', Utils::getUserAgent());
+            $q->execute();
             # retrieve session id
             $sql = "SELECT id FROM " . $this->http_session_table . " WHERE ascii_session_id = '$id'";
             $results = $this->dbhandle->query($sql)->fetch();
