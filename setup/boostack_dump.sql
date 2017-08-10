@@ -23,7 +23,7 @@ CREATE TABLE `boostack_http_session` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `http_session_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `boostack_user` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
@@ -43,7 +43,7 @@ CREATE TABLE `boostack_log` (
   `query` varchar(255) NOT NULL,
   `message` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 # Dump of table boostack_user_privilege
 # ------------------------------------------------------------
@@ -55,7 +55,7 @@ CREATE TABLE `boostack_user_privilege` (
   `title` varchar(255) NOT NULL DEFAULT '',
   `description` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 LOCK TABLES `boostack_user_privilege` WRITE;
 /*!40000 ALTER TABLE `boostack_user_privilege` DISABLE KEYS */;
@@ -80,12 +80,12 @@ DROP TABLE IF EXISTS `boostack_session_variable`;
 CREATE TABLE `boostack_session_variable` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `session_id` int(11) NOT NULL,
-  `variable_name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-  `variable_value` text COLLATE utf8_unicode_ci NOT NULL,
+  `variable_name` varchar(64) NOT NULL,
+  `variable_value` text NOT NULL,
   PRIMARY KEY (`id`),
   KEY `session_id` (`session_id`),
   CONSTRAINT `session_variable_ibfk_1` FOREIGN KEY (`session_id`) REFERENCES `boostack_http_session` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
@@ -108,7 +108,7 @@ CREATE TABLE `boostack_user` (
   PRIMARY KEY (`id`),
   KEY `privilege2` (`privilege`),
   CONSTRAINT `boostack_user_ibfk_1` FOREIGN KEY (`privilege`) REFERENCES `boostack_user_privilege` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 # Dump of table boostack_user_info
 # ------------------------------------------------------------
@@ -141,7 +141,7 @@ CREATE TABLE `boostack_user_info` (
   `sex` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `user_info_ibfk_1` FOREIGN KEY (`id`) REFERENCES `boostack_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 # Dump of table boostack_user_registration
 # ------------------------------------------------------------
@@ -157,7 +157,7 @@ CREATE TABLE `boostack_user_registration` (
   `join_idconfirm` varchar(32) NOT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `user_registration_ibfk_1` FOREIGN KEY (`id`) REFERENCES `boostack_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 # Dump of table boostack_user_social
 # ------------------------------------------------------------
