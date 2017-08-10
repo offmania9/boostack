@@ -50,11 +50,11 @@ class Utils
                 $filename .= $cn[$i] . "/";
             $filename .= $className . ".Class.php";
         }
-        if (is_readable($pathcore . $filename))
-            require_once($pathcore . $filename);
+        if (is_readable($pathcustom . $filename))
+            require_once($pathcustom . $filename);
         else
-            if (is_readable($pathcustom . $filename))
-                require_once($pathcustom . $filename);
+            if (is_readable($pathcore . $filename))
+                require_once($pathcore . $filename);
     }
 
     /**
