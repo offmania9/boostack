@@ -70,11 +70,11 @@ class Upload_File
         $validTypes = empty($allowedTypes) ? Config::get("allowed_file_upload_types") : $allowedTypes;
         $validExtensions = empty($allowedExtensions) ? Config::get("allowed_file_upload_extensions") : $allowedExtensions;
 
-        if($this->size > $validFilesize)
+        if ($this->size > $validFilesize)
             throw new Exception("File exceed maximum size");
-        if(strlen($this->name) > $validFilenameLength)
+        if (strlen($this->name) > $validFilenameLength)
             throw new Exception("Filename too long");
-        if(!in_array($this->type, $validTypes))
+        if (!in_array($this->type, $validTypes))
             throw new Exception("Filetype not valid");
         if (!in_array($this->extension, $validExtensions))
             throw new Exception("File extension not valid");
@@ -94,11 +94,14 @@ class Upload_File
     public function moveTo($path, $filename, $permission = 0755, $overwriteIfExist = false)
     {
         $destinationFullPath = $path.$filename.".".$this->extension;
-        if(!$overwriteIfExist && file_exists($destinationFullPath)) {
+        if (!file_exists($path))
+            throw new Exception("Destination path does not exists: " . $path);
+        if (!is_writable($path))
+            throw new Exception("Destination path is not writable: " . $path);
+        if (!$overwriteIfExist && file_exists($destinationFullPath))
             throw new Exception("File " . $destinationFullPath." already exists");
-        }
-        if(move_uploaded_file($this->tmp_name, $destinationFullPath))
-            if(is_writable($destinationFullPath))
+        if (move_uploaded_file($this->tmp_name, $destinationFullPath))
+            if (is_writable($destinationFullPath))
                 chmod($destinationFullPath, $permission);
             else
                 throw new Exception("File " . $this->name." is not writable");
