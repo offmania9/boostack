@@ -101,10 +101,10 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable
 
     public function remove($key, $shift = true)
     {
-        if(!$this->haskey($key))
+        if (!$this->haskey($key))
             return false;
         unset($this->items[$key]);
-        if($shift)
+        if ($shift)
             $this->items = array_values($this->items);
         return true;
     }
@@ -131,7 +131,7 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable
     /**
      * Retrieve values with field filtering, ordering and pagination
      */
-    public function view($fields = NULL, $orderColumn = NULL, $orderType = NULL, $numitem = 25, $currentPage = 1)
+    public function view($fields = NULL, $orderColumn = NULL, $orderType = self::ORDER_ASC, $numitem = 25, $currentPage = 1)
     {
         try {
             $sql = "";
@@ -141,18 +141,18 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable
             if (!is_numeric($numitem)) $error = "Wrong num_item type";
             if (!is_numeric($currentPage) || $currentPage < 0) $error = "Wrong current_page format";
             if (!($orderType == self::ORDER_ASC || $orderType == self::ORDER_DESC)) $error = "Wrong order_type format";
-            if (!(is_array($fields) && count($fields) > 0)) $error = "Wrong field_view format";
+            if ($fields != NULL && !(is_array($fields) && count($fields) > 0)) $error = "Wrong field_view format";
             if ($error !== false) throw new Exception($error);
 
             $sqlCount = "SELECT count(id) FROM " . $this->baseClassTablename . " ";
             $sqlMaster = "SELECT * FROM " . $this->baseClassTablename . " ";
 
-            $sql .= "WHERE" . " ";
             $separator = " AND ";
             $count = 0;
-            if(count($fields)>0){
+            if (count($fields) > 0){
+                $sql .= "WHERE" . " ";
                 foreach ($fields as $option) {
-                    if($count > 0) $sql .= $separator;
+                    if ($count > 0) $sql .= $separator;
                     if ($option[0] == "datetime") {
                         $sql .= "FROM_UNIXTIME(" . $option[0] . ") ";
                     } else
@@ -207,7 +207,7 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable
 
             $queryNumberResult = intval($result[0]);
             $maxPage = floor($queryNumberResult / $numitem) + 1;
-            if ($currentPage > $maxPage){
+            if ($currentPage > $maxPage) {
                 throw new Exception("Current page exceed max page");
             }
 
@@ -230,7 +230,6 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable
             $queryResults = $q->fetchAll(PDO::FETCH_ASSOC);
 
             $this->fill($queryResults);
-
             return $queryNumberResult;
         } catch (PDOException $pdoEx) {
             Logger::write($pdoEx,Log_Level::ERROR, Log_Driver::FILE);
@@ -243,7 +242,7 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable
      * For example with query results
      * ex. $array = [ 0 => [ "field1" => "value1", .. ], 1 => [..] ]
      */
-    protected function fill($array)
+    public function fill($array)
     {
         foreach ($array as $elem) {
             $baseClassInstance = new $this->baseClassName;
