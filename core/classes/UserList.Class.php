@@ -192,7 +192,7 @@ class UserList extends BaseList
      * Riempie l'oggetto con un array contentente a sua volta un array di attributi per ogni istanza, richiamando la fill del singolo oggetto.
      * Di default, la password (se presente tra i parametri) viene esclusa in modo da non causare un nuovo re-hash.
      */
-    protected function fill($array, $excludePwd = true)
+    public function fill($array, $excludePwd = true)
     {
         foreach ($array as $elem) {
             $baseClassInstance = new $this->baseClassName;
