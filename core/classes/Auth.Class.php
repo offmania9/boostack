@@ -140,7 +140,7 @@ class Auth
                 Session::logoutUser();
                 if (Config::get("cookie_on")) {
                     $cookieName = Config::get("cookie_name");
-                    $cookieExpire = Config::get("cookie_expire");
+                    $cookieExpire = intval(Config::get("cookie_expire"));
                     setcookie('' . $cookieName, false, time() - $cookieExpire);
                     setcookie('' . $cookieName, false, time() - $cookieExpire, "/");
                 }
