@@ -3,7 +3,7 @@
 .settings
 .DS_Store
 /config/env/env.php
-logs
+logs/*
 !/logs/.htaccess
 vendor
 !/vendor/.htaccess
