@@ -2,11 +2,11 @@
 /**
  * Boostack: Request.Class.php
  * ========================================================================
- * Copyright 2014-2017 Spagnolo Stefano
+ * Copyright 2014-2021 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 3.1
+ * @version 4
  */
 
 class Request
@@ -238,28 +238,5 @@ class Request
     {
         return Utils::sanitizeInput(self::$files);
     }
-
-    public static function getUri()
-    {
-        return self::hasServerParam("REQUEST_URI") ? self::getServerParam("REQUEST_URI") : null;
-    }
-
-    public static function getFriendlyUri()
-    {
-        $documentRootSubdir = Config::get("document_root_subdir");
-        return substr(self::getUri(),strlen($documentRootSubdir)-1);
-    }
-
-    public static function getScriptName()
-    {
-        return self::hasServerParam("SCRIPT_NAME") ? self::getServerParam("SCRIPT_NAME") : null;
-    }
-
-    public static function getFriendlyScriptName()
-    {
-        $documentRootSubdir = Config::get("document_root_subdir");
-        return substr(self::getScriptName(),strlen($documentRootSubdir)-1);
-    }
-
 }
 ?>

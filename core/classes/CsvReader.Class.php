@@ -2,11 +2,11 @@
 /**
  * Boostack: CsvReader.Class.php
  * ========================================================================
- * Copyright 2014-2017 Spagnolo Stefano
+ * Copyright 2014-2021 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Alessio Debernardi
- * @version 3.1
+ * @version 4
  */
 
 class CsvReader

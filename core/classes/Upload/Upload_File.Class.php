@@ -2,11 +2,11 @@
 /**
  * Boostack: Upload_File.Class.php
  * ========================================================================
- * Copyright 2014-2017 Spagnolo Stefano
+ * Copyright 2014-2021 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 3.1
+ * @version 4
  */
 
 class Upload_File
@@ -41,6 +41,10 @@ class Upload_File
     /**
      * Upload_File constructor.
      * @param $file
+     * @param $destination_folder
+     * @param bool $exitifexist
+     * @param null $target_name
+     * @param null $visual_name
      * @throws Exception
      */
     public function __construct($file)
@@ -56,27 +60,19 @@ class Upload_File
     }
 
     /**
-     * @param null $maxSize
-     * @param null $maxFilenameLength
-     * @param null $allowedTypes
-     * @param null $allowedExtensions
+     * @param $file
      * @return bool
      * @throws Exception
      */
-    public function constraints($maxSize = null, $maxFilenameLength = null, $allowedTypes = null, $allowedExtensions = null)
+    public function constraints()
     {
-        $validFilesize = empty($maxSize) ? Config::get("max_upload_filesize") : $maxSize;
-        $validFilenameLength = empty($maxFilenameLength) ? Config::get("max_upload_filename_length") : $maxFilenameLength;
-        $validTypes = empty($allowedTypes) ? Config::get("allowed_file_upload_types") : $allowedTypes;
-        $validExtensions = empty($allowedExtensions) ? Config::get("allowed_file_upload_extensions") : $allowedExtensions;
-
-        if ($this->size > $validFilesize)
+        if($this->size > Config::get("max_upload_filesize"))
             throw new Exception("File exceed maximum size");
-        if (strlen($this->name) > $validFilenameLength)
+        if(strlen($this->name) > Config::get("max_upload_filename_length"))
             throw new Exception("Filename too long");
-        if (!in_array($this->type, $validTypes))
+        if(!in_array($this->type, Config::get("allowed_file_upload_types")))
             throw new Exception("Filetype not valid");
-        if (!in_array($this->extension, $validExtensions))
+        if (!in_array($this->extension, Config::get("allowed_file_upload_extensions")))
             throw new Exception("File extension not valid");
         if (!Validator::filename($this->name))
             throw new Exception("Filename not valid");
@@ -88,20 +84,16 @@ class Upload_File
      * @param $filename
      * @param int $permission
      * @param bool $overwriteIfExist
-     * @return bool
      * @throws Exception
      */
     public function moveTo($path, $filename, $permission = 0755, $overwriteIfExist = false)
     {
         $destinationFullPath = $path.$filename.".".$this->extension;
-        if (!file_exists($path))
-            throw new Exception("Destination path does not exists: " . $path);
-        if (!is_writable($path))
-            throw new Exception("Destination path is not writable: " . $path);
-        if (!$overwriteIfExist && file_exists($destinationFullPath))
+        if(!$overwriteIfExist && file_exists($destinationFullPath)) {
             throw new Exception("File " . $destinationFullPath." already exists");
-        if (move_uploaded_file($this->tmp_name, $destinationFullPath))
-            if (is_writable($destinationFullPath))
+        }
+        if(move_uploaded_file($this->tmp_name, $destinationFullPath))
+            if(is_writable($destinationFullPath))
                 chmod($destinationFullPath, $permission);
             else
                 throw new Exception("File " . $this->name." is not writable");
@@ -110,6 +102,10 @@ class Upload_File
         return true;
     }
 
+    /**
+     * @param $code
+     * @return string
+     */
     private function errorCodeToMessage($code)
     {
         switch ($code) {
@@ -140,6 +136,7 @@ class Upload_File
         }
         return $message;
     }
+
 
 }
 ?>

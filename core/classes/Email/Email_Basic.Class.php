@@ -6,9 +6,8 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 3.1
+ * @version 4
  */
-
 class Email_Basic {
 
     /**
@@ -75,8 +74,7 @@ class Email_Basic {
      * @param $options
      * @throws Exception
      */
-    public function __construct($options)
-    {
+    public function __construct($options) {
 
         if(empty($options["from_mail"])) throw new Exception("Missing 'from_mail' parameter");
         if(empty($options["message"])) throw new Exception("Missing 'message' parameter");
@@ -134,8 +132,7 @@ class Email_Basic {
     /**
      * @param $emailaddress
      */
-    public function AddAddressToList($emailaddress)
-    {
+    public function AddAddressToList($emailaddress){
         $this->to_list[] = $emailaddress;
     }
 
@@ -143,8 +140,7 @@ class Email_Basic {
      * @param $path
      * @param $type
      */
-    public function addAttachment($path, $type)
-    {
+    public function addAttachment($path, $type){
 
         $this->attachment[] = $path;
         $data ="";
@@ -166,8 +162,7 @@ class Email_Basic {
     /**
      * @return bool
      */
-    public function Send()
-    {
+    public function Send(){
         $this->message .= "--".$this->mime_boundary."--\n";
         $this->message = wordwrap($this->message, 70, "\r\n");
         foreach($this->to_list as $value){
@@ -184,8 +179,7 @@ class Email_Basic {
      * @param $property_name
      * @return null
      */
-    public function __get($property_name)
-    {
+    public function __get($property_name) {
         if(isset($this->$property_name)) {
             return($this->$property_name);
         }
@@ -198,8 +192,8 @@ class Email_Basic {
      * @param $property_name
      * @param $val
      */
-    public function __set($property_name, $val)
-    {
+    public function __set($property_name, $val) {
+
         $this->$property_name = $val;
         #$sql = "UPDATE ".self::TABLENAME." SET $property_name='".$val."'  WHERE id ='".$this->id."' ";
         #mysql_query($sql)or die (mysql_error().": $sql");

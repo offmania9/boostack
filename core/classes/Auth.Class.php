@@ -2,11 +2,11 @@
 /**
  * Boostack: Auth.Class.php
  * ========================================================================
- * Copyright 2014-2017 Spagnolo Stefano
+ * Copyright 2014-2021 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Alessio Debernardi
- * @version 3.1
+ * @version 4
  */
 
 class Auth
@@ -68,8 +68,8 @@ class Auth
 
         } catch (Exception $e) {
             Logger::write($e,Log_Level::USER);
-            $result->setError($e->getMessage());
-            $result->setCode($e->getCode());
+            $result->error = ($e->getMessage());
+            $result->code =($e->getCode());
         }
 
         return $result;
@@ -140,7 +140,7 @@ class Auth
                 Session::logoutUser();
                 if (Config::get("cookie_on")) {
                     $cookieName = Config::get("cookie_name");
-                    $cookieExpire = intval(Config::get("cookie_expire"));
+                    $cookieExpire = Config::get("cookie_expire");
                     setcookie('' . $cookieName, false, time() - $cookieExpire);
                     setcookie('' . $cookieName, false, time() - $cookieExpire, "/");
                 }
@@ -309,7 +309,7 @@ class Auth
             "response" => $response
         ]);
         $response = $curlRequest->send();
-        $a =  json_decode($response->getData(), true);
+        $a =  json_decode($response->data, true);
         return(!$response->hasError() && $a["success"]);
     }
 

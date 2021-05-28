@@ -2,11 +2,11 @@
 /**
  * Boostack: Log_Database_Entity.Class.php
  * ========================================================================
- * Copyright 2014-2017 Spagnolo Stefano
+ * Copyright 2014-2021 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 3.1
+ * @version 4
  */
 
 class Log_Database_Entity extends BaseClass
@@ -81,7 +81,7 @@ class Log_Database_Entity extends BaseClass
         $data_log = array();
         $data_log["id"] = $this->id;
         $data_log["level"] = $this->level;
-        $data_log["datetime"] =  date('Y-m-d H:i:s', $this->datetime);
+        $data_log["datetime"] = $this->datetime;
         $data_log["username"] = $this->username;
         $data_log["ip"] = $this->ip;
         $data_log["useragent"] = $this->useragent;
@@ -100,7 +100,7 @@ class Log_Database_Entity extends BaseClass
         $data_log = array();
         $data_log["id"] = $this->id;
         $data_log["level"] = $this->level;
-        $data_log["datetime"] =  date('Y-m-d H:i:s', $this->datetime);
+        $data_log["datetime"] = $this->datetime;
         $data_log["username"] = $this->username;
         $data_log["ip"] = $this->ip;
         $data_log["useragent"] = $this->useragent;

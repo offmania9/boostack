@@ -2,13 +2,12 @@
 /**
  * Boostack: Utils.Class.php
  * ========================================================================
- * Copyright 2014-2017 Spagnolo Stefano
+ * Copyright 2014-2021 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 3.1
+ * @version 4
  */
-
 class Utils
 {
     /**
@@ -38,8 +37,8 @@ class Utils
     public static function autoloadClass($className)
     {
         $cn = explode("_", $className);
-        $pathcore = ROOTPATH . "core/classes/";
-        $pathcustom = ROOTPATH . "classes/";
+        $pathcore = ROOTPATH . "../core/classes/";
+        $pathcustom = ROOTPATH . "../classes/";
         $filename = "";
         $cnt = count($cn);
         if ($cnt == 1) {
@@ -49,12 +48,14 @@ class Utils
             for ($i; $i < $cnt - 1; $i++)
                 $filename .= $cn[$i] . "/";
             $filename .= $className . ".Class.php";
+            
         }
-        if (is_readable($pathcustom . $filename))
-            require_once($pathcustom . $filename);
+        if (is_readable($pathcore . $filename)){
+            require_once($pathcore . $filename);
+        }       
         else
-            if (is_readable($pathcore . $filename))
-                require_once($pathcore . $filename);
+            if (is_readable($pathcustom . $filename))
+                require_once($pathcustom . $filename);
     }
 
     /**
@@ -72,11 +73,19 @@ class Utils
     }
 
     /**
+     * @param $pwd
+     * @return int
+     */
+    public static function isStrongPassword($pwd){
+        return preg_match("#.*^(?=.{8,20})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$#", $pwd);
+    }
+
+    /**
      * @return array|string
      */
     public static function getUserAgent()
     {
-        return Request::hasServerParam("HTTP_USER_AGENT") ? Request::getServerParam("HTTP_USER_AGENT") : null;
+        return Request::getServerParam("HTTP_USER_AGENT");
     }
 
     /**
@@ -86,7 +95,7 @@ class Utils
     public static function checkPrivilege($currentUser, $privilegeLevel)
     {
         if (!self::hasPrivilege($currentUser, $privilegeLevel))
-            self::goToError();
+        self::goToError();
     }
 
     /**
@@ -120,8 +129,8 @@ class Utils
      */
     public static function goToError()
     {
-        $url = Config::get("url");
-        header("Location: $url");
+        global $boostack;
+        header("Location: $boostack->url");
         exit();
     }
 
@@ -130,8 +139,8 @@ class Utils
      */
     public static function goToLogout()
     {
-        $url = Config::get("url");
-        header("Location: " . $url . "logout");
+        global $boostack;
+        header("Location: " . $boostack->url . "logout");
         exit();
     }
 
@@ -140,12 +149,20 @@ class Utils
      */
     public static function goToLogin($callbackURL = NULL)
     {
-        $url = Config::get("url");
+        global $boostack, $objSession;
         if ($callbackURL != NULL) {
-            Session::set("loginCallbackURL",$callbackURL);
+            $objSession->loginCallbackURL = $callbackURL;
         }
-        header("Location: " . $url . "login");
+        header("Location: " . $boostack->url . "login");
         exit();
+    }
+
+    /**
+     * @param $string
+     */
+    public static function isJson($string) {
+        json_decode($string);
+        return (json_last_error() == JSON_ERROR_NONE);
     }
 
     /**
@@ -163,10 +180,46 @@ class Utils
      */
     public static function checkAcceptedTimeFromLastRequest($timeLastRequest)
     {
+        if(!is_numeric($timeLastRequest))
+            return true;
         $secondsAccepted = Config::get("seconds_accepted_between_requests");
         if ((!empty($timeLastRequest) || $timeLastRequest !== null) && (time() - $timeLastRequest >= $secondsAccepted))
             return true;
         return false;
+    }
+
+        /**
+     * @param $virtualPath
+     * @return string
+     */
+    public static function getFriendlyUrl($virtualPath)
+    {
+        if(Config::get('session_on')) {
+            $langUrl = Session::get("SESS_LANGUAGE")."/";
+            if(!Config::get('show_default_language_in_URL') && Session::get("SESS_LANGUAGE") == Config::get('language_default'))
+                $langUrl = "";
+            return Config::get('url') . $langUrl . $virtualPath;
+        }
+        return Config::get('url') . $virtualPath;
+    }
+
+    /**
+     * @param $var
+     */
+    public static function debug($var)
+    {
+        ini_set('display_errors', 1);
+        echo '<pre>';
+        var_dump($var);
+        echo '</pre>';
+    }
+
+    public static function formatAmount($number) {
+        return number_format($number, 2, ",", ".");
+    }
+    
+    public static function formatNumber($number) {
+        return number_format($number, 0, ",", ".");
     }
 
     /**
@@ -250,6 +303,25 @@ class Utils
     }
 
     /**
+     * @param $code
+     * @return mixed
+     */
+    public static function getFileErrorDescription($code)
+    {
+        $errors = array(
+            0 => "There is no error, the file uploaded with success",
+            1 => "The uploaded file exceeds the upload_max_filesize directive in php.ini",
+            2 => "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form",
+            3 => "The uploaded file was only partially uploaded",
+            4 => "No file was uploaded",
+            6 => "Missing a temporary folder",
+            7 => 'Failed to write file to disk.',
+            8 => 'A PHP extension stopped the file upload.'
+        );
+        return $errors[$code];
+    }
+
+    /**
      * @param $timestamp
      * @return string
      */
@@ -262,13 +334,6 @@ class Utils
             $date->setTimezone(new DateTimeZone('Europe/Rome'));
             return $date->format(Config::get("default_datetime_format"));
         }
-    }
-
-
-    public static function datetimeToTimestamp($inputDate, $originTimezone = "Europe/Rome", $resultTimezone = "Europe/Rome") {
-        $date = new DateTime($inputDate,new DateTimeZone($originTimezone));
-        $date->setTimezone(new DateTimeZone($resultTimezone));
-        return $date->getTimestamp();
     }
 
     /**
@@ -295,11 +360,25 @@ class Utils
     }
 
     /**
+     * @param $email
+     * @return bool
+     */
+    public static function checkEmailFormat($email)
+    {
+        $regexp = "/^[a-z0-9]+([_\\.-][a-z0-9]+)*@([a-z0-9]+([\.-][a-z0-9]+)*)+\\.[a-z]{2,}$/i";
+        if ($email == "" || !preg_match($regexp, $email) || strlen($email >= 255)) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
      *
      */
     public static function goToMaintenance()
     {
-        header("Location: " . Config::get ("url"). Config::get("url_maintenance"));
+        $boostack = Boostack::getInstance();
+        header("Location: " . $boostack->url . Config::get("url_maintenance"));
         exit();
     }
 
@@ -368,6 +447,23 @@ class Utils
         return $str;
     }
 
+    /**
+     * @param $string
+     * @param string $fieldname
+     * @param bool $throwException
+     * @return bool
+     * @throws Exception
+     */
+    public static function checkStringFormat($string, $fieldname="Password", $throwException = true)
+    {
+        if ($string == "" || strlen($string) < 6){
+            if ($throwException)
+                throw new Exception("Attention! ".$fieldname." value is wrong.",4);
+            return false;
+        }
+        return true;
+    }
+
     /*
     *  Genera il valore del remember-me cookie
     */
@@ -386,17 +482,6 @@ class Utils
     public static function checkCookieHashValidity($cookieValue)
     {
         return substr($cookieValue,32) == md5(Utils::getIpAddress().Utils::getUserAgent());
-    }
-
-    public static function getFriendlyUrl($virtualPath)
-    {
-        if(Config::get('session_on')) {
-            $langUrl = Session::get("SESS_LANGUAGE")."/";
-            if(!Config::get('show_default_language_in_URL') && Session::get("SESS_LANGUAGE") == Config::get('language_default'))
-                $langUrl = "";
-            return Config::get('url') . $langUrl . $virtualPath;
-        }
-        return Config::get('url') . $virtualPath;
     }
 
 }

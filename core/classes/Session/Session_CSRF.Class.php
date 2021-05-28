@@ -3,13 +3,12 @@
 /**
  * Boostack: Session_CSRF.Class.php
  * ========================================================================
- * Copyright 2014-2017 Spagnolo Stefano
+ * Copyright 2014-2021 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 3.1
+ * @version 4
  */
-
 class Session_CSRF extends Session_HTTP
 {
 
@@ -124,8 +123,7 @@ class Session_CSRF extends Session_HTTP
     /**
      * @return null|string
      */
-    public function CSRFTokenInvalidation()
-    {
+    public function CSRFTokenInvalidation(){
         $res = NULL;
         $key = $this->CSRFDefaultKey;
         $this->$key = null;
@@ -141,12 +139,11 @@ class Session_CSRF extends Session_HTTP
      * @return bool
      * @throws Exception
      */
-    public function CSRFCheckValidity($postArray, $throwException = true)
-    {
+    public function CSRFCheckValidity($postArray, $throwException = true){
         try {
             return $this->CSRFCheckTokenValidity($postArray, $throwException);
         } catch(Exception $e) {
-            Logger::write('Session_CSRF -> CSRFCheckValidity -> Caught exception: '.$e->getMessage().$e->getTraceAsString(),Log_Level::ERROR);
+            Boostack::getInstance()->writeLog('Session_CSRF -> CSRFCheckValidity -> Caught exception: '.$e->getMessage().$e->getTraceAsString(),"error");
             throw new Exception('Invalid CSRF token');
         }
     }

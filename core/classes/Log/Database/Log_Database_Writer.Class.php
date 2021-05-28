@@ -2,11 +2,11 @@
 /**
  * Boostack: Log_Database_Writer.Class.php
  * ========================================================================
- * Copyright 2014-2017 Spagnolo Stefano
+ * Copyright 2014-2021 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 3.1
+ * @version 4
  */
 
 class Log_Database_Writer
@@ -92,18 +92,6 @@ class Log_Database_Writer
     {
         if(!in_array($level,Config::get("log_enabledTypes")))
             return;
-        $message = str_replace(array(
-            "\r\n",
-            "\n",
-            "\r"
-        ), "", $message);
-        $message = addslashes($message);
-        $this->query = str_replace(array(
-            "\r\n",
-            "\n",
-            "\r"
-        ), "", $this->query);
-
         $this->query = htmlspecialchars($this->query,ENT_QUOTES | ENT_HTML401,'UTF-8');
         $sql = "INSERT INTO " . self::TABLENAME . "  (id ,datetime , level, username, ip ,useragent ,referrer ,query ,message)
 				VALUES(NULL, :time , :level, :username, :ip , :useragent, :referrer, :query, :message)";

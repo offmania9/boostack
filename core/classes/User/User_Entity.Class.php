@@ -2,13 +2,12 @@
 /**
  * Boostack: User_Entity.Class.php
  * ========================================================================
- * Copyright 2014-2017 Spagnolo Stefano
+ * Copyright 2014-2021 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 3.1
+ * @version 4
  */
-
 class User_Entity extends BaseClass
 {
     /**
@@ -72,8 +71,7 @@ class User_Entity extends BaseClass
      * User_Entity constructor.
      * @param null $id
      */
-    public function __construct($id = null)
-    {
+    public function __construct($id = null) {
         parent::init($id);
     }
 
@@ -103,8 +101,7 @@ class User_Entity extends BaseClass
     /**
      * @return array|mixed
      */
-    public function jsonSerialize()
-    {
+    public function jsonSerialize() {
         $vars = parent::jsonSerialize();
         $vars["id"] = $this->id;
         return $vars;
@@ -131,10 +128,8 @@ class User_Entity extends BaseClass
     public static function getUserIDByEmail($email, $throwException = true)
     {
         $pdo = Database_PDO::getInstance();
-        $query = "SELECT id FROM ".self::TABLENAME." WHERE email = :email";
-        $q = $pdo->prepare($query);
-        $q->bindParam(":email", $email);
-        $q->execute();
+        $sql = "SELECT id FROM ".self::TABLENAME." WHERE email ='" . $email . "' ";
+        $q = $pdo->query($sql);
         $q2 = $q->fetch();
         if ($q->rowCount() == 0) {
             if ($throwException)
@@ -205,8 +200,7 @@ class User_Entity extends BaseClass
      * @param $cookieValue
      * @return bool
      */
-    public static function getCredentialByCookie($cookieValue)
-    {
+    public static function getCredentialByCookie($cookieValue) {
         $pdo = Database_PDO::getInstance();
         $query = "SELECT username,pwd FROM ".self::TABLENAME." WHERE session_cookie = :cookie ";
         $q = $pdo->prepare($query);
@@ -223,8 +217,7 @@ class User_Entity extends BaseClass
      * @param $email
      * @return bool
      */
-    public static function getActiveCredentialByEmail($email)
-    {
+    public static function getActiveCredentialByEmail($email) {
         $pdo = Database_PDO::getInstance();
         $query = "SELECT id,pwd FROM ".self::TABLENAME." WHERE email = :email AND active = '1' ";
         $q = $pdo->prepare($query);
@@ -241,8 +234,7 @@ class User_Entity extends BaseClass
      * @param $username
      * @return bool
      */
-    public static function getActiveCredentialByUsername($username)
-    {
+    public static function getActiveCredentialByUsername($username) {
         $pdo = Database_PDO::getInstance();
         $query = "SELECT id,pwd FROM ".self::TABLENAME." WHERE username = :username AND active = '1' ";
         $q = $pdo->prepare($query);
@@ -260,8 +252,7 @@ class User_Entity extends BaseClass
      * @param $username
      * @return bool
      */
-    public static function getActiveCredentialByEmailOrUsername($email, $username)
-    {
+    public static function getActiveCredentialByEmailOrUsername($email, $username) {
         $pdo = Database_PDO::getInstance();
         $query = "SELECT id,pwd FROM ".self::TABLENAME." WHERE (username = :username OR email = :email) AND active = '1' ";
         $q = $pdo->prepare($query);
@@ -280,8 +271,7 @@ class User_Entity extends BaseClass
      * @param $password
      * @return bool
      */
-    public static function getActiveIdByEmailAndPassword($email, $password)
-    {
+    public static function getActiveIdByEmailAndPassword($email, $password) {
         $pdo = Database_PDO::getInstance();
         $query = "SELECT id FROM ".self::TABLENAME." WHERE email = :email AND pwd = :password AND active = '1' ";
         $q = $pdo->prepare($query);
@@ -300,8 +290,7 @@ class User_Entity extends BaseClass
      * @param $password
      * @return bool
      */
-    public static function getActiveIdByUsernameAndPassword($username, $password)
-    {
+    public static function getActiveIdByUsernameAndPassword($username, $password) {
         $pdo = Database_PDO::getInstance();
         $query = "SELECT id FROM ".self::TABLENAME." WHERE username = :username AND pwd = :password AND active = '1' ";
         $q = $pdo->prepare($query);
@@ -321,8 +310,7 @@ class User_Entity extends BaseClass
      * @param $password
      * @return bool
      */
-    public static function getActiveIdByEmailOrUsernameAndPassword($email, $username, $password)
-    {
+    public static function getActiveIdByEmailOrUsernameAndPassword($email, $username, $password) {
         $pdo = Database_PDO::getInstance();
         $query = "SELECT id FROM ".self::TABLENAME." WHERE (username = :username OR email = :email) AND pwd = :password AND active = '1' ";
         $q = $pdo->prepare($query);

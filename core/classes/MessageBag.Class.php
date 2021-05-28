@@ -2,15 +2,13 @@
 /**
  * Boostack: MessageBag.Class.php
  * ========================================================================
- * Copyright 2014-2017 Spagnolo Stefano
+ * Copyright 2014-2021 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
- * @author Alessio Debernardi
- * @version 3.1
+ * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
+ * @version 4
  */
-
-class MessageBag implements JsonSerializable
-{
+class MessageBag implements JsonSerializable {
 
     /**
      * @var bool
@@ -32,83 +30,30 @@ class MessageBag implements JsonSerializable
     /**
      * MessageBag constructor.
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->error = false;
         $this->message = NULL;
         $this->data = NULL;
     }
 
     /**
-     * @param $message
-     */
-    public function setError($message)
-    {
-        $this->error = true;
-        $this->message = $message;
-    }
-
-    /**
-     * @param $data
-     */
-    public function setData($data)
-    {
-        $this->data = $data;
-    }
-
-    /**
-     * @param $code
-     */
-    public function setCode($code)
-    {
-        $this->code = $code;
-    }
-
-    /**
-     * @return null
-     */
-    public function getData()
-    {
-        return $this->data;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCode()
-    {
-        return $this->code;
-    }
-
-    /**
      *
      */
-    public function removeError()
-    {
+    public function removeError() {
         $this->error = false;
     }
 
     /**
      * @return bool
      */
-    public function hasError()
-    {
+    public function hasError() {
         return $this->error;
-    }
-
-    /**
-     * @return null
-     */
-    public function getErrorMessage()
-    {
-        return $this->message;
     }
 
     /**
      * @return array
      */
-    public function jsonSerialize()
-    {
+    public function jsonSerialize() {
         return [
             "error" => $this->error,
             "code" => $this->code,
@@ -117,12 +62,51 @@ class MessageBag implements JsonSerializable
         ];
     }
 
+    public function toObject() {
+        return (object) array(
+            'error'=>$this->error,
+            "code" => $this->code,
+            'message'=>$this->message,
+            "data" => $this->data
+        );
+    }
+
     /**
      * @return string
      */
-    public function toJSON()
-    {
+    public function toJSON() {
         return json_encode(self::jsonSerialize());
+    }
+
+
+        /**
+     * Getter
+     *
+     * @param $property_name
+     * @return mixed
+     * @throws Exception
+     */
+    public function __get($property_name) {
+        if (property_exists($this, $property_name)) {
+            return $this->$property_name;
+        } else {
+            throw new Exception("Field $property_name not found");
+        }
+    }
+
+    /**
+     * Setter
+     *
+     * @param $property_name
+     * @param $val
+     * @throws Exception
+     */
+    public function __set($property_name, $val) {
+        if (property_exists($this, $property_name)) {
+            $this->$property_name = $val;
+        } else {
+            throw new Exception("Field $property_name not found");
+        }
     }
 }
 ?>

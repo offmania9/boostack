@@ -2,11 +2,11 @@
 /**
  * Boostack: Log_File_Writer.Class.php
  * ========================================================================
- * Copyright 2014-2017 Spagnolo Stefano
+ * Copyright 2014-2021 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Alessio Debernardi
- * @version 3.1
+ * @version 4
  */
 
 class Log_File_Writer
@@ -18,12 +18,13 @@ class Log_File_Writer
 
     private function __construct()
     {
-        $this->logFile = ROOTPATH.Config::get("log_file");
-        $path = dirname($this->logFile);
-        if (!file_exists($path))
+        $path = ROOTPATH.Config::get("log_dir");
+        if(!file_exists($path))
             exit("Error: unable to find log dir");
         if(!is_writable($path))
             exit("Error: log dir must be writable");
+        $filename = "boostack-" . date("Y-m-d") . ".log";
+        $this->logFile = $path . $filename;
     }
 
     public static function getInstance()
@@ -40,9 +41,6 @@ class Log_File_Writer
         if($logFile == false) {
             exit("Error: Unable to open log file");
         }
-        $charRemoved = array("\r\n", "\n", "\r");
-        $message = str_replace($charRemoved, "", $message);
-//        //$message = addslashes($message);
         $date = new DateTime();
         $formattedDate = $date->format(DateTime::ATOM);
         $message = "[".$formattedDate."] [".$level."] ".$message."\n";
