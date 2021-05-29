@@ -65,6 +65,7 @@ class Auth
             if($isLockStrategyEnabled || ($isLockStrategyEnabled && Config::get('csrf_on') && Session::CSRFCheckValidity(Request::getPostArray(),false))) Session::set("failed_login_count", Session::get("failed_login_count")+1);
             Auth::checkAndLogin($username, $password, $cookieRememberMe, true);
             if($isLockStrategyEnabled) Session::set("failed_login_count",0);
+            
 
         } catch (Exception $e) {
             Logger::write($e,Log_Level::USER);

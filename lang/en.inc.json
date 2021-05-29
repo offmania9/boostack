@@ -38,13 +38,25 @@
         "afterDescription":"See the <a href=\"docs/introduction\" title=\"Boostack Documentation\">Documentation</a> for further instructions."
     },
     "login":{
-        "signin":"Sign In",
-        "forgotpwd":"Forgot password?",
-        "rememberme":" Remember me",
         "login":"Login",
         "donthaveaccount":"Don't have an account! ",
         "loggedin":"You're logged in! ",
         "signup":"Sign Up Here"
+    },
+    "form":{
+        "registration":{
+            "username":"Username",
+            "username_description":"Type your username"  ,  
+            "password":"Password",
+            "password_description":"Type your password" ,       
+            "email":"E-mail",
+            "email_description":"Type your e-mail"      
+        },
+        "login":{
+            "signin":"Sign In",
+            "forgotpwd":"Forgot password?",
+            "rememberme":"Remember me" 
+        }
     },
     "filter":{
         "reset":"Reset",

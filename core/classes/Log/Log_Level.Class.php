@@ -10,3 +10,4 @@ abstract class Log_Level
     const USER = "user";
     const CRONJOB = "cronjob";
 }
+?>

@@ -11,15 +11,14 @@
 <section class="login centerContent">
     <div class="container">
         <div id="loginbox"
-             class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-            <div class="panel panel-success">
-                <div class="panel-heading">
-                    <div class="panel-title"><?= Language::getLabel("login.loggedin");?></div>
+             class="col-md-6 mx-auto">
+            <div class="card card-success border-success">
+                <div class="card-header">
+                    <div class="card-title text-center"><?= Language::getLabel("login.loggedin");?></div>
                 </div>
-                <div class="panel-body">
-
+                <div class="card-body">
                     <div class="text-center col-sm-12">
-                        <a class="btn btn-sm danger" href="<?= Utils::getFriendlyUrl("logout")?>">Logout</a></div>
+                        <a class="btn btn-outline-dark btn-sm" href="<?= Utils::getFriendlyUrl("logout")?>">Logout</a></div>
                 </div>
             </div>
         </div>

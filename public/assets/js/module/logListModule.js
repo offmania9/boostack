@@ -97,7 +97,7 @@ define(['jquery'], function($) {
                     $("#container_filter").append(toClone.clone());
                     var clonedElements = $(".filterToClone");
                     if ($(clonedElements).length > 1)
-                        $(".deleteFilter").removeClass("hidden");
+                        $(".deleteFilter").removeClass("d-none");
                     i++;
                     var lastFilter = $(clonedElements).last();
                     $(lastFilter).find("#field").attr("id", "field" + i);
@@ -113,7 +113,7 @@ define(['jquery'], function($) {
                 $(this).closest(".filterToClone").remove();
                 filterNumber--;
                 if($(".filterToClone").length == 1)
-                    $(".deleteFilter").addClass("hidden")
+                    $(".deleteFilter").addClass("d-none")
             })
         }
 
@@ -202,7 +202,7 @@ define(['jquery'], function($) {
                         renderPagination(response,dataLimit);
                     }else{
                         renderPagination(response,dataLimit);
-                        $(".tableToPaste .noData").closest("td").removeClass("hidden");
+                        $(".tableToPaste .noData").closest("td").removeClass("d-none");
                     }
                     ajaxCall = false;
                 },
@@ -332,9 +332,9 @@ define(['jquery'], function($) {
                 var elemDataJson = response.data.items;
                 var form_data = null;
                 if (elemDataJson.length == 0) {
-                    $(".tableToPaste .noData").closest("td").removeClass("hidden");
+                    $(".tableToPaste .noData").closest("td").removeClass("d-none");
                 } else {
-                    $(".tableToPaste .noData").closest("td").addClass("hidden");
+                    $(".tableToPaste .noData").closest("td").addClass("d-none");
                     $.each(elemDataJson, function () {
                         var elem = $('.tableToCopy').clone();
                         $(elem).removeClass('tableToCopy hidden');
@@ -353,7 +353,7 @@ define(['jquery'], function($) {
                     });
                 }
             }else{
-                $(".tableToPaste .noData").closest("td").removeClass("hidden");
+                $(".tableToPaste .noData").closest("td").removeClass("d-none");
             }
 
             ajaxCall = false;

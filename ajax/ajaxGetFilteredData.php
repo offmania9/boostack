@@ -59,7 +59,7 @@ try {
                 saveFilterDataInSession("filter_log", $fieldViewArray,$orderBy,$orderType,$perPage,$currentPage);
                 $result["totalitem"] = $data;
                 $result["items"] = $logList->getItemsArray();
-                ($data != null) ? $res->setData($result) : $res->setError("Nessun dato disponibile");
+                ($data != null) ? $res->data =$result : $res->error = "Nessun dato disponibile";
                 break;
             case "userList":
                 $fieldViewArray[] = array("privilege", ">=", Auth::getUserLoggedObject()->privilege);
@@ -68,20 +68,20 @@ try {
                 saveFilterDataInSession("filter_users", $fieldViewArray,$orderBy,$orderType,$perPage,$currentPage);
                 $result["totalitem"] = $data;
                 $result["items"] = $usersList->getItemsArray();
-                ($data != null) ? $res->setData($result) : $res->setError("Nessun dato disponibile");
+                ($data != null) ? $res->data=$result : $res->error = "Nessun dato disponibile";
                 break;
             default:
-                $res->setError("Nessuna azione");
+                $res->error = "Nessuna azione";
                 break;
         }
     } else {
-        $res->setError("Nessuna azione disponibile");
+        $res->error ="Nessuna azione disponibile";
     }
 } catch(Exception_Validation $ev){
-    $res->setError($e->getMessage());
+    $res->error = $e->getMessage();
     Logger::write('Validation exception: '.$e,Log_Level::ERROR);
 } catch (Exception $e) {
-    $res->setError($e->getMessage());
+    $res->error = $e->getMessage();
     Logger::write('request not valid'.$e,Log_Level::ERROR);
 }
 

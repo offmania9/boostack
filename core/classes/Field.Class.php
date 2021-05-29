@@ -1,6 +1,6 @@
 <?php
 /**
- * Boostack: MessageBag.Class.php
+ * Boostack: Field.Class.php
  * ========================================================================
  * Copyright 2014-2021 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
@@ -8,46 +8,24 @@
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
  * @version 4
  */
-class MessageBag implements JsonSerializable {
+class Field implements JsonSerializable {
 
-    /**
-     * @var bool
-     */
-    private $error;
-    /**
-     * @var
-     */
-    private $code;
-    /**
-     * @var null
-     */
-    private $message;
-    /**
-     * @var null
-     */
-    private $data;
+    private $name;
+    private $type;
+    private $rules;
 
-    /**
-     * MessageBag constructor.
-     */
-    public function __construct() {
-        $this->error = false;
-        $this->message = NULL;
-        $this->data = NULL;
+    public function __construct($name, $type) {
+        if(!FieldType::isValidValue($type))
+            throw new Exception("error: wrong field type"); 
+        $this->name = $name;
+        $this->type = $type;
+        $this->rules = array();
     }
 
-    /**
-     *
-     */
-    public function removeError() {
-        $this->error = false;
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasError() {
-        return $this->error;
+    public static function rules($name, $type) {
+        if(!FieldType::isValidValue($type))
+            throw new Exception("error: wrong field type"); 
+        return new FieldRule($name, $type);
     }
 
     /**
@@ -55,19 +33,17 @@ class MessageBag implements JsonSerializable {
      */
     public function jsonSerialize() {
         return [
-            "error" => $this->error,
-            "code" => $this->code,
-            "message" => $this->message,
-            "data" => $this->data,
+            "name" => $this->name,
+            "type" => $this->type,
+            "rules" => $this->rules,
         ];
     }
 
     public function toObject() {
         return (object) array(
-            'error'=>$this->error,
-            "code" => $this->code,
-            'message'=>$this->message,
-            "data" => $this->data
+            "name" => $this->name,
+            "type" => $this->type,
+            "rules" => $this->rules,
         );
     }
 
@@ -78,15 +54,14 @@ class MessageBag implements JsonSerializable {
         return json_encode($this->jsonSerialize());
     }
 
-
-        /**
+            /**
      * Getter
      *
      * @param $property_name
      * @return mixed
      * @throws Exception
      */
-    public function __get($property_name) {
+    public function &__get($property_name) {
         if (property_exists($this, $property_name)) {
             return $this->$property_name;
         } else {
@@ -108,5 +83,6 @@ class MessageBag implements JsonSerializable {
             throw new Exception("Field $property_name not found");
         }
     }
+
 }
 ?>

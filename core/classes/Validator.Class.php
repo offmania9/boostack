@@ -8,7 +8,9 @@
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
  * @version 4
  */
-class Validator {
+
+class Validator
+{
 
     /**
      * @var
@@ -41,7 +43,8 @@ class Validator {
      * @return array|bool : ritorna true in caso di successo, altrimenti ritorna un array contenente
      * i campi che non hanno superato la validazione
      */
-    public function validate($input, $rules) {
+    public function validate($input, $rules)
+    {
         $this->error = false;
         $this->errorMessages = array();
 
@@ -106,7 +109,8 @@ class Validator {
      *  In: ogni elemento di values $validate->valueIn()
      *
      */
-    public function validateFormValues($input, $rules) {
+    public function validateFormValues($input, $rules)
+    {
         $this->error = false;
         $this->errorMessages = array();
 
@@ -180,7 +184,8 @@ class Validator {
      *  Ritornano true/false
      **/
 
-    public static function string($input) {
+    public static function string($input)
+    {
         $res = true;
         if(is_array($input)) {
             foreach($input as $elem) {
@@ -196,9 +201,64 @@ class Validator {
 
     /**
      * @param $input
+     * @return int
+     * validate strings containing only letters
+     */
+    public static function onlyChars($input){
+        return preg_match('/^[A-Za-z]+$/', $input);
+    }
+
+    /**
+     * @param $input
+     * @return int
+     * validate strings containing only letters and space
+     */
+    public static function onlyCharsWithSpace($input){
+        return preg_match('/^[A-Za-zÀ-ÿ ]+$/', $input);
+    }
+
+    /**
+     * @param $input
+     * @return int
+     * validate strings containing only letters, numbers or "-"
+     */
+    public static function onlyCharNumbersUnderscore($input){
+        return preg_match('/^[A-Za-z1-9_]+$/', $input);
+    }
+
+    /**
+     * @param $input
+     * @return int
+     * validate address like google maps default address or simply letters, numbers, accents, "-", "_", "," and space
+     */
+    public static function address ($input){
+        return preg_match("/^[A-Za-z0-9À-ÿ _\-,]*[A-Za-z0-9À-ÿ][A-Za-z0-9À-ÿ _\-,]*$/", $input);
+    }
+
+    /**
+     * @param $rule
+     * @return bool
+     * validate operators for view method
+     */
+    public static function operators($rule){
+        $rules = ["like", "not like", "&lt;&gt;", "=", "&lt;", "&lt;=", "&gt;", "&gt;="];
+        return in_array($rule , $rules);
+    }
+
+    /**
+     * @param $input
      * @return bool
      */
-    public static function numeric($input) {
+    public static function varchar_max_length ($input){
+        return strlen($input) < Config::get("varchar_max_length");
+    }
+
+    /**
+     * @param $input
+     * @return bool
+     */
+    public static function numeric($input)
+    {
         $res = true;
         if(is_array($input)) {
             foreach($input as $elem) {
@@ -216,16 +276,17 @@ class Validator {
      * @param $input
      * @return bool|int
      */
-    public static function alphanumeric($input) {
+    public static function alphanumeric($input)
+    {
         $res = true;
         if(is_array($input)) {
             foreach($input as $elem) {
-                if(!preg_match('/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]+$/',$elem) && $res) {
+                if(!preg_match('/^[A-Za-z0-9 _]*[A-Za-z0-9_]+$/',$elem) && $res) {
                     $res = false;
                 }
             }
         } else {
-            $res = preg_match('/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]+$/',$input);
+            $res = preg_match('/^[A-Za-z0-9 _]*[A-Za-z0-9_]+$/',$input);
         }
         return $res;
     }
@@ -234,7 +295,8 @@ class Validator {
      * @param $input
      * @return bool|int
      */
-    public static function integer($input) {
+    public static function integer($input)
+    {
         $res = true;
         if(is_array($input)) {
             foreach($input as $elem) {
@@ -252,16 +314,17 @@ class Validator {
      * @param $input
      * @return bool|int
      */
-    public static function float($input) {
+    public static function float($input)
+    {
         $res = true;
         if(is_array($input)) {
             foreach($input as $elem) {
-                if(!preg_match('[-+]?(\d*[.])?\d+',$elem) && $res) {
+                if(!preg_match('/^[-+]?(\d*[.])?\d+$/',$elem) && $res) {
                     $res = false;
                 }
             }
         } else {
-            $res = preg_match('[-+]?(\d*[.])?\d+',$input);
+            $res = preg_match('/^[-+]?(\d*[.])?\d+$/',$input);
         }
         return $res;
     }
@@ -271,7 +334,8 @@ class Validator {
      * @param $array
      * @return bool
      */
-    public static function in($elem, $array) {
+    public static function in($elem, $array)
+    {
         return in_array($elem,$array);
     }
 
@@ -279,15 +343,30 @@ class Validator {
      * @param $input
      * @return bool
      */
-    public static function email($input) {
+    public static function email($input)
+    {
         return is_string($input) && filter_var($input, FILTER_VALIDATE_EMAIL);
     }
+
+//    /**
+//     * @param $email
+//     * @return bool
+//     */
+//    public static function checkEmailFormat($email)
+//    {
+//        $regexp = "/^[a-z0-9]+([_\\.-][a-z0-9]+)*@([a-z0-9]+([\.-][a-z0-9]+)*)+\\.[a-z]{2,}$/i";
+//        if ($email == "" || !preg_match($regexp, $email) || strlen($email >= 255)) {
+//            return false;
+//        }
+//        return true;
+//    }
 
     /**
      * @param $input
      * @return bool
      */
-    public static function phone($input) {
+    public static function phone($input)
+    {
         // TODO find regex for phone numbers
         return true;
     }
@@ -295,16 +374,35 @@ class Validator {
     /**
      * @param $password
      * @return bool
+     * validate password to login (when its length is lower than a strong password)
+     */
+    public static function password_login($password){
+        return !empty($password) && (strlen(html_entity_decode($password, ENT_QUOTES)) >= Config::get("password_min_length")) && (strlen(html_entity_decode($password, ENT_QUOTES)) <= Config::get("password_max_length"));
+    }
+
+    /**
+     * @param $password
+     * @return bool
      */
     public static function password($password) {
-        return !empty($password) && (strlen($password) >= Config::get("password_min_length")) && (strlen($password) <= Config::get("password_max_length"));
+        return !empty($password) && (strlen(html_entity_decode($password, ENT_QUOTES)) >= Config::get("password_min_length")) && (strlen(html_entity_decode($password, ENT_QUOTES)) <= Config::get("password_max_length"));
+    }
+
+    /**
+     * @param $pwd
+     * @return int
+     */
+    public static function strongPassword($password)
+    {
+        return preg_match("#.*^(?=.{8,20})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$#", $password);
     }
 
     /**
      * @param $username
      * @return bool
      */
-    public static function username($username) {
+    public static function username($username)
+    {
         return !empty($username) && (strlen($username) >= Config::get("username_min_length")) && (strlen($username) <= Config::get("username_max_length"));
     }
 
@@ -312,12 +410,12 @@ class Validator {
      * @param $filename
      * @return int
      */
-    public static function filename($filename) {
+    public static function filename($filename)
+    {
         return true; // TODO find regex for filename
         // OWASP regex NOT WORK
         //$regex = '^(([a-zA-Z]:|\\)\\)?(((\.)|(\.\.)|([^\\/:*?"|<>. ](([^\\/:*?"|<>. ])|([^\\/:*?"|<>]*[^\\/:*?"|<>. ]))?))\\)*[^\\/:*?"|<>. ](([^\\/:*?"|<>. ])|([^\\/:*?"|<>]*[^\\/:*?"|<>. ]))?$';
         //$regex = '/^[\w-\d]{1}[\w-\d\s\.]*(\.){1}(\w)+$/i';
-        return preg_match($regex,$filename);
     }
 
     /**
@@ -325,13 +423,15 @@ class Validator {
      * @param $array
      * @return bool
      */
-    public function required($input, $array) {
+    public function required($input, $array)
+    {
         return array_key_exists($input,$array);
     }
 
     /** PRIVATE METHODS */
 
-    private function setError($key,$message) {
+    private function setError($key,$message)
+    {
         $this->error = true;
         $this->errorMessages[$key]["message"][] = $message;
     }
@@ -339,7 +439,8 @@ class Validator {
     /**
      * @return mixed
      */
-    private function hasError() {
+    private function hasError()
+    {
         return $this->error;
     }
 

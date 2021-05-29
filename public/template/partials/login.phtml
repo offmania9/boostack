@@ -11,22 +11,20 @@
 <section class="login centerContent">
     <div class="container">
         <div id="loginbox"
-             class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-            <div class="panel panel-success">
-                <div class="panel-heading">
-                    <div class="pull-right">
-                        <small> <a href="<?= Utils::getFriendlyUrl("login");?>">
-                                <?= Language::getLabel("login.forgotpwd");?>
-                            </a>
-                        </small>
-                    </div>
-                    <div class="panel-title"><?= Language::getLabel("login.signin");?></div>
+             class="col-md-6 mx-auto">
+            <div class="card card-success">
+                <div class="card-header">
+                    <h3 class="card-title"><?= Language::getLabel("form.login.signin");?></h3>
                 </div>
-
-                <div class="panel-body">
-
+                <div class="card-body">
+                    <div class="text-right">
+                            <small> <a href="<?= Utils::getFriendlyUrl("login");?>">
+                                    <?= Language::getLabel("form.login.forgotpwd");?>
+                                </a>
+                            </small>
+                        </div>
                     <?php if(!Auth::isTimerLocked()): ?>
-                        <div id="login-alert" class="alert alert-danger col-sm-12 <?= $errorMessage == "" ? "hidden" : "" ?>"><?= $errorMessage; ?></div>
+                        <div id="login-alert" class="alert alert-danger col-sm-12 <?= $errorMessage == "" ? "d-none" : "" ?>"><?= $errorMessage; ?></div>
                         <form id="loginform"
                               action="<?= Utils::getFriendlyUrl("login");?>" name="loginform"
                               class="form-horizontal" method="post" role="form">
@@ -37,14 +35,14 @@
                                     <i class="glyphicon glyphicon-user"></i>
                                 </div>
                                 <input id="btk_usr" type="text" class="form-control"
-                                       name="btk_usr" placeholder="E-mail" value="" />
+                                       name="btk_usr" placeholder="E-mail" value="user@boostack.com" />
                             </div>
 
                             <div style="margin-bottom: 25px" class="input-group">
                                 <span class="input-group-addon"><i
                                         class="glyphicon glyphicon-lock"></i></span> <input
                                     id="btk_pwd" type="password" class="form-control"
-                                    name="btk_pwd" placeholder="Password" value="" />
+                                    name="btk_pwd" placeholder="Password" value="testing" />
                             </div>
 
                             <?php if(Auth::haveToShowCaptcha()): ?>
@@ -66,14 +64,14 @@
 
                             <div class="input-group">
                                 <div class="checkbox">
-                                    <label> <input id="login-remember" type="checkbox" name="rememberme" value="1" /><?= Language::getLabel("login.rememberme");?>
+                                    <label> <input id="login-remember" type="checkbox" name="rememberme" value="1" /><?= Language::getLabel("form.login.rememberme");?>
                                     </label>
                                 </div>
                             </div>
 
                             <div style="margin-top: 10px" class="form-group">
                                 <div class="col-sm-12 controls">
-                                    <input type="button" id="btn-login" class="btn btn-default" value="<?= Language::getLabel("login.login");?>" />
+                                    <input type="button" id="btn-login" class="btn btn-dark " value="<?= Language::getLabel("login.login");?>" />
 
                                 </div>
                             </div>
@@ -103,16 +101,10 @@
                                     [SuperAdmin Privilege]<br/>
                                     User or Email: <b>boostacksuperadmin</b> or <b>superadmin@boostack.com</b> - Password: <b>testing</b></a><hr/>
 
-                                    <button class="btn btn-xs showrawpassword" onclick="showPasswordBox(); return false;">SHOW RAW PASSWORD</button>
-                                    <script>
-                                        function showPasswordBox() {
-                                            $(".passwordBox").slideToggle();
-                                            return false;
-                                        }
-                                    </script>
-                                    <div class="passwordBox" style="display: none;">
-                                        <div class="panel panel-default">
-                                            <div class="panel-body" style="overflow: scroll;">
+
+                                    <div class="passwordBox">
+                                        <div class="card panel-default">
+                                            <div class="card-body" style="overflow: scroll;">
                                                 <p>Insert this password in table "boostack_user" in field "pwd":</p>
                                                 <i><?php
                                                     echo (version_compare(PHP_VERSION, '5.5.0') >= 0)?password_hash('testing',PASSWORD_DEFAULT):hash("sha512", 'testing');

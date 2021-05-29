@@ -9,13 +9,15 @@
             </div>
             <div class="row text-center animated fadeInUp">
                 <a title="Download Boostack" href="<?= Utils::getFriendlyUrl("download")?>"
-                   class="btn btn-lg download"><?= Language::getLabel("downloadBoostack");?> <?=Config::get("project_version");?></a>
+                   class="btn btn-lg download col-md-3 mx-auto"><?= Language::getLabel("downloadBoostack");?> <?=Config::get("project_version");?></a>
             </div>
         </div>
     </div>
 </section>
 <section class="features">
     <div class="container animated fadeIn">
+        <div class="row">
+        <div class="col-md-12 pb-4 pt-3">
         <div class="row">
             <div class="col-md-4">
                 <h3>
@@ -69,14 +71,26 @@
                 </p>
             </div>
         </div>
-
+        </div>
+        </div>
+        <hr/>
         <div class="row text-center">
             <p>&nbsp;</p>
             <p>&nbsp;</p>
+            <div class="col-md-6 mx-auto">
+            <p>
             <h4><?= Language::getLabel("inclusions")?></h4>
             <h5><?= Language::getLabel("inclusions2")?></h5>
+            </p>
+            </div>
+
+
+            <div class="col-md-6 mx-auto">
+            <p>
             <a title="Download Boostack" href="<?= Utils::getFriendlyUrl("download")?>"
-               class="btn btn-lg download"><?= Language::getLabel("downloadBoostack");?> <?=Config::get("project_version");?></a>
+               class="btn btn-lg download col-md-12 mx-auto"><?= Language::getLabel("downloadBoostack");?> <?=Config::get("project_version");?></a>
+            </p>
+            </div>
         </div>
     </div>
 </section>
