@@ -82,6 +82,8 @@ class Upload_Image
         "image/png"
     );
 
+    private $PNG_compression = 1;
+
     /**
      * Upload_Image constructor.
      * @param $file
@@ -96,52 +98,52 @@ class Upload_Image
      */
     public function __construct($file, $destination_folder, $exitifexist = true, $target_name = NULL, $visual_name = NULL, $resize = NULL, $preview_size = NULL, $filter = NULL)
     {
-        // if($this->constraints($file)){
-        if ($file["error"] > 0) {
-            // throw new Exception("Return Error Code: : ".$file["error"]."<br />");
-            return;
-        } else {
-            $info = pathinfo($file["name"]);
-            $this->visual_name = $visual_name;
-            $this->extension = $info["extension"];
-            $this->name = ($target_name == null) ? $file["name"] : $target_name . "." . $this->extension;
-            $this->type = $file["type"];
-            $this->size = $file["size"] / 1024;
-            $this->tmp_name = $file["tmp_name"];
-            $this->path = $destination_folder . $this->name;
-            $this->preview_path = $destination_folder . "s_" . $this->name;
-            
-            // if ($exitifexist && file_exists($destination_folder.$file["name"])){
-            // throw new Exception("File already exist.");
-            // }
-            // else{
-            if (move_uploaded_file($file["tmp_name"], $destination_folder . $this->name))
-                chmod($destination_folder . $this->name, 0755);
-            else
-                throw new Exception("Can't MoveUploaded file: " . $this->name);
+        if($this->constraints($file)){
+            if ($file["error"] > 0) {
+                // throw new Exception("Return Error Code: : ".$file["error"]."<br />");
+                return;
+            } else {
+                $info = pathinfo($file["name"]); 
+                $this->visual_name = $visual_name;
+                $this->extension = $info["extension"];
+                $this->name = ($target_name == null) ? $file["name"] : $target_name . "." . $this->extension;
+                $this->type = $file["type"];
+                $this->size = $file["size"] / 1024;
+                $this->tmp_name = $file["tmp_name"];
+                $this->path = $destination_folder . $this->name;
+                $this->preview_path = $destination_folder . "s_" . $this->name;
+                
+                // if ($exitifexist && file_exists($destination_folder.$file["name"])){
+                // throw new Exception("File already exist.");
                 // }
-            list ($width, $height, $type, $attr) = getimagesize($this->path);
-            $this->height = $height;
-            $this->width = $width;
-            
-            if ($resize !== NULL) {
-                if ($this->width >= $this->height) {
-                    if ($this->width >= $resize)
-                        $this->resizeToWidth($resize, $filter);
-                    else
-                        $this->resizeToWidth($this->width, $filter);
-                } else {
-                    if ($this->height >= 1237)
-                        $this->resizeToHeight(1237, $filter);
-                    else
-                        $this->resizeToHeight($this->height, $filter);
+                // else{
+                if (move_uploaded_file($file["tmp_name"], $destination_folder . $this->name))
+                    chmod($destination_folder . $this->name, 0755);
+                else
+                    throw new Exception("Can't MoveUploaded file: " . $this->name);
+                    // }
+                list ($width, $height, $type, $attr) = getimagesize($this->path);
+                $this->height = $height;
+                $this->width = $width;
+                
+                if ($resize !== NULL) {
+                    if ($this->width >= $this->height) {
+                        if ($this->width >= $resize)
+                            $this->resizeToWidth($resize, $filter);
+                        else
+                            $this->resizeToWidth($this->width, $filter);
+                    } else {
+                        if ($this->height >= 1237)
+                            $this->resizeToHeight(1237, $filter);
+                        else
+                            $this->resizeToHeight($this->height, $filter);
+                    }
+                }
+                if ($preview_size !== NULL) {
+                    $this->previewResizeToWidth($preview_size[0], $filter);
                 }
             }
-            if ($preview_size !== NULL) {
-                $this->previewResizeToWidth($preview_size[0], $filter);
-            }
         }
-        // }
     }
 
     /**
@@ -153,7 +155,7 @@ class Upload_Image
     {
         global $boostack, $MAX_UPLOAD_IMAGE_SIZE, $MAX_UPLOAD_PDF_SIZE, $MAX_UPLOAD_NAMEFILE_LENGTH, $MAX_UPLOAD_GENERALFILE_SIZE, $mime_types;
         
-        if (strlen($file["name"]) >= Config::get("max_upload_namefile_length")) { // # FILE NAME TOO LONG
+        if (strlen($file["name"]) >= Config::get("max_upload_filename_length")) { // # FILE NAME TOO LONG
             throw new Exception("File Name too long. Rename it and repeat upload. <br />");
         }
         if (in_array($file["type"], $this->image_types)) { // IS IMAGE
@@ -162,6 +164,7 @@ class Upload_Image
             return true;
         }
         throw new Exception("Unknown file. <br />" . $mime_types["" . $file["type"]] . $file["type"]);
+
     }
 
     /**
@@ -286,7 +289,7 @@ class Upload_Image
         if ($this->type == "image/bmp")
             imagewbmp($new_image, $this->path, 100);
         if ($this->type == "image/png")
-            imagepng($new_image, $this->path, 100);
+            imagepng($new_image, $this->path, $this->PNG_compression);
         
         $this->path = $this->path;
     }
@@ -317,7 +320,7 @@ class Upload_Image
         if ($this->type == "image/bmp")
             imagewbmp($new_image, $this->preview_path, 100);
         if ($this->type == "image/png")
-            imagepng($new_image, $this->preview_path, 100);
+            imagepng($new_image, $this->preview_path, $this->PNG_compression);
         
         $this->preview_path = $this->preview_path;
     }

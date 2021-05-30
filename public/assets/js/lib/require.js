@@ -42,11 +42,12 @@ require.config({
     paths: {
         jquery: 'lib/jquery.min',
         bootstrap: 'lib/bootstrap.min',
-        highlight: 'lib/highlight.min'
+        highlight: 'lib/highlight.min',
+        popper: 'lib/popper.min'
     },
     shim: {
         bootstrap: {
-            deps: ["jquery"]
+            deps: ["jquery","popper"]
         },
     }
 });

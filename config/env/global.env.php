@@ -22,7 +22,7 @@ $config["mail_template_path"] = "template/mail/";
 $config["language_path"] = "../lang/";
 $config["language_file_extension"] = ".inc.json";
 
-$config["default_js_files"] = array("lib/require.js","helpers.js","init.js");
+$config["default_js_files"] = array("lib/popper.js","lib/require.js","helpers.js","init.js");
 $config["default_ie_js_files"] = array("lib/html5shiv.js","lib/respond.js");
 $config["default_css_files"] = array("lib/bootstrap.css","lib/animate.css","style.css");/*,"custom.css"*/
 

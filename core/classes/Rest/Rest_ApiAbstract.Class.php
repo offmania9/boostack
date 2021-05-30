@@ -60,7 +60,8 @@ abstract class Rest_ApiAbstract
                     }
                 }
                 else{
-                    $this->file = trim(file_get_contents("php://input")); // in teoria sarebbe da eliminare, ma da Postman funziona solo in questo modo: effettuare delle prove da browser
+                    #$this->file = trim(file_get_contents("php://input")); // in teoria sarebbe da eliminare, ma da Postman funziona solo in questo modo: effettuare delle prove da browser
+                    $this->file = Request::getFilesArray();
                     $this->request = Request::getPostArray();
                 }
                 break;
@@ -135,7 +136,7 @@ abstract class Rest_ApiAbstract
         $this->apiRequest->verb = $this->verb;
         $this->apiRequest->get_args = isset(Request::getQueryArray()["request"])?Request::getQueryArray()["request"]:"";
         $this->apiRequest->post_args = json_encode(Request::getPostArray());
-        $this->apiRequest->file_args = $this->file;
+        $this->apiRequest->file_args = json_encode($this->file);
         $this->apiRequest->remote_address = Utils::getIpAddress();
         $this->apiRequest->remote_user_agent = Utils::getUserAgent();
         $this->apiRequest->error = $this->messageBag->error?1:0;
