@@ -24,6 +24,20 @@ define(['jquery','module/CSRFCheckManager'], function($,CSRFM) {
             $("#loginform").submit();
         }
 
+        function loginAjax() {
+            removeFormError();
+            if($("#btk_usr").val().length == 0 || $("#btk_pwd").val().length == 0) {
+                setFormError("You must insert username and password");
+                return false;
+            }
+            if(typeof captchaResult != 'undefined' && captchaResult == false) {
+                setFormError("You must complete reCaptcha validation");
+                return false;
+            }
+            CSRFCheckManager.addToForm($("#loginform"));
+            $("#loginform").submit();
+        }
+
         function setFormError(message) {
             $("#form-validation-error").html(message).show();
         }
