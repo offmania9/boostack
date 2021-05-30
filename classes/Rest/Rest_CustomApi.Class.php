@@ -54,13 +54,7 @@ class Rest_CustomApi extends Rest_Api
         }
         return $res;
     }
-/*
-    protected function getOCR(){
-        $ocr = new TesseractOCR();
-        $ocr->image('/path/to/image.png');
-        $ocr->run();
-    }
-*/
+
     protected function getLoginFields()
     {
         $res = array();
