@@ -16,12 +16,13 @@ var initLibrary = function() {
         exampleModuleObject.init();
     });
 
+    /** 
     require(["module/cookieMessageModule"], function (object) {
         if (cookieMessageModule != null) return;
         cookieMessageModule = new object();
         cookieMessageModule.init();
     });
-
+    */
     if (getElementsByClassName("CSRFcheck").length) {
         require(["module/CSRFCheckManager"], function (ccm) {
             if (CSRFCheckManager != null) return;

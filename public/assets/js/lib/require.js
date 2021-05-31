@@ -47,7 +47,7 @@ require.config({
     },
     shim: {
         bootstrap: {
-            deps: ["jquery","popper"]
+            deps: ["jquery","bootstrap","popper"]
         },
     }
 });
