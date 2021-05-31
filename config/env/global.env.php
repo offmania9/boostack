@@ -32,14 +32,14 @@ $config["default_error_page"] = "error.phtml";
  * GENERAL INFO & SEO
  */
 
-$config["sitename"] = "Boostack.com";
+$config["sitename"] = "getBoostack.com";
 $config["project_name"] = "Boostack";
-$config["project_sitename"] = "Boostack.com";
+$config["project_sitename"] = "getBoostack.com";
 $config["project_version"] = "4";
-$config["project_mission"] = "Boostack.com - Improve your development and build a modern website in minutes";
+$config["project_mission"] = "getBoostack.com - Improve your development and build a modern website in minutes";
 $config["viewport"] = "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0";
 $config["html_lang"] = "en";
-$config["site_title"] = "Boostack - a full stack Framework for PHP";
+$config["site_title"] = "Boostack - The lightest full stack Framework for PHP";
 $config["site_keywords"] = "boostack, php, framework, website, productive, simplicity, seo, secure, mysql, open-source"; // comma separated
 $config["site_description"] = "A full stack Framework for PHP. Improve your development and build a modern website in minutes";
 $config["site_author"] = "stefano spagnolo";

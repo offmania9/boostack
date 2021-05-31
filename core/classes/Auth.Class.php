@@ -122,6 +122,50 @@ class Auth
         return false;
     }
 
+
+    public static function registration($username,$email,$psw1,$psw2,$CSRFToken = NULL)
+    {
+        $registrationError = "";
+        try {
+            if ($psw1 !== $psw2) $registrationError = "Passwords must be equals";
+            if (!Validator::email($email)) $registrationError = "Username format not valid";
+            if (!Validator::password($psw1)) $registrationError = "Password format not valid";
+            if (User::existsByEmail($email, false) || User::existsByUsername($email, false)) $registrationError = "Email already registered";
+            if (Config::get('csrf_on')){
+                if(empty($CSRFToken))
+                    throw new Exception ("Attention! CSRF token is required.");
+                $token_key = Session::getObject()->getCSRFDefaultKey();
+                Session::CSRFCheckValidity(array($token_key=>$CSRFToken));
+            } 
+            
+            if (strlen($registrationError) == 0) {
+                $user = new User();
+                $user->username = $username;
+                $user->email = $email;
+                $user->active = true;
+                $user->pwd = $psw1;
+                $user->save();
+                Auth::loginByUserID($user->id);
+                if (Config::get('csrf_on')){
+                    Session::getObject()->CSRFTokenInvalidation();
+                }
+                return true;
+            }
+            else{
+                Logger::write($registrationError, Log_Level::ERROR);   
+                throw new Exception_Registration($registrationError);
+            }   
+        } catch (PDOException $e) {
+            Logger::write($e, Log_Level::ERROR);
+        } catch (Exception $e) {
+            Logger::write($e, Log_Level::ERROR);
+            throw $e;
+        }
+        return false;
+    }
+
+
+
     /**
      * @return mixed
      */

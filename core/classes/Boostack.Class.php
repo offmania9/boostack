@@ -239,12 +239,12 @@ class Boostack
         <?php
     }
 
-    /**
+    /*
      * @param string $logMesg
      * @param string $level
      * @param string $type
      * @throws Exception
-     */
+     
     public function writeLog($logMesg = "", $level = LogLevel::Information, $type = LogType::DB) {
         global $CURRENTUSER;
         switch ($type) {
@@ -260,6 +260,7 @@ class Boostack
                 throw new Exception("Log type not found");
         }
     }
+    */
 
     /**
      * @param $mail

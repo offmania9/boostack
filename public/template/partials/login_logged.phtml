@@ -10,17 +10,39 @@
 <p>&nbsp;</p>
 <section class="login centerContent">
     <div class="container">
-        <div id="loginbox"
-             class="col-md-6 mx-auto">
-            <div class="card card-success border-success">
-                <div class="card-header">
-                    <div class="card-title text-center"><?= Language::getLabel("login.loggedin");?></div>
-                </div>
-                <div class="card-body">
-                    <div class="text-center col-sm-12">
-                        <a class="btn btn-outline-dark btn-sm" href="<?= Utils::getFriendlyUrl("logout")?>">Logout</a></div>
+        <div class="row">
+            <div id="" class="col-md-1">
+            </div> 
+            <div id="" class="col-md-4">
+                <div class="card card-success border-success">
+                    <div class="card-header">
+                        <div class="card-title text-center">
+                        <strong><?= Auth::getUserLoggedObject()->email;?></strong><br/>
+                        <?= Language::getLabel("login.loggedin");?></div>
+                    </div>
+                    <div class="card-body">
+                        <div class="text-center col-sm-12">
+                            <a class="btn btn-outline-dark btn-sm" href="<?= Utils::getFriendlyUrl("logout")?>">Logout</a></div>
+                    </div>
                 </div>
             </div>
+            <div id="" class="col-md-2">
+            </div>
+            <div id="" class="col-md-4">
+                <div class="card card-success border-success">
+                    <div class="card-header">
+                        <div class="card-title text-center">
+                        <strong><?= Auth::getUserLoggedObject()->email;?></strong><br/>
+                        <?= Language::getLabel("login.loggedin");?></div>
+                    </div>
+                    <div class="card-body">
+                        <div class="text-center col-sm-12">
+                            <a class="btn btn-outline-dark btn-sm" href="<?= Utils::getFriendlyUrl("api/logout")?>">Logout with Api Rest</a></div>
+                    </div>
+                </div>
+            </div>
+            <div id="" class="col-md-1">
+            </div> 
         </div>
     </div>
 </section>

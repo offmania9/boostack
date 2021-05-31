@@ -118,17 +118,5 @@ class Database_AccessLogger
         return self::$instance;
     }
 
-    /**
-     * @return array
-     */
-    public function get()
-    {
-        $sql = "SELECT * FROM " . self::TABLENAME . " ORDER BY datetime DESC";
-        $q = $this->pdo->prepare($sql)->execute();
-        while ($res = $q->fetch(PDO::FETCH_ASSOC))
-            $res2[] = $res['datetime'] . " - " . $res['username'] . " - " . $res['message'] . " - " . $res['ip'] . " - " . substr($res['useragent'], 0, 10) . " - " . $res['query'];
-        
-        return $res2;
-    }
 }
 ?>

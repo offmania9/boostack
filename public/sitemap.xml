@@ -5,37 +5,37 @@
       xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 <url>
-  <loc>https://www.boostack.com/</loc>
+  <loc>https://www.getboostack.com/</loc>
   <lastmod>2017-03-22T22:28:21+00:00</lastmod>
   <changefreq>daily</changefreq>
   <priority>1.00</priority>
 </url>
 <url>
-  <loc>https://www.boostack.com/home</loc>
+  <loc>https://www.getboostack.com/home</loc>
   <lastmod>2017-03-22T22:28:21+00:00</lastmod>
   <changefreq>daily</changefreq>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>https://www.boostack.com/download</loc>
+  <loc>https://www.getboostack.com/download</loc>
   <lastmod>2017-03-22T22:28:21+00:00</lastmod>
   <changefreq>daily</changefreq>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>https://www.boostack.com/docs/setup</loc>
+  <loc>https://www.getboostack.com/docs/setup</loc>
   <lastmod>2017-03-22T22:28:21+00:00</lastmod>
   <changefreq>daily</changefreq>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>https://www.boostack.com/docs/directory-structure</loc>
+  <loc>https://www.getboostack.com/docs/directory-structure</loc>
   <lastmod>2017-03-22T22:28:21+00:00</lastmod>
   <changefreq>daily</changefreq>
   <priority>0.64</priority>
 </url>
 <url>
-  <loc>https://www.boostack.com/docs/controllers</loc>
+  <loc>https://www.getboostack.com/docs/controllers</loc>
   <lastmod>2017-03-22T22:28:21+00:00</lastmod>
   <changefreq>daily</changefreq>
   <priority>0.64</priority>

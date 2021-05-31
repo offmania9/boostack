@@ -37,6 +37,7 @@ abstract class Rest_ApiAbstract
      */
     public function __construct($requestedMethod)
     {
+        Config::constraint("api_on");
         $this->apiRequest = new Rest_ApiRequest();
         $this->messageBag = new MessageBag();
         $this->messageBag->error = false;
@@ -60,10 +61,9 @@ abstract class Rest_ApiAbstract
                     }
                 }
                 else{
-                    #$this->file = trim(file_get_contents("php://input")); // in teoria sarebbe da eliminare, ma da Postman funziona solo in questo modo: effettuare delle prove da browser
-                    $this->file = Request::getFilesArray();
+                    $this->file = empty(Request::getFilesArray())? trim(file_get_contents("php://input")):Request::getFilesArray();
                     $this->request = Request::getPostArray();
-                }
+                     }
                 break;
             case 'GET':
                 $this->request = Request::getQueryArray();
@@ -143,6 +143,24 @@ abstract class Rest_ApiAbstract
         $this->apiRequest->code = $this->messageBag->code;
         $this->apiRequest->message = $this->messageBag->message;
         $this->apiRequest->output = json_encode($this->messageBag->data);
+    }
+
+    protected function constraints($method, array $serverParams = NULL, bool $filsIsJSON = false){
+        if(strcasecmp($this->method , $method) != 0){
+            throw new Exception("Only accepts $method requests");
+        }
+        if(!empty($serverParams)){
+            foreach($serverParams as $key => $value){
+                if(!Request::hasServerParam($key) || strcasecmp(Request::getServerParam($key), $value) != 0){
+                    throw new Exception("$key must be: $value");
+                }
+            }
+        }
+        if($filsIsJSON){
+            if(!empty($this->file) && !Utils::isJson($this->file)){
+                throw new Exception('Received content contained invalid JSON!');
+            }
+        }
     }
 }
 ?>

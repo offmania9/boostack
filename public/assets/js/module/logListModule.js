@@ -302,8 +302,8 @@ define(['jquery'], function($) {
 
                 }
             }
-            $(".limitElem").html(tableInfo);
-            $(".customPagination").html(html);
+            $(".limitElem").text(tableInfo);
+            $(".customPagination").text(html);
         }
 
         function calcParamForOrderby(obj){
@@ -339,14 +339,14 @@ define(['jquery'], function($) {
                         var elem = $('.tableToCopy').clone();
                         $(elem).removeClass('tableToCopy hidden');
 
-                        $('.id',elem).html(this.id);
-                        $('.level',elem).html(this.level);
-                        $('.datetime',elem).html(this.datetime);
-                        $('.ip',elem).html(this.ip);
-                        $('.useragent',elem).html(this.useragent);
-                        $('.referrer',elem).html(this.referrer);
-                        $('.query',elem).html(this.query);
-                        $('.message',elem).html(this.message);
+                        $('.id',elem).text(this.id);
+                        $('.level',elem).text(this.level);
+                        $('.datetime',elem).text(this.datetime);
+                        $('.ip',elem).text(this.ip);
+                        $('.useragent',elem).text(this.useragent);
+                        $('.referrer',elem).text(this.referrer);
+                        $('.query',elem).text(this.query);
+                        $('.message',elem).text(this.message);
 
                         $(elem).appendTo('.tableToPaste');
                         $(elem).addClass('removeDuplicate');

@@ -100,7 +100,7 @@ class User implements JsonSerializable {
             $this->pdo->commit();
         } catch(Exception $e) {
             $this->pdo->rollBack();
-            Boostack::getInstance()->writeLog($e->getMessage(),LogLevel::Error);
+            Logger::write($e->getMessage(),Log_Level::ERROR);
             throw $e;
         }
 
@@ -122,7 +122,7 @@ class User implements JsonSerializable {
             $this->pdo->commit();
         } catch(Exception $e) {
             $this->pdo->rollBack();
-            Boostack::getInstance()->writeLog($e->getMessage(),LogLevel::Error);
+            Logger::write($e->getMessage(),Log_Level::ERROR);
         }
     }
 

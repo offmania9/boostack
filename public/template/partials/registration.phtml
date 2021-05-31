@@ -10,47 +10,111 @@
 <p>&nbsp;</p>
 <section class="registration">
     <div class="container">
-        <div class="col-md-6 mx-auto">
-            <div class="card panel-default">
-                <div class="card-header">
-                    <h3 class="card-title">Registration</h3>
-                </div>
-                <div class="card-body">
-                        <div class="text-right">
-                            <small> <a href="<?= Utils::getFriendlyUrl("login");?>">
-                                    <?= Language::getLabel("form.login.signin");?>
-                                </a>
-                            </small>
-                        </div>
-                    <div class="alert alert-danger col-sm-12 <?= $registrationError == "" ? "d-none" : "" ?>"><?= $registrationError; ?></div>
-                    <form id="registration-form" class="form-horizontal" method="post" action="<?= Utils::getFriendlyUrl("registration"); ?>">
-                        <div class="form-group">
-                            <label for="inputEmail3" class="control-label">Email</label>
-                            <div class="">
-                                <input type="email" class="form-control" name="email" id="reg-email" placeholder="Email">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="card panel-default">
+                    <div class="card-header">
+                        <h4 class="card-title"><?= Language::getLabel("form.registration.title");?></h4>
+                    </div>
+                    <div class="card-body">
+                            <div class="text-right">
+                                <small> <a href="<?= Utils::getFriendlyUrl("login");?>">
+                                        <?= Language::getLabel("form.login.signin");?>
+                                    </a>
+                                </small>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputPassword1" class="ontrol-label">Password</label>
-                            <div class="">
-                                <input type="password" class="form-control" name="psw1" id="reg-pwd1" placeholder="Password">
+                        <div class="alert alert-danger col-sm-12 <?= $registrationError == "" ? "d-none" : "" ?>"><?= $registrationError; ?></div>
+                        <form id="registration-form" class="form-horizontal" method="post" action="<?= Utils::getFriendlyUrl("registration"); ?>">
+                            <div class="form-group">
+                                <label for="reg-email" class="control-label"><?= Language::getLabel("form.registration.email");?></label>
+                                <div class="">
+                                    <input type="email" class="form-control" name="reg-email" id="reg-email" 
+                                    placeholder="<?= Language::getLabel("form.registration.email_description");?>">
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputPassword2" class="control-label">Repeat Password</label>
-                            <div class="">
-                                <input type="password" class="form-control" name="psw2" id="reg-pwd2" placeholder="Password">
+                            <div class="form-group">
+                                <label for="reg-pwd1" class="control-label"><?= Language::getLabel("form.registration.password");?></label>
+                                <div class="">
+                                    <input type="password" class="form-control" name="reg-pwd1" id="reg-pwd1" 
+                                    placeholder="<?= Language::getLabel("form.registration.password_description");?>">
+                                </div>
                             </div>
-                        </div>
-                        <p id="form-validation-error" class="text-danger"></p>
-                        <div class="form-group ">
-                            <div class="">
-                                <button type="submit" class="btn btn-dark ">Register</button>
+                            <div class="form-group">
+                                <label for="reg-pwd2" class="control-label"><?= Language::getLabel("form.registration.password_repeat");?></label>
+                                <div class="">
+                                    <input type="password" class="form-control" name="reg-pwd2" id="reg-pwd2" 
+                                    placeholder="<?= Language::getLabel("form.registration.password_repeat_description");?>">
+                                </div>
                             </div>
-                        </div>
-                    </form>
+                            <p id="form-validation-error" class="text-danger"></p>
+                            <div class="form-group ">
+                                <div class="">
+                                    <button type="submit" class="btn btn-dark "><?= Language::getLabel("form.registration.register");?></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
+            <div id="" class="col-md-2">
+            </div>
+            <div class="col-md-5">
+                <div class="card panel-default">
+                    <div class="card-header">
+                        <h4 class="card-title"><?= Language::getLabel("form.registration.title-ajax");?></h4>
+                    </div>
+                    <div class="card-body">
+                            <div class="text-right">
+                                <small> <a href="<?= Utils::getFriendlyUrl("login");?>">
+                                        <?= Language::getLabel("form.login.signin");?>
+                                    </a>
+                                </small>
+                            </div>
+                        <form id="registration-form-ajax" class="form-horizontal" method="post" action="<?= Utils::getFriendlyUrl("registration"); ?>">
+                            <div class="form-group">
+                                <label for="reg-email-ajax" class="control-label"><?= Language::getLabel("form.registration.email");?></label>
+                                <div class="">
+                                    <input type="email" class="form-control" name="reg-email-ajax" id="reg-email-ajax" value="aaaaa@aaaaa.aa"
+                                    placeholder="<?= Language::getLabel("form.registration.email_description");?>">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-pwd-ajax" class="control-label"><?= Language::getLabel("form.registration.password");?></label>
+                                <div class="">
+                                    <input type="password" class="form-control" name="reg-pwd-ajax" id="reg-pwd-ajax" value="aaaaa@aaaaa.aa"
+                                    placeholder="<?= Language::getLabel("form.registration.password_description");?>">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-pwd2-ajax" class="control-label"><?= Language::getLabel("form.registration.password_repeat");?></label>
+                                <div class="">
+                                    <input type="password" class="form-control" name="reg-pwd2-ajax" id="reg-pwd2-ajax" value="aaaaa@aaaaa.aa" 
+                                    placeholder="<?= Language::getLabel("form.registration.password_repeat_description");?>">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="form-check">
+                                <input class="form-check-input" type="checkbox" checked value="" id="register-agree" required>
+                                <label class="form-check-label" for="register-agree">
+                                <?= Language::getLabel("form.registration.agree");?>
+                                </label>
+                                </div>
+                            </div>
+
+
+                            <p id="form-validation-error" class="text-danger"></p>
+                            <div class="form-group ">
+                                <div class="">
+                                    <button type="button" id="btn-registration-ajax" class="btn btn-dark "><?= Language::getLabel("form.registration.register");?></button>
+                                </div>
+                            </div>
+                        </form>
+                        <div id="registration-alert" class="alert alert-danger col-sm-12 collapse"></div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </section>

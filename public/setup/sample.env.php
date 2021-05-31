@@ -31,9 +31,14 @@ $database['password'] = '[db_password]';
  */
 $config['session_on'] = [session_on];   // enable or disable Sessions (TRUE need $database_on=TRUE)
 $config['csrf_on'] = [csrf_on];      // enable or disable CSRF validation (TRUE need $database_on=TRUE AND $session_on=TRUE)
-$config['csrf_timeout'] = 14400;
+$config['csrf_timeout'] = 1000;
 $config['session_timeout'] = 7200; # 2h             // session max inactivity time (seconds)
 $config['session_lifespan'] = 14400; # 4h    // session max duration (seconds)
+
+/**
+ * Rest API
+ */
+$config['api_on'] = TRUE;       // enable or disable boostack Rest API (#TRUE need $database_on=TRUE)
 
 /**
  * LOG
@@ -46,7 +51,7 @@ $config['log_enabledTypes'] =
 /**
  * LOGIN
  */
-$config['userToLogin'] = "username";    // Username field for login process: "username" | "email" | "both"
+$config['userToLogin'] = "email";    // Username field for login process: "username" | "email" | "both"
 
 $config['username_min_length'] = 5;
 $config['username_max_length'] = 64;
@@ -90,9 +95,9 @@ $config['mobile_url'] = NULL;
  * EMAILS
  */
 $config['mail_on'] = FALSE;     // enable or disable send mail
-$config["mail_admin"] = "info@boostack.com";
-$config["mail_noreply"] = "no-reply@boostack.com";
-$config["mail_maintenance"] = "mntn@boostack.com";
+$config["mail_admin"] = "info@getboostack.com";
+$config["mail_noreply"] = "no-reply@getboostack.com";
+$config["mail_maintenance"] = "mntn@getboostack.com";
 
 /**
  * FILES AND IMAGES

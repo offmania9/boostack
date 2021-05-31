@@ -14,28 +14,15 @@ require_once "../core/environment_init.php";
 $registrationError = "";
 try {
     Config::constraint("session_on");
-    if (Request::hasPostParam('email') && Request::hasPostParam('psw1') && Request::hasPostParam('psw2')) {
-        $email = Request::getPostParam('email');
-        $psw1 = Request::getPostParam('psw1');
-        $psw2 = Request::getPostParam('psw2');
-        if ($psw1 !== $psw2) $registrationError = "Passwords must be equals";
-        if (!Validator::email($email)) $registrationError = "Username format not valid";
-        if (!Validator::password($psw1)) $registrationError = "Password format not valid";
-        if (User::existsByEmail($email, false) || User::existsByUsername($email, false)) $registrationError = "Email already registered";
-        if (Config::get('csrf_on')) Session::CSRFCheckValidity(Request::getPostArray());
-        if (strlen($registrationError) == 0) {
-            $user = new User();
-            $user->username = $email;
-            $user->email = $email;
-            $user->active = true;
-            $user->pwd = $psw1;
-            $user->save();
-            Auth::loginByUserID($user->id);
-        }
+    if (Request::hasPostParam('reg-email') && Request::hasPostParam('reg-pwd1') && Request::hasPostParam('reg-pwd2')) {
+        $email = Request::getPostParam('reg-email');
+        $psw1 = Request::getPostParam('reg-pwd1');
+        $psw2 = Request::getPostParam('reg-pwd2');
+        Auth::registration($email,$email,$psw1,$psw2);
     }
 } catch (Exception_Misconfiguration $em) {
     dd($em->getMessage());
-} catch (Exception $e) {
+} catch (Exception_Registration $e) {
     $registrationError = $e->getMessage();
 }
 

@@ -74,9 +74,9 @@ if ($env_parameters["database_on"] == "true" && $finalSetupMessageError == "") {
 
         }
         $users = array();
-        $users[0] = "user@boostack.com";
-        $users[1] = "admin@boostack.com";
-        $users[2] = "superadmin@boostack.com";
+        $users[0] = "user@getboostack.com";
+        $users[1] = "admin@getboostack.com";
+        $users[2] = "superadmin@getboostack.com";
         foreach ($users as $user) {
             while (User::existsByEmail($user, false)) {
                 $id = User::getUserIDByEmail($user, false);
@@ -89,7 +89,7 @@ if ($env_parameters["database_on"] == "true" && $finalSetupMessageError == "") {
         $u->username = "boostack";
         $u->name = "Boostack System";
         $u->full_name = "Boostack System";
-        $u->email = "user@boostack.com";
+        $u->email = "user@getboostack.com";
         $u->pwd = "testing";
         $u->privilege = "0";
         $u->first_name = "Boostack";
@@ -101,7 +101,7 @@ if ($env_parameters["database_on"] == "true" && $finalSetupMessageError == "") {
         $u->username = "boostackuser";
         $u->name = "Boostack User";
         $u->full_name = "Boostack User";
-        $u->email = "user@boostack.com";
+        $u->email = "user@getboostack.com";
         $u->pwd = "testing";
         $u->privilege = "3";
         $u->active = "1";
@@ -114,7 +114,7 @@ if ($env_parameters["database_on"] == "true" && $finalSetupMessageError == "") {
         $u->username = "boostackadmin";
         $u->name = "Boostack Admin";
         $u->full_name = "Boostack Admin";
-        $u->email = "admin@boostack.com";
+        $u->email = "admin@getboostack.com";
         $u->pwd = "testing";
         $u->privilege = "2";
         $u->active = "1";
@@ -127,7 +127,7 @@ if ($env_parameters["database_on"] == "true" && $finalSetupMessageError == "") {
         $u->username = "boostacksuperadmin";
         $u->name = "Boostack SuperAdmin";
         $u->full_name = "Boostack SuperAdmin";
-        $u->email = "superadmin@boostack.com";
+        $u->email = "superadmin@getboostack.com";
         $u->pwd = "testing";
         $u->privilege = "1";
         $u->active = "1";

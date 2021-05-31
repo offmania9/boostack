@@ -33,6 +33,14 @@ class Session_CSRF extends Session_HTTP
     /**
      * @return string
      */
+    public function getCSRFDefaultKey()
+    {
+        return $this->CSRFDefaultKey;
+    }
+
+    /**
+     * @return string
+     */
     public function CSRFTokenGenerator()
     {
         $key = $this->CSRFDefaultKey;
@@ -143,7 +151,7 @@ class Session_CSRF extends Session_HTTP
         try {
             return $this->CSRFCheckTokenValidity($postArray, $throwException);
         } catch(Exception $e) {
-            Boostack::getInstance()->writeLog('Session_CSRF -> CSRFCheckValidity -> Caught exception: '.$e->getMessage().$e->getTraceAsString(),"error");
+            Logger::write('Session_CSRF -> CSRFCheckValidity -> Caught exception: '.$e->getMessage().$e->getTraceAsString(),Log_Level::ERROR);
             throw new Exception('Invalid CSRF token');
         }
     }

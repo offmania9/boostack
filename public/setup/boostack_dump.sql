@@ -2,10 +2,10 @@
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
+SET NAMES utf8mb4;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
 
 
 # Dump of table boostack_api_request
@@ -29,7 +29,7 @@ CREATE TABLE `boostack_api_request` (
   `created_at` bigint DEFAULT NULL,
   `last_update` bigint DEFAULT NULL,
   `last_access` bigint DEFAULT NULL,
-  `file_args` text,
+  `file_args` longblob,
   `created_datetime` datetime DEFAULT NULL,
   `client_code` varchar(225) DEFAULT NULL,
   `app_code` varchar(225) DEFAULT NULL,
@@ -59,12 +59,12 @@ CREATE TABLE `boostack_cache` (
 DROP TABLE IF EXISTS `boostack_http_session`;
 
 CREATE TABLE `boostack_http_session` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `ascii_session_id` varchar(32) NOT NULL,
   `logged_in` varchar(1) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `last_impression` int(11) NOT NULL DEFAULT '0',
-  `created` int(11) NOT NULL DEFAULT '0',
+  `user_id` int NOT NULL,
+  `last_impression` int NOT NULL DEFAULT '0',
+  `created` int NOT NULL DEFAULT '0',
   `user_agent` varchar(256) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
@@ -79,9 +79,9 @@ CREATE TABLE `boostack_http_session` (
 DROP TABLE IF EXISTS `boostack_log`;
 
 CREATE TABLE `boostack_log` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `level` enum('error','failure','information','success','warning','user','cronjob') DEFAULT NULL,
-  `datetime` int(11) NOT NULL,
+  `datetime` int NOT NULL,
   `username` varchar(60) NOT NULL,
   `ip` varchar(16) NOT NULL,
   `useragent` varchar(255) NOT NULL,
@@ -91,31 +91,6 @@ CREATE TABLE `boostack_log` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-# Dump of table boostack_user_privilege
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `boostack_user_privilege`;
-
-CREATE TABLE `boostack_user_privilege` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) NOT NULL DEFAULT '',
-  `description` text NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-LOCK TABLES `boostack_user_privilege` WRITE;
-/*!40000 ALTER TABLE `boostack_user_privilege` DISABLE KEYS */;
-
-INSERT INTO `boostack_user_privilege` (`id`, `title`, `description`)
-VALUES
-  (0,'SYSTEM','only \"boostack\" user'),
-  (1,'SUPERADMIN',''),
-  (2,'ADMIN',''),
-  (3,'USER','');
-
-/*!40000 ALTER TABLE `boostack_user_privilege` ENABLE KEYS */;
-UNLOCK TABLES;
-
 
 
 # Dump of table boostack_session_variable
@@ -124,8 +99,8 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `boostack_session_variable`;
 
 CREATE TABLE `boostack_session_variable` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `session_id` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `session_id` int NOT NULL,
   `variable_name` varchar(64) NOT NULL,
   `variable_value` text NOT NULL,
   PRIMARY KEY (`id`),
@@ -141,20 +116,24 @@ CREATE TABLE `boostack_session_variable` (
 DROP TABLE IF EXISTS `boostack_user`;
 
 CREATE TABLE `boostack_user` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `active` varchar(1) NOT NULL,
-  `privilege` int(11) DEFAULT NULL,
-  `full_name` varchar(50) NOT NULL,
-  `username` text,
+  `privilege` int DEFAULT NULL,
+  `full_name` varchar(120) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `username` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '',
   `pwd` varchar(255) NOT NULL DEFAULT '',
   `email` varchar(255) NOT NULL,
   `pic_square` varchar(255) NOT NULL,
-  `last_access` int(11) NOT NULL DEFAULT '0',
+  `last_access` int NOT NULL DEFAULT '0',
   `session_cookie` varchar(64) NOT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `Email` (`email`),
+  UNIQUE KEY `Username` (`username`),
   KEY `privilege2` (`privilege`),
   CONSTRAINT `boostack_user_ibfk_1` FOREIGN KEY (`privilege`) REFERENCES `boostack_user_privilege` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
 
 # Dump of table boostack_user_info
 # ------------------------------------------------------------
@@ -162,7 +141,7 @@ CREATE TABLE `boostack_user` (
 DROP TABLE IF EXISTS `boostack_user_info`;
 
 CREATE TABLE `boostack_user_info` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `first_name` varchar(70) NOT NULL,
   `last_name` varchar(70) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
@@ -189,21 +168,39 @@ CREATE TABLE `boostack_user_info` (
   CONSTRAINT `user_info_ibfk_1` FOREIGN KEY (`id`) REFERENCES `boostack_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
+
+# Dump of table boostack_user_privilege
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `boostack_user_privilege`;
+
+CREATE TABLE `boostack_user_privilege` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL DEFAULT '',
+  `description` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
 # Dump of table boostack_user_registration
 # ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `boostack_user_registration`;
 
 CREATE TABLE `boostack_user_registration` (
-  `id` int(11) NOT NULL,
-  `activation_date` int(11) NOT NULL DEFAULT '0',
+  `id` int NOT NULL,
+  `activation_date` int NOT NULL DEFAULT '0',
   `access_code` varchar(10) DEFAULT NULL,
   `ip` varchar(16) NOT NULL,
-  `join_date` int(11) NOT NULL,
+  `join_date` int NOT NULL,
   `join_idconfirm` varchar(32) NOT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `user_registration_ibfk_1` FOREIGN KEY (`id`) REFERENCES `boostack_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
 
 # Dump of table boostack_user_social
 # ------------------------------------------------------------
@@ -211,7 +208,7 @@ CREATE TABLE `boostack_user_registration` (
 DROP TABLE IF EXISTS `boostack_user_social`;
 
 CREATE TABLE `boostack_user_social` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `type` varchar(2) NOT NULL,
   `uid` varchar(90) NOT NULL,
   `uid_token` varchar(90) NOT NULL,
@@ -223,6 +220,8 @@ CREATE TABLE `boostack_user_social` (
   KEY `id` (`id`),
   CONSTRAINT `user_social_ibfk_1` FOREIGN KEY (`id`) REFERENCES `boostack_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
 
 
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;

@@ -16,7 +16,7 @@ ServerSignature Off
 AddDefaultCharset utf-8
 
 # set the server administrator email
-SetEnv SERVER_ADMIN info@boostack.com
+SetEnv SERVER_ADMIN info@getboostack.com
 
 #AuthType Basic
 #AuthName "Authentication Required"
@@ -29,12 +29,12 @@ ErrorDocument 403 /error.php?code=403
 ErrorDocument 404 /error.php?code=404
 ErrorDocument 500 /error.php?code=500
 ErrorDocument 503 /maintenance.php
-#ErrorDocument 400 https://boostack.com/error.php?code=400
-#ErrorDocument 401 https://boostack.com/error.php?code=401
-#ErrorDocument 403 https://boostack.com/error.php?code=403
-#ErrorDocument 404 https://boostack.com/error.php?code=404
-#ErrorDocument 500 https://boostack.com/error.php?code=500
-#ErrorDocument 503 https://boostack.com/maintenance.php
+#ErrorDocument 400 https://getboostack.com/error.php?code=400
+#ErrorDocument 401 https://getboostack.com/error.php?code=401
+#ErrorDocument 403 https://getboostack.com/error.php?code=403
+#ErrorDocument 404 https://getboostack.com/error.php?code=404
+#ErrorDocument 500 https://getboostack.com/error.php?code=500
+#ErrorDocument 503 https://getboostack.com/maintenance.php
 
 ###### RULES
 # Block access to "hidden" directories whose names begin with a period
@@ -52,9 +52,9 @@ RewriteEngine on
 #RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 #--------- end redirect to hhtps
 
-#from boostack.com to www.boostack.com
-#RewriteCond %{HTTP_HOST} ^http://www.boostack.com [NC]
-#RewriteRule ^(.*)$ boostack.com/$1 [L,R=301]
+#from getboostack.com to www.getboostack.com
+#RewriteCond %{HTTP_HOST} ^http://www.getboostack.com [NC]
+#RewriteRule ^(.*)$ getboostack.com/$1 [L,R=301]
 
 #---------
 RewriteCond %{DOCUMENT_ROOT}/boostack/maintenance.php -f

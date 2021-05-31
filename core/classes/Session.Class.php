@@ -14,6 +14,12 @@ class Session
         $objSession->$key = $value;
     }
 
+    public static function getObject()
+    {
+        global $objSession;
+        return $objSession;
+    }
+
     public static function getUserObject()
     {
         global $objSession;

@@ -37,7 +37,7 @@ K(require)||(w=require,require=void 0);g=requirejs=function(b,c,d,m){var r,q="_"
 
 var GlobalBaseUrl = rootUrl+"assets/";
 require.config({
-    baseUrl: GlobalBaseUrl + "js",
+    baseUrl: GlobalBaseUrl + "js/",
     waitSeconds: 60,
     paths: {
         jquery: 'lib/jquery.min',
