@@ -1,9 +1,5 @@
-/**
- * Created by Riccardo on 30/03/2017.
- */
-
 $(document).ready(function(){
-    if($(".setup tr.danger").size()>0){
+    if($(".setup tr.bg-danger").length>0){
         $(".setup .setupInstaller, .setup #initsetup-btn").hide();
     }
     var tooltip = $('[data-toggle="tooltip"]').tooltip();
