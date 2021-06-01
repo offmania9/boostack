@@ -100,7 +100,7 @@ class User implements JsonSerializable {
             $this->pdo->commit();
         } catch(Exception $e) {
             $this->pdo->rollBack();
-            Logger::write($e->getMessage(),Log_Level::ERROR);
+            Logger::write($e->getMessage(),Log_Level::ERROR, Log_Driver::FILE);
             throw $e;
         }
 

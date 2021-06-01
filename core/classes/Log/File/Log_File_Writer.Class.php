@@ -20,7 +20,7 @@ class Log_File_Writer
     {
         $path = ROOTPATH.Config::get("log_dir");
         if(!file_exists($path))
-            exit("Error: unable to find log dir");
+            exit("Error: unable to find log dir: $path");
         if(!is_writable($path))
             exit("Error: log dir must be writable");
         $filename = "boostack-" . date("Y-m-d") . ".log";

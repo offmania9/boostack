@@ -64,6 +64,8 @@
                         <h4 class="card-title"><?= Language::getLabel("form.registration.title-ajax");?></h4>
                     </div>
                     <div class="card-body">
+                    <? try{
+                        if(Config::constraint("api_on")){?>
                             <div class="text-right">
                                 <small> <a href="<?= Utils::getFriendlyUrl("login");?>">
                                         <?= Language::getLabel("form.login.signin");?>
@@ -112,6 +114,11 @@
                         </form>
                         <div id="registration-alert" class="alert alert-danger col-sm-12 collapse"></div>
                     </div>
+                    <? }
+                    }
+                    catch (Exception_Misconfiguration $e){
+                        echo $e->getMessage();
+                    }?>
                 </div>
             </div>
 

@@ -38,13 +38,14 @@ $config['session_lifespan'] = 14400; # 4h    // session max duration (seconds)
 /**
  * Rest API
  */
-$config['api_on'] = TRUE;       // enable or disable boostack Rest API (#TRUE need $database_on=TRUE)
+$config['api_on'] = [api_on];       // enable or disable boostack Rest API (#TRUE need $database_on=TRUE)
 
 /**
  * LOG
  */
 $config['log_on'] = [log_on];       // enable or disable boostack Log (#TRUE need $database_on=TRUE)
 $config['log_file'] = "logs/log.txt";
+$config['log_dir'] = "../logs/";
 $config['log_enabledTypes'] =
     array('error','failure','information','success','warning','user','cronjob');  //(Enable logging options ['error','failure','information','success','warning','user']
 

@@ -24,7 +24,7 @@ class Rest_ApiRequestList extends BaseList {
             $queryResults = $q->fetchAll(PDO::FETCH_ASSOC);
             return $queryResults;
         } catch (PDOException $pdoEx) {
-            FileLogger::getInstance()->log($pdoEx);
+            Logger::write($pdoEx,Log_Level::ERROR,Log_Driver::FILE);
             throw new PDOException("Database Exception. Please see log file.");
         }
     }
@@ -42,7 +42,7 @@ class Rest_ApiRequestList extends BaseList {
             $queryResults = $q->fetchAll(PDO::FETCH_ASSOC);
             return $queryResults;
         } catch (PDOException $pdoEx) {
-            FileLogger::getInstance()->log($pdoEx);
+            Logger::write($pdoEx,Log_Level::ERROR,Log_Driver::FILE);
             throw new PDOException("Database Exception. Please see log file.");
         }
     }
@@ -61,7 +61,7 @@ class Rest_ApiRequestList extends BaseList {
             $queryResults = $q->fetchAll(PDO::FETCH_ASSOC);
             return $queryResults;
         } catch (PDOException $pdoEx) {
-            FileLogger::getInstance()->log($pdoEx);
+            Logger::write($pdoEx,Log_Level::ERROR,Log_Driver::FILE);
             throw new PDOException("Database Exception. Please see log file.");
         }
     }

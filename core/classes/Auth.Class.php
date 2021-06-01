@@ -115,7 +115,7 @@ class Auth
                 }
             }
         } catch (PDOException $e) {
-            Logger::write($e, Log_Level::ERROR);
+            Logger::write($e,Log_Level::ERROR,Log_Driver::FILE);
         } catch (Exception $e) {
             Logger::write($e, Log_Level::ERROR);
         }
@@ -156,7 +156,7 @@ class Auth
                 throw new Exception_Registration($registrationError);
             }   
         } catch (PDOException $e) {
-            Logger::write($e, Log_Level::ERROR);
+            Logger::write($e,Log_Level::ERROR,Log_Driver::FILE);
         } catch (Exception $e) {
             Logger::write($e, Log_Level::ERROR);
             throw $e;
@@ -192,7 +192,7 @@ class Auth
                 return true;
             }
         } catch (PDOException $e) {
-            Logger::write($e, Log_Level::ERROR);
+            Logger::write($e,Log_Level::ERROR,Log_Driver::FILE);
         } catch (Exception $e) {
             Logger::write($e, Log_Level::ERROR);
         }
@@ -331,7 +331,7 @@ class Auth
                 }
             }
         } catch (PDOException $e) {
-            Logger::write($e,Log_Level::ERROR);
+            Logger::write($e,Log_Level::ERROR,Log_Driver::FILE);
         } catch (Exception $e) {
             Logger::write($e,Log_Level::ERROR);
         }

@@ -109,7 +109,6 @@ CREATE TABLE `boostack_session_variable` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-
 # Dump of table boostack_user
 # ------------------------------------------------------------
 
@@ -133,6 +132,22 @@ CREATE TABLE `boostack_user` (
   CONSTRAINT `boostack_user_ibfk_1` FOREIGN KEY (`privilege`) REFERENCES `boostack_user_privilege` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
+# Dump of table boostack_user_registration
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `boostack_user_registration`;
+
+CREATE TABLE `boostack_user_registration` (
+  `id` int NOT NULL,
+  `activation_date` int NOT NULL DEFAULT '0',
+  `access_code` varchar(10) DEFAULT NULL,
+  `ip` varchar(16) NOT NULL,
+  `join_date` int NOT NULL,
+  `join_idconfirm` varchar(32) NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `user_registration_ibfk_1` FOREIGN KEY (`id`) REFERENCES `boostack_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 # Dump of table boostack_user_info
@@ -183,25 +198,6 @@ CREATE TABLE `boostack_user_privilege` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-
-# Dump of table boostack_user_registration
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `boostack_user_registration`;
-
-CREATE TABLE `boostack_user_registration` (
-  `id` int NOT NULL,
-  `activation_date` int NOT NULL DEFAULT '0',
-  `access_code` varchar(10) DEFAULT NULL,
-  `ip` varchar(16) NOT NULL,
-  `join_date` int NOT NULL,
-  `join_idconfirm` varchar(32) NOT NULL,
-  PRIMARY KEY (`id`),
-  CONSTRAINT `user_registration_ibfk_1` FOREIGN KEY (`id`) REFERENCES `boostack_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-
 # Dump of table boostack_user_social
 # ------------------------------------------------------------
 
@@ -222,6 +218,16 @@ CREATE TABLE `boostack_user_social` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
+ TABLES `boostack_user_privilege` WRITE;
+/*!40000 ALTER TABLE `boostack_user_privilege` DISABLE KEYS */;
+
+INSERT INTO `boostack_user_privilege` (`id`, `title`, `description`)
+VALUES
+  (0,'SYSTEM','only \"boostack\" user'),
+  (1,'SUPERADMIN',''),
+  (2,'ADMIN',''),
+  (3,'USER','');
+UNLOCK TABLES;
 
 
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;

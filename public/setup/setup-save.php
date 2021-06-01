@@ -1,5 +1,4 @@
 <?php
-
 $input = $_POST;
 $error = FALSE;
 $finalSetupMessageError = "";
@@ -29,6 +28,7 @@ $env_parameters = [
     "cookie_expire" => $input['db-cookie-expired'],
     "cookie_name" => $input['db-cookie-name'],
     "log_on" => $input['db-log-active'],
+    "api_on" => $input['api-active'],
     "lockStrategy_on" => $input["db-lockStrategy_on"],
     "login_max_attempts" => $input["db-loginLock-max-attempts"],
     "lockStrategy_type" => isset($input["db-loginLock-type"]) ? $input["db-loginLock-type"] : null,
@@ -89,7 +89,7 @@ if ($env_parameters["database_on"] == "true" && $finalSetupMessageError == "") {
         $u->username = "boostack";
         $u->name = "Boostack System";
         $u->full_name = "Boostack System";
-        $u->email = "user@getboostack.com";
+        $u->email = "system@getboostack.com";
         $u->pwd = "testing";
         $u->privilege = "0";
         $u->first_name = "Boostack";
