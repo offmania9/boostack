@@ -29,12 +29,12 @@ ErrorDocument 403 /error.php?code=403
 ErrorDocument 404 /error.php?code=404
 ErrorDocument 500 /error.php?code=500
 ErrorDocument 503 /maintenance.php
-#ErrorDocument 400 https://getboostack.com/error.php?code=400
-#ErrorDocument 401 https://getboostack.com/error.php?code=401
-#ErrorDocument 403 https://getboostack.com/error.php?code=403
-#ErrorDocument 404 https://getboostack.com/error.php?code=404
-#ErrorDocument 500 https://getboostack.com/error.php?code=500
-#ErrorDocument 503 https://getboostack.com/maintenance.php
+#ErrorDocument 400 http/error.php?code=400
+#ErrorDocument 401 http://getboostack.com/error.php?code=401
+#ErrorDocument 403 http://getboostack.com/error.php?code=403
+#ErrorDocument 404 http://getboostack.com/error.php?code=404
+#ErrorDocument 500 http://getboostack.com/error.php?code=500
+#ErrorDocument 503 http://getboostack.com/maintenance.php
 
 ###### RULES
 # Block access to "hidden" directories whose names begin with a period
