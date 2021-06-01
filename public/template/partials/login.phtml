@@ -132,6 +132,8 @@
                         <h3 class="card-title"><?= Language::getLabel("form.login.signin-ajax");?></h3>
                     </div>
                     <div class="card-body">
+                    <? try{
+                        if(Config::constraint("api_on")){?>
                             <div id="login-alert" class="alert alert-danger col-sm-12 <?= $errorMessage == "" ? "d-none" : "" ?>"><?= $errorMessage; ?></div>
                             <form id="loginform-ajax"
                                 action="<?= Utils::getFriendlyUrl("login");?>" name="loginform-ajax"
@@ -167,7 +169,12 @@
 
                                     </div>
                                 </div>
-                            </form>                       
+                            </form>          
+                            <? }
+                    }
+                    catch (Exception_Misconfiguration $e){
+                        echo $e->getMessage();
+                    }?>             
                     </div>
                 </div>
             </div>
