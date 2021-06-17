@@ -136,7 +136,7 @@ class Auth
                     throw new Exception ("Attention! CSRF token is required.");
                 $token_key = Session::getObject()->getCSRFDefaultKey();
                 Session::CSRFCheckValidity(array($token_key=>$CSRFToken));
-            } 
+            }
             
             if (strlen($registrationError) == 0) {
                 $user = new User();
@@ -145,6 +145,8 @@ class Auth
                 $user->active = true;
                 $user->pwd = $psw1;
                 $user->save();
+
+
                 Auth::loginByUserID($user->id);
                 if (Config::get('csrf_on')){
                     Session::getObject()->CSRFTokenInvalidation();
