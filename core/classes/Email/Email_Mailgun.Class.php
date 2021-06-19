@@ -8,7 +8,7 @@
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
  * @version 4
  */
-require ROOTPATH .'vendor/autoload.php';
+require ROOTPATH .'../vendor/autoload.php';
 use Mailgun\Mailgun;
 
 class Email_Mailgun extends Email_Basic {
@@ -24,7 +24,10 @@ class Email_Mailgun extends Email_Basic {
      * @return bool
      */
     public function send(){
-        $mgClient = new Mailgun(Config::get("mailgun_key"));
+
+        $mgClient = Mailgun::create(Config::get('mailgun_key'),Config::get('mailgun_endpoint')); // For EU servers
+
+        //$mgClient = new Mailgun(Config::get("mailgun_key"),Config::get('mailgun_endpoint')); // For EU servers
         $domain = Config::get("mailgun_domain");
         $harr = array(
             'from'    => $this->from_name.' <'.$this->from_mail.'>',
@@ -47,7 +50,8 @@ class Email_Mailgun extends Email_Basic {
                 $harr["bcc"] = implode(", ", $this->bcc);
             }
 
-            $result = $mgClient->sendMessage($domain, $harr, $attarr);
+            $result = $mgClient->messages()->send($domain, $harr, $attarr);
+
         }
         return true;
     }

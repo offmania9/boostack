@@ -21,10 +21,11 @@ $config['setupFolderExists'] = FALSE;
  */
 $config['database_on'] = [database_on];      // enable or disable Mysql database
 $config['driver_pdo'] = "[driver_pdo]";
-$database['host'] = '[db_host]';
-$database['name'] = '[db_name]';
-$database['username'] = '[db_username]';
-$database['password'] = '[db_password]';
+$config['host'] = '[db_host]';
+$config['port'] = '3306';
+$config['name'] = '[db_name]';
+$config['username'] = '[db_username]';
+$config['password'] = '[db_password]';
 
 /**
  * SESSION
@@ -119,6 +120,12 @@ date_default_timezone_set('UTC');
  * SECURITY
  */
 $config["seconds_accepted_between_requests"] = 0; // time accepted between each request
+// Prevents javascript XSS attacks aimed to steal the session ID
+ini_set('session.cookie_httponly', 1);
+// Session ID cannot be passed through URLs
+ini_set('session.use_only_cookies', 1);
+// Uses a secure connection (HTTPS) if possible
+#ini_set('session.cookie_secure', 1);
 
 /**
  * GEOLOCALIZATION
@@ -129,6 +136,15 @@ $config['geolocation_on'] = FALSE;  // enable or disable Geolocalization
  * CUSTOM VARIABLES
  */
 // TODO
+// ====== MAINGUN CONFIFURATION
+$config['useMailgun'] = TRUE;
+$config["mail_from"] = "no-reply@getboostack.com";
+$config["name_from"] = "";
+$config["mail_bcc"] = "";
+$config["mailgun_key"] = "";
+$config["mailgun_endpoint"] = "https://api.eu.mailgun.net"; // For EU servers
+$config["mailgun_domain"] = "";
+$config["mail_validTime"] = 7200;
 
 //function isSecureProtocol($forceTrueForReverseProxy = false) {
 //    return $forceTrueForReverseProxy || (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443;

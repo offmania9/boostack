@@ -58,6 +58,17 @@ class Session_HTTP
     private $session_variable = "boostack_session_variable";
 
     /**
+     * @var string
+     */
+    private $CSRFDefaultKey = "BCSRFT";
+
+    /**
+     * @var bool
+     */
+    private $newTokenGeneration = true;
+
+
+    /**
      * Session_HTTP constructor.
      * @param int $timeout
      * @param int $lifespan
@@ -67,7 +78,7 @@ class Session_HTTP
         $this->dbhandle = Database_PDO::getInstance();
         $this->session_timeout = $timeout;
         $this->session_lifespan = $lifespan;
-        
+
         $set_save_handler = session_set_save_handler(array(
             $this,
             '_session_open_method'
@@ -87,7 +98,7 @@ class Session_HTTP
             $this,
             '_session_gc_method'
         ));
-        
+
         if (isset($_COOKIE["PHPSESSID"])) {
             $this->php_session_id = Utils::sanitizeInput($_COOKIE["PHPSESSID"]);
         }
@@ -97,7 +108,7 @@ class Session_HTTP
         $lease = $this->dbhandle->query($sql)->fetch();
         $interval_created = $datetime_now - intval($lease[0]);
         $interval_last_impression = $datetime_now - intval($lease[1]);
-        
+
         $stmt = "select id from " . $this->http_session_table . "
               WHERE ascii_session_id = '" . $this->php_session_id . "'
                       AND $interval_created < " . $this->session_lifespan . "
@@ -116,7 +127,7 @@ class Session_HTTP
             $result->execute();
             unset($_COOKIE["PHPSESSID"]);
         }
-        
+
         session_set_cookie_params($this->session_lifespan);
         if (! session_id())
             session_start();
@@ -331,6 +342,150 @@ class Session_HTTP
 //        if ($result->execute())
 //            return true;
 //        return false;
+    }
+
+    /**
+     * @return string
+     */
+    public function CSRFRenderHiddenField()
+    {
+        return "<input type=\"hidden\" name=\"" . $this->CSRFDefaultKey. "\" id=\"" . $this->CSRFDefaultKey . "\"  class=\"CSRFcheck\" value=\"" . self::CSRFTokenGenerator() . "\"/>";
+    }
+
+    /**
+     * @return string
+     */
+    public function getCSRFDefaultKey()
+    {
+        return $this->CSRFDefaultKey;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCSRFKey()
+    {
+        $key = $this->CSRFDefaultKey;
+        return $this->$key;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function CSRFTokenGenerator()
+    {
+        $key = $this->CSRFDefaultKey;
+        if ($this->$key == null){
+            $token = base64_encode(Utils::getSecureRandomString(32) . self::getRequestInfo() . time());
+            $this->$key = $token; // store in session
+        }
+        else{
+            if(Auth::isLoggedIn()) {
+                $timespan = Config::get("csrf_timeout");
+                $decodedToken = base64_decode($this->$key);
+                $decodedToken_timestamp = intval(substr($decodedToken, -10));
+                // check token validity, if expired, i generate a new one
+                if ($decodedToken_timestamp + $timespan < time())
+                    $this->CSRFTokenInvalidation();
+            }
+            else
+                $this->CSRFTokenInvalidation();
+        }
+        return $this->$key;
+    }
+
+    /**
+     * @return string
+     */
+    protected static function getRequestInfo()
+    {
+        return sha1(Utils::sanitizeInput(Utils::getIpAddress() . Utils::getUserAgent()));
+    }
+
+    /**
+     * @param $postArray
+     * @param bool $throwException
+     * @return bool
+     * @throws Exception
+     */
+    protected function CSRFCheckTokenValidity($postArray, $throwException = true)
+    {
+        $timespan = Config::get("csrf_timeout");
+        $key = $this->CSRFDefaultKey; // get token value from dbsession
+        $sessionToken = $this->$key;
+
+        if ($sessionToken == "")
+            if ($throwException)
+                throw new Exception('Attention! Missing CSRF session token.');
+            else
+                return false;
+
+        if (! isset($postArray[$key]))
+            if ($throwException)
+                throw new Exception('Attention! Missing CSRF form token.');
+            else
+                return false;
+
+        if ($postArray[$key] != $sessionToken)
+            if ($throwException) {
+                $this->CSRFTokenInvalidation();
+                throw new Exception('Attention! Invalid CSRF token.' . $postArray[$key] . '<br>' . $sessionToken);
+            }
+            else{
+                $this->CSRFTokenInvalidation();
+                return false;
+            }
+
+        $decodedToken = base64_decode($sessionToken);
+        $decodedToken_requestInfo = substr($decodedToken, 32, 40);
+        $decodedToken_timestamp = intval(substr($decodedToken, - 10));
+
+
+        if (self::getRequestInfo() != $decodedToken_requestInfo) {
+            if ($throwException)
+                throw new Exception('Attention! Form request infos don\'t match token request infos.');
+            else
+                return false;
+        }
+
+        if ($timespan != null && is_int($timespan) && $decodedToken_timestamp + $timespan < time())
+            if ($throwException)
+                throw new Exception('Attention! CSRF token has expired.');
+            else {
+                $this->CSRFTokenInvalidation();
+                return false;
+            }
+
+        return true;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function CSRFTokenInvalidation(){
+        $res = NULL;
+        $key = $this->CSRFDefaultKey;
+        $this->$key = null;
+        if($this->newTokenGeneration){
+            $res = $this->CSRFTokenGenerator();
+        }
+        return $res;
+    }
+
+    /**
+     * @param $postArray
+     * @param bool $throwException
+     * @return bool
+     * @throws Exception
+     */
+    public function CSRFCheckValidity($postArray, $throwException = true){
+        try {
+            return $this->CSRFCheckTokenValidity($postArray, $throwException);
+        } catch(Exception $e) {
+            Logger::write('Session_CSRF -> CSRFCheckValidity -> Caught exception: '.$e->getMessage().$e->getTraceAsString(),Log_Level::ERROR);
+            throw new Exception('Invalid CSRF token'.$e->getMessage());
+        }
     }
 }
 ?>

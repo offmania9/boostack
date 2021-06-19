@@ -11,18 +11,6 @@
 
 class Rest_Api extends Rest_ApiAbstract
 {
-    /**
-     * @return array|string
-     */
-    protected function getTest() {
-        if(strcasecmp($this->method , 'GET') == 0){
-            $res = (object) array(
-                'message'=>'TEST API:OK'
-            );
-            return $res;
-        } else {
-            throw new Exception("Only accepts GET requests");
-        }
-    }
- }
+    // insert generic APIs
+}
 ?>

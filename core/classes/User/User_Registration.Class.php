@@ -57,5 +57,20 @@ class User_Registration extends BaseClass
         parent::init($id);
     }
 
+    public static function getUserIDJoinIdConfirm($join_idconfirm,$throwException=true) {
+        $pdo = Database_PDO::getInstance();
+        $query = "SELECT id FROM ".self::TABLENAME." WHERE join_idconfirm = :join_idconfirm ";
+        $q = $pdo->prepare($query);
+        $q->bindParam(":join_idconfirm", $join_idconfirm);
+        $q->execute();
+        if ($q->rowCount() == 0) {
+            if ($throwException)
+                throw new Exception("Attention! confirm token not found.", 0);
+            return false;
+        }
+        $res = $q->fetchAll(PDO::FETCH_ASSOC);
+        return (int)$res[0]["id"];
+    }
+
 }
 ?>
