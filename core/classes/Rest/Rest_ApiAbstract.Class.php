@@ -94,13 +94,36 @@ abstract class Rest_ApiAbstract
             if(!Utils::checkAcceptedTimeFromLastRequest(Auth::getLastTry())){
                 throw new Exception_APITooManyRequests("Too much request. Wait some seconds");
             }
-            if ((int)method_exists($this, $this->endpoint) > 0) {
+
+            $methodBindings = [];
+            $subclasses = [];
+            $dir = ROOTPATH . "../classes";
+            $declaredClasses = [];
+            $this->getDirContents($dir, $declaredClasses);
+
+            // TODO CHECK WHITESPACES !!!!
+            foreach($declaredClasses as $class) {
+                if ($res = is_subclass_of($class, 'Rest_ApiAbstract')) {
+                    $subclasses[] = $class;
+                }
+            }
+
+            foreach($subclasses as $subclass) {
+                $subclass = new ReflectionClass($subclass);
+                $methods = $subclass->getMethods(ReflectionMethod::IS_PROTECTED);
+                foreach($methods as $method) {
+                    $methodBindings[$method->name] = $method->class;
+                }
+            }
+
+            if(isset($methodBindings[$this->endpoint])) {
+                $class = $methodBindings[$this->endpoint];
+                $classInstance = new $class("");
                 $this->trackRequest();
                 $this->apiRequest->save();
-                $this->messageBag->data = $this->{$this->endpoint}($this->args);
+                $this->messageBag->data = $classInstance->{$this->endpoint}($this->args);
                 $this->messageBag->code = StatusCodes::HTTP_OK;
-            }
-            else{
+            } else {
                 throw new Exception_APINotFound("No Endpoint: " . $this->endpoint . ". The resource you requested doesn't exist. For more info, please refer to  ".Boostack::getInstance()->url."docs");
             }
         }
@@ -161,6 +184,19 @@ abstract class Rest_ApiAbstract
                 throw new Exception('Received content contained invalid JSON!');
             }
         }
+    }
+
+    function getDirContents($dir, &$results = array()) {
+        $files = scandir($dir);
+        foreach ($files as $key => $value) {
+            $path = realpath($dir . DIRECTORY_SEPARATOR . $value);
+            if (!is_dir($path)) {
+                $results[] = basename($path, ".Class.php");
+            } else if ($value != "." && $value != "..") {
+                $this->getDirContents($path, $results);
+            }
+        }
+        return $results;
     }
 }
 ?>

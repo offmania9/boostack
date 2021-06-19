@@ -18,11 +18,18 @@ try {
         $email = Request::getPostParam('reg-email');
         $psw1 = Request::getPostParam('reg-pwd1');
         $psw2 = Request::getPostParam('reg-pwd2');
-        Auth::registration($email,$email,$psw1,$psw2);
+        $csrfToken = null;
+        if (Config::get('csrf_on')){
+            $csrfToken = Request::getPostParam('BCSRFT');
+        }
+        Auth::registration($email,$email,$psw1,$psw2,$csrfToken);
     }
 } catch (Exception_Misconfiguration $em) {
     dd($em->getMessage());
 } catch (Exception_Registration $e) {
+    $registrationError = $e->getMessage();
+}
+catch (Exception $e) {
     $registrationError = $e->getMessage();
 }
 
