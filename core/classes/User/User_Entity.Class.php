@@ -128,8 +128,10 @@ class User_Entity extends BaseClass
     public static function getUserIDByEmail($email, $throwException = true)
     {
         $pdo = Database_PDO::getInstance();
-        $sql = "SELECT id FROM ".self::TABLENAME." WHERE email ='" . $email . "' ";
-        $q = $pdo->query($sql);
+        $sql = "SELECT id FROM " . static::TABLENAME . " WHERE email = :email";
+        $q = $pdo->prepare($sql);
+        $q->bindValue(':email', $email);
+        $q->execute();
         $q2 = $q->fetch();
         if ($q->rowCount() == 0) {
             if ($throwException)

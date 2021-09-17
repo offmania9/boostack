@@ -103,25 +103,37 @@ class Session_HTTP
             $this->php_session_id = Utils::sanitizeInput($_COOKIE["PHPSESSID"]);
         }
         $datetime_now = time();
-        $sql = "SELECT created,last_impression FROM " . $this->http_session_table . "
-              WHERE ascii_session_id ='" . $this->php_session_id . "' ";
-        $lease = $this->dbhandle->query($sql)->fetch();
+        $sql = "SELECT created,last_impression FROM " . $this->http_session_table . " WHERE ascii_session_id = :ascii_session_id ";
+        $q = $this->dbhandle->prepare($sql);
+        $q->bindValue(':ascii_session_id', $this->php_session_id);
+        $q->execute();
+        $lease = $q->fetch();
         $interval_created = $datetime_now - intval($lease[0]);
         $interval_last_impression = $datetime_now - intval($lease[1]);
 
-        $stmt = "select id from " . $this->http_session_table . "
-              WHERE ascii_session_id = '" . $this->php_session_id . "'
-                      AND $interval_created < " . $this->session_lifespan . "
-              AND user_agent='" . Utils::getUserAgent() . "'
-                      AND $interval_last_impression <= " . $this->session_timeout . "
+        $stmt = "SELECT id FROM " . $this->http_session_table . "
+                    WHERE ascii_session_id = :ascii_session_id
+                        AND :interval_created < :session_lifespan
+                        AND user_agent = :user_agent
+                        AND :interval_last_impression <= :session_timeout
               OR last_impression = 0
               ";
-        if ($this->dbhandle->query($stmt)->rowCount() == 0) {
+        $q = $this->dbhandle->prepare($stmt);
+        $q->bindValue(':ascii_session_id', $this->php_session_id);
+        $q->bindValue(':interval_created', $interval_created, PDO::PARAM_INT);
+        $q->bindValue(':session_lifespan', $this->session_lifespan, PDO::PARAM_INT);
+        $q->bindValue(':user_agent', Utils::getUserAgent());
+        $q->bindValue(':interval_last_impression', $interval_last_impression, PDO::PARAM_INT);
+        $q->bindValue(':session_timeout', $this->session_timeout, PDO::PARAM_INT);
+        $q->execute();
+        if ($q->rowCount() == 0) {
             $maxlifetime = $this->session_lifespan;
-            $sql = "DELETE FROM " . $this->http_session_table . "
-                         WHERE (ascii_session_id = '" . $this->php_session_id . "') OR ($datetime_now - created > '$maxlifetime')";
-            $result = $this->dbhandle->prepare($sql);
-            $result->execute();
+            $sql = "DELETE FROM " . $this->http_session_table . " WHERE (ascii_session_id = :ascii_session_id) OR (:datetime_now - created > :maxlifetime)";
+            $q = $this->dbhandle->prepare($sql);
+            $q->bindValue(':ascii_session_id', $this->php_session_id);
+            $q->bindValue(':datetime_now', $datetime_now, PDO::PARAM_INT);
+            $q->bindValue(':maxlifetime', $maxlifetime, PDO::PARAM_INT);
+            $q->execute();
             $sql = "DELETE FROM " . $this->session_variable . " WHERE session_id NOT IN (SELECT id FROM " . $this->http_session_table . ")";
             $result = $this->dbhandle->prepare($sql);
             $result->execute();
@@ -161,11 +173,12 @@ class Session_HTTP
     public function _session_read_method($id)
     {
         $this->php_session_id = $id;
-        $sql = "select id, logged_in, user_id from " . $this->http_session_table . " where ascii_session_id = '$id'";
-        $result = $this->dbhandle->prepare($sql);
-        $result->execute();
-        if ($result->rowCount() > 0) {
-            $row = $result->fetch();
+        $sql = "SELECT id, logged_in, user_id FROM " . $this->http_session_table . " WHERE ascii_session_id = :ascii_session_id";
+        $q = $this->dbhandle->prepare($sql);
+        $q->bindValue(':ascii_session_id', $this->php_session_id);
+        $q->execute();
+        if ($q->rowCount() > 0) {
+            $row = $q->fetch();
             $this->native_session_id = $row["id"];
             if ($row["logged_in"] == "t") {
                 $this->logged_in = true;
@@ -176,11 +189,18 @@ class Session_HTTP
         } else {
             $this->logged_in = false;
             $sql = "INSERT INTO " . $this->http_session_table . "(id,ascii_session_id, logged_in,user_id, created, user_agent)
-							VALUES (NULL,'$id','f',1,'" . time() . "','" . Utils::getUserAgent() . "')";
-            $result = $this->dbhandle->prepare($sql);
-            $result->execute();
-            $sql = "select id from " . $this->http_session_table . " where ascii_session_id = '$id'";
+							VALUES (NULL, :ascii_session_id, :logged_in, :user_id, :created, :user_agent)";
             $q = $this->dbhandle->prepare($sql);
+            $q->bindValue(':ascii_session_id', $id);
+            $q->bindValue(':logged_in', "f");
+            $q->bindValue(':user_id', 1);
+            $q->bindValue(':created', time());
+            $q->bindValue(':user_agent', Utils::getUserAgent());
+            $q->execute();
+
+            $sql = "SELECT id FROM " . $this->http_session_table . " WHERE ascii_session_id = :ascii_session_id";
+            $q = $this->dbhandle->prepare($sql);
+            $q->bindValue(':ascii_session_id', $id);
             $q->execute();
             $row = $q->fetch();
             $this->native_session_id = $row["id"];
@@ -194,8 +214,11 @@ class Session_HTTP
     public function Impress()
     {
         if ($this->native_session_id) {
-            $sql = "UPDATE " . $this->http_session_table . " SET last_impression = '" . time() . "' WHERE id = '" . $this->native_session_id . "'";
-            $result = $this->dbhandle->prepare($sql)->execute();
+            $sql = "UPDATE " . $this->http_session_table . " SET last_impression = :last_impression WHERE id = :native_session_id";
+            $q = $this->dbhandle->prepare($sql);
+            $q->bindValue(':last_impression', time());
+            $q->bindValue(':native_session_id', $this->native_session_id);
+            $q->execute();
         }
     }
 
@@ -245,9 +268,12 @@ class Session_HTTP
      * @return bool
      */
     public function logoutUser() {
-        $sql = "UPDATE " . $this->http_session_table . " SET logged_in = 'f', user_id = '1' WHERE id = " . $this->native_session_id;
-        $result = $this->dbhandle->prepare($sql);
-        $result->execute();
+        $sql = "UPDATE " . $this->http_session_table . " SET logged_in = :logged_in, user_id = :user_id WHERE id = :native_session_id";
+        $q = $this->dbhandle->prepare($sql);
+        $q->bindValue(':logged_in', 'f');
+        $q->bindValue(':user_id', '1');
+        $q->bindValue(':native_session_id', $this->native_session_id);
+        $q->execute();
         $this->logged_in = false;
         $this->user_id = 0;
         return true;
@@ -259,9 +285,12 @@ class Session_HTTP
     public function loginUser($userID) {
         $this->user_id = $userID;
         $this->logged_in = true;
-        $sql = "UPDATE " . $this->http_session_table . " SET logged_in = 't', user_id = '" . $this->user_id . "' WHERE id='" . $this->native_session_id . "'";
-        $result = $this->dbhandle->prepare($sql);
-        $result->execute();
+        $sql = "UPDATE " . $this->http_session_table . " SET logged_in = :logged_in, user_id = :user_id WHERE id = :native_session_id";
+        $q = $this->dbhandle->prepare($sql);
+        $q->bindValue(':logged_in', 't');
+        $q->bindValue(':user_id', $this->user_id);
+        $q->bindValue(':native_session_id', $this->native_session_id);
+        $q->execute();
     }
 
     /**
@@ -271,12 +300,14 @@ class Session_HTTP
     public function __get($nm)
     {
         $sql = "SELECT variable_value FROM " . $this->session_variable . "
-				WHERE session_id = '" . $this->native_session_id . "'
-				AND variable_name ='" . $nm . "' ORDER BY id DESC";
-        $result = $this->dbhandle->prepare($sql);
-        $result->execute();
-        if ($result->rowCount() > 0) {
-            $row = $result->fetch();
+				WHERE session_id = :session_id
+				AND variable_name = :variable_name ORDER BY id DESC";
+        $q = $this->dbhandle->prepare($sql);
+        $q->bindValue(':session_id', $this->native_session_id);
+        $q->bindValue(':variable_name', $nm);
+        $q->execute();
+        if ($q->rowCount() > 0) {
+            $row = $q->fetch();
             return (unserialize($row["variable_value"]));
         } else {
             return "";
@@ -292,17 +323,28 @@ class Session_HTTP
         $strSer = serialize($val);
         $this->native_session_id = ($this->native_session_id == "") ? 0 : $this->native_session_id;
         $sql = "SELECT id FROM " . $this->session_variable . "
-				WHERE session_id = '" . $this->native_session_id . "' AND variable_name ='" . $nm . "'";
-        $result = $this->dbhandle->prepare($sql);
-        $result->execute();
-        if ($result->rowCount() == 0)
+				WHERE session_id = :session_id AND variable_name = :variable_name";
+        $q = $this->dbhandle->prepare($sql);
+        $q->bindValue(':session_id', $this->native_session_id);
+        $q->bindValue(':variable_name', $nm);
+        $q->execute();
+        if ($q->rowCount() == 0) {
             $sql = "INSERT INTO " . $this->session_variable . "(session_id, variable_name, variable_value)
-               VALUES(" . $this->native_session_id . ", '$nm', '$strSer')";
-        else
-            $sql = "UPDATE " . $this->session_variable . " SET variable_value = '$strSer'
-               WHERE session_id = '" . $this->native_session_id . "' AND variable_name ='" . $nm . "'";
-        $result = $this->dbhandle->prepare($sql);
-        $result->execute();
+               VALUES(:session_id, :variable_name, :variable_value)";
+            $q = $this->dbhandle->prepare($sql);
+            $q->bindValue(':session_id', $this->native_session_id);
+            $q->bindValue(':variable_name', $nm);
+            $q->bindValue(':variable_value', $strSer);
+            $q->execute();
+        } else {
+            $sql = "UPDATE " . $this->session_variable . " SET variable_value = :variable_value
+               WHERE session_id = :session_id AND variable_name = :variable_name";
+            $q = $this->dbhandle->prepare($sql);
+            $q->bindValue(':variable_value', $strSer);
+            $q->bindValue(':session_id', $this->native_session_id);
+            $q->bindValue(':variable_name', $nm);
+            $q->execute();
+        }
     }
 
     /**
@@ -321,8 +363,11 @@ class Session_HTTP
      */
     private function _session_destroy_method($id)
     {
-        $sql = "DELETE FROM " . $this->http_session_table . " WHERE ascii_session_id = '$id'";
-        if ($this->dbhandle->prepare($sql)->execute())
+        $sql = "DELETE FROM " . $this->http_session_table . " WHERE ascii_session_id = :ascii_session_id";
+        $q = $this->dbhandle->prepare($sql);
+        $q->bindValue(':ascii_session_id', $id);
+        $q->execute();
+        if ($q->execute())
             return true;
         return false;
     }
