@@ -21,11 +21,11 @@ $config['setupFolderExists'] = FALSE;
  */
 $config['database_on'] = [database_on];      // enable or disable Mysql database
 $config['driver_pdo'] = "[driver_pdo]";
-$config['host'] = '[db_host]';
-$config['port'] = '3306';
-$config['name'] = '[db_name]';
-$config['username'] = '[db_username]';
-$config['password'] = '[db_password]';
+$config['db_host'] = '[db_host]';
+$config['db_port'] = '3306';
+$config['db_name'] = '[db_name]';
+$config['db_username'] = '[db_username]';
+$config['db_password'] = '[db_password]';
 
 /**
  * SESSION
