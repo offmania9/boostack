@@ -37,8 +37,9 @@ class Auth
         $lockStrategy = Config::get("login_lockStrategy");
 
         try {
-            if(!Utils::checkAcceptedTimeFromLastRequest(self::getLastTry()))
+            if(!Utils::checkAcceptedTimeFromLastRequest(self::getLastTry())){
                 throw new Exception("Too much request. Wait some seconds");
+            }
             if(Auth::isLoggedIn())
                 return $result;
 

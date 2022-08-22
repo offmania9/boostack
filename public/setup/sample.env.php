@@ -6,13 +6,13 @@
 
 define('CURRENT_ENVIRONMENT', '[current_environment]');     // 'local' | 'staging' | 'production'
 define('ROOTPATH', $_SERVER['DOCUMENT_ROOT'] . '[rootpath]');
-$config['protocol'] = '[protocol]://';
+$config['protocol'] = '[protocol]';
 $defaultDN = '[url]';
 $alternativeDN = array();
 $thisDN = $_SERVER['HTTP_HOST'];
 $config['document_root_subdir'] = '/';
 $currentDN = (in_array($thisDN,$alternativeDN)) ? $thisDN.'/' : $defaultDN . $config['document_root_subdir'];
-$config['url'] = $config['protocol'].$currentDN;
+$config['url'] = $config['protocol']."://".$currentDN;
 $config['developmentMode'] = TRUE;
 $config['setupFolderExists'] = FALSE;
 

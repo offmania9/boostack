@@ -79,7 +79,8 @@ class Upload_Image
         "image/jpeg",
         "image/pjpeg",
         "image/bmp",
-        "image/png"
+        "image/png",
+        "image/heic"
     );
 
     private $PNG_compression = 1;
@@ -103,7 +104,7 @@ class Upload_Image
                 // throw new Exception("Return Error Code: : ".$file["error"]."<br />");
                 return;
             } else {
-                $info = pathinfo($file["name"]); 
+                $info = pathinfo($file["name"]);
                 $this->visual_name = $visual_name;
                 $this->extension = $info["extension"];
                 $this->name = ($target_name == null) ? $file["name"] : $target_name . "." . $this->extension;
@@ -112,7 +113,7 @@ class Upload_Image
                 $this->tmp_name = $file["tmp_name"];
                 $this->path = $destination_folder . $this->name;
                 $this->preview_path = $destination_folder . "s_" . $this->name;
-                
+
                 // if ($exitifexist && file_exists($destination_folder.$file["name"])){
                 // throw new Exception("File already exist.");
                 // }
@@ -121,11 +122,11 @@ class Upload_Image
                     chmod($destination_folder . $this->name, 0755);
                 else
                     throw new Exception("Can't MoveUploaded file: " . $this->name);
-                    // }
+                // }
                 list ($width, $height, $type, $attr) = getimagesize($this->path);
                 $this->height = $height;
                 $this->width = $width;
-                
+
                 if ($resize !== NULL) {
                     if ($this->width >= $this->height) {
                         if ($this->width >= $resize)
@@ -154,15 +155,19 @@ class Upload_Image
     public function constraints($file)
     {
         global $boostack, $MAX_UPLOAD_IMAGE_SIZE, $MAX_UPLOAD_PDF_SIZE, $MAX_UPLOAD_NAMEFILE_LENGTH, $MAX_UPLOAD_GENERALFILE_SIZE, $mime_types;
-        
+
         if (strlen($file["name"]) >= Config::get("max_upload_filename_length")) { // # FILE NAME TOO LONG
+            Logger::write("File Name too long. Rename it and repeat upload. ");
             throw new Exception("File Name too long. Rename it and repeat upload. <br />");
         }
         if (in_array($file["type"], $this->image_types)) { // IS IMAGE
-            if ($file["size"] > Config::get("max_upload_image_size")) // SIZE CHECK
+            if ($file["size"] > Config::get("max_upload_image_size")){// SIZE CHECK
+                Logger::write("File too large. ");
                 throw new Exception("File too large. <br />");
+            }
             return true;
         }
+        Logger::write("Unknown file. <br />" . $mime_types["" . $file["type"]] . $file["type"]);
         throw new Exception("Unknown file. <br />" . $mime_types["" . $file["type"]] . $file["type"]);
 
     }
@@ -256,31 +261,31 @@ class Upload_Image
             $this->source = imagecreatefromwbmp($this->path);
         if ($this->type == "image/png")
             $this->source = imagecreatefrompng($this->path);
-        
+
         imagecopyresampled($new_image, $this->source, 0, 0, 0, 0, $width, $height, $this->width, $this->height);
         $this->remove();
-        
+
         switch ($filter) {
             case "la":
-                {
-                    imagefilter($new_image, IMG_FILTER_CONTRAST, - 40);
-                    break;
-                }
+            {
+                imagefilter($new_image, IMG_FILTER_CONTRAST, - 40);
+                break;
+            }
             case "ny":
-                {
-                    imagefilter($new_image, IMG_FILTER_GRAYSCALE);
-                    break;
-                }
+            {
+                imagefilter($new_image, IMG_FILTER_GRAYSCALE);
+                break;
+            }
             case "sd":
-                {
-                    imagefilter($new_image, IMG_FILTER_COLORIZE, 0, 0, 100);
-                    break;
-                }
+            {
+                imagefilter($new_image, IMG_FILTER_COLORIZE, 0, 0, 100);
+                break;
+            }
             case "sf":
-                {
-                    imagefilter($new_image, IMG_FILTER_COLORIZE, 0, 100, 0);
-                    break;
-                }
+            {
+                imagefilter($new_image, IMG_FILTER_COLORIZE, 0, 100, 0);
+                break;
+            }
         }
         if ($this->type == "image/jpeg" || $this->type == "image/pjpeg")
             imagejpeg($new_image, $this->path, 100);
@@ -290,7 +295,7 @@ class Upload_Image
             imagewbmp($new_image, $this->path, 100);
         if ($this->type == "image/png")
             imagepng($new_image, $this->path, $this->PNG_compression);
-        
+
         $this->path = $this->path;
     }
 
@@ -310,9 +315,9 @@ class Upload_Image
             $this->source = imagecreatefromwbmp($this->path);
         if ($this->type == "image/png")
             $this->source = imagecreatefrompng($this->path);
-        
+
         imagecopyresampled($new_image, $this->source, 0, 0, 0, 0, $width, $height, $this->width, $this->height);
-        
+
         if ($this->type == "image/jpeg" || $this->type == "image/pjpeg")
             imagejpeg($new_image, $this->preview_path, 100);
         if ($this->type == "image/gif")
@@ -321,7 +326,7 @@ class Upload_Image
             imagewbmp($new_image, $this->preview_path, 100);
         if ($this->type == "image/png")
             imagepng($new_image, $this->preview_path, $this->PNG_compression);
-        
+
         $this->preview_path = $this->preview_path;
     }
 }

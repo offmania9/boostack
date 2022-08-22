@@ -74,24 +74,22 @@ RewriteCond %{REQUEST_URI} (.+)/$
 RewriteRule ^ %1 [R=301,L]
 # end Remove trailing slash
 
-#RewriteCond %{REQUEST_URI} !^public
-#RewriteRule ^(.*)$ public/$1 [L]
-#RewriteCond %{REQUEST_URI} ^/$
-#RewriteRule ^(.*)$ /public/index.php [L]
+RewriteCond %{REQUEST_URI} !^public
+RewriteRule ^(.*)$ public/$1 [L]
+RewriteCond %{REQUEST_URI} ^/$
+RewriteRule ^(.*)$ /public/index.php [L]
 
-RewriteRule ^home$ index.php [L]
-RewriteRule ^setup$ /setup/index.php [L]
-RewriteRule ^docs/([a-zA-Z0-9_-]+)$ documentation.php?docpath=$1 [L]
-RewriteRule ^docs$ documentation.php [L]
-RewriteRule ^download$ download.php [L]
-RewriteRule ^login$ login.php [L]
-RewriteRule ^registration$ registration.php [L]
-RewriteRule ^logout$ logout.php [L]
-RewriteRule ^api/([^\.]+)$ api.php?request=$1 [L]
-RewriteRule ^downloadLatest$ downloadlatest.php [L]
-RewriteRule ^log$ logList.php [L]
-
-
+#RewriteRule ^home$ index.php [L]
+#RewriteRule ^setup$ /setup/index.php [L]
+#RewriteRule ^docs/([a-zA-Z0-9_-]+)$ documentation.php?docpath=$1 [L]
+#RewriteRule ^docs$ documentation.php [L]
+#RewriteRule ^download$ download.php [L]
+#RewriteRule ^login$ login.php [L]
+#RewriteRule ^registration$ registration.php [L]
+#RewriteRule ^logout$ logout.php [L]
+#RewriteRule ^api/([^\.]+)$ api.php?request=$1 [L]
+#RewriteRule ^downloadLatest$ downloadlatest.php [L]
+#RewriteRule ^log$ logList.php [L]
 
 # proc/self/environ? no!
 RewriteCond %{QUERY_STRING} proc/self/environ [OR]

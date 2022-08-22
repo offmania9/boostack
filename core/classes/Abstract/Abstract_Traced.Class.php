@@ -25,8 +25,9 @@ abstract class Abstract_Traced extends BaseClass {
      */
     public function fill($array) {
         $this->prepare($array);
-        if ($this->id != NULL)
+        if($this->id != NULL){
             $this->setLastAccess();
+        }
         return true;
     }
 
