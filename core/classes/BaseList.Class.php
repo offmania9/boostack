@@ -2,11 +2,11 @@
 /**
  * Boostack: BaseList.Class.php
  * ========================================================================
- * Copyright 2014-2021 Spagnolo Stefano
+ * Copyright 2014-2023 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 4
+ * @version 4.1
  */
 abstract class BaseList implements IteratorAggregate, JsonSerializable {
 
@@ -53,10 +53,11 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable {
      * With this method you can iterate the list like an array
      * e.g. foreach($myList as $elem) ...
      * @return ArrayIterator
-     */
+        */
     public function getIterator() {
         return new ArrayIterator($this->items);
-    }
+    } 
+
 
     /**
      * @return mixed

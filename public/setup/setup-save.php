@@ -19,6 +19,7 @@ $env_parameters = [
     "database_on" => $input['db-active'],
     "driver_pdo" => $input["driver-pdo"],
     "db_host" => $input['db-host'],
+    "db_port" => $input['db-port'],
     "db_name" => $input['db-name'],
     "db_username" => $input['db-username'],
     "db_password" => $input['db-password'],
@@ -65,7 +66,7 @@ if ($env_parameters["database_on"] == "true" && $finalSetupMessageError == "") {
         spl_autoload_register('Utils::autoloadClass');
 
         Config::init();
-        $db = Database_PDO::getInstance($env_parameters["db_host"], $env_parameters["db_name"], $env_parameters["db_username"], $env_parameters["db_password"]);
+        $db = Database_PDO::getInstance($env_parameters["db_host"], $env_parameters["db_name"], $env_parameters["db_username"], $env_parameters["db_password"], $env_parameters["db_port"]);
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         if ($_POST["db-dump-active"] == "true") {

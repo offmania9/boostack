@@ -2,11 +2,11 @@
 /**
  * Boostack: Rest_Api_Abstract.Class.php
  * ========================================================================
- * Copyright 2014-2021 Spagnolo Stefano
+ * Copyright 2014-2023 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 4
+ * @version 4.1
  */
 
 abstract class Rest_ApiAbstract
@@ -53,7 +53,7 @@ abstract class Rest_ApiAbstract
             case 'POST':
                 if (array_key_exists('HTTP_X_HTTP_METHOD', $_SERVER)) {
                     if ($_SERVER['HTTP_X_HTTP_METHOD'] == 'PUT') {
-                        $this->file = parse_str(trim(file_get_contents("php://input")));
+                        parse_str(trim(file_get_contents("php://input")),$this->file);
                         $this->file = Utils::sanitizeInput($this->file);
                         $this->request = Request::getQueryArray();
                     } else {
@@ -168,7 +168,7 @@ abstract class Rest_ApiAbstract
         $this->apiRequest->output = json_encode($this->messageBag->data);
     }
 
-    protected function constraints($method, array $serverParams = NULL, bool $filsIsJSON = false){
+    protected function constraints($method, array $serverParams = NULL, bool $fileIsJSON = false){
         if(strcasecmp($this->method , $method) != 0){
             throw new Exception("Only accepts $method requests");
         }
@@ -179,7 +179,7 @@ abstract class Rest_ApiAbstract
                 }
             }
         }
-        if($filsIsJSON){
+        if($fileIsJSON){
             if(!empty($this->file) && !Utils::isJson($this->file)){
                 throw new Exception('Received content contained invalid JSON!');
             }

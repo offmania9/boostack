@@ -2,11 +2,11 @@
 /**
  * Boostack: Upload_Image.Class.php
  * ========================================================================
- * Copyright 2014-2021 Spagnolo Stefano
+ * Copyright 2014-2023 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 4
+ * @version 4.1
  */
 class Upload_Image
 {
@@ -77,10 +77,11 @@ class Upload_Image
     private $image_types = array(
         "image/gif",
         "image/jpeg",
+        "image/jpg",
         "image/pjpeg",
         "image/bmp",
-        "image/png",
-        "image/heic"
+        "image/png"
+        //"image/heic"
     );
 
     private $PNG_compression = 1;
@@ -107,12 +108,13 @@ class Upload_Image
                 $info = pathinfo($file["name"]);
                 $this->visual_name = $visual_name;
                 $this->extension = $info["extension"];
-                $this->name = ($target_name == null) ? $file["name"] : $target_name . "." . $this->extension;
+                $namefile = ($target_name == null) ? $file["name"] : $target_name;
+                $this->name = $namefile. "." . $this->extension;
                 $this->type = $file["type"];
                 $this->size = $file["size"] / 1024;
                 $this->tmp_name = $file["tmp_name"];
                 $this->path = $destination_folder . $this->name;
-                $this->preview_path = $destination_folder . "s_" . $this->name;
+                $this->preview_path = $destination_folder . "" . $namefile. "_s". "." . $this->extension;
 
                 // if ($exitifexist && file_exists($destination_folder.$file["name"])){
                 // throw new Exception("File already exist.");
@@ -155,21 +157,26 @@ class Upload_Image
     public function constraints($file)
     {
         global $boostack, $MAX_UPLOAD_IMAGE_SIZE, $MAX_UPLOAD_PDF_SIZE, $MAX_UPLOAD_NAMEFILE_LENGTH, $MAX_UPLOAD_GENERALFILE_SIZE, $mime_types;
+        if (empty($file) || empty($file["name"]) || empty($file["type"]) ){
+            Logger::write("Unknown file name or file type.",Log_Level::WARNING);
+            throw new Exception("Unknown file name or file type.");
+        }
 
         if (strlen($file["name"]) >= Config::get("max_upload_filename_length")) { // # FILE NAME TOO LONG
-            Logger::write("File Name too long. Rename it and repeat upload. ");
-            throw new Exception("File Name too long. Rename it and repeat upload. <br />");
+            Logger::write("File Name too long. Rename it and repeat upload.",Log_Level::WARNING);
+            throw new Exception("File Name too long. Rename it and repeat upload.");
         }
         if (in_array($file["type"], $this->image_types)) { // IS IMAGE
             if ($file["size"] > Config::get("max_upload_image_size")){// SIZE CHECK
-                Logger::write("File too large. ");
-                throw new Exception("File too large. <br />");
+                Logger::write("File too large.",Log_Level::WARNING);
+                throw new Exception("File too large.");
             }
             return true;
         }
-        Logger::write("Unknown file. <br />" . $mime_types["" . $file["type"]] . $file["type"]);
-        throw new Exception("Unknown file. <br />" . $mime_types["" . $file["type"]] . $file["type"]);
-
+        else{
+            Logger::write("Unknown file. Type:" . $file["type"] . " Name:" . $file["name"],Log_Level::WARNING);
+            throw new Exception("Unknown file. Type:" . $file["type"] . " Name:" . $file["name"]);
+        }
     }
 
     /**

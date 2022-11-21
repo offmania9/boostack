@@ -14,7 +14,7 @@ $config['document_root_subdir'] = '/';
 $currentDN = (in_array($thisDN,$alternativeDN)) ? $thisDN.'/' : $defaultDN . $config['document_root_subdir'];
 $config['url'] = $config['protocol']."://".$currentDN;
 $config['developmentMode'] = TRUE;
-$config['setupFolderExists'] = FALSE;
+$config['setupFolderExists'] = TRUE;
 
 /**
  * DATABASE
@@ -22,7 +22,7 @@ $config['setupFolderExists'] = FALSE;
 $config['database_on'] = [database_on];      // enable or disable Mysql database
 $config['driver_pdo'] = "[driver_pdo]";
 $config['db_host'] = '[db_host]';
-$config['db_port'] = '3306';
+$config['db_port'] = '[db_port]';
 $config['db_name'] = '[db_name]';
 $config['db_username'] = '[db_username]';
 $config['db_password'] = '[db_password]';

@@ -26,7 +26,7 @@ $php_extensions_required = array(
     "session"
 );
 $php_configurations_required = array(
-    "short_open_tag" => true
+    #"short_open_tag" => true
 );
 
 // END CONFIGURATION

@@ -65,6 +65,7 @@ function checkDB(){
     var data = {"host" : $("#db-host").val(),
         "driver_pdo" : $("#driver-pdo").val(),
         "dbname" : $("#db-name").val(),
+        "port" : $("#db-port").val(),
         "username" : $("#db-username").val(),
         "password" : $("#db-password").val()};
     $.ajax({

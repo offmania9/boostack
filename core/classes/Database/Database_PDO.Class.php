@@ -2,11 +2,11 @@
 /**
  * Boostack: Database_PDO.Class.php
  * ========================================================================
- * Copyright 2014-2021 Spagnolo Stefano
+ * Copyright 2014-2023 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 4
+ * @version 4.1
  */
 class Database_PDO
 {
@@ -36,12 +36,12 @@ class Database_PDO
      * @param null $password
      * @return null|PDO
      */
-    public static function getInstance($host = null, $db = null, $username = null, $password = null)
+    public static function getInstance($host = null, $db = null, $username = null, $password = null, $port=3306)
     {
         try {
             if (self::$instance === null) {
                 Config::constraint("database_on");
-                self::$instance = new PDO(Config::get("driver_pdo").':host=' . $host . ';dbname=' . $db, $username, $password, array(
+                self::$instance = new PDO(Config::get("driver_pdo").':host=' . $host . ';port='.$port.';dbname=' . $db, $username, $password, array(
                     PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
                 ));
                 self::$instance->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

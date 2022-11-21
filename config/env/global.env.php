@@ -2,11 +2,11 @@
 /**
  * Boostack: global.env.php
  * ========================================================================
- * Copyright 2014-2021 Spagnolo Stefano
+ * Copyright 2014-2023 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 4
+ * @version 4.1
  */
 
 
@@ -35,7 +35,7 @@ $config["default_error_page"] = "error.phtml";
 $config["sitename"] = "getBoostack.com";
 $config["project_name"] = "Boostack";
 $config["project_sitename"] = "getBoostack.com";
-$config["project_version"] = "4";
+$config["project_version"] = "4.1";
 $config["project_mission"] = "getBoostack.com - Improve your development and build a modern website in minutes";
 $config["viewport"] = "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0";
 $config["html_lang"] = "en";

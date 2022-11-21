@@ -2,11 +2,11 @@
 /**
  * Boostack: FieldRule.Class.php
  * ========================================================================
- * Copyright 2014-2021 Spagnolo Stefano
+ * Copyright 2014-2023 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 4
+ * @version 4.1
  */
 class FieldRule {
 
@@ -86,13 +86,13 @@ class FieldRule {
     }
 
     public function min_length($min_length) {
-        $this->constraint(array(FieldType::STRING,FieldType::EMAIL,FieldType::USERNAME,FieldType::PASSWORD));
+        $this->constraint(array(FieldType::STRING,FieldType::TEXT,FieldType::EMAIL,FieldType::USERNAME,FieldType::PASSWORD));
         $this->addRule("min_length",$min_length);
         return $this;
     }
 
     public function max_length($max_length) {
-        $this->constraint(array(FieldType::STRING,FieldType::EMAIL,FieldType::USERNAME,FieldType::PASSWORD));
+        $this->constraint(array(FieldType::STRING,FieldType::TEXT,FieldType::EMAIL,FieldType::USERNAME,FieldType::PASSWORD));
         $this->addRule("max_length",$max_length);
         return $this;
     }

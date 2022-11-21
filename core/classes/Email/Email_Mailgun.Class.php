@@ -6,7 +6,7 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 4
+ * @version 4.1
  */
 require ROOTPATH .'../vendor/autoload.php';
 use Mailgun\Mailgun;
@@ -17,7 +17,7 @@ class Email_Mailgun extends Email_Basic {
      * @param $path
      */
     public function addAttachmentPath($path) {
-        $this->attachment = array_merge($this->attachment, array($path));
+        $this->attachment = array_merge($this->attachment, array($path)); 
     }
 
     /**

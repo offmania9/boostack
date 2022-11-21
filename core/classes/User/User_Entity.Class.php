@@ -2,11 +2,11 @@
 /**
  * Boostack: User_Entity.Class.php
  * ========================================================================
- * Copyright 2014-2021 Spagnolo Stefano
+ * Copyright 2014-2023 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 4
+ * @version 4.1
  */
 class User_Entity extends BaseClass
 {
@@ -204,7 +204,7 @@ class User_Entity extends BaseClass
      */
     public static function getCredentialByCookie($cookieValue) {
         $pdo = Database_PDO::getInstance();
-        $query = "SELECT username,pwd FROM ".self::TABLENAME." WHERE session_cookie = :cookie ";
+        $query = "SELECT username,pwd,email FROM ".self::TABLENAME." WHERE session_cookie = :cookie ";
         $q = $pdo->prepare($query);
         $q->bindParam(":cookie", $cookieValue);
         $q->execute();

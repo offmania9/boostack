@@ -2,11 +2,11 @@
 /**
  * Boostack: Template.Class.php
  * ========================================================================
- * Copyright 2014-2021 Spagnolo Stefano
+ * Copyright 2014-2023 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Alessio Debernardi
- * @version 4
+ * @version 4.1
  */
 
 class Template
@@ -204,8 +204,10 @@ class Template
         $file = ROOTPATH.Config::get('mail_template_path').$mail;
         if(!file_exists($file)) throw new Exception("Mail templating file ($file) not found");
         $template = file_get_contents($file);
-        foreach ($parameters as $template_param => $value){
-            $template = str_replace("[$template_param]", $value, $template);
+        if(!empty($parameters)){
+            foreach ($parameters as $template_param => $value){
+                $template = str_replace("[$template_param]", $value, $template);
+            }
         }
         return $template;
     }

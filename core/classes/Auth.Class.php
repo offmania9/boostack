@@ -2,11 +2,11 @@
 /**
  * Boostack: Auth.Class.php
  * ========================================================================
- * Copyright 2014-2021 Spagnolo Stefano
+ * Copyright 2014-2023 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Alessio Debernardi
- * @version 4
+ * @version 4.1
  */
 
 class Auth
@@ -103,11 +103,12 @@ class Auth
     public static function loginByCookie($cookieValue)
     {
         try {
-            $userClass = Config::get("use_custom_user_class") ? Config::get("custom_user_class") : User::class;
+            $userClass = Config::get("use_custom_user_class") ? Config::get("custom_user_class") : User::class; 
             $userCredentials = $userClass::getCredentialByCookie($cookieValue);
             if($userCredentials != false) {
                 if (Utils::checkCookieHashValidity($cookieValue)) {
-                    self::login($userCredentials["username"],"",$userCredentials["pwd"]);
+                    $usernameToLogin = Config::get("userToLogin")=="email"?$userCredentials["email"]:$userCredentials["username"];
+                    $l = self::login($usernameToLogin,"",$userCredentials["pwd"]);
                     $userObject = Session::getUserObject();
                     $userObject->refreshRememberMeCookie();
                     return true;

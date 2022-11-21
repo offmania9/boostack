@@ -3,11 +3,11 @@
 /**
  * Boostack: Session_HTTP.Class.php
  * ========================================================================
- * Copyright 2014-2021 Spagnolo Stefano
+ * Copyright 2014-2023 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 4
+ * @version 4.1
  */
 class Session_HTTP
 {
@@ -101,47 +101,49 @@ class Session_HTTP
 
         if (isset($_COOKIE["PHPSESSID"])) {
             $this->php_session_id = Utils::sanitizeInput($_COOKIE["PHPSESSID"]);
-        }
-        $datetime_now = time();
-        $sql = "SELECT created,last_impression FROM " . $this->http_session_table . " WHERE ascii_session_id = :ascii_session_id ";
-        $q = $this->dbhandle->prepare($sql);
-        $q->bindValue(':ascii_session_id', $this->php_session_id);
-        $q->execute();
-        $lease = $q->fetch();
-        $interval_created = $datetime_now - intval($lease[0]);
-        $interval_last_impression = $datetime_now - intval($lease[1]);
-
-        $stmt = "SELECT id FROM " . $this->http_session_table . "
-                    WHERE ascii_session_id = :ascii_session_id
-                        AND :interval_created < :session_lifespan
-                        AND user_agent = :user_agent
-                        AND :interval_last_impression <= :session_timeout
-              OR last_impression = 0
-              ";
-        $q = $this->dbhandle->prepare($stmt);
-        $q->bindValue(':ascii_session_id', $this->php_session_id);
-        $q->bindValue(':interval_created', $interval_created, PDO::PARAM_INT);
-        $q->bindValue(':session_lifespan', $this->session_lifespan, PDO::PARAM_INT);
-        $q->bindValue(':user_agent', Utils::getUserAgent());
-        $q->bindValue(':interval_last_impression', $interval_last_impression, PDO::PARAM_INT);
-        $q->bindValue(':session_timeout', $this->session_timeout, PDO::PARAM_INT);
-        $q->execute();
-        if ($q->rowCount() == 0) {
-            $maxlifetime = $this->session_lifespan;
-            $sql = "DELETE FROM " . $this->http_session_table . " WHERE (ascii_session_id = :ascii_session_id) OR (:datetime_now - created > :maxlifetime)";
+       
+            $datetime_now = time();
+            $sql = "SELECT created,last_impression FROM " . $this->http_session_table . " WHERE ascii_session_id = :ascii_session_id ";
             $q = $this->dbhandle->prepare($sql);
             $q->bindValue(':ascii_session_id', $this->php_session_id);
-            $q->bindValue(':datetime_now', $datetime_now, PDO::PARAM_INT);
-            $q->bindValue(':maxlifetime', $maxlifetime, PDO::PARAM_INT);
             $q->execute();
-            $sql = "DELETE FROM " . $this->session_variable . " WHERE session_id NOT IN (SELECT id FROM " . $this->http_session_table . ")";
-            $result = $this->dbhandle->prepare($sql);
-            $result->execute();
-            unset($_COOKIE["PHPSESSID"]);
-        }
+            $lease = $q->fetch();
+            if($lease!==FALSE){
+                $interval_created = $datetime_now - intval($lease[0]);
+                $interval_last_impression = $datetime_now - intval($lease[1]);
 
+                $stmt = "SELECT id FROM " . $this->http_session_table . "
+                        WHERE ascii_session_id = :ascii_session_id
+                            AND :interval_created < :session_lifespan
+                            AND user_agent = :user_agent
+                            AND :interval_last_impression <= :session_timeout
+                OR last_impression = 0
+                ";
+                $q = $this->dbhandle->prepare($stmt);
+                $q->bindValue(':ascii_session_id', $this->php_session_id);
+                $q->bindValue(':interval_created', $interval_created, PDO::PARAM_INT);
+                $q->bindValue(':session_lifespan', $this->session_lifespan, PDO::PARAM_INT);
+                $q->bindValue(':user_agent', Utils::getUserAgent());
+                $q->bindValue(':interval_last_impression', $interval_last_impression, PDO::PARAM_INT);
+                $q->bindValue(':session_timeout', $this->session_timeout, PDO::PARAM_INT);
+                $q->execute();
+                if ($q->rowCount() == 0) {
+                    $maxlifetime = $this->session_lifespan;
+                    $sql = "DELETE FROM " . $this->http_session_table . " WHERE (ascii_session_id = :ascii_session_id) OR (:datetime_now - created > :maxlifetime)";
+                    $q = $this->dbhandle->prepare($sql);
+                    $q->bindValue(':ascii_session_id', $this->php_session_id);
+                    $q->bindValue(':datetime_now', $datetime_now, PDO::PARAM_INT);
+                    $q->bindValue(':maxlifetime', $maxlifetime, PDO::PARAM_INT);
+                    $q->execute();
+                    $sql = "DELETE FROM " . $this->session_variable . " WHERE session_id NOT IN (SELECT id FROM " . $this->http_session_table . ")";
+                    $result = $this->dbhandle->prepare($sql);
+                    $result->execute();
+                    unset($_COOKIE["PHPSESSID"]);
+                }
+            }
+        }
         session_set_cookie_params($this->session_lifespan);
-        if (! session_id())
+        if (!session_id())
             session_start();
 
         $this->Impress();
@@ -186,7 +188,7 @@ class Session_HTTP
             } else {
                 $this->logged_in = false;
             }
-        } else {
+        } else { 
             $this->logged_in = false;
             $sql = "INSERT INTO " . $this->http_session_table . "(id,ascii_session_id, logged_in,user_id, created, user_agent)
 							VALUES (NULL, :ascii_session_id, :logged_in, :user_id, :created, :user_agent)";

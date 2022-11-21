@@ -2,11 +2,11 @@
 /**
  * Boostack: Rest_UserApi.Class.php
  * ========================================================================
- * Copyright 2014-2021 Spagnolo Stefano
+ * Copyright 2014-2023 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 4
+ * @version 4.1
  */
 
 class Rest_UserApi extends Rest_ApiAbstract
@@ -14,7 +14,7 @@ class Rest_UserApi extends Rest_ApiAbstract
     /**
      * @var string
      */
-    private $privateKey = "iuRJ-8hcN-nXXc-sT3f";
+    private $privateKey = "iuBJ-8hcN-hdkE-sT3f";
 
     /**
      * @var string

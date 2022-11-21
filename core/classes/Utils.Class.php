@@ -2,11 +2,11 @@
 /**
  * Boostack: Utils.Class.php
  * ========================================================================
- * Copyright 2014-2021 Spagnolo Stefano
+ * Copyright 2014-2023 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 4
+ * @version 4.1
  */
 class Utils
 {
@@ -127,10 +127,10 @@ class Utils
     /**
      *
      */
-    public static function goToError()
+    public static function goToError(int $status_code = NULL)
     {
-        global $boostack;
-        header("Location: $boostack->url");
+        
+        header("Location: ".Config::get("url")."error/".(empty($status_code)?"":$status_code));
         exit();
     }
 
