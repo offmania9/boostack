@@ -189,7 +189,8 @@ define(['jquery'], function($) {
                 dataLimit = $(".sortingTable").val();
             }
             var dataToSend = submitFilters();
-            dataToSend = CSRFCheckManager.concatToOjb(dataToSend);
+            if(CSRFCheckManager != null && CSRFCheckManager !== undefined)
+                dataToSend = CSRFCheckManager.concatToOjb(dataToSend);
             $.ajax({
                 type: "POST",
                 url: url,
@@ -303,7 +304,7 @@ define(['jquery'], function($) {
                 }
             }
             $(".limitElem").text(tableInfo);
-            $(".customPagination").text(html);
+            $(".customPagination").html(html);//TODO:ATTENTION
         }
 
         function calcParamForOrderby(obj){
@@ -337,7 +338,7 @@ define(['jquery'], function($) {
                     $(".tableToPaste .noData").closest("td").addClass("d-none");
                     $.each(elemDataJson, function () {
                         var elem = $('.tableToCopy').clone();
-                        $(elem).removeClass('tableToCopy hidden');
+                        $(elem).removeClass('tableToCopy d-none');
 
                         $('.id',elem).text(this.id);
                         $('.level',elem).text(this.level);

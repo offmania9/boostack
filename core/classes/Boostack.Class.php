@@ -2,11 +2,11 @@
 /**
  * Boostack: Boostack.Class.php
  * ========================================================================
- * Copyright 2014-2023 Spagnolo Stefano
+ * Copyright 2014-2024 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 4.1
+ * @version 4.2
  */
 class Boostack
 {
@@ -268,12 +268,14 @@ class Boostack
      * @return mixed|string
      * @throws Exception
      */
-    public function getMailTemplate($mail, $parameters = null) {
+    public function getMailTemplate($mail, array $parameters = null) {
         $file = ROOTPATH.self::mailTemplatePath.$mail;
         if(!file_exists($file)) throw new Exception("Mail templating file ($file) not found");
         $template = file_get_contents($file);
-        foreach ($parameters as $template_param => $value){
-            $template = str_replace("[$template_param]", $value, $template);
+        if(!is_null($parameters)){
+            foreach ($parameters as $template_param => $value){
+                $template = str_replace("[$template_param]", $value, $template);
+            }
         }
         return $template;
     }

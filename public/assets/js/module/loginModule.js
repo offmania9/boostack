@@ -18,7 +18,7 @@ define(['jquery','module/CSRFCheckManager'], function($,CSRFM) {
         function login() {
             removeFormError();
             if($("#btk_usr").val().length == 0 || $("#btk_pwd").val().length == 0) {
-                setFormError("You must insert username and password");
+                setFormError("Inserisci username e password");
                 return false;
             }
             if(typeof captchaResult != 'undefined' && captchaResult == false) {
@@ -32,7 +32,7 @@ define(['jquery','module/CSRFCheckManager'], function($,CSRFM) {
         function loginAjax() {
             removeFormError();
             if($("#btk_usr-ajax").val().length == 0 || $("#btk_pwd-ajax").val().length == 0) {
-                setFormErrorAjax("You must insert username and password");
+                setFormErrorAjax("Inserisci username e password");
                 return false;
             }
             CSRFCheckManager.addToForm($("#loginform-ajax"));

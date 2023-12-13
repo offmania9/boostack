@@ -1,15 +1,16 @@
 <?php
+
 /**
  * Boostack: BaseList.Class.php
  * ========================================================================
- * Copyright 2014-2023 Spagnolo Stefano
+ * Copyright 2014-2024 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 4.1
+ * @version 4.2
  */
-abstract class BaseList implements IteratorAggregate, JsonSerializable {
-
+abstract class BaseList implements IteratorAggregate, JsonSerializable
+{
     /**
      * @var
      */
@@ -42,7 +43,8 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable {
     /**
      *
      */
-    protected function init() {
+    protected function init()
+    {
         $this->pdo = Database_PDO::getInstance();
         $this->items = [];
         $this->baseClassName = static::BASE_CLASS;
@@ -53,44 +55,58 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable {
      * With this method you can iterate the list like an array
      * e.g. foreach($myList as $elem) ...
      * @return ArrayIterator
-        */
-    public function getIterator() {
-        return new ArrayIterator($this->items);
-    } 
-
+     */
+    public function getIterator(): \Traversable
+    {
+        return new \ArrayIterator($this->items);
+    }
 
     /**
      * @return mixed
      */
-    public function getItemsArray() {
+    public function getItemsArray()
+    {
         return $this->items;
     }
 
     /**
      * @return int
      */
-    public function size() {
+    public function size()
+    {
         return count($this->items);
     }
 
     /**
      * @return bool
      */
-    public function isEmpty() {
+    public function isEmpty()
+    {
         return count($this->items) == 0;
     }
 
     /**
      * @param $element
      */
-    public function add($element) {
+    public function add($element)
+    {
         $this->items[] = $element;
+    }
+
+    /**
+     * @return void
+     */
+    public function clear()
+    {
+        $this->items = array();
+        //$this->items = array_diff($this->items,$this->items);
     }
 
     /**
      * @return mixed
      */
-    public function toArray() {
+    public function toArray()
+    {
         return $this->items;
     }
 
@@ -98,14 +114,16 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable {
      * This method is used when json_encode() is called
      * It expose "items" to the json_encode() function
      */
-    public function jsonSerialize() {
+    public function jsonSerialize(): mixed
+    {
         return $this->items;
     }
 
     /**
      * Retrieve values with field filtering, ordering and pagination
      */
-    public function view($fields = NULL, $orderColumn = NULL, $orderType = NULL, $numitem = 25, $currentPage = 1) {
+    public function view($fields = NULL, $orderColumn = "id", $orderType = "DESC", $numitem = 25, $currentPage = 1)
+    {
         try {
             $sql = "";
             $orderType = strtoupper($orderType);
@@ -123,48 +141,49 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable {
             $sql .= "WHERE" . " ";
             $separator = " AND ";
             $count = 0;
-            if(count($fields)>0){
+            if (count($fields) > 0) {
                 foreach ($fields as $option) {
-                    if($count > 0) $sql .= $separator;
+                    if ($count > 0) $sql .= $separator;
                     if ($option[0] == "datetime") {
-                        $sql .= "FROM_UNIXTIME(" . $option[0] . ") ";
+                        //$sql .= "FROM_UNIXTIME(" . $option[0] . ") ";
+                        $sql .= $option[0] . " ";
                     } else
                         $sql .= $option[0] . " ";
                     $option[1] = strtoupper($option[1]);
                     switch ($option[1]) {
                         case '<>':
                         case '&LT;&GT;': {
-                            $sql .= "!= '" . $option[2] . "'";
-                            break;
-                        }
+                                $sql .= "!= '" . $option[2] . "'";
+                                break;
+                            }
                         case 'LIKE': {
-                            $sql .= $option[1] . " '%" . $option[2] . "%'";
-                            break;
-                        }
+                                $sql .= $option[1] . " '%" . $option[2] . "%'";
+                                break;
+                            }
                         case '=': {
-                            $sql .= $option[1] . " '" . $option[2] . "'";
-                            break;
-                        }
+                                $sql .= $option[1] . " '" . $option[2] . "'";
+                                break;
+                            }
                         case '<':
                         case '&LT;': {
-                            $sql .= "< '" . $option[2] . "'";
-                            break;
-                        }
+                                $sql .= "< '" . $option[2] . "'";
+                                break;
+                            }
                         case '<=':
                         case '&LT;=': {
-                            $sql .= "<= '" . $option[2] . "'";
-                            break;
-                        }
+                                $sql .= "<= '" . $option[2] . "'";
+                                break;
+                            }
                         case '>':
                         case '&GT;': {
-                            $sql .= "> '" . $option[2] . "'";
-                            break;
-                        }
+                                $sql .= "> '" . $option[2] . "'";
+                                break;
+                            }
                         case '>=':
                         case '&GT;=': {
-                            $sql .= ">= '" . $option[2] . "'";
-                            break;
-                        }
+                                $sql .= ">= '" . $option[2] . "'";
+                                break;
+                            }
                     }
                     $count++;
                 }
@@ -174,8 +193,9 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable {
             $result = $q->fetch();
 
             $queryNumberResult = intval($result[0]);
+            
             $maxPage = floor($queryNumberResult / $numitem) + 1;
-            if ($currentPage >= $maxPage){
+            if ($currentPage > $maxPage) {
                 $maxPage = floor($queryNumberResult / 25) + 1;
                 $currentPage = 1;
             };
@@ -202,7 +222,7 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable {
 
             return $queryNumberResult;
         } catch (PDOException $pdoEx) {
-            Logger::write($pdoEx->getMessage(),Log_Level::ERROR,Log_Driver::FILE);
+            Logger::write($pdoEx->getMessage(), Log_Level::ERROR, Log_Driver::FILE);
             throw new PDOException("Database Exception. Please see log file.");
         }
     }
@@ -211,8 +231,9 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable {
      * @param $key
      * @return bool
      */
-    public function haskey($key) {
-        return array_key_exists($key,$this->items);
+    public function haskey($key)
+    {
+        return array_key_exists($key, $this->items);
     }
 
     /**
@@ -220,8 +241,12 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable {
      * @param bool $shift
      * @return bool
      */
-    protected function remove($key, $shift = true) {
-        // TODO
+    protected function remove($key, $shift = true)
+    {
+        if ($shift)
+            array_splice($this->items, $key, 1);
+        else
+            unset($this->items[$key]);
         return true;
     }
 
@@ -229,7 +254,8 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable {
      * @param $key
      * @return mixed
      */
-    public function get($key) {
+    public function get($key)
+    {
         return $this->items[$key];
     }
 
@@ -238,7 +264,8 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable {
      * For example with query results
      * ex. $array = [ 0 => [ "field1" => "value1", .. ], 1 => [..] ]
      */
-    protected function fill($array) {
+    protected function fill($array)
+    {
         foreach ($array as $elem) {
             $baseClassInstance = new $this->baseClassName;
             $baseClassInstance->fill($elem);
@@ -249,9 +276,12 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable {
     /**
      * @return int
      */
-    public function loadAll() {
+    public function loadAll($orderColumn = NULL, $orderType = NULL)
+    {
         try {
-            $sql = "SELECT * FROM " . $this->baseClassTablename;
+            $ob = $orderColumn==NULL?"":" ORDER BY ".$orderColumn;
+            $ot = $orderColumn==NULL?"":" ".$orderType;
+            $sql = "SELECT * FROM " . $this->baseClassTablename.$ob.$ot;
             $q = $this->pdo->prepare($sql);
             $q->execute();
             $queryResults = $q->fetchAll(PDO::FETCH_ASSOC);
@@ -259,9 +289,26 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable {
             $countResult = count($queryResults);
             return $countResult;
         } catch (PDOException $pdoEx) {
-            Logger::write($pdoEx->getMessage(),Log_Level::ERROR,Log_Driver::FILE);
+            Logger::write($pdoEx->getMessage(), Log_Level::ERROR, Log_Driver::FILE);
+            throw new PDOException("Database Exception. Please see log file.");
+        }
+    }
+
+    public function getColums($withoutTraced = false){
+        try {
+            if($withoutTraced){
+                $sql = "SELECT column_name FROM information_schema.columns 
+                WHERE table_name = '".$this->baseClassTablename."' AND table_schema='".Config::get("db_name")."' 
+  AND column_name NOT IN ('created_at', 'last_update','last_access','created_at_datetime')";
+            }
+            else
+                $sql = "DESCRIBE " . $this->baseClassTablename;
+            $q = $this->pdo->prepare($sql);
+            $q->execute();
+            return $q->fetchAll(PDO::FETCH_COLUMN);
+        } catch (PDOException $pdoEx) {
+            Logger::write($pdoEx->getMessage(), Log_Level::ERROR, Log_Driver::FILE);
             throw new PDOException("Database Exception. Please see log file.");
         }
     }
 }
-?>

@@ -2,11 +2,11 @@
 /**
  * Boostack: Template.Class.php
  * ========================================================================
- * Copyright 2014-2023 Spagnolo Stefano
+ * Copyright 2014-2024 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Alessio Debernardi
- * @version 4.1
+ * @version 4
  */
 
 class Template
@@ -86,7 +86,23 @@ class Template
      */
     public static function renderDefaultCSSFiles()
     {
-        $defaultCssFiles = Config::get("default_css_files");
+        self::renderDefaultCSSFiles_critical();
+        self::renderDefaultCSSFiles_nonCritical();
+    }
+
+    public static function renderDefaultCSSFiles_critical()
+    {
+        $defaultCssFiles = Config::get("default_css_files_critical");
+        if(!empty($defaultCssFiles)) {
+            foreach ($defaultCssFiles as $cssFile) {
+                self::renderCSSFile($cssFile);
+            }
+        }
+    }
+    
+    public static function renderDefaultCSSFiles_nonCritical()
+    {
+        $defaultCssFiles = Config::get("default_css_files_noncritical");
         if(!empty($defaultCssFiles)) {
             foreach ($defaultCssFiles as $cssFile) {
                 self::renderCSSFile($cssFile);
@@ -145,7 +161,6 @@ class Template
             "isAbsolute" => $isAbsolute
         ];
     }
-
     /**
      * Stampa la stringa di inclusione del file JS specificato come parametro
      *

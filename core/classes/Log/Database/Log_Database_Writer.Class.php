@@ -2,11 +2,11 @@
 /**
  * Boostack: Log_Database_Writer.Class.php
  * ========================================================================
- * Copyright 2014-2023 Spagnolo Stefano
+ * Copyright 2014-2024 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 4.1
+ * @version 4.2
  */
 
 class Log_Database_Writer
@@ -92,7 +92,7 @@ class Log_Database_Writer
     {
         if(!in_array($level,Config::get("log_enabledTypes")))
             return;
-        $this->query = htmlspecialchars($this->query,ENT_QUOTES | ENT_HTML401,'UTF-8');
+        $this->query = substr(htmlspecialchars($this->query,ENT_QUOTES | ENT_HTML401,'UTF-8'),0,2048);
         $sql = "INSERT INTO " . self::TABLENAME . "  (id ,datetime , level, username, ip ,useragent ,referrer ,query ,message)
 				VALUES(NULL, :time , :level, :username, :ip , :useragent, :referrer, :query, :message)";
         $q = $this->pdo->prepare($sql);

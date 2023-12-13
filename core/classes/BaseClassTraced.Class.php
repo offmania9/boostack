@@ -16,8 +16,9 @@ abstract class BaseClassTraced extends BaseClass {
         if ($id != NULL) {
             $this->setLastAccess();
         } else {
-            $this->created_at = $this->last_update = $this->last_access = time();
-            $this->created_at_datetime = date('Y-m-d H:i:s',$this->created_at);
+            $this->created_at = $this->last_update = $this->last_access = $this->created_at_datetime = date('Y-m-d H:i:s',time());
+            //$this->created_at = $this->last_update = $this->last_access = time();
+            //$this->created_at_datetime = date('Y-m-d H:i:s',$this->created_at);
         }
     }
 
@@ -59,8 +60,10 @@ abstract class BaseClassTraced extends BaseClass {
      * @return bool
      */
     public function setCreationTime() {
-        $this->created_at = time();
-        $this->created_at_datetime = date('Y-m-d H:i:s',$this->created_at);
+        //$this->created_at = time();
+         //$this->created_at_datetime = date('Y-m-d H:i:s',$this->created_at);
+        $this->created_at = date('Y-m-d H:i:s',time());
+        $this->created_at_datetime = $this->created_at;
         return parent::save();
     }
 
@@ -68,15 +71,16 @@ abstract class BaseClassTraced extends BaseClass {
      * @return bool
      */
     public function setUpdateTime() {
-        $this->last_update = time();
+        //$this->last_update = time();
+        $this->last_update = date('Y-m-d H:i:s',time());
         return parent::save();
     }
-
     /**
      * @return bool
      */
     public function setLastAccess() {
-        $this->last_access = time();
+        //$this->last_access = time();
+        $this->last_access = date('Y-m-d H:i:s',time());
         return parent::save();
     }
 

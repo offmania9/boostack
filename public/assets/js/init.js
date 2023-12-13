@@ -5,16 +5,10 @@ var loginModule = null;
 var registrationModule = null;
 var documentationModule = null;
 var logListModule = null;
+var uploadProfilePicModule = null;
+var editModule = null;
 
 var initLibrary = function() {
-
-    // Create your own modules in "/module" directory, then call them here
-
-    require(["module/exampleModule"], function (object) {
-        if (exampleModuleObject != null) return;
-        exampleModuleObject = new object();
-        exampleModuleObject.init();
-    });
 
     /** 
     require(["module/cookieMessageModule"], function (object) {
@@ -47,18 +41,27 @@ var initLibrary = function() {
         });
     }
 
-    if(getElementsByClassName("documentation").length) {
-        require(["module/documentationModule"], function (dm) {
-            documentationModule = new dm();
-            documentationModule.init();
-        });
-    }
 
     if (getElementsByClassName("logList").length) {
         require(["module/logListModule"], function (m) {
             if (logListModule != null) return;
             logListModule = new m();
             logListModule.init();
+        });
+    }
+
+    if (getElementsByClassName("editSection").length) {
+        require(["module/uploadProfilePicModule"], function (m) {
+            if (uploadProfilePicModule != null) return;
+            uploadProfilePicModule = new m();
+            uploadProfilePicModule.init();
+        });
+    }
+    if (getElementsByClassName("editSection").length) {
+        require(["module/editModule"], function (m) {
+            if (editModule != null) return;
+            editModule = new m();
+            editModule.init();
         });
     }
 

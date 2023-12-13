@@ -26,7 +26,8 @@ class Config {
      */
     public static function get($configKey)
     {
-        if(isset(self::$configs[$configKey])) return self::$configs[$configKey];
+        if(isset(self::$configs[$configKey])) 
+            return self::$configs[$configKey];
         throw new Exception_Misconfiguration("Configuration attribute '".$configKey."' not found'");
     }
 

@@ -20,7 +20,6 @@ if (Config::get('developmentMode')) {
     ini_set('display_errors', 0);
 }
 Request::init();
-$boostack = Boostack::getInstance();
 $CURRENTUSER = NULL;
 if (Config::get('database_on')) {
     Database_PDO::getInstance(Config::get('db_host'), Config::get('db_name'), Config::get('db_username'), Config::get('db_password'), Config::get('db_port'));
@@ -34,7 +33,8 @@ if (Config::get('database_on')) {
                 if (!Auth::loginByCookie($c)) //cookie is set but wrong (manually edited)
                     Auth::logout();
         }
-        $CURRENTUSER = Auth::getUserLoggedObject();
+        $CURRENTUSER = $objSession->GetUserObject();// Auth::getUserLoggedObject();
+        //d($CURRENTUSER);
     }
 }
 
@@ -48,4 +48,5 @@ if (Config::get('mobile_on')) {
         exit();
     }
 }
+require_once(ROOTPATH . "../custom/pre_content.php");
 ?>

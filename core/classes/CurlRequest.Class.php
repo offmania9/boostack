@@ -2,11 +2,11 @@
 /**
  * Boostack: CurlRequest.Class.php
  * ========================================================================
- * Copyright 2014-2023 Spagnolo Stefano
+ * Copyright 2014-2024 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 4.1
+ * @version 4.2
  */
 class CurlRequest {
 
@@ -46,6 +46,13 @@ class CurlRequest {
 
     }
 
+     /**
+     * @param $data
+     */
+    public function addHeader($data) {
+        $this->customHeader[] = $data;
+    }
+
     /**
      * @param $endpoint
      */
@@ -56,8 +63,20 @@ class CurlRequest {
     /**
      * @param $isPost
      */
-    public function setIsPost($isPost) {
+    public function setIsPost(bool $isPost) {
         $this->is_post = $isPost;
+    }
+
+    /**
+     * @param $isPost
+     */
+    public function setContentTypeJSON(bool $isContentTypeJSON) {
+        if($isContentTypeJSON)
+            $this->customHeader["contentTypeJson"] = "Content-Type: application/json";
+        else{
+            if(!empty($this->customHeader["contentTypeJson"]))
+                unset($this->customHeader["contentTypeJson"]);
+        }
     }
 
     /**
@@ -88,6 +107,16 @@ class CurlRequest {
         $this->customHeader = $data;
     }
 
+    public function getCurlString() {
+        $r = 'curl '.$this->endpoint.' \\';
+        foreach($this->customHeader as $h){
+            $r .=  ' -H "'.$h.'" \\';
+        }
+        $r .=  " -d '".json_encode($this->postFields)."'";
+        
+        return $r;
+    }
+
     /**
      * @return MessageBag
      */
@@ -107,7 +136,7 @@ class CurlRequest {
         }
 
         if(!empty($this->postFields)) {
-            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($this->postFields));
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $this->postFields);
         }
 
         if(!empty($this->customHeader)) {
@@ -121,8 +150,10 @@ class CurlRequest {
 
         $curlResult = curl_exec($ch);
         if($curlResult == false) {
-            $response->error = curl_error($ch);
+            $response->error = true;
+            $response->data = curl_error($ch);
         } else {
+            $response->error = false;
             $response->data = $curlResult;
         }
         curl_close($ch);

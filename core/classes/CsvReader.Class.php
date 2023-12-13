@@ -2,11 +2,11 @@
 /**
  * Boostack: CsvReader.Class.php
  * ========================================================================
- * Copyright 2014-2023 Spagnolo Stefano
+ * Copyright 2014-2024 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Alessio Debernardi
- * @version 4.1
+ * @version 4
  */
 
 class CsvReader
@@ -25,7 +25,7 @@ class CsvReader
     public function __construct($file, $delimiter = self::DEFAULT_DELIMITER, $linesOffset = self::DEFAULT_LINES_OFFSET)
     {
         $realPath = realpath($file);
-        if(!$realPath) throw new Exception("File not found");
+        if(!$realPath) throw new Exception("File not found in ".$file);
         if(!is_readable($realPath)) throw new Exception("File not readable");
         $this->filePath = $realPath;
         $this->delimiter = $delimiter;

@@ -8,17 +8,18 @@ if (!empty($_POST)) { ?>
                     <div class="alert alert-danger" role="alert">
                         <h3>Attention!</h3>
                         <p style="font-size: 1.2em;"><?php echo $finalSetupMessageError ?></p>
-                        <p style="font-size: 1.2em;" class="text-left"><b><a href="javascript:window.history.back();"><< Back</a></b></p>
+                        <p style="font-size: 1.2em;" class="text-left"><b><a href="javascript:window.history.back();">
+                                    << Back</a></b></p>
                     </div>
                 <?php } else { ?>
                     <div class="alert alert-success" role="alert">
                         <div class="row">
                             <div class="col-md-12">
                                 <h3>Installation Completed Successfully!</h3>
-                                <p style="font-size: 1.2em;">You <b>MUST</b> ensure you remove the entire <b><em>setup/</em></b>  directory. Leaving the setup directory in place is a very
+                                <p style="font-size: 1.2em;">You <b>MUST</b> ensure you remove the entire <b><em>setup/</em></b> directory. Leaving the setup directory in place is a very
                                     serious potential security issue which may lead to deletion or alteration of files, etc.
                                     Please note that until this directory is removed, Boostack will not operate and a warning message will be displayed.
-                                    </p>
+                                </p>
                                 <p style="font-size: 1.2em;" class="text-right"><b><a href="../../">Go to Boostack Homepage >></a></b></p>
                             </div>
                         </div>
@@ -27,22 +28,21 @@ if (!empty($_POST)) { ?>
             </div>
         </div>
     </div>
-    <?php
-    }
-    else{
-    ?>
-    <div class="container">
+<?php
+} else {
+?>
+    <div class="container pb-4">
         <div class="row">
             <div class="mx-auto col-md-8">
                 <p>&nbsp;</p>
-                <?php if(!$requirements_satisfaction) {?>
+                <?php if (!$requirements_satisfaction) { ?>
                     <div class="alert alert-danger" role="alert">
                         <div class="row">
                             <div class="col-md-12">
-                        <h3>Attention!</h3>
-                        <p>Server and PHP configuration does not meet the minimum requirements for Boostack.<br/>
-                            <b>Setup is unable to proceed due to the following error(s).</b>
-                        </p>
+                                <h3>Attention!</h3>
+                                <p>Server and PHP configuration does not meet the minimum requirements for Boostack.<br />
+                                    <b>Setup is unable to proceed due to the following error(s).</b>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -54,11 +54,7 @@ if (!empty($_POST)) { ?>
                                 <p>Server and PHP configuration meets the minimum requirements for Boostack</p>
                             </div>
                             <div class="col-md-4 text-center">
-                                <a class="btn btn-success"
-                                   onclick="document.getElementById('initsetup-btn').remove();return true;"
-                                   id="initsetup-btn" name="initsetup-btn" role="button" data-toggle="collapse"
-                                   data-parent="#accordion" href="#collapseTwo"
-                                   aria-expanded="false" aria-controls="collapseTwo">
+                                <a class="btn btn-success" id="initsetup-btn" onclick="document.getElementById('initsetup-btn').remove();return true;" data-bs-toggle="collapse" href="#collapseTwo" role="button" aria-expanded="false" aria-controls="collapseTwo">
                                     Setup
                                 </a>
                             </div>
@@ -78,78 +74,76 @@ if (!empty($_POST)) { ?>
                         <div class="card card-default">
                             <div class="card-header" role="tab" id="headingOne">
                                 <h4 class="card-title">
-                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
-                                    aria-expanded="true" aria-controls="collapseOne">
+                                    <a class="" data-bs-toggle="collapse" href="#collapseOne" role="button" aria-expanded="false" aria-controls="collapseOne">
                                         Requirements
                                     </a>
                                 </h4>
                             </div>
-                            <div id="collapseOne" class="card-body collapse in" role="tabpanel"
-                                aria-labelledby="headingOne">
+                            <div id="collapseOne" class="card-body collapse in" role="tabpanel" aria-labelledby="headingOne">
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <h5>Required PHP Configurations</h5>
                                             <table class="table table-bordered">
                                                 <thead>
-                                                <th>Configuration</th>
-                                                <th>Required</th>
-                                                <th>Status</th>
+                                                    <th>Configuration</th>
+                                                    <th>Required</th>
+                                                    <th>Status</th>
                                                 </thead>
                                                 <tbody>
-                                                <tr class="<?php echo  $phpVersionResult ? "bg-success" : "bg-danger" ?>">
-                                                    <td>PHP Version</td>
-                                                    <td>>= <?php echo $required_php_version[0] ?></td>
-                                                    <td><?php echo $phpVersion ?></td>
-                                                </tr>
-                                                <?php foreach ($phpConfigurationTable as $name => $value): ?>
-                                                    <tr class="<?php echo $value ? "bg-success" : "bg-danger" ?>">
-                                                        <td><?php echo $name ?></td>
-                                                        <td>Enabled</td>
-                                                        <td><?php echo $value == "1" ? "Enabled" : "Disabled" ?></td>
+                                                    <tr class="<?php echo  $phpVersionResult ? "bg-success" : "bg-danger" ?>">
+                                                        <td>PHP Version</td>
+                                                        <td>>= <?php echo $required_php_version[0] ?></td>
+                                                        <td><?php echo $phpVersion ?></td>
                                                     </tr>
-                                                <?php endforeach; ?>
-                                                <?php foreach ($phpExtensionsRequiredTable as $name => $value): ?>
-                                                    <tr class="<?php echo $value ? "bg-success" : "bg-danger" ?>">
-                                                        <td><?php echo $name ?> Extension</td>
-                                                        <td>Enabled</td>
-                                                        <td><?php echo $value == "1" ? "Enabled" : "Disabled" ?></td>
+                                                    <?php foreach ($phpConfigurationTable as $name => $value) : ?>
+                                                        <tr class="<?php echo $value ? "bg-success" : "bg-danger" ?>">
+                                                            <td><?php echo $name ?></td>
+                                                            <td>Enabled</td>
+                                                            <td><?php echo $value == "1" ? "Enabled" : "Disabled" ?></td>
+                                                        </tr>
+                                                    <?php endforeach; ?>
+                                                    <?php foreach ($phpExtensionsRequiredTable as $name => $value) : ?>
+                                                        <tr class="<?php echo $value ? "bg-success" : "bg-danger" ?>">
+                                                            <td><?php echo $name ?> Extension</td>
+                                                            <td>Enabled</td>
+                                                            <td><?php echo $value == "1" ? "Enabled" : "Disabled" ?></td>
+                                                        </tr>
+                                                    <?php endforeach; ?>
+                                                    <tr class="<?php echo $isWritebleEnvFolder ? "bg-success" : "bg-danger" ?>">
+                                                        <td>Write access to 'config/env' folder</td>
+                                                        <td>Give write permission to '<?php echo exec('whoami') ?>' user</td>
+                                                        <td><?php echo $isWritebleEnvFolder ? "Writeble" : "Not Writeble" ?></td>
                                                     </tr>
-                                                <?php endforeach; ?>
-                                                <tr class="<?php echo $isWritebleEnvFolder ? "bg-success" : "bg-danger" ?>">
-                                                    <td>Write access to 'config/env' folder</td>
-                                                    <td>Give write permission to '<?php echo exec('whoami') ?>' user</td>
-                                                    <td><?php echo $isWritebleEnvFolder ? "Writeble" : "Not Writeble" ?></td>
-                                                </tr>
-                                                <tr class="<?php echo $isWritebleLogFolder ? "bg-success" : "bg-danger" ?>">
-                                                    <td>Write access to 'log' folder</td>
-                                                    <td>Give write permission to '<?php echo exec('whoami') ?>' user</td>
-                                                    <td><?php echo $isWritebleLogFolder ? "Writeble" : "Not Writeble" ?></td>
-                                                </tr>
+                                                    <tr class="<?php echo $isWritebleLogFolder ? "bg-success" : "bg-danger" ?>">
+                                                        <td>Write access to 'log' folder</td>
+                                                        <td>Give write permission to '<?php echo exec('whoami') ?>' user</td>
+                                                        <td><?php echo $isWritebleLogFolder ? "Writeble" : "Not Writeble" ?></td>
+                                                    </tr>
                                                 </tbody>
                                             </table>
                                             <h4>Apache Modules</h4>
                                             <table class="table table-bordered">
                                                 <thead>
-                                                <th>Configuration</th>
-                                                <th>Required</th>
-                                                <th>Status</th>
+                                                    <th>Configuration</th>
+                                                    <th>Required</th>
+                                                    <th>Status</th>
                                                 </thead>
                                                 <tbody>
-                                                <?php foreach ($apacheModulesRequiredTable as $name => $value): ?>
-                                                    <tr class="<?php echo $value ? "bg-success" : "bg-danger" ?>">
-                                                        <td><?php echo $name ?></td>
-                                                        <td>Enabled</td>
-                                                        <td><?php echo $value == "1" ? "Enabled" : "Disabled" ?></td>
-                                                    </tr>
-                                                <?php endforeach; ?>
-                                                <?php foreach ($apacheModulesOptionalTable as $name => $value): ?>
-                                                    <tr class="<?php echo $value ? "bg-success" : "bg-warning" ?>">
-                                                        <td>[Optional] <?php echo $name ?></td>
-                                                        <td>Enabled</td>
-                                                        <td><?php echo $value == "1" ? "Enabled" : "Disabled" ?></td>
-                                                    </tr>
-                                                <?php endforeach; ?>
+                                                    <?php foreach ($apacheModulesRequiredTable as $name => $value) : ?>
+                                                        <tr class="<?php echo $value ? "bg-success" : "bg-danger" ?>">
+                                                            <td><?php echo $name ?></td>
+                                                            <td>Enabled</td>
+                                                            <td><?php echo $value == "1" ? "Enabled" : "Disabled" ?></td>
+                                                        </tr>
+                                                    <?php endforeach; ?>
+                                                    <?php foreach ($apacheModulesOptionalTable as $name => $value) : ?>
+                                                        <tr class="<?php echo $value ? "bg-success" : "bg-warning" ?>">
+                                                            <td>[Optional] <?php echo $name ?></td>
+                                                            <td>Enabled</td>
+                                                            <td><?php echo $value == "1" ? "Enabled" : "Disabled" ?></td>
+                                                        </tr>
+                                                    <?php endforeach; ?>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -159,202 +153,172 @@ if (!empty($_POST)) { ?>
                             </div>
                         </div>
                     </div>
-                    <div class="pt-4 row"><p>&nbsp;</p></div>
+                    <div class="pt-2 row">
+                        <p>&nbsp;</p>
+                    </div>
                     <div class="col-md-12">
-                        <div class="card setupInstaller panel-default">
+                        <div class="card setupInstaller panel-default mb-4">
                             <div class="card-header" role="tab" id="headingTwo">
                                 <h4 class="card-title">
-                                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion"
-                                    href="#collapseTwo"
-                                    aria-expanded="false" aria-controls="collapseTwo"
-                                    onclick="document.getElementById('initsetup-btn').remove();return true;">
+                                    <a class="" data-bs-toggle="collapse" href="#collapseTwo" role="button" aria-expanded="false" aria-controls="collapseTwo">
                                         Environment setup
                                     </a>
                                 </h4>
                             </div>
-                            <div id="collapseTwo" class="card-collapse collapse" role="tabpanel"
-                                aria-labelledby="headingTwo">
-                                <div class="card-body">
+                            <div id="collapseTwo" class="card-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                <div class="card-body bg-light">
                                     <form method="post" action="" class="form-horizontal">
                                         <div class="card card-info">
                                             <div class="card-header">
                                                 <h5 class="card-title">General</h5>
                                             </div>
                                             <div class="card-body">
-                                                <div class="form-group">
-                                                    <label for="rootpath" class="col-sm-2 control-label">Current Document
-                                                        Root</label>
-                                                    <div class="col-sm-8">
-                                                        <input type="text" class="form-control" disabled id="dr" name="dr"
-                                                            value="<?php echo $_SERVER['DOCUMENT_ROOT'] ?>">
+
+                                                <div class="mb-3 row">
+                                                    <label for="dr" class="col-sm-3 col-form-label">Current Document Root</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" readonly disabled id="dr" name="dr" class="form-control-plaintext" id="staticEmail" value="<?php echo $_SERVER['DOCUMENT_ROOT'] ?>" />
                                                     </div>
                                                 </div>
-                                                <div class="form-group">
-                                                    <label for="rootpath" class="col-sm-2 control-label">Rootpath</label>
-                                                    <div class="col-sm-8">
-                                                        <input type="text" class="form-control" id="rootpath"
-                                                            name="rootpath"
-                                                            placeholder="/" value="<?php echo $init_rootpath ?>">
+                                                <div class="mb-3 row">
+                                                    <label for="rootpath" class="col-sm-3 col-form-label">Rootpath</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" id="rootpath" name="rootpath" placeholder="/" value="<?php echo $init_rootpath ?>" />
                                                     </div>
                                                 </div>
-                                                <div class="form-group">
-                                                    <label for="url" class="col-sm-2 control-label">URL</label>
-                                                    <div class="col-sm-8">
-                                                        <div class="row">
-                                                            <div class="col-md-4">
-                                                                <select name="protocol" class="form-control">
-                                                                    <option value="http">http://</option>
-                                                                    <option value="https">https://</option>
-                                                                </select>
-                                                            </div>
-                                                            <div class="col-md-8">
-                                                                <input type="text" class="form-control" id="url" name="url"
-                                                            placeholder="boostack.local" value="<?php echo $init_url ?>">
-                                                            </div>
-                                                        </div>
+                                                <div class="mb-3 row">
+                                                    <label for="url" class="col-sm-3 col-form-label">URL</label>
+                                                    <div class="col-sm-2">
+                                                        <select name="protocol" class="form-control">
+                                                            <option value="http">http://</option>
+                                                            <option value="https">https://</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" class="form-control" id="url" name="url" placeholder="boostack.local" value="<?php echo $init_url ?>" />
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div class="card card-info">
+                                        <div class="card card-info mt-3">
                                             <div class="card-header">
                                                 <h5 class="card-title">Database</h5>
                                             </div>
                                             <div class="card-body">
-                                                <div class="form-group noHide">
-                                                    <label for="db-true" class="col-sm-2 control-label">Database</label>
-                                                    <div class="col-sm-8">
-                                                        <label class="radio-inline">
-                                                            <input type="radio" name="db-active" id="db-true" value="true"
-                                                                checked> Yes
+                                                <div class="noHide">
+                                                    <h6>Database</h6>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="db-active" id="db-true" value="true" checked />
+                                                        <label class="form-check-label" for="db-active">
+                                                            Yes
                                                         </label>
-                                                        <label class="radio-inline">
-                                                            <input type="radio" name="db-active" id="db-false"
-                                                                value="false"> No
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="db-active" id="db-false" value="false" />
+                                                        <label class="form-check-label" for="db-false">
+                                                            No
                                                         </label>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="db-dump-true" class="col-sm-2 control-label">Auto Import Dump?</label>
-                                                    <div class="col-sm-8">
-                                                        <label class="radio-inline">
-                                                            <input type="radio" name="db-dump-active" id="db-dump-true" value="true" checked> Yes
-                                                        </label>
-                                                        <label class="radio-inline">
-                                                            <input type="radio" name="db-dump-active" id="db-dump-false"
-                                                                value="false"> No
+                                                    <p class="mb-0 pt-1">Auto Import Dump?</p>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="db-dump-true" id="db-true" value="true" checked />
+                                                        <label class="form-check-label" for="db-dump-true">
+                                                            Yes
                                                         </label>
                                                     </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="db-dump-false" id="db-false" value="false" />
+                                                        <label class="form-check-label" for="db-dump-false">
+                                                            No
+                                                        </label>
+                                                    </div>
+
                                                 </div>
-                                                <div class="form-group">
-                                                    <label for="driver-pdo" class="col-sm-2 control-label">Driver PDO</label>
-                                                    <div class="col-sm-8">
+                                                <div class="mb-3 row">
+                                                    <label for="driver-pdo" class="col-sm-2 col-form-label">Driver PDO</label>
+                                                    <div class="col-sm-9">
                                                         <select id="driver-pdo" name="driver-pdo" class="form-control">
                                                             <option value="mysql">mysql</option>
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div class="form-group">
-                                                    <label for="db-host" class="col-sm-2 control-label">Host</label>
-                                                    <div class="col-sm-8">
-                                                        <input type="text" class="form-control" id="db-host" name="db-host"
-                                                            value="<?php echo $init_ip ?>">
+                                                <div class="mb-3 row">
+                                                    <label for="db-host" class="col-sm-2 col-form-label">Host</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" id="db-host" name="db-host" placeholder="127.0.0.1" value="<?php echo $init_ip ?>" />
                                                     </div>
                                                 </div>
-                                                <div class="form-group">
-                                                    <label for="db-port" class="col-sm-2 control-label">Host</label>
-                                                    <div class="col-sm-8">
-                                                        <input type="text" class="form-control" id="db-port" name="db-port"
-                                                            value="3306">
+                                                <div class="mb-3 row">
+                                                    <label for="db-port" class="col-sm-2 col-form-label">Port</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" id="db-port" name="db-port" placeholder="3306" value="3306" />
                                                     </div>
                                                 </div>
-                                                <div class="form-group">
-                                                    <label for="db-name" class="col-sm-2 control-label">Name</label>
-                                                    <div class="col-sm-8">
-                                                        <input type="text" class="form-control" id="db-name" name="db-name"
-                                                            placeholder="boostack" value="boostack">
+
+
+
+
+                                                <div class="mb-3 row">
+                                                    <label for="db-name" class="col-sm-2 col-form-label">DB Name</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" id="db-name" name="db-name" placeholder="boostack" value="boostack" />
                                                     </div>
                                                 </div>
-                                                <div class="form-group d-none">
-                                                    <label for="db-name" class="col-sm-2 control-label">Table Prefix</label>
-                                                    <div class="col-sm-8">
-                                                        <input type="text" class="form-control" id="db-table-prefix"
-                                                            name="db-table-prefix"
-                                                            placeholder="boostack_" value="boostack_">
+                                                <div class="mb-3 row">
+                                                    <label for="db-username" class="col-sm-2 col-form-label">Username</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" id="db-username" name="db-username" placeholder="root" value="root" />
                                                     </div>
                                                 </div>
-                                                <div class="form-group">
-                                                    <label for="db-username" class="col-sm-2 control-label">Username</label>
-                                                    <div class="col-sm-8">
-                                                        <input type="text" class="form-control" id="db-username"
-                                                            name="db-username"
-                                                            placeholder="root" value="root">
+                                                <div class="mb-3 row">
+                                                    <label for="db-password" class="col-sm-2 col-form-label">Username</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="password" class="form-control" id="db-password" name="db-password" placeholder="" value="" autocomplete="off" />
                                                     </div>
                                                 </div>
-                                                <div class="form-group">
-                                                    <label for="db-password" class="col-sm-2 control-label">Password</label>
-                                                    <div class="col-sm-8">
-                                                        <input type="password" class="form-control" id="db-password"
-                                                            name="db-password"
-                                                            placeholder="" value="">
+                                                <div class="mb-3 row">
+                                                    <label for="db-test" class="col-sm-2 col-form-label">Test Database</label>
+                                                    <div class="col-sm-9">
+                                                    <button id="btnCheckDB" class="btn btn-primary btn-sm" onclick="checkDB()">Test Database</button>
+                                                        <p><span id="dbStatusIcon"></span><span id="dbStatus"></span></p>
                                                     </div>
                                                 </div>
+                
                                                 <div class="form-group">
-                                                    <label for="db-test" class="col-sm-2 control-label">Test Database</label>
-                                                    <div class="col-sm-8">
-                                                        <button id="btnCheckDB" class="btn btn-primary btn-xs" onclick="checkDB()">Test Database</button>
-                                                        <p>&ensp;&ensp;<span id="dbStatusIcon"></span><span id="dbStatus"></span></p>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <hr/>
-                                                    <label for="db-session-true"
-                                                        class="col-sm-2 control-label">Session</label>
+                                                    <hr />
+                                                    <label for="db-session-true" class="col-sm-2 control-label">Session</label>
                                                     <div class="col-sm-8">
                                                         <label class="radio-inline">
-                                                            <input type="radio" name="db-session-active"
-                                                                id="db-session-true"
-                                                                value="true"
-                                                                checked> Yes
+                                                            <input type="radio" name="db-session-active" id="db-session-true" value="true" checked> Yes
                                                         </label>
                                                         <label class="radio-inline">
-                                                            <input type="radio" name="db-session-active"
-                                                                id="db-session-false"
-                                                                value="false"> No
+                                                            <input type="radio" name="db-session-active" id="db-session-false" value="false"> No
                                                         </label>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="csrf-on"
-                                                        class="col-sm-2 control-label">CSRF</label>
+                                                    <label for="csrf-on" class="col-sm-2 control-label">CSRF</label>
                                                     <div class="col-sm-8">
                                                         <label class="radio-inline">
-                                                            <input type="radio" name="db-csrf-active"
-                                                                id="csrf-true"
-                                                                value="true"
-                                                                checked> Yes
+                                                            <input type="radio" name="db-csrf-active" id="csrf-true" value="true" checked> Yes
                                                         </label>
                                                         <label class="radio-inline">
-                                                            <input type="radio" name="db-csrf-active"
-                                                                id="csrf-false"
-                                                                value="false"> No
+                                                            <input type="radio" name="db-csrf-active" id="csrf-false" value="false"> No
                                                         </label>
                                                     </div>
                                                 </div>
                                                 <div class="form-group noHideCookie">
-                                                    <hr/>
-                                                    <label for="db-cookie-true"
-                                                        class="col-sm-2 control-label">Cookie</label>
+                                                    <hr />
+                                                    <label for="db-cookie-true" class="col-sm-2 control-label">Cookie</label>
                                                     <div class="col-sm-8">
                                                         <label class="radio-inline">
-                                                            <input type="radio" name="db-cookie-active" id="db-cookie-true"
-                                                                value="true"
-                                                                checked> Yes
+                                                            <input type="radio" name="db-cookie-active" id="db-cookie-true" value="true" checked> Yes
                                                         </label>
                                                         <label class="radio-inline">
-                                                            <input type="radio" name="db-cookie-active" id="db-cookie-false"
-                                                                value="false"> No
+                                                            <input type="radio" name="db-cookie-active" id="db-cookie-false" value="false"> No
                                                         </label>
                                                     </div>
                                                 </div>
@@ -362,61 +326,49 @@ if (!empty($_POST)) { ?>
                                                     <label for="db-cookie-expired" class="col-sm-2 control-label">Expired
                                                         (seconds)</label>
                                                     <div class="col-sm-8">
-                                                        <input type="text" class="form-control" id="db-cookie-expired"
-                                                            name="db-cookie-expired"
-                                                            placeholder="29 days" value="2505600">
+                                                        <input type="text" class="form-control" id="db-cookie-expired" name="db-cookie-expired" placeholder="29 days" value="2505600">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="db-cookie-name" class="col-sm-2 control-label">Name</label>
                                                     <div class="col-sm-8">
-                                                        <input type="text" class="form-control" id="db-cookie-name"
-                                                            name="db-cookie-name"
-                                                            placeholder="" value="_<?php echo substr(md5(time()), 0, 9) ?>">
+                                                        <input type="text" class="form-control" id="db-cookie-name" name="db-cookie-name" placeholder="" value="_<?php echo substr(md5(time()), 0, 9) ?>">
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <hr/>
+                                                    <hr />
                                                     <label for="db-log-true" class="col-sm-2 control-label">Log</label>
                                                     <div class="col-sm-8">
                                                         <label class="radio-inline">
-                                                            <input type="radio" name="db-log-active" id="db-log-true"
-                                                                value="true"
-                                                                checked> Yes
+                                                            <input type="radio" name="db-log-active" id="db-log-true" value="true" checked> Yes
                                                         </label>
                                                         <label class="radio-inline">
-                                                            <input type="radio" name="db-log-active" id="db-log-false"
-                                                                value="false"> No
+                                                            <input type="radio" name="db-log-active" id="db-log-false" value="false"> No
                                                         </label>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <hr/>
+                                                    <hr />
                                                     <label for="db-log-true" class="col-sm-2 control-label">Rest API</label>
                                                     <div class="col-sm-8">
                                                         <label class="radio-inline">
-                                                            <input type="radio" name="api-active" id="api-true"
-                                                                value="true"
-                                                                checked> Yes
+                                                            <input type="radio" name="api-active" id="api-true" value="true" checked> Yes
                                                         </label>
                                                         <label class="radio-inline">
-                                                            <input type="radio" name="api-active" id="api-false"
-                                                                value="false"> No
+                                                            <input type="radio" name="api-active" id="api-false" value="false"> No
                                                         </label>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <hr/>
+                                                    <hr />
                                                     <label for="lockStrategy-on-true" class="col-sm-2 control-label">Login Lock Strategy</label>
                                                     <div class="col-sm-8">
                                                         <label class="radio-inline">
-                                                            <input type="radio" name="db-lockStrategy_on" id="lockStrategy-on-true"
-                                                                value="true"> Yes
+                                                            <input type="radio" name="db-lockStrategy_on" id="lockStrategy-on-true" value="true"> Yes
                                                         </label>
                                                         <label class="radio-inline">
-                                                            <input type="radio" name="db-lockStrategy_on" id="lockStrategy-on-false"
-                                                                value="false" checked> No
+                                                            <input type="radio" name="db-lockStrategy_on" id="lockStrategy-on-false" value="false" checked> No
                                                         </label>
                                                     </div>
                                                 </div>
@@ -424,25 +376,22 @@ if (!empty($_POST)) { ?>
                                                     <label for="login_max_attempts" class="col-sm-2 control-label">Login Max Attempts</label>
                                                     <div class="col-sm-8">
                                                         <span data-toggle="tooltip" data-placement="top" title="Max Login Attempts before user gets blocked before proceding with login">
-                                                            <input type="number" class="form-control" id="login_max_attempts" name="db-loginLock-max-attempts" min="0" max="10" value="3"/>
+                                                            <input type="number" class="form-control" id="login_max_attempts" name="db-loginLock-max-attempts" min="0" max="10" value="3" />
                                                         </span>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <hr/>
+                                                    <hr />
                                                     <label for="lockStrategy-true" class="col-sm-2 control-label">Recaptcha or Timer?</label>
                                                     <div class="col-sm-8">
                                                         <span data-toggle="tooltip" data-placement="top" title="User login gets blocked with Google reCAPTCHA">
                                                             <label class="radio-inline">
-                                                                <input type="radio" name="db-loginLock-type" id="recaptcha"
-                                                                    value="recaptcha"
-                                                                    > Recaptcha
+                                                                <input type="radio" name="db-loginLock-type" id="recaptcha" value="recaptcha"> Recaptcha
                                                             </label>
                                                         </span>
                                                         <span data-toggle="tooltip" data-placement="top" title="User login gets blocked for X seconds">
                                                             <label class="radio-inline">
-                                                                <input type="radio" name="db-loginLock-type" id="timer"
-                                                                    value="timer"> Timer
+                                                                <input type="radio" name="db-loginLock-type" id="timer" value="timer"> Timer
                                                             </label>
                                                         </span>
                                                     </div>
@@ -450,26 +399,26 @@ if (!empty($_POST)) { ?>
                                                 <div class="form-group">
                                                     <label for="recaptcha_public" class="col-sm-2 control-label">Public key recaptcha</label>
                                                     <div class="col-sm-8">
-                                                        <input type="text" class="form-control" id="recaptcha_public" name="db-loginLock-recaptcha-public"/>
+                                                        <input type="text" class="form-control" id="recaptcha_public" name="db-loginLock-recaptcha-public" />
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="recaptcha_private" class="col-sm-2 control-label">Private key recaptcha</label>
                                                     <div class="col-sm-8">
-                                                        <input type="text" class="form-control" id="recaptcha_private" name="db-loginLock-recaptcha-private"/>
+                                                        <input type="text" class="form-control" id="recaptcha_private" name="db-loginLock-recaptcha-private" />
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="timer_seconds" class="col-sm-2 control-label">Timer Seconds</label>
                                                     <div class="col-sm-8">
                                                         <span data-toggle="tooltip" data-placement="top" title="Seconds user gets blocked before next attempt to login">
-                                                            <input type="number" class="form-control" id="timer_seconds" name="db-loginLock-timer-seconds" min="0" value="180"/>
+                                                            <input type="number" class="form-control" id="timer_seconds" name="db-loginLock-timer-seconds" min="0" value="180" />
                                                         </span>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <hr/>
+                                        <hr />
                                         <div class="form-group">
                                             <div class="col-sm-offset-2 col-sm-10 text-right">
                                                 <button type="submit" class="btn btn-success">Save</button>

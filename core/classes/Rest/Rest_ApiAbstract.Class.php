@@ -2,11 +2,11 @@
 /**
  * Boostack: Rest_Api_Abstract.Class.php
  * ========================================================================
- * Copyright 2014-2023 Spagnolo Stefano
+ * Copyright 2014-2024 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 4.1
+ * @version 4.2
  */
 
 abstract class Rest_ApiAbstract
@@ -53,7 +53,9 @@ abstract class Rest_ApiAbstract
             case 'POST':
                 if (array_key_exists('HTTP_X_HTTP_METHOD', $_SERVER)) {
                     if ($_SERVER['HTTP_X_HTTP_METHOD'] == 'PUT') {
-                        parse_str(trim(file_get_contents("php://input")),$this->file);
+                        $fs = trim(file_get_contents("php://input"));
+                        $f = null;
+                        $this->file = parse_str($fs,$f);
                         $this->file = Utils::sanitizeInput($this->file);
                         $this->request = Request::getQueryArray();
                     } else {

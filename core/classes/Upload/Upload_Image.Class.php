@@ -1,13 +1,77 @@
 <?php
+
 /**
  * Boostack: Upload_Image.Class.php
  * ========================================================================
- * Copyright 2014-2023 Spagnolo Stefano
+ * Copyright 2014-2024 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 4.1
+ * @version 4.2
  */
+// Link image type to correct image loader and saver
+// - makes it easier to add additional types later on
+// - makes the function easier to read
+
+
+const IMAGETYPE_EXTENSION = array(
+    "gif" => IMAGETYPE_GIF,
+    "jpeg" => IMAGETYPE_JPEG,
+    "png" => IMAGETYPE_PNG,
+    "swf" => IMAGETYPE_SWF,
+    "psd" => IMAGETYPE_PSD,
+    "bmp" => IMAGETYPE_BMP,
+    "tiff" => IMAGETYPE_TIFF_II,
+    "tiff" => IMAGETYPE_TIFF_MM,
+    "jpc" => IMAGETYPE_JPC,
+    "jp2" => IMAGETYPE_JP2,
+    "jpx" => IMAGETYPE_JPX,
+    "jb2" => IMAGETYPE_JB2,
+    "swc" => IMAGETYPE_SWC,
+    "iff" => IMAGETYPE_IFF,
+    "wbmp" => IMAGETYPE_WBMP,
+    "xbm" => IMAGETYPE_XBM,
+    "ico" => IMAGETYPE_ICO,
+    "webp" => IMAGETYPE_WEBP
+);
+
+const IMAGE_HANDLERS = [
+    null,
+    IMAGETYPE_GIF => [
+        'load' => 'imagecreatefromgif',
+        'save' => 'imagegif'
+    ],
+    IMAGETYPE_JPEG => [
+        'load' => 'imagecreatefromjpeg',
+        'save' => 'imagejpeg',
+        'quality' => 100
+    ],
+    IMAGETYPE_PNG => [
+        'load' => 'imagecreatefrompng',
+        'save' => 'imagepng',
+        'quality' => -1
+    ],
+    IMAGETYPE_SWF => null,
+    IMAGETYPE_PSD => null,
+    IMAGETYPE_BMP => null,
+    IMAGETYPE_TIFF_II  => null,
+    IMAGETYPE_TIFF_MM  => null,
+    IMAGETYPE_JPC => null,
+    IMAGETYPE_JP2 => null,
+    IMAGETYPE_JPX => null,
+    IMAGETYPE_JB2 => null,
+    IMAGETYPE_SWC => null,
+    IMAGETYPE_IFF => null,
+    IMAGETYPE_WBMP => null,
+    IMAGETYPE_XBM => null,
+    IMAGETYPE_ICO => null,
+    IMAGETYPE_WEBP => [
+        'load' => 'imagecreatefromwebp',
+        'save' => 'imagewebp',
+        'quality' => 100
+    ]
+];
+
 class Upload_Image
 {
 
@@ -85,7 +149,6 @@ class Upload_Image
     );
 
     private $PNG_compression = 1;
-
     /**
      * Upload_Image constructor.
      * @param $file
@@ -100,7 +163,7 @@ class Upload_Image
      */
     public function __construct($file, $destination_folder, $exitifexist = true, $target_name = NULL, $visual_name = NULL, $resize = NULL, $preview_size = NULL, $filter = NULL)
     {
-        if($this->constraints($file)){
+        if ($this->constraints($file)) {
             if ($file["error"] > 0) {
                 // throw new Exception("Return Error Code: : ".$file["error"]."<br />");
                 return;
@@ -109,12 +172,12 @@ class Upload_Image
                 $this->visual_name = $visual_name;
                 $this->extension = $info["extension"];
                 $namefile = ($target_name == null) ? $file["name"] : $target_name;
-                $this->name = $namefile. "." . $this->extension;
+                $this->name = $namefile . "." . $this->extension;
                 $this->type = $file["type"];
                 $this->size = $file["size"] / 1024;
                 $this->tmp_name = $file["tmp_name"];
                 $this->path = $destination_folder . $this->name;
-                $this->preview_path = $destination_folder . "" . $namefile. "_s". "." . $this->extension;
+                $this->preview_path = $destination_folder . "" . $namefile . "_s" . "." . $this->extension;
 
                 // if ($exitifexist && file_exists($destination_folder.$file["name"])){
                 // throw new Exception("File already exist.");
@@ -125,7 +188,7 @@ class Upload_Image
                 else
                     throw new Exception("Can't MoveUploaded file: " . $this->name);
                 // }
-                list ($width, $height, $type, $attr) = getimagesize($this->path);
+                list($width, $height, $type, $attr) = getimagesize($this->path);
                 $this->height = $height;
                 $this->width = $width;
 
@@ -156,25 +219,24 @@ class Upload_Image
      */
     public function constraints($file)
     {
-        global $boostack, $MAX_UPLOAD_IMAGE_SIZE, $MAX_UPLOAD_PDF_SIZE, $MAX_UPLOAD_NAMEFILE_LENGTH, $MAX_UPLOAD_GENERALFILE_SIZE, $mime_types;
-        if (empty($file) || empty($file["name"]) || empty($file["type"]) ){
-            Logger::write("Unknown file name or file type.",Log_Level::WARNING);
+        global $MAX_UPLOAD_IMAGE_SIZE, $MAX_UPLOAD_PDF_SIZE, $MAX_UPLOAD_NAMEFILE_LENGTH, $MAX_UPLOAD_GENERALFILE_SIZE, $mime_types;
+        if (empty($file) || empty($file["name"]) || empty($file["type"])) {
+            Logger::write("Unknown file name or file type.", Log_Level::WARNING);
             throw new Exception("Unknown file name or file type.");
         }
 
         if (strlen($file["name"]) >= Config::get("max_upload_filename_length")) { // # FILE NAME TOO LONG
-            Logger::write("File Name too long. Rename it and repeat upload.",Log_Level::WARNING);
+            Logger::write("File Name too long. Rename it and repeat upload.", Log_Level::WARNING);
             throw new Exception("File Name too long. Rename it and repeat upload.");
         }
         if (in_array($file["type"], $this->image_types)) { // IS IMAGE
-            if ($file["size"] > Config::get("max_upload_image_size")){// SIZE CHECK
-                Logger::write("File too large.",Log_Level::WARNING);
+            if ($file["size"] > Config::get("max_upload_image_size")) { // SIZE CHECK
+                Logger::write("File too large.", Log_Level::WARNING);
                 throw new Exception("File too large.");
             }
             return true;
-        }
-        else{
-            Logger::write("Unknown file. Type:" . $file["type"] . " Name:" . $file["name"],Log_Level::WARNING);
+        } else {
+            Logger::write("Unknown file. Type:" . $file["type"] . " Name:" . $file["name"], Log_Level::WARNING);
             throw new Exception("Unknown file. Type:" . $file["type"] . " Name:" . $file["name"]);
         }
     }
@@ -273,26 +335,22 @@ class Upload_Image
         $this->remove();
 
         switch ($filter) {
-            case "la":
-            {
-                imagefilter($new_image, IMG_FILTER_CONTRAST, - 40);
-                break;
-            }
-            case "ny":
-            {
-                imagefilter($new_image, IMG_FILTER_GRAYSCALE);
-                break;
-            }
-            case "sd":
-            {
-                imagefilter($new_image, IMG_FILTER_COLORIZE, 0, 0, 100);
-                break;
-            }
-            case "sf":
-            {
-                imagefilter($new_image, IMG_FILTER_COLORIZE, 0, 100, 0);
-                break;
-            }
+            case "la": {
+                    imagefilter($new_image, IMG_FILTER_CONTRAST, -40);
+                    break;
+                }
+            case "ny": {
+                    imagefilter($new_image, IMG_FILTER_GRAYSCALE);
+                    break;
+                }
+            case "sd": {
+                    imagefilter($new_image, IMG_FILTER_COLORIZE, 0, 0, 100);
+                    break;
+                }
+            case "sf": {
+                    imagefilter($new_image, IMG_FILTER_COLORIZE, 0, 100, 0);
+                    break;
+                }
         }
         if ($this->type == "image/jpeg" || $this->type == "image/pjpeg")
             imagejpeg($new_image, $this->path, 100);
@@ -336,5 +394,133 @@ class Upload_Image
 
         $this->preview_path = $this->preview_path;
     }
+
+    /**
+     * @param $src - a valid file location
+     * @param $dest - a valid file target
+     * @param $targetWidth - desired output width
+     * @param $targetHeight - desired output height or null
+     */
+    public static function createThumbnail($src, $dest, $targetWidth, $targetHeight = null)
+    {
+
+        // 1. Load the image from the given $src
+        // - see if the file actually exists
+        // - check if it's of a valid image type
+        // - load the image resource
+
+        // get the type of the image
+        // we need the type to determine the correct loader
+        $type = exif_imagetype($src);
+
+        // if no valid type or no handler found -> exit
+        if (!$type || !IMAGE_HANDLERS[$type]) {
+            return null;
+        }
+
+        // load the image with the correct loader
+        $image = call_user_func(IMAGE_HANDLERS[$type]['load'], $src);
+
+        // no image found at supplied location -> exit
+        if (!$image) {
+            return null;
+        }
+
+        // 2. Create a thumbnail and resize the loaded $image
+        // - get the image dimensions
+        // - define the output size appropriately
+        // - create a thumbnail based on that size
+        // - set alpha transparency for GIFs and PNGs
+        // - draw the final thumbnail
+
+        // get original image width and height
+        $width = imagesx($image);
+        $height = imagesy($image);
+
+        // maintain aspect ratio when no height set
+        if ($targetHeight == null) {
+
+            // get width to height ratio
+            $ratio = $width / $height;
+
+            // if is portrait
+            // use ratio to scale height to fit in square
+            if ($width > $height) {
+                $targetHeight = floor($targetWidth / $ratio);
+            }
+            // if is landscape
+            // use ratio to scale width to fit in square
+            else {
+                $targetHeight = $targetWidth;
+                $targetWidth = floor($targetWidth * $ratio);
+            }
+        }
+
+        // create duplicate image based on calculated target size
+        $thumbnail = imagecreatetruecolor($targetWidth, $targetHeight);
+
+        // set transparency options for GIFs and PNGs
+        if ($type == IMAGETYPE_GIF || $type == IMAGETYPE_PNG) {
+
+            // make image transparent
+            imagecolortransparent(
+                $thumbnail,
+                imagecolorallocate($thumbnail, 0, 0, 0)
+            );
+
+            // additional settings for PNGs
+            if ($type == IMAGETYPE_PNG) {
+                imagealphablending($thumbnail, false);
+                imagesavealpha($thumbnail, true);
+            }
+        }
+
+        // copy entire source image to duplicate image and resize
+        imagecopyresampled(
+            $thumbnail,
+            $image,
+            0,
+            0,
+            0,
+            0,
+            $targetWidth,
+            $targetHeight,
+            $width,
+            $height
+        );
+        // 3. Save the $thumbnail to disk
+        // - call the correct save method
+        // - set the correct quality level
+
+        // save the duplicate version of the image to disk
+        return call_user_func(
+            IMAGE_HANDLERS[$type]['save'],
+            $thumbnail,
+            $dest,
+            IMAGE_HANDLERS[$type]['quality']
+        );
+    }
+
+    public static function copy($src, $dest)
+    {
+        $ext = pathinfo($dest, PATHINFO_EXTENSION);
+        if(empty(IMAGETYPE_EXTENSION[$ext])) {
+            return null;
+        }
+        $type = exif_imagetype($src);
+        if (!$type || !IMAGE_HANDLERS[$type]) {
+            return null;
+        }
+        $image = call_user_func(IMAGE_HANDLERS[$type]['load'], $src);
+        if (!$image) {
+            return null;
+        }
+        $type_dest = IMAGETYPE_EXTENSION[$ext]; 
+        return call_user_func(
+            IMAGE_HANDLERS[$type_dest]['save'],
+            $image,
+            $dest,
+            IMAGE_HANDLERS[$type_dest]['quality']
+        );
+    }
 }
-?>

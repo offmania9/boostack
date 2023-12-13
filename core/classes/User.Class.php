@@ -2,11 +2,11 @@
 /**
  * Boostack: User.Class.php
  * ========================================================================
- * Copyright 2014-2023 Spagnolo Stefano
+ * Copyright 2014-2024 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Alessio Debernardi
- * @version 4.1
+ * @version 4
  */
 class User implements JsonSerializable {
 
@@ -159,7 +159,7 @@ class User implements JsonSerializable {
     /**
      * @return array
      */
-    public function jsonSerialize()
+    public function jsonSerialize():mixed
     {
         return array_merge(
             $this->objects[User_Entity::class]->jsonSerialize(),
@@ -281,6 +281,55 @@ class User implements JsonSerializable {
         $this->session_cookie = $cookieHash;
         $this->save();
         setcookie(Config::get("cookie_name"), $cookieHash, time() + Config::get("cookie_expire"), '/');
+    }
+
+    public function sendConfirmationMail($HTMLtemplate="new_pre_user.html"){
+        $msg = Template::getMailTemplate($HTMLtemplate,[
+            "help_mail" => Config::get('mail_from'),
+            "fullname" => $this->first_name,
+            "username" => $this->email,
+            "confirm_url" => Config::get('url')."confirm/".$this->join_idconfirm,
+            "logo"=> Config::get('url').Config::get("url_logo"),
+            "hr_mail"=> Config::get('mail_from'),
+            "login_link" => Config::get('url')
+        ]);
+        if (Config::get('useMailgun')) {
+            $mail = new Email_Mailgun([
+                "from_mail" => Config::get("mail_from"),
+                "from_name" => Config::get("name_from"),
+                "bcc" => Config::get("mail_bcc"),
+                "to" => $this->email,
+                "subject" => Language::getLabel("email.confirmation_subject"),
+                "message" => $msg
+            ]); 
+            
+            if (!$mail->send())
+                throw new Exception("Attention! error in sendmail (sendConfirmationMail)");
+        }
+    }
+
+    public function sendWelcomeMail($HTMLtemplate="new_user_welcome.html"){
+        $msg = Template::getMailTemplate($HTMLtemplate,[
+            "help_mail" => Config::get('mail_from'),
+            "fullname" => $this->first_name,
+            "username" => $this->email,
+            "logo"=> Config::get('url').Config::get("url_logo"),
+            "hr_mail"=> Config::get('mail_from'),
+            "login_link" => Config::get('url')
+        ]);
+        if (Config::get('useMailgun')) {
+            $mail = new Email_Mailgun([
+                "from_mail" => Config::get("mail_from"),
+                "from_name" => Config::get("name_from"),
+                "bcc" => Config::get("mail_bcc"),
+                "to" => $this->email,
+                "subject" => Language::getLabel("email.welcome_subject"),
+                "message" => $msg
+            ]); 
+            
+            if (!$mail->send())
+                throw new Exception("Attention! error in sendmail (sendWelcomeMail");
+        }
     }
 
 }

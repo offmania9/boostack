@@ -1,12 +1,13 @@
 <?php
+
 /**
  * Boostack: Auth.Class.php
  * ========================================================================
- * Copyright 2014-2023 Spagnolo Stefano
+ * Copyright 2014-2024 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Alessio Debernardi
- * @version 4.1
+ * @version 4
  */
 
 class Auth
@@ -37,41 +38,39 @@ class Auth
         $lockStrategy = Config::get("login_lockStrategy");
 
         try {
-            if(!Utils::checkAcceptedTimeFromLastRequest(self::getLastTry())){
+            if (!Utils::checkAcceptedTimeFromLastRequest(self::getLastTry())) {
                 throw new Exception("Too much request. Wait some seconds");
             }
-            if(Auth::isLoggedIn())
+            if (Auth::isLoggedIn())
                 return $result;
 
             /** LOCK STRATEGY CHECK **/
-            if($isLockStrategyEnabled) {
-                if(!Session::get("failed_login_count")) Session::set("failed_login_count",0);
-                if(Session::get("failed_login_count") >= Config::get("login_maxAttempts")) {
-                    if($lockStrategy == "timer") {
-                        if(!self::checkAcceptedTimeFromLastLogin(self::getLastTry())) throw new Exception("Too much login request. Wait some seconds", self::LOCK_TIMER);
-                    } else if($lockStrategy == "recaptcha") {
+            if ($isLockStrategyEnabled) {
+                if (!Session::get("failed_login_count")) Session::set("failed_login_count", 0);
+                if (Session::get("failed_login_count") >= Config::get("login_maxAttempts")) {
+                    if ($lockStrategy == "timer") {
+                        if (!self::checkAcceptedTimeFromLastLogin(self::getLastTry())) throw new Exception("Too much login request. Wait some seconds", self::LOCK_TIMER);
+                    } else if ($lockStrategy == "recaptcha") {
                         $recaptchaFormData = Request::hasPostParam("g-recaptcha-response") ? Request::getPostParam("g-recaptcha-response") : null;
-                        if(empty($recaptchaFormData)) throw new Exception("Missing recaptcha data", self::LOCK_RECAPTCHA);
+                        if (empty($recaptchaFormData)) throw new Exception("Missing recaptcha data", self::LOCK_RECAPTCHA);
                         $recaptchaResponse = self::reCaptchaVerify(Request::getPostParam("g-recaptcha-response"));
-                        if(!$recaptchaResponse) throw new Exception("Invalid reCaptcha", self::LOCK_RECAPTCHA);
+                        if (!$recaptchaResponse) throw new Exception("Invalid reCaptcha", self::LOCK_RECAPTCHA);
                     }
-                    Session::set("failed_login_count",0);
+                    Session::set("failed_login_count", 0);
                 }
             }
-            if(!Validator::username($username))
+            if (!Validator::username($username))
                 throw new Exception("Username format not valid");
-            if(!Validator::password($password))
+            if (!Validator::password($password))
                 throw new Exception("Password format not valid");
             Auth::impressLastTry();
-            if($isLockStrategyEnabled || ($isLockStrategyEnabled && Config::get('csrf_on') && Session::CSRFCheckValidity(Request::getPostArray(),false))) Session::set("failed_login_count", Session::get("failed_login_count")+1);
+            if ($isLockStrategyEnabled || ($isLockStrategyEnabled && Config::get('csrf_on') && Session::CSRFCheckValidity(Request::getPostArray(), false))) Session::set("failed_login_count", Session::get("failed_login_count") + 1);
             Auth::checkAndLogin($username, $password, $cookieRememberMe, true);
-            if($isLockStrategyEnabled) Session::set("failed_login_count",0);
-            
-
+            if ($isLockStrategyEnabled) Session::set("failed_login_count", 0);
         } catch (Exception $e) {
-            Logger::write($e,Log_Level::USER);
+            Logger::write($e, Log_Level::USER);
             $result->error = ($e->getMessage());
-            $result->code =($e->getCode());
+            $result->code = ($e->getCode());
         }
 
         return $result;
@@ -86,9 +85,11 @@ class Auth
     public static function loginByUserID($userID)
     {
         $userClass = Config::get("use_custom_user_class") ? Config::get("custom_user_class") : User::class;
-        if(!Auth::isLoggedIn()) {
+        if (!Auth::isLoggedIn()) {
             $user = new $userClass($userID);
             self::login($user->username, "", $user->pwd);
+            $user->last_access = time();
+            $user->save();
         }
     }
 
@@ -103,21 +104,21 @@ class Auth
     public static function loginByCookie($cookieValue)
     {
         try {
-            $userClass = Config::get("use_custom_user_class") ? Config::get("custom_user_class") : User::class; 
+            $userClass = Config::get("use_custom_user_class") ? Config::get("custom_user_class") : User::class;
             $userCredentials = $userClass::getCredentialByCookie($cookieValue);
-            if($userCredentials != false) {
+            if ($userCredentials != false) {
                 if (Utils::checkCookieHashValidity($cookieValue)) {
-                    $usernameToLogin = Config::get("userToLogin")=="email"?$userCredentials["email"]:$userCredentials["username"];
-                    $l = self::login($usernameToLogin,"",$userCredentials["pwd"]);
+                    $usernameToLogin = Config::get("userToLogin") == "email" ? $userCredentials["email"] : $userCredentials["username"];
+                    $l = self::login($usernameToLogin, "", $userCredentials["pwd"]);
                     $userObject = Session::getUserObject();
                     $userObject->refreshRememberMeCookie();
                     return true;
                 } else {
-                    Logger::write("checkCookieHashValidity(" . $cookieValue . "): false - IP:" . Utils::getIpAddress(),Log_Level::USER);
+                    Logger::write("checkCookieHashValidity(" . $cookieValue . "): false - IP:" . Utils::getIpAddress(), Log_Level::USER);
                 }
             }
         } catch (PDOException $e) {
-            Logger::write($e,Log_Level::ERROR,Log_Driver::FILE);
+            Logger::write($e, Log_Level::ERROR, Log_Driver::FILE);
         } catch (Exception $e) {
             Logger::write($e, Log_Level::ERROR);
         }
@@ -125,7 +126,7 @@ class Auth
     }
 
 
-    public static function registration($username,$email,$psw1,$psw2,$CSRFToken = NULL)
+    public static function registration($username, $email, $psw1, $psw2, $CSRFToken = NULL)
     {
         $registrationError = "";
         try {
@@ -133,13 +134,13 @@ class Auth
             if (!Validator::email($email)) $registrationError = "Username format not valid";
             if (!Validator::password($psw1)) $registrationError = "Password format not valid";
             if (User::existsByEmail($email, false) || User::existsByUsername($email, false)) $registrationError = "Email already registered";
-            if (Config::get('csrf_on')){
-                if(empty($CSRFToken))
-                    throw new Exception ("Attention! CSRF token is required.");
+            if (Config::get('csrf_on')) {
+                if (empty($CSRFToken))
+                    throw new Exception("Attention! CSRF token is required.");
                 $token_key = Session::getObject()->getCSRFDefaultKey();
-                Session::CSRFCheckValidity(array($token_key=>$CSRFToken));
+                Session::CSRFCheckValidity(array($token_key => $CSRFToken));
             }
-            
+
             if (strlen($registrationError) == 0) {
                 $user = new User();
                 $user->username = $username;
@@ -150,17 +151,16 @@ class Auth
 
 
                 Auth::loginByUserID($user->id);
-                if (Config::get('csrf_on')){
+                if (Config::get('csrf_on')) {
                     Session::getObject()->CSRFTokenInvalidation();
                 }
                 return true;
-            }
-            else{
-                Logger::write($registrationError, Log_Level::ERROR);   
+            } else {
+                Logger::write($registrationError, Log_Level::ERROR);
                 throw new Exception_Registration($registrationError);
-            }   
+            }
         } catch (PDOException $e) {
-            Logger::write($e,Log_Level::ERROR,Log_Driver::FILE);
+            Logger::write($e, Log_Level::ERROR, Log_Driver::FILE);
         } catch (Exception $e) {
             Logger::write($e, Log_Level::ERROR);
             throw $e;
@@ -184,8 +184,8 @@ class Auth
     public static function logout()
     {
         try {
-            if(self::isLoggedIn()) {
-                Logger::write("[Logout] uid: ".Session::getUserID(),Log_Level::USER);
+            if (self::isLoggedIn()) {
+                Logger::write("[Logout] uid: " . Session::getUserID(), Log_Level::USER);
                 Session::logoutUser();
                 if (Config::get("cookie_on")) {
                     $cookieName = Config::get("cookie_name");
@@ -196,7 +196,7 @@ class Auth
                 return true;
             }
         } catch (PDOException $e) {
-            Logger::write($e,Log_Level::ERROR,Log_Driver::FILE);
+            Logger::write($e, Log_Level::ERROR, Log_Driver::FILE);
         } catch (Exception $e) {
             Logger::write($e, Log_Level::ERROR);
         }
@@ -225,7 +225,7 @@ class Auth
     public static function getUserLoggedObject()
     {
         $ret = null;
-        if(Config::get("session_on"))
+        if (Config::get("session_on"))
             $ret = Session::getUserObject();
         return $ret;
     }
@@ -275,8 +275,8 @@ class Auth
             }
         }
 
-        if(Config::get("userToLogin") == "both") {
-            if(!$userClass::existsByEmail($username,false) && !$userClass::existsByUsername($username,false)) {
+        if (Config::get("userToLogin") == "both") {
+            if (!$userClass::existsByEmail($username, false) && !$userClass::existsByUsername($username, false)) {
                 Logger::write("Auth -> tryLogin: User doesn't exist by Username and by email", Log_Level::USER);
                 if ($throwException)
                     throw new Exception("Username or password not valid.", 6);
@@ -287,10 +287,10 @@ class Auth
         self::logout();
         self::login($username, $password);
 
-        if (!self::isLoggedIn()){
-            Logger::write("Auth -> checkAndLogin: Username or password not valid.",Log_Level::USER);
+        if (!self::isLoggedIn()) {
+            Logger::write("Auth -> checkAndLogin: Username or password not valid.", Log_Level::USER);
             if ($throwException)
-                throw new Exception("Username or password not valid.",5);
+                throw new Exception("Username or password not valid.", 5);
             return false;
         }
 
@@ -298,7 +298,7 @@ class Auth
             $user = Session::getUserObject();
             $user->refreshRememberMeCookie();
         }
-        Logger::write("[Login] uid: ".Session::getUserID(),Log_Level::USER);
+        //Logger::write("[Login] uid: ".Session::getUserID(),Log_Level::USER);
         return true;
     }
 
@@ -331,13 +331,14 @@ class Auth
                     $userObject = new $userClass($userId);
                     $userObject->last_access = time();
                     $userObject->save();
+                    Logger::write("[Login] uid: " . $userId, Log_Level::USER);
                     return true;
                 }
             }
         } catch (PDOException $e) {
-            Logger::write($e,Log_Level::ERROR,Log_Driver::FILE);
+            Logger::write($e, Log_Level::ERROR, Log_Driver::FILE);
         } catch (Exception $e) {
-            Logger::write($e,Log_Level::ERROR);
+            Logger::write($e, Log_Level::ERROR);
         }
         return false;
     }
@@ -359,7 +360,7 @@ class Auth
         ]);
         $response = $curlRequest->send();
         $a =  json_decode($response->data, true);
-        return(!$response->hasError() && $a["success"]);
+        return (!$response->hasError() && $a["success"]);
     }
 
     /**
@@ -370,5 +371,4 @@ class Auth
     {
         return $lastLogin != 0 && (time() - $lastLogin > Config::get("login_secondsFormBlocked"));
     }
-
 }

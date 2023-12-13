@@ -3,11 +3,11 @@
 /**
  * Boostack: User_Registration.Class.php
  * ========================================================================
- * Copyright 2014-2023 Spagnolo Stefano
+ * Copyright 2014-2024 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 4.1
+ * @version 4.2
  */
 class User_Registration extends BaseClass
 {
@@ -71,6 +71,5 @@ class User_Registration extends BaseClass
         $res = $q->fetchAll(PDO::FETCH_ASSOC);
         return (int)$res[0]["id"];
     }
-
 }
 ?>

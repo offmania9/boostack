@@ -2,11 +2,11 @@
 /**
  * Boostack: User_Entity.Class.php
  * ========================================================================
- * Copyright 2014-2023 Spagnolo Stefano
+ * Copyright 2014-2024 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 4.1
+ * @version 4.2
  */
 class User_Entity extends BaseClass
 {
@@ -21,7 +21,7 @@ class User_Entity extends BaseClass
     /**
      * @var
      */
-    protected $full_name;
+    protected $name;
     /**
      * @var
      */
@@ -58,7 +58,7 @@ class User_Entity extends BaseClass
     protected $default_values = [
         "active" => "0",
         "privilege" => 3,
-        "full_name" => "",
+        "name" => "",
         "username" => "",
         "pwd" => "",
         "email" => "",
@@ -101,7 +101,7 @@ class User_Entity extends BaseClass
     /**
      * @return array|mixed
      */
-    public function jsonSerialize() {
+    public function jsonSerialize():mixed {
         $vars = parent::jsonSerialize();
         $vars["id"] = $this->id;
         return $vars;
@@ -171,7 +171,7 @@ class User_Entity extends BaseClass
         $q->execute();
         if($q->rowCount() == 0) {
             if ($throwException)
-                throw new Exception("Username or password not valid.",3);
+                throw new Exception("User exists by email or Username or password not valid.",3);
             return false;
         }
         return true;

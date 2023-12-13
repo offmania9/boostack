@@ -1,12 +1,13 @@
 <?php
+
 /**
  * Boostack: Utils.Class.php
  * ========================================================================
- * Copyright 2014-2023 Spagnolo Stefano
+ * Copyright 2014-2024 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 4.1
+ * @version 4.2
  */
 class Utils
 {
@@ -48,14 +49,12 @@ class Utils
             for ($i; $i < $cnt - 1; $i++)
                 $filename .= $cn[$i] . "/";
             $filename .= $className . ".Class.php";
-            
         }
-        if (is_readable($pathcore . $filename)){
+        if (is_readable($pathcore . $filename)) {
             require_once($pathcore . $filename);
-        }       
-        else
+        } else
             if (is_readable($pathcustom . $filename))
-                require_once($pathcustom . $filename);
+            require_once($pathcustom . $filename);
     }
 
     /**
@@ -65,10 +64,10 @@ class Utils
     {
         $ip = getenv('HTTP_CLIENT_IP') ?:
             getenv('HTTP_X_FORWARDED_FOR') ?:
-                getenv('HTTP_X_FORWARDED') ?:
-                    getenv('HTTP_FORWARDED_FOR') ?:
-                        getenv('HTTP_FORWARDED') ?:
-                            getenv('REMOTE_ADDR');
+            getenv('HTTP_X_FORWARDED') ?:
+            getenv('HTTP_FORWARDED_FOR') ?:
+            getenv('HTTP_FORWARDED') ?:
+            getenv('REMOTE_ADDR');
         return $ip;
     }
 
@@ -76,7 +75,8 @@ class Utils
      * @param $pwd
      * @return int
      */
-    public static function isStrongPassword($pwd){
+    public static function isStrongPassword($pwd)
+    {
         return preg_match("#.*^(?=.{8,20})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$#", $pwd);
     }
 
@@ -95,7 +95,7 @@ class Utils
     public static function checkPrivilege($currentUser, $privilegeLevel)
     {
         if (!self::hasPrivilege($currentUser, $privilegeLevel))
-        self::goToError();
+            self::goToError();
     }
 
     /**
@@ -129,8 +129,8 @@ class Utils
      */
     public static function goToError(int $status_code = NULL)
     {
-        
-        header("Location: ".Config::get("url")."error/".(empty($status_code)?"":$status_code));
+
+        header("Location: " . Config::get("url") . "error/" . (empty($status_code) ? "" : $status_code));
         exit();
     }
 
@@ -139,7 +139,7 @@ class Utils
      */
     public static function goToLogout()
     {
-        global $boostack;
+        $boostack = Boostack::getInstance();
         header("Location: " . $boostack->url . "logout");
         exit();
     }
@@ -149,7 +149,8 @@ class Utils
      */
     public static function goToLogin($callbackURL = NULL)
     {
-        global $boostack, $objSession;
+        global $objSession;
+        $boostack = Boostack::getInstance();
         if ($callbackURL != NULL) {
             $objSession->loginCallbackURL = $callbackURL;
         }
@@ -160,7 +161,8 @@ class Utils
     /**
      * @param $string
      */
-    public static function isJson($string) {
+    public static function isJson($string)
+    {
         json_decode($string);
         return (json_last_error() == JSON_ERROR_NONE);
     }
@@ -174,13 +176,19 @@ class Utils
         exit();
     }
 
+    public static function goToHome()
+    {
+        header("Location: " . Config::get("url"));
+        exit();
+    }
+
     /**
      * @param $timeLastRequest
      * @return bool
      */
     public static function checkAcceptedTimeFromLastRequest($timeLastRequest)
     {
-        if(!is_numeric($timeLastRequest))
+        if (!is_numeric($timeLastRequest))
             return true;
         $secondsAccepted = Config::get("seconds_accepted_between_requests");
         if ((!empty($timeLastRequest) || $timeLastRequest !== null) && (time() - $timeLastRequest >= $secondsAccepted))
@@ -188,15 +196,15 @@ class Utils
         return false;
     }
 
-        /**
+    /**
      * @param $virtualPath
      * @return string
      */
     public static function getFriendlyUrl($virtualPath)
     {
-        if(Config::get('session_on')) {
-            $langUrl = Session::get("SESS_LANGUAGE")."/";
-            if(!Config::get('show_default_language_in_URL') && Session::get("SESS_LANGUAGE") == Config::get('language_default'))
+        if (Config::get('session_on')) {
+            $langUrl = Session::get("SESS_LANGUAGE") . "/";
+            if (!Config::get('show_default_language_in_URL') && Session::get("SESS_LANGUAGE") == Config::get('language_default'))
                 $langUrl = "";
             return Config::get('url') . $langUrl . $virtualPath;
         }
@@ -214,11 +222,15 @@ class Utils
         echo '</pre>';
     }
 
-    public static function formatAmount($number) {
+    public static function formatAmount($number)
+    {
+        if($number == null)
+            return "-";
         return number_format($number, 2, ",", ".");
     }
-    
-    public static function formatNumber($number) {
+
+    public static function formatNumber($number)
+    {
         return number_format($number, 0, ",", ".");
     }
 
@@ -405,7 +417,7 @@ class Utils
         }
         $password = '';
         $alt = time() % 2;
-        for ($i = 0; $i < $length; $i ++) {
+        for ($i = 0; $i < $length; $i++) {
             if ($alt == 1) {
                 $password .= $consonants[(rand() % strlen($consonants))];
                 $alt = 0;
@@ -426,7 +438,7 @@ class Utils
         $chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charsLength = strlen($chars) - 1;
         $randomString = '';
-        for ($i = 0; $i < $length; $i ++) {
+        for ($i = 0; $i < $length; $i++) {
             $randomString .= $chars[rand(0, $charsLength)];
         }
         return $randomString;
@@ -454,11 +466,11 @@ class Utils
      * @return bool
      * @throws Exception
      */
-    public static function checkStringFormat($string, $fieldname="Password", $throwException = true)
+    public static function checkStringFormat($string, $fieldname = "Password", $throwException = true)
     {
-        if ($string == "" || strlen($string) < 6){
+        if ($string == "" || strlen($string) < 6) {
             if ($throwException)
-                throw new Exception("Attention! ".$fieldname." value is wrong.",4);
+                throw new Exception("Attention! " . $fieldname . " value is wrong.", 4);
             return false;
         }
         return true;
@@ -472,7 +484,7 @@ class Utils
      */
     public static function generateCookieHash()
     {
-        return  md5(time()).md5(Utils::getIpAddress() . Utils::getUserAgent());
+        return  md5(time()) . md5(Utils::getIpAddress() . Utils::getUserAgent());
     }
 
     /**
@@ -481,7 +493,68 @@ class Utils
      */
     public static function checkCookieHashValidity($cookieValue)
     {
-        return substr($cookieValue,32) == md5(Utils::getIpAddress().Utils::getUserAgent());
+        return substr($cookieValue, 32) == md5(Utils::getIpAddress() . Utils::getUserAgent());
     }
 
+    public static function extractString($string, $start, $end = null)
+    {
+        if (is_null($end)) {
+            $arr = explode($start, $string);
+            return $arr[1];
+        }
+        $string = ' ' . $string;
+        $ini = strpos($string, $start);
+        if ($ini == 0) return '';
+        $ini += strlen($start);
+        $len = strpos($string, $end, $ini) - $ini;
+        return substr($string, $ini, $len);
+    }
+    public static function string_between_two_string($str, $starting_word, $ending_word)
+    {
+        $arr = explode($starting_word, $str);
+        if (isset($arr[1])) {
+            $arr = explode($ending_word, $arr[1]);
+            return $arr[0];
+        }
+        return '';
+    }
+    public static function cleanStr($string)
+    {
+        // Replaces all spaces with hyphens.
+        $string = str_replace(' ', '-', $string);
+        // Removes special chars.
+        $string = preg_replace('/[^A-Za-z0-9\-]/', '', $string);
+        // Replaces multiple hyphens with single one.
+        $string = preg_replace('/-+/', '-', $string);
+        return $string;
+    }
+
+    public static function addStringAfterCharRepeats($s, $c, $n, $frequency)
+    {
+        $occurrences = 0;
+        $result = '';
+        for ($i = 0; $i < strlen($s); $i++) {
+            $result .= $s[$i];
+
+            if (substr($s, $i, strlen($c)) === $c) {
+                $occurrences++;
+                if ($occurrences % $frequency === 0) {
+                    $result .= $n;
+                }
+            }
+        }
+        return $result;
+    }
+
+    public static function setObjFromArray(&$obj, $array, $arrayExcluded = array("id")){
+        if(property_exists($obj,"active")){
+            $obj->active = array_key_exists("active",$array) ? 1: 0;
+            $arrayExcluded[] = "active";
+        }
+        foreach($array as $key => $value){
+          if(in_array($key,$arrayExcluded)) continue;
+          $obj->{$key} = $value;
+        }
+        $obj->save();
+      }
 }
