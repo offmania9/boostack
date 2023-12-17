@@ -15,8 +15,8 @@
     <div class="line">
         <div class="container">
             <div class="row">
-                <h1 class="w-100">Boostack Setup</h1>
-                <p>This script checks if your server and PHP configuration meets the requirements for running Boostack.</p>
+                <h1 class="">Boostack Setup</h1>
+                <p class="lead">This script checks if your server and PHP configuration meets the requirements for running Boostack.</p>
             </div>
         </div>
     </div>

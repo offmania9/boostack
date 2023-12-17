@@ -24,18 +24,18 @@ $env_parameters = [
     "db_username" => $input['db-username'],
     "db_password" => $input['db-password'],
     "session_on" => $input['db-session-active'],
-    'csrf_on' => $input['db-csrf-active'],
+    'csrf_on' => $input['db-csrf-active'],!empty($input["db-csrf-active"]) && $input["db-session-active"]==true?$input["db-lockStrategy_on"]:FALSE,
     "cookie_on" => $input['db-cookie-active'],
     "cookie_expire" => $input['db-cookie-expired'],
     "cookie_name" => $input['db-cookie-name'],
     "log_on" => $input['db-log-active'],
     "api_on" => $input['api-active'],
-    "lockStrategy_on" => $input["db-lockStrategy_on"],
-    "login_max_attempts" => $input["db-loginLock-max-attempts"],
-    "lockStrategy_type" => isset($input["db-loginLock-type"]) ? $input["db-loginLock-type"] : null,
+    "lockStrategy_on" => !empty($input["db-lockStrategy_on"])?$input["db-lockStrategy_on"]:FALSE,
+    "login_max_attempts" => isset($input["db-loginLock-max-attempts"])?$input["db-loginLock-max-attempts"]:"3",
+    "lockStrategy_type" => isset($input["db-loginLock-type"]) ? $input["db-loginLock-type"] : "timer",
     "recaptcha_public" => $input["db-loginLock-recaptcha-public"],
     "recaptcha_private" => $input["db-loginLock-recaptcha-private"],
-    "login_seconds_blocked" => $input["db-loginLock-timer-seconds"]
+    "login_seconds_blocked" => isset($input["db-loginLock-timer-seconds"])?$input["db-loginLock-timer-seconds"]:"180"
 ];
 
 $exampleEnvName = "sample.env.php";
@@ -50,6 +50,7 @@ if ($envContent === FALSE) {
     $finalSetupMessageError = "message: setup/sample.env.php -> failed to open stream: Permission denied. <br/><br/>Solution: add read access to 'setup' folder";
 } else {
     foreach ($env_parameters as $param => $value) {
+        if(is_null($value)) {print_r( $param);print_r( $value);}
         $value = ($value == "true" || $value == "false") ? strtoupper($value) : $value;
         $envContent = str_replace("[$param]", $value, $envContent);
     }

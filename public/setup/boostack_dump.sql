@@ -118,7 +118,7 @@ CREATE TABLE `boostack_user` (
   `id` int NOT NULL AUTO_INCREMENT,
   `active` varchar(1) NOT NULL,
   `privilege` int DEFAULT NULL,
-  `full_name` varchar(120) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `name` varchar(120) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
   `username` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '',
   `pwd` varchar(255) NOT NULL DEFAULT '',
   `email` varchar(255) NOT NULL,
