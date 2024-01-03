@@ -22,9 +22,11 @@ $config["mail_template_path"] = "template/mail/";
 $config["language_path"] = "../lang/";
 $config["language_file_extension"] = ".inc.json";
 
-$config["default_js_files"] = array("lib/popper.js","lib/require.js","helpers.js","init.js");
+$config["default_js_files"] = array("lib/bootstrap.js","lib/popper.js","lib/require.js","helpers.js","init.js");
 $config["default_ie_js_files"] = array("lib/html5shiv.js","lib/respond.js");
-$config["default_css_files"] = array("lib/bootstrap.css","lib/animate.css","style.css");/*,"custom.css"*/
+$config["default_css_files"] = array("lib/bootstrap.css");/*,"custom.css"*/
+$config["default_css_files_critical"] = array("lib/bootstrap.css");
+$config["default_css_files_noncritical"] = array("lib/animate.css","style.css");/*,"custom.css, "lib/animate.css""*/
 
 $config["default_error_page"] = "error.phtml";
 
@@ -35,14 +37,14 @@ $config["default_error_page"] = "error.phtml";
 $config["sitename"] = "getBoostack.com";
 $config["project_name"] = "Boostack";
 $config["project_sitename"] = "getBoostack.com";
-$config["project_version"] = "4.1";
+$config["project_version"] = "4.2";
 $config["project_mission"] = "getBoostack.com - Improve your development and build a modern website in minutes";
 $config["viewport"] = "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0";
 $config["html_lang"] = "en";
 $config["site_title"] = "Boostack - The lightest full stack Framework for PHP";
 $config["site_keywords"] = "boostack, php, framework, website, productive, simplicity, seo, secure, mysql, open-source"; // comma separated
 $config["site_description"] = "A full stack Framework for PHP. Improve your development and build a modern website in minutes";
-$config["site_author"] = "stefano spagnolo";
+$config["site_author"] = "Stefano Spagnolo";
 
 $config["url_logo"] = $config["image_path"]."boostack_logo_x210.png";
 $config["url_logo_dark"] = $config["image_path"]."boostack_logo_x210.png";

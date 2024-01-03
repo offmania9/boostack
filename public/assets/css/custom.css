@@ -1,11 +1,11 @@
 /**
  * Boostack: custom.css
  * ========================================================================
- * Copyright 2014-2024 Spagnolo Stefano
+ * Copyright 2014-2017 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 4.2
+ * @version 3.1
  */
 
 @charset "utf-8";
@@ -90,9 +90,19 @@ li {
     font-size: 12px;
 }
 
+header {
+    padding-top: 10px;
+}
+
+.header h1 {
+    padding-top: 5px;
+}
+
 header li {
     display: inline-block;
+    padding: 10px;
     border-radius: 4px;
+    font-size: 16px;
 }
 
 header li.active {
@@ -101,7 +111,7 @@ header li.active {
 
 header li:hover {
     display: inline-block;
-    background-color: rgba(205, 46, 128, 0.09)
+    background-color: #f7f7f7;
 }
 
 header li a:hover {

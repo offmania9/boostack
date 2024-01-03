@@ -2,20 +2,6 @@ $(document).ready(function () {
     if ($(".setup tr.bg-danger").length > 0) {
         $(".setup .setupInstaller, .setup #initsetup-btn").hide();
     }
-
-    $("form").submit(function () {
-        if ($("#db-true").is(":checked")) {
-            var db_ok = checkDB();
-            if (db_ok)
-                return true;
-            else {
-                scrollToDiv("btnCheckDB");
-                return false;
-            }
-        }
-        return true;
-    });
-
     var loginStrategyItems = $("input[name^='db-loginLock-']").parents(".form-group");
     loginStrategyItems.hide();
 
@@ -70,7 +56,24 @@ $(document).ready(function () {
     })
 });
 
-function checkDB() {
+$("form").submit(function (e) {
+    e.preventDefault();  // Previene sempre il submit automatico del form
+
+    if ($("#db-true").is(":checked")) {
+        // Passa una funzione callback che invia il form se il controllo DB è ok
+        checkDB(function(db_ok) {
+            if (db_ok){
+                $(e.target).unbind('submit').submit();
+            } else {
+                scrollToDiv("btnCheckDB");
+            }
+        });
+    } else {
+        $(this).unbind('submit').submit();  // Se db-true non è selezionato, procedi con il submit
+    }
+});
+
+function checkDB(callback) {
     var data = {
         "host": $("#db-host").val(),
         "driver_pdo": $("#driver-pdo").val(),
@@ -79,6 +82,7 @@ function checkDB() {
         "username": $("#db-username").val(),
         "password": $("#db-password").val()
     };
+
     $.ajax({
         type: "POST",
         url: "dbTest.php",
@@ -91,16 +95,21 @@ function checkDB() {
                 $("#dbStatus").attr("class", "text-success");
                 $("#dbStatusIcon").attr("class", "glyphicon glyphicon-ok");
 
-                return true;
+                if(typeof callback === 'function') {
+                    callback(true);
+                }
             }
             else {
                 $("#dbStatus").text(" Failure: " + response.responseText);
                 $("#dbStatus").attr("class", "text-danger");
                 $("#dbStatusIcon").attr("class", "glyphicon glyphicon-remove");
-                return false;
+
+                if(typeof callback === 'function') {
+                    callback(false);
+                }
             }
         }
-    })
+    });
 }
 
 function scrollToDiv(divID) {

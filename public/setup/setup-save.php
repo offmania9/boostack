@@ -90,7 +90,6 @@ if ($env_parameters["database_on"] == "true" && $finalSetupMessageError == "") {
         $u = new User();
         $u->username = "boostack";
         $u->name = "Boostack System";
-        $u->full_name = "Boostack System";
         $u->email = "system@getboostack.com";
         $u->pwd = "testing";
         $u->privilege = "0";
@@ -102,7 +101,6 @@ if ($env_parameters["database_on"] == "true" && $finalSetupMessageError == "") {
         $u = new User();
         $u->username = "boostackuser";
         $u->name = "Boostack User";
-        $u->full_name = "Boostack User";
         $u->email = "user@getboostack.com";
         $u->pwd = "testing";
         $u->privilege = "3";
@@ -115,7 +113,6 @@ if ($env_parameters["database_on"] == "true" && $finalSetupMessageError == "") {
         $u = new User();
         $u->username = "boostackadmin";
         $u->name = "Boostack Admin";
-        $u->full_name = "Boostack Admin";
         $u->email = "admin@getboostack.com";
         $u->pwd = "testing";
         $u->privilege = "2";
@@ -128,7 +125,6 @@ if ($env_parameters["database_on"] == "true" && $finalSetupMessageError == "") {
         $u = new User();
         $u->username = "boostacksuperadmin";
         $u->name = "Boostack SuperAdmin";
-        $u->full_name = "Boostack SuperAdmin";
         $u->email = "superadmin@getboostack.com";
         $u->pwd = "testing";
         $u->privilege = "1";

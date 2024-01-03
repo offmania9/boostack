@@ -5,10 +5,10 @@ if (!empty($_POST)) { ?>
             <div class="mx-auto col-md-8">
                 <p>&nbsp;</p>
                 <?php if (!empty($finalSetupMessageError)) { ?>
-                    <div class="alert alert-danger" role="alert">
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         <h3>Attention!</h3>
                         <p style="font-size: 1.2em;"><?php echo $finalSetupMessageError ?></p>
-                        <p style="font-size: 1.2em;" class="text-left"><b><a href="javascript:window.history.back();">
+                        <p style="font-size: 1.2em;" class="text-start"><b><a href="javascript:window.history.back();">
                                     << Back</a></b></p>
                     </div>
                 <?php } else { ?>
@@ -20,7 +20,7 @@ if (!empty($_POST)) { ?>
                                     serious potential security issue which may lead to deletion or alteration of files, etc.
                                     Please note that until this directory is removed, Boostack will not operate and a warning message will be displayed.
                                 </p>
-                                <p style="font-size: 1.2em;" class="text-right"><b><a href="../../">Go to Boostack Homepage >></a></b></p>
+                                <p style="font-size: 1.2em;" class="text-end"><b><a href="../../">Go to Boostack Homepage >></a></b></p>
                             </div>
                         </div>
                     </div>
@@ -276,9 +276,9 @@ if (!empty($_POST)) { ?>
                                                         </div>
                                                     </div>
                                                     <div class="mb-3 row">
-                                                        <label for="db-test" class="col-sm-2 col-form-label">Test Database</label>
+                                                       
                                                         <div class="col-sm-9">
-                                                            <button id="btnCheckDB" class="btn btn-primary btn-sm" onclick="checkDB()">Test Database</button>
+                                                            <button id="btnCheckDB" class="btn btn-primary btn-sm d-none">Test Database</button>
                                                             <p><span id="dbStatusIcon"></span><span id="dbStatus"></span></p>
                                                         </div>
                                                     </div>
@@ -440,7 +440,7 @@ if (!empty($_POST)) { ?>
                                         </div>
                                         <hr />
                                         <div class="form-group">
-                                            <div class="col-sm-offset-2 col-sm-10 text-right">
+                                            <div class="col-sm-offset-2 col-sm-10 text-end">
                                                 <button type="submit" class="btn btn-success">Save</button>
                                             </div>
                                         </div>
