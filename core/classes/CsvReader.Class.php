@@ -25,7 +25,7 @@ class CsvReader
     public function __construct($file, $delimiter = self::DEFAULT_DELIMITER, $linesOffset = self::DEFAULT_LINES_OFFSET)
     {
         $realPath = realpath($file);
-        if(!$realPath) throw new Exception("File not found in ".$file);
+        if(!$realPath) throw new Exception("File not found");
         if(!is_readable($realPath)) throw new Exception("File not readable");
         $this->filePath = $realPath;
         $this->delimiter = $delimiter;

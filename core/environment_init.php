@@ -34,7 +34,6 @@ if (Config::get('database_on')) {
                     Auth::logout();
         }
         $CURRENTUSER = $objSession->GetUserObject();// Auth::getUserLoggedObject();
-        //d($CURRENTUSER);
     }
 }
 

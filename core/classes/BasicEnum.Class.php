@@ -1,6 +1,6 @@
 <?php
 /**
- * Boostack: BaseList.Class.php
+ * Boostack: BasicEnum.Class.php
  * ========================================================================
  * Copyright 2014-2024 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)

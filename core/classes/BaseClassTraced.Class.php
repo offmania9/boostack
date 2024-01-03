@@ -1,5 +1,13 @@
 <?php
-
+/**
+ * Boostack: BaseClassTraced.Class.php
+ * ========================================================================
+ * Copyright 2014-2024 Spagnolo Stefano
+ * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
+ * ========================================================================
+ * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
+ * @version 4.2
+ */
 abstract class BaseClassTraced extends BaseClass {
 
     protected $created_at;
@@ -17,8 +25,6 @@ abstract class BaseClassTraced extends BaseClass {
             $this->setLastAccess();
         } else {
             $this->created_at = $this->last_update = $this->last_access = $this->created_at_datetime = date('Y-m-d H:i:s',time());
-            //$this->created_at = $this->last_update = $this->last_access = time();
-            //$this->created_at_datetime = date('Y-m-d H:i:s',$this->created_at);
         }
     }
 

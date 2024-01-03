@@ -46,13 +46,6 @@ class CurlRequest {
 
     }
 
-     /**
-     * @param $data
-     */
-    public function addHeader($data) {
-        $this->customHeader[] = $data;
-    }
-
     /**
      * @param $endpoint
      */
@@ -63,20 +56,8 @@ class CurlRequest {
     /**
      * @param $isPost
      */
-    public function setIsPost(bool $isPost) {
+    public function setIsPost($isPost) {
         $this->is_post = $isPost;
-    }
-
-    /**
-     * @param $isPost
-     */
-    public function setContentTypeJSON(bool $isContentTypeJSON) {
-        if($isContentTypeJSON)
-            $this->customHeader["contentTypeJson"] = "Content-Type: application/json";
-        else{
-            if(!empty($this->customHeader["contentTypeJson"]))
-                unset($this->customHeader["contentTypeJson"]);
-        }
     }
 
     /**
@@ -107,16 +88,6 @@ class CurlRequest {
         $this->customHeader = $data;
     }
 
-    public function getCurlString() {
-        $r = 'curl '.$this->endpoint.' \\';
-        foreach($this->customHeader as $h){
-            $r .=  ' -H "'.$h.'" \\';
-        }
-        $r .=  " -d '".json_encode($this->postFields)."'";
-        
-        return $r;
-    }
-
     /**
      * @return MessageBag
      */
@@ -136,7 +107,7 @@ class CurlRequest {
         }
 
         if(!empty($this->postFields)) {
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $this->postFields);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($this->postFields));
         }
 
         if(!empty($this->customHeader)) {

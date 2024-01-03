@@ -424,14 +424,13 @@ abstract class BaseClass implements JsonSerializable
     public function getFields()
     {
         // Ottieni l'elenco delle colonne della tabella
-        $query = "DESCRIBE " . static::TABLENAME;
-        $stmt = $this->pdo->query($query);
-        $columns = $stmt->fetchAll(PDO::FETCH_COLUMN);
-
+        //$query = "DESCRIBE " . static::TABLENAME;
+        //$stmt = $this->pdo->query($query);
+       // $columns = $stmt->fetchAll(PDO::FETCH_COLUMN);
         // Ottieni l'elenco delle colonne e dei tipi di dati dalla tabella utilizzando INFORMATION_SCHEMA
-        $query = "SELECT COLUMN_NAME, COLUMN_TYPE, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = :tableName";
+        $query = "SELECT COLUMN_NAME, COLUMN_TYPE, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = :tableName AND TABLE_SCHEMA = :tableSchema";
         $stmt = $this->pdo->prepare($query);
-        $stmt->execute(['tableName' => static::TABLENAME]);
+        $stmt->execute(['tableName' => static::TABLENAME,'tableSchema' => Config::get("db_name")]);
         $columns = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         // Query per ottenere tutti i dati dalla tabella
@@ -440,7 +439,6 @@ abstract class BaseClass implements JsonSerializable
         $query = "SELECT * FROM " . static::TABLENAME .$ids;
         $stmt = $this->pdo->query($query);
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
         $resultArray = [];
 
         // Itera su ciascun record
@@ -493,6 +491,7 @@ abstract class BaseClass implements JsonSerializable
                 }
             }
             $resultArray[] = $record;
+            
         }
         return ($resultArray);
     }

@@ -53,9 +53,7 @@ abstract class Rest_ApiAbstract
             case 'POST':
                 if (array_key_exists('HTTP_X_HTTP_METHOD', $_SERVER)) {
                     if ($_SERVER['HTTP_X_HTTP_METHOD'] == 'PUT') {
-                        $fs = trim(file_get_contents("php://input"));
-                        $f = null;
-                        $this->file = parse_str($fs,$f);
+                        $this->file = parse_str(trim(file_get_contents("php://input")));
                         $this->file = Utils::sanitizeInput($this->file);
                         $this->request = Request::getQueryArray();
                     } else {
@@ -170,7 +168,7 @@ abstract class Rest_ApiAbstract
         $this->apiRequest->output = json_encode($this->messageBag->data);
     }
 
-    protected function constraints($method, array $serverParams = NULL, bool $fileIsJSON = false){
+    protected function constraints($method, array $serverParams = NULL, bool $filsIsJSON = false){
         if(strcasecmp($this->method , $method) != 0){
             throw new Exception("Only accepts $method requests");
         }
@@ -181,7 +179,7 @@ abstract class Rest_ApiAbstract
                 }
             }
         }
-        if($fileIsJSON){
+        if($filsIsJSON){
             if(!empty($this->file) && !Utils::isJson($this->file)){
                 throw new Exception('Received content contained invalid JSON!');
             }

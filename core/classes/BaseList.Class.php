@@ -11,6 +11,7 @@
  */
 abstract class BaseList implements IteratorAggregate, JsonSerializable
 {
+
     /**
      * @var
      */
@@ -122,7 +123,7 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable
     /**
      * Retrieve values with field filtering, ordering and pagination
      */
-    public function view($fields = NULL, $orderColumn = "id", $orderType = "DESC", $numitem = 25, $currentPage = 1)
+    public function view(array $fields = NULL, $orderColumn = "", $orderType = "ASC", $numitem = 25, $currentPage = 1)
     {
         try {
             $sql = "";
@@ -200,9 +201,9 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable
                 $currentPage = 1;
             };
 
-            if ($orderColumn != NULL) {
+            if ($orderColumn != "") {
                 $sql .= " ORDER BY" . " " . $orderColumn;
-                if ($orderType != NULL)
+                if ($orderType != "")
                     $sql .= " " . $orderType;
             }
             if ($numitem != NULL) {
