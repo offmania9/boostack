@@ -1,4 +1,28 @@
 $(document).ready(function () {
+
+
+    function updateURL() {
+        var protocol = $('#protocol').val();
+        var dn = $('#dn').val();
+        var port = $('#port').val();
+        var rootpath = $('#rootpath').val();
+
+        if($.isNumeric(port) && Math.floor(port) == port) {
+            var url = protocol+'://'+ dn + ':' + port + rootpath;
+            $('#url').val(url);
+        } else {
+            alert('Il valore del campo Port deve essere un intero.');
+            $('#url').val('');
+            $('#port').val('');
+        }
+
+    }
+
+    $('#port, #protocol, #dn, #rootpath').on('change input', function() {
+        updateURL();
+    });
+
+
     if ($(".setup tr.bg-danger").length > 0) {
         $(".setup .setupInstaller, .setup #initsetup-btn").hide();
     }

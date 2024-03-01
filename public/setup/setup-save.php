@@ -12,10 +12,12 @@ if (empty($input['url'])) {
     $finalSetupMessageError .= "Missing URL <br/>";
 }
 $env_parameters = [
-    "current_environment" => "local",
+    "current_environment" => "Environment::LOCAL",
     "rootpath" => $input['rootpath'],
-    "url" => rtrim($input['url'], "/") . '/',
+    "url" => trim($input['url'], "/") . '/',
     'protocol' => $input['protocol'],
+    'port' => $input['port'],
+    'dn' => $input['dn'],
     "database_on" => $input['db-active'],
     "driver_pdo" => $input["driver-pdo"],
     "db_host" => $input['db-host'],
@@ -73,7 +75,6 @@ if ($env_parameters["database_on"] == "true" && $finalSetupMessageError == "") {
         if ($_POST["db-dump-active"] == "true") {
             $sql = file_get_contents('boostack_dump.sql');
             $qr = $db->exec($sql);
-
         }
         $users = array();
         $users[0] = "user@getboostack.com";
@@ -141,6 +142,4 @@ if ($env_parameters["database_on"] == "true" && $finalSetupMessageError == "") {
         unlink($finalEnvPath);
     }
 }
-
-require_once "content_setup.phtml";
 ?>

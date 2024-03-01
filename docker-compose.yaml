@@ -1,0 +1,54 @@
+version: "3"
+
+services:
+
+  php-apache:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: boostack-php
+    restart: unless-stopped
+    volumes:
+      - ./:/var/www/html
+    environment:
+      - PHP_MEMORY_LIMIT=1024M
+      - PHP_UPLOAD_MAX_FILESIZE=100M
+      - PHP_POST_MAX_SIZE=100M
+      - COMPOSER_ALLOW_SUPERUSER=1
+    networks:
+      - boostack-network
+  mariadb:
+    image: mariadb:latest
+    container_name: boostack-mariadb
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD_ROOT}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    #ports: 
+    #  - "${DB_PORT}:${DB_PORT}"
+    volumes:
+      - boostack-database:/var/lib/mysql
+    networks:
+      - boostack-network
+  
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: boostack-phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: mariadb
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD_ROOT}
+      UPLOAD_LIMIT: 300M
+    depends_on:
+      - mariadb
+    networks:
+      - boostack-network
+
+networks:
+  boostack-network:
+
+volumes:
+  boostack-database:

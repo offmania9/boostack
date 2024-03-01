@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+
+    php-apache:
+        # user: "502:20" #-> MacOS
+        # user: "1000:1000" #-> Unix 
+        ports: 
+            - "8686:80"
+
+    mariadb:
+        ports: 
+            - "33006:33006"
+  
+    phpmyadmin:
+        ports:
+            - "8687:80"
+            

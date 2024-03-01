@@ -1,5 +1,4 @@
 <?php
-
 // CONFIGURATION
 $required_php_version = array(
     "5.6.00",
@@ -89,10 +88,16 @@ foreach($php_configurations_required as $name => $value) {
 
 $init_rootpath = "";
 $init_url = "";
+$init_port = "";
+$init_domainname = "";
 if(isset($_SERVER['REQUEST_URI'])){
     $init_rootpath = urlpath_calculation($_SERVER['REQUEST_URI']);
     if(isset($_SERVER['HTTP_HOST'])) {
         $init_url = urlpath_calculation($_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
+        $init_port = $_SERVER['SERVER_PORT'] ? ':'.$_SERVER['SERVER_PORT'] : '';
+        $init_domainname = $_SERVER['HTTP_HOST'].":";
+        $init_domainname_array = explode(":",$init_domainname);
+        $init_domainname = $init_domainname_array[0];
     }
 }
 $init_ip = (isset($_SERVER) && $_SERVER['SERVER_ADDR'] == "::1")?"127.0.0.1":$_SERVER['SERVER_ADDR'];

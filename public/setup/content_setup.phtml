@@ -187,17 +187,42 @@ if (!empty($_POST)) { ?>
                                                     </div>
                                                 </div>
                                                 <div class="mb-3 row">
-                                                    <label for="url" class="col-sm-3 col-form-label">URL</label>
-                                                    <div class="col-sm-2">
-                                                        <select name="protocol" class="form-control">
+                                                    <label for="url" class="col-sm-3 col-form-label">Protocol</label>
+                                                    <div class="col-sm-9">
+                                                        <select name="protocol"  id="protocol" class="form-control">
                                                             <option value="http">http://</option>
                                                             <option value="https">https://</option>
                                                         </select>
                                                     </div>
-                                                    <div class="col-sm-7">
-                                                        <input type="text" class="form-control" id="url" name="url" placeholder="boostack.local" value="<?php echo $init_url ?>" />
+                                    
+                                                </div>
+
+
+                                                <div class="mb-3 row">
+                                                    <label for="port" class="col-sm-3 col-form-label">Port</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" id="port" name="port" placeholder="port" value="<?php echo substr($init_port,1) ?>" />
                                                     </div>
                                                 </div>
+
+                                                <div class="mb-3 row">
+                                                    <label for="dn" class="col-sm-3 col-form-label">Domain Name</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" id="dn" name="dn" placeholder="domain name" 
+                                                        value="<?php echo $init_domainname ?>" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="mb-3 row">
+                                                    <label class="col-sm-3 col-form-label">URL</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" id="url" name="url" readonly
+                                                        value="<?='http://'. $init_domainname . ''.$init_port.$init_rootpath;?>" />
+                                                    </div>
+                                                </div>
+                                               
+
+
                                             </div>
                                         </div>
 
@@ -254,13 +279,13 @@ if (!empty($_POST)) { ?>
                                                     <div class="mb-3 row">
                                                         <label for="db-port" class="col-sm-2 col-form-label">Port</label>
                                                         <div class="col-sm-9">
-                                                            <input type="text" class="form-control" id="db-port" name="db-port" placeholder="3306" value="3306" />
+                                                            <input type="text" class="form-control" id="db-port" name="db-port" placeholder="33006" value="33006" />
                                                         </div>
                                                     </div>
                                                     <div class="mb-3 row">
                                                         <label for="db-name" class="col-sm-2 col-form-label">DB Name</label>
                                                         <div class="col-sm-9">
-                                                            <input type="text" class="form-control" id="db-name" name="db-name" placeholder="boostack" value="boostack" />
+                                                            <input type="text" class="form-control" id="db-name" name="db-name" placeholder="boostack" value="boostack-db" />
                                                         </div>
                                                     </div>
                                                     <div class="mb-3 row">
@@ -270,7 +295,7 @@ if (!empty($_POST)) { ?>
                                                         </div>
                                                     </div>
                                                     <div class="mb-3 row">
-                                                        <label for="db-password" class="col-sm-2 col-form-label">Username</label>
+                                                        <label for="db-password" class="col-sm-2 col-form-label">Password</label>
                                                         <div class="col-sm-9">
                                                             <input type="password" class="form-control" id="db-password" name="db-password" placeholder="" value="" autocomplete="off" />
                                                         </div>

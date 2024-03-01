@@ -3,17 +3,23 @@
 /**
  * ENVIRONMENT
  */
-
-define('CURRENT_ENVIRONMENT', '[current_environment]');     // 'local' | 'staging' | 'production'
-define('ROOTPATH', $_SERVER['DOCUMENT_ROOT'] . '[rootpath]');
+# Setup current environment
+define('CURRENT_ENVIRONMENT', [current_environment]);  // 'local' | 'staging' | 'production'
+# Setup main project folder 
+define('MAIN_PROJECT_FOLDER', "[rootpath]");
+# Setup project subfolder 
+$config['document_root_subdir'] = ''; // / by default
+# Setup protocol 
 $config['protocol'] = '[protocol]';
-$defaultDN = '[url]';
-$alternativeDN = array();
-$thisDN = $_SERVER['HTTP_HOST'];
-$config['document_root_subdir'] = '/';
-$currentDN = (in_array($thisDN,$alternativeDN)) ? $thisDN.'/' : $defaultDN . $config['document_root_subdir'];
-$config['url'] = $config['protocol']."://".$currentDN;
+# Setup port 
+$config['port'] = '[port]';
+# Setup Domain Name
+$config['DN'] = '[dn]';
+# Setup Alternative Domain Name
+$config['DN_alternative'] = array();
+# Setup Development Mode
 $config['developmentMode'] = TRUE;
+# Alert if Setup folder is visible
 $config['setupFolderExists'] = TRUE;
 
 /**
@@ -150,4 +156,19 @@ $config["mail_validTime"] = 7200;
 //    return $forceTrueForReverseProxy || (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443;
 //}
 
+/**
+ * DO NOT MODIFY
+ */
+$defaultDN = $config['DN'].':' . $config['port'] . MAIN_PROJECT_FOLDER;
+$currentDN = (in_array($_SERVER['HTTP_HOST'], $config['DN_alternative'])) ? $_SERVER['HTTP_HOST'] . '' : $defaultDN . $config['document_root_subdir'];
+$config['url'] = $config['protocol'] . "://" . $currentDN;
+
+define('ROOTPATH', $_SERVER['DOCUMENT_ROOT'] . MAIN_PROJECT_FOLDER);
+
+abstract class Environment
+{
+    const LOCAL = "local";
+    const STAGING = "staging";
+    const PRODUCTION = "production";
+}
 ?>
