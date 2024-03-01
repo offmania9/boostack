@@ -1,78 +1,78 @@
 {
-  "projectName":"Boostack",
-  "mainDescription":"is a full stack <span>Framework</span> for PHP",
-  "mission":"Improve your development and build a modern website in minutes",
-  "downloadBoostack":"Download Boostack",
-  "navigation":{
-      "home":"Home",
-      "download":"Download",
-      "documentation":"Documentation",
-      "login":"Login",
-      "registration":"Registration",
-      "log":"Log"
-  },
-  "featuresTitles":{
-      "fast":"Fast and Productive",
-      "freedom":"Freedom",
-      "simplicity":"Simplicity",
-      "seo":"SEO Ready",
-      "extensible":"Extensible",
-      "secure":"Secure"
-  },
-  "featuresDescriptions":{
-      "fast":"Boostack is a full stack framework for PHP <b>built for developers</b> who need a simple layer to create modern website in minutes.",
-      "freedom":"No naming conventions, <b>use your own coding and naming</b>. Boostack is a minimal layer of code that lets you use your creativity.",
-      "simplicity":"Boostack is a lightweight and flexible framework that provides a robust set of features for <b>web and mobile applications</b>.",
-      "seo":"Boostack <b>integrate SEO features<\/b> for meta data: rich snippets, openGraph, internal linking, schema markup, social media and more.",
-      "extensible":"Create your project with Boostack framework and start coding. Extend all php classes and <b>build quickly</b> simple or complex web-based apps.",
-      "secure":"Built on PHP - MySql - HTML5 - CSS3 - JQuery Boostack runs on secure and fast-loading code for <b>optimal performance</b>."
-  },
-  "inclusions":"Simple to configure it.",
-  "inclusions2":"It contains JQuery, Animate.css and Bootstrap.",
-  "download":{
-      "howto":"How to get Boostack",
-      "howtoDescription":"Boostack is available open-source under the <a href=\"https://github.com/offmania9/boostack/blob/master/LICENSE\" target=\"_blank\" title=\"Boostack github\">MIT</a> license.<br/>We recommend using the latest version of PHP and Mysql (Boostack allows you to develop even without using Mysql).",
-      "downloadit":"Download it!",
-      "downloaditDescription":"<b>Option 1: Download the latest official version</b><br/>You can download <b><a href=\"http://getboostack.com/downloadLatest\" title=\"Download Boostack\">HERE</a></b> a zipped file of the development version.<br/><br/><b>Option 2: Get the latest version via GIT Clone</b><br/>The latest and greatest Boostack version is the one that\u2019s in our Git repository (<a href=\"https://github.com/offmania9/boostack\" target=\"_blank\">https://github.com/offmania9/boostack</a>).<br/>This is only for experienced users who want to try incoming changes and help identify bugs before an official release.<br/>Get it using this shell command, which requires Git: <code>git clone https://github.com/offmania9/boostack.git</code><br/><br/><b>Option 3: Get the latest version via Composer</b><br/><code>composer require offmania9/boostack</code>",
-      "after":"After you get it",
-      "afterDescription":"See the <a href=\"docs/introduction\" title=\"Boostack Documentation\">Documentation</a> for further instructions."
-  },
-  "login":{
-      "login":"Login",
-      "donthaveaccount":"Don't have an account! ",
-      "loggedin":"You're logged in! ",
-      "signup":"Sign Up Here"
-  },
-  "form":{
-      "registration":{
-          "title":"Registration",
-          "title-ajax":"Registration with Api Rest",
-          "username":"Username",
-          "username_description":"Type your username"  ,  
-          "password":"Password",
-          "password_description":"Type your password" ,     
-          "password_repeat":"Repeat password",
-          "password_repeat_description":"Repeat your password" ,      
-          "email":"E-mail",
-          "email_description":"Type your e-mail",
-          "register":"Register",
-          "agree":"Agree to terms and conditions"
-      },
-      "login":{
-          "signin":"Sign In",
-          "signin-ajax":"Sign In with Rest API",
-          "forgotpwd":"Forgot password?",
-          "rememberme":"Remember me" 
-      }
-  },
-  "filter":{
-      "reset":"Reset",
-      "apply":"apply",
-      "filterRule":"Rule"
-  },
-  "error":{
-      "attention":"Attention!",
-      "urlnotfound":"The requested URL was not found on this server."
-  },
-  "license":"is licensed under <a href=\"https://github.com/offmania9/boostack/blob/master/LICENSE\" target=\"_blank\" title=\"Boostack github\">MIT</a>."
+    "projectName":"Boostack",
+    "mainDescription":"is a full stack <span>Framework</span> for PHP",
+    "mission":"Improve your development and build a modern website in minutes",
+    "downloadBoostack":"Download Boostack",
+    "navigation":{
+        "home":"Home",
+        "download":"Download",
+        "documentation":"Documentation",
+        "login":"Login",
+        "registration":"Registration",
+        "log":"Log"
+    },
+    "featuresTitles":{
+        "fast":"Fast and Productive",
+        "freedom":"Freedom",
+        "simplicity":"Simplicity",
+        "seo":"SEO Ready",
+        "extensible":"Extensible",
+        "secure":"Secure"
+    },
+    "featuresDescriptions":{
+        "fast":"Boostack is a full stack framework for PHP <b>built for developers</b> who need a simple layer to create modern website in minutes.",
+        "freedom":"No naming conventions, <b>use your own coding and naming</b>. Boostack is a minimal layer of code that lets you use your creativity.",
+        "simplicity":"Boostack is a lightweight and flexible framework that provides a robust set of features for <b>web and mobile applications</b>.",
+        "seo":"Boostack <b>integrate SEO features<\/b> for meta data: rich snippets, openGraph, internal linking, schema markup, social media and more.",
+        "extensible":"Create your project with Boostack framework and start coding. Extend all php classes and <b>build quickly</b> simple or complex web-based apps.",
+        "secure":"Built on PHP - MySql - HTML5 - CSS3 - JQuery Boostack runs on secure and fast-loading code for <b>optimal performance</b>."
+    },
+    "inclusions":"Simple to configure it.",
+    "inclusions2":"It contains JQuery, Animate.css and Bootstrap.",
+    "download":{
+        "howto":"How to get Boostack",
+        "howtoDescription":"Boostack is available open-source under the <a href=\"https://github.com/offmania9/boostack/blob/master/LICENSE\" target=\"_blank\" title=\"Boostack github\">MIT</a> license.",
+        "downloadit":"Download it!",
+        "downloaditDescription":"<b>Option 1: Get the latest version via GIT Clone</b><br/>The most recent and advanced version of Boostack can be found in our Git repository (<a href=\"https://github.com/offmania9/boostack\" target=\"_blank\">https://github.com/offmania9/boostack</a>).<br/>To obtain it, use the following shell command, which necessitates Git:<br/><code>git clone https://github.com/offmania9/boostack.git</code><br/><br/><b>Option 2: Get the latest version via Composer</b><br/><code>composer require offmania9/boostack</code>",
+        "after":"After you get it",
+        "afterDescription":"Please refer to the <a href=\"docs/introduction\" title=\"Boostack Documentation\">Documentation</a> for additional guidance on configuring as a <b>standalone setup with PHP-Apache-MySQL</b> or within <b>Docker containers</b>."
+    },
+    "login":{
+        "login":"Login",
+        "donthaveaccount":"Don't have an account! ",
+        "loggedin":"You're logged in! ",
+        "signup":"Sign Up Here"
+    },
+    "form":{
+        "registration":{
+            "title":"Registration",
+            "title-ajax":"Registration with Api Rest",
+            "username":"Username",
+            "username_description":"Type your username"  ,  
+            "password":"Password",
+            "password_description":"Type your password" ,     
+            "password_repeat":"Repeat password",
+            "password_repeat_description":"Repeat your password" ,      
+            "email":"E-mail",
+            "email_description":"Type your e-mail",
+            "register":"Register",
+            "agree":"Agree to terms and conditions"
+        },
+        "login":{
+            "signin":"Sign In",
+            "signin-ajax":"Sign In with Rest API",
+            "forgotpwd":"Forgot password?",
+            "rememberme":"Remember me" 
+        }
+    },
+    "filter":{
+        "reset":"Reset",
+        "apply":"apply",
+        "filterRule":"Rule"
+    },
+    "error":{
+        "attention":"Attention!",
+        "urlnotfound":"The requested URL was not found on this server."
+    },
+    "license":"is licensed under <a href=\"https://github.com/offmania9/boostack/blob/master/LICENSE\" target=\"_blank\" title=\"Boostack github\">MIT</a>."
 }

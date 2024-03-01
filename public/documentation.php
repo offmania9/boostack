@@ -12,6 +12,11 @@
 require_once "../core/environment_init.php";
 
 Template::addCssFile("lib/atom-one-light.min.css");
-Template::render("documentation.phtml");
+
+Template::render("documentation.phtml", array(
+    "canonical" =>  Utils::getFriendlyUrl("documentation"),
+    "pageTitle" => Language::getLabel("navigation.documentation"),
+));
+
 
 ?>

@@ -91,31 +91,31 @@ if (!empty($_POST)) { ?>
                                                     <th>Status</th>
                                                 </thead>
                                                 <tbody>
-                                                    <tr class="<?php echo  $phpVersionResult ? "bg-success" : "bg-danger" ?>">
+                                                    <tr class="<?php echo  $phpVersionResult ? "bg-success text-white" : "bg-danger" ?>">
                                                         <td>PHP Version</td>
                                                         <td>>= <?php echo $required_php_version[0] ?></td>
                                                         <td><?php echo $phpVersion ?></td>
                                                     </tr>
                                                     <?php foreach ($phpConfigurationTable as $name => $value) : ?>
-                                                        <tr class="<?php echo $value ? "bg-success" : "bg-danger" ?>">
+                                                        <tr class="<?php echo $value ? "bg-success text-white" : "bg-danger" ?>">
                                                             <td><?php echo $name ?></td>
                                                             <td>Enabled</td>
                                                             <td><?php echo $value == "1" ? "Enabled" : "Disabled" ?></td>
                                                         </tr>
                                                     <?php endforeach; ?>
                                                     <?php foreach ($phpExtensionsRequiredTable as $name => $value) : ?>
-                                                        <tr class="<?php echo $value ? "bg-success" : "bg-danger" ?>">
+                                                        <tr class="<?php echo $value ? "bg-success text-white" : "bg-danger" ?>">
                                                             <td><?php echo $name ?> Extension</td>
                                                             <td>Enabled</td>
                                                             <td><?php echo $value == "1" ? "Enabled" : "Disabled" ?></td>
                                                         </tr>
                                                     <?php endforeach; ?>
-                                                    <tr class="<?php echo $isWritebleEnvFolder ? "bg-success" : "bg-danger" ?>">
+                                                    <tr class="<?php echo $isWritebleEnvFolder ? "bg-success text-white" : "bg-danger" ?>">
                                                         <td>Write access to 'config/env' folder</td>
                                                         <td>Give write permission to '<?php echo exec('whoami') ?>' user</td>
                                                         <td><?php echo $isWritebleEnvFolder ? "Writeble" : "Not Writeble" ?></td>
                                                     </tr>
-                                                    <tr class="<?php echo $isWritebleLogFolder ? "bg-success" : "bg-danger" ?>">
+                                                    <tr class="<?php echo $isWritebleLogFolder ? "bg-success text-white" : "bg-danger" ?>">
                                                         <td>Write access to 'log' folder</td>
                                                         <td>Give write permission to '<?php echo exec('whoami') ?>' user</td>
                                                         <td><?php echo $isWritebleLogFolder ? "Writeble" : "Not Writeble" ?></td>
@@ -131,14 +131,14 @@ if (!empty($_POST)) { ?>
                                                 </thead>
                                                 <tbody>
                                                     <?php foreach ($apacheModulesRequiredTable as $name => $value) : ?>
-                                                        <tr class="<?php echo $value ? "bg-success" : "bg-danger" ?>">
+                                                        <tr class="<?php echo $value ? "bg-success text-white" : "bg-danger" ?>">
                                                             <td><?php echo $name ?></td>
                                                             <td>Enabled</td>
                                                             <td><?php echo $value == "1" ? "Enabled" : "Disabled" ?></td>
                                                         </tr>
                                                     <?php endforeach; ?>
                                                     <?php foreach ($apacheModulesOptionalTable as $name => $value) : ?>
-                                                        <tr class="<?php echo $value ? "bg-success" : "bg-warning" ?>">
+                                                        <tr class="<?php echo $value ? "bg-success text-white" : "bg-warning" ?>">
                                                             <td>[Optional] <?php echo $name ?></td>
                                                             <td>Enabled</td>
                                                             <td><?php echo $value == "1" ? "Enabled" : "Disabled" ?></td>
@@ -174,6 +174,18 @@ if (!empty($_POST)) { ?>
                                             </div>
                                             <div class="card-body">
 
+                                            <div class="mb-3 row">
+                                                    <label for="current_environment" class="col-sm-3 col-form-label">Environment</label>
+                                                    <div class="col-sm-9">
+                                                        <select name="current_environment"  id="current_environment" class="form-control">
+                                                            <option value="LOCAL">LOCAL</option>
+                                                            <option value="STAGING">STAGING</option>
+                                                            <option value="PRE_PRODUCTION">PRE_PRODUCTION</option>
+                                                            <option value="PRODUCTION">PRODUCTION</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
                                                 <div class="mb-3 row">
                                                     <label for="dr" class="col-sm-3 col-form-label">Current Document Root</label>
                                                     <div class="col-sm-9">
@@ -194,7 +206,6 @@ if (!empty($_POST)) { ?>
                                                             <option value="https">https://</option>
                                                         </select>
                                                     </div>
-                                    
                                                 </div>
 
 
@@ -273,13 +284,13 @@ if (!empty($_POST)) { ?>
                                                     <div class="mb-3 row">
                                                         <label for="db-host" class="col-sm-2 col-form-label">Host</label>
                                                         <div class="col-sm-9">
-                                                            <input type="text" class="form-control" id="db-host" name="db-host" placeholder="127.0.0.1" value="<?php echo $init_ip ?>" />
+                                                            <input type="text" class="form-control" id="db-host" name="db-host" placeholder="127.0.0.1" value="mariadb<?php #echo $init_ip ?>" />
                                                         </div>
                                                     </div>
                                                     <div class="mb-3 row">
                                                         <label for="db-port" class="col-sm-2 col-form-label">Port</label>
                                                         <div class="col-sm-9">
-                                                            <input type="text" class="form-control" id="db-port" name="db-port" placeholder="33006" value="33006" />
+                                                            <input type="text" class="form-control" id="db-port" name="db-port" placeholder="3306" value="3306" />
                                                         </div>
                                                     </div>
                                                     <div class="mb-3 row">
@@ -297,7 +308,7 @@ if (!empty($_POST)) { ?>
                                                     <div class="mb-3 row">
                                                         <label for="db-password" class="col-sm-2 col-form-label">Password</label>
                                                         <div class="col-sm-9">
-                                                            <input type="password" class="form-control" id="db-password" name="db-password" placeholder="" value="" autocomplete="off" />
+                                                            <input type="password" class="form-control" id="db-password" name="db-password" placeholder="" value="ROOT" autocomplete="off" />
                                                         </div>
                                                     </div>
                                                     <div class="mb-3 row">

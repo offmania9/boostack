@@ -3,7 +3,7 @@
 <section>
     <p>General requirements</p>
     <ul>
-        <li><code>PHP >= 5.6</code></li>
+        <li><code>PHP >= 7.4</code></li>
         <li><code>Short tag enabled into php.ini (short_open_tag = On)</code></li>
         <li><code>PDO PHP Extension</code></li>
     </ul>
@@ -20,7 +20,7 @@
         </li>
     </ul>
     <p>Virtual host configuration:</p>
-<pre><code>&lt;Directory /var/www/html&gt;
+    <pre><code>&lt;Directory /var/www/html&gt;
     Options FollowSymLinks MultiViews
     AllowOverride All
     Order allow,deny
@@ -28,7 +28,7 @@
 &lt;/Directory&gt;</code></pre>
 </section>
 
-<h3 id="Installation">Installation</h3>
+<h3 id="Download">Download</h3>
 <section>
     <p>Via GIT Clone</p>
     <pre><code>git clone https://github.com/offmania9/boostack.git</code></pre>
@@ -38,24 +38,43 @@
     <a href="https://github.com/offmania9/boostack" target="_blank">https://github.com/offmania9/boostack</a>
 </section>
 
+<h3 id="Installation">Docker Installation</h3>
+<section>
+    <p>Launch Docker compose in project root</p>
+    <pre><code>docker-compose up -d --build</code></pre>
+
+    <p>In the Docker compose file, you need to comment out the user parameter for php-apache based on
+        the operating system: 502:20 for macOS and 1000:1000 for Unix. Leave both lines commented out (disabled)
+        in case of Windows operating systems.</p>
+    <pre><code>
+    php-apache:
+        # user: "502:20" #-> MacOS
+        # user: "1000:1000" #-> Unix
+    </code></pre>
+
+
+
+</section>
+
 <h3 id="AutomaticConfiguration">Automatic Configuration</h3>
 <section>
     <p>Go to</p>
     <pre><code>http://&lt;your_local_path_to_boostack_installation&gt;/setup</code></pre>
     <p>and begin the automated setup procedure.</p>
     <p>At first, the setup will check for the PHP and Apache configurations</p>
-    <img class="img-responsive" src="<?= Template::getImageLink("boostack_setup_1.jpg") ?>" alt="Boostack Setup 1"/>
+    <img class="img-responsive" src="<?= Template::getImageLink("boostack_setup_1.jpg") ?>" alt="Boostack Setup 1" />
     <p>Then you will be prompted to insert your environment configuration parameters</p>
-    <img class="img-responsive" src="<?= Template::getImageLink("boostack_setup_2.jpg") ?>" alt="Boostack Setup 2"/>
+    <img class="img-responsive" src="<?= Template::getImageLink("boostack_setup_2.jpg") ?>" alt="Boostack Setup 2" />
     <p>When the setup procedure is ended, you will see a message that remember you to delete or rename "setup" folder
         from the project.</p>
-    <img class="img-responsive" src="<?= Template::getImageLink("boostack_setup_3.jpg") ?>" alt="Boostack Setup 3"/>
+    <img class="img-responsive" src="<?= Template::getImageLink("boostack_setup_3.jpg") ?>" alt="Boostack Setup 3" />
 </section>
 
 <h3 id="ManualConfiguration">Manual Configuration</h3>
 <p>Alternatively to the automatic setup, you can proceed with manual configuration by copying and renaming the file
     <code>config/env/sample.env.php</code>
-    to <code>config/env/env.php</code> and fill it with your preferred configurations.</p>
+    to <code>config/env/env.php</code> and fill it with your preferred configurations.
+</p>
 
 <h3 id="FriendlyURLsConfiguration">Friendly URLs Configuration</h3>
 <p>Boostack includes a <code>.htaccess</code> file that is used to provide friendly URLs without the file extension .php

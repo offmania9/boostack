@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Boostack: download.php
  * ========================================================================
@@ -11,6 +12,7 @@
 
 require_once "../core/environment_init.php";
 
-Template::render("download.phtml");
-
-?>
+Template::render("download.phtml", array(
+    "canonical" =>  Utils::getFriendlyUrl("download"),
+    "pageTitle" => Language::getLabel("navigation.download"),
+));

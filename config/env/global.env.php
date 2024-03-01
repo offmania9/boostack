@@ -9,7 +9,6 @@
  * @version 4.2
  */
 
-
 /**
  * PATHS
  */
@@ -54,13 +53,14 @@ $config["appletouchicon_114"] = $config["image_path"]."apple-touch-icon-114-prec
 $config["appletouchicon_72"] = $config["image_path"]."apple-touch-icon-72-precomposed.png";
 $config["appletouchicon_def"] = $config["image_path"]."apple-touch-icon-57-precomposed.png";
 
-
 /**
  * SOCIAL
  */
 
-$config["twitter"] = "@getBoostack";
-$config["gplus"] = "https://plus.google.com/+BoostackFramework/";
+$config["instagram"] = "https://www.instagram.com/getBoostack/";
+$config["linkedin"] = "https://www.linkedin.com/company/Boostack/";
+$config["youtube"] = "https://www.youtube.com/@getBoostack";
+$config["twitter"] = "";
 
 
 /**
@@ -77,67 +77,21 @@ $config["fb_app_id"] = "";
 $config["fb_app_secret"] = "";
 $config["fb_admins"] = "";
 
+/**
+ * TWITTER META TAGS
+ */
+
+$config["twitter_user"] = "@getBoostack";
+$config["twitter_card"] = "summary";
+$config["twitter_title"] = $config["site_title"];
+$config["twitter_site"] = $config['twitter_user'];
+$config["twitter_image"] = $config['url'].$config["url_logo"];
+$config["twitter_description"] = $config["site_description"];
 
 /**
  * CUSTOM VARIABLES
  */
 
-$filterField_Log = '{
- "id": [{
-   "canFilter":"true",
-   "rule":"like,not like,<>,=,<,<=,>,>=",
-   "filter":"numeric",
-   "valueType":"number"
-  }],
-  "level": [{
-   "canFilter":"true",
-   "rule":"like,not like,<>,=",
-   "filter":"text",
-   "valueType":"text"
-  }],
- "datetime": [{
-   "canFilter":"true",
-   "rule":"like,not like,<>,=,<,<=,>,>=",
-   "filter":"numeric",
-   "valueType":"number"
-  }],
-  "username": [{
-   "canFilter":"true",
-   "rule":"like,not like,<>,=",
-   "filter":"text",
-   "valueType":"text"
-  }],
-  "ip": [{
-   "canFilter":"true",
-   "rule":"like,not like,<>,=",
-   "filter":"text",
-   "valueType":"text"
-  }],
-  "useragent": [{
-   "canFilter":"true",
-   "rule":"like,not like,<>,=",
-   "filter":"text",
-   "valueType":"text"
-  }],
-    "referrer": [{
-   "canFilter":"true",
-   "rule":"like,not like,<>,=",
-   "filter":"text",
-   "valueType":"text"
-  }],
-  "query": [{
-   "canFilter":"true",
-   "rule":"like,not like,<>,=",
-   "filter":"text",
-   "valueType":"text"
-  }],
-  "message": [{
-   "canFilter":"true",
-   "rule":"like,not like,<>,=",
-   "filter":"text",
-   "valueType":"text"
-  }]
-}';
 
 CONST PRIVILEGE_SYSTEM = 0;
 CONST PRIVILEGE_SUPERADMIN = 1;

@@ -1,5 +1,5 @@
 <?php
 
-// insert custom code after environment_init and before puplic page controller
+// insert here your custom logic TO BE EXECUTED DIRECTLY AFTER environment_init and before page controller
 
 ?>

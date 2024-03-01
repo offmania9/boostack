@@ -1,8 +1,8 @@
 <?php
 // CONFIGURATION
 $required_php_version = array(
-    "5.6.00",
-    "50600"
+    "7.4.33",
+    "70433"
 );
 
 $apache_modules_required = array(

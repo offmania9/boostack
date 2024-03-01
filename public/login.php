@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Boostack: login.php
  * ========================================================================
@@ -27,15 +28,24 @@ try {
     }
 } catch (Exception_Misconfiguration $em) {
     dd($em->getMessage());
-} catch(Exception $e) {
+} catch (Exception $e) {
     $errorMessage = $e->getMessage();
 }
 
-if (Auth::isLoggedIn())
-    Template::render("login_logged.phtml");
-else
+if (Auth::isLoggedIn()) {
+    Template::render("login_logged.phtml", array(
+        "canonical" =>  Utils::getFriendlyUrl("home"),
+        "pageTitle" => Language::getLabel("navigation.home")
+    ));
+} else {
     Template::render("login.phtml", array(
+        "canonical" =>  Utils::getFriendlyUrl("login"),
+        "pageTitle" => Language::getLabel("navigation.login"),
         "errorMessage" => $errorMessage
     ));
+}
 
-?>
+Template::render("index.phtml", array(
+    "canonical" =>  Utils::getFriendlyUrl("home"),
+    "pageTitle" => Language::getLabel("navigation.home"),
+));

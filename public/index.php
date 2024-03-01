@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Boostack: index.php
  * ========================================================================
@@ -11,6 +12,7 @@
 
 require_once "../core/environment_init.php";
 
-Template::render("index.phtml");
-
-?>
+Template::render("index.phtml", array(
+    "canonical" =>  Utils::getFriendlyUrl("home"),
+    "pageTitle" => Language::getLabel("navigation.home"),
+));

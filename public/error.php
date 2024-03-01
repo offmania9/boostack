@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Boostack: error.php
  * ========================================================================
@@ -11,6 +12,7 @@
 
 require_once "../core/environment_init.php";
 
-Template::render("error.phtml");
-
-?>
+Template::render("error.phtml", array(
+    "canonical" =>  Utils::getFriendlyUrl("error"),
+    "pageTitle" => Language::getLabel("navigation.error"),
+));

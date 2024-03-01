@@ -1,2 +1,2 @@
 User-agent: *
-Sitemap: https://www.getboostack.com/sitemap.xml
+Sitemap: https://getboostack.com/sitemap.xml

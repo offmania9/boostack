@@ -10,6 +10,7 @@ if ($envPath && is_file($envPath)) {
 require_once(ROOTPATH . "../config/env/global.env.php");
 require_once(ROOTPATH . "../core/classes/Utils.Class.php");
 require_once(ROOTPATH . "../core/libs/helpers.php");
+#require_once(ROOTPATH .'../vendor/autoload.php');
 spl_autoload_register('Utils::autoloadClass');
 Config::init();
 if (Config::get('developmentMode')) {
@@ -40,12 +41,6 @@ if (Config::get('database_on')) {
 if (Config::get('language_on')) {
     $language = Language::init();
 }
-if (Config::get('mobile_on')) {
-    $detect = new Mobile_Detect();
-    if ($detect->isMobile()) {
-        header("location: " . Config::get("mobile_url"));
-        exit();
-    }
-}
+
 require_once(ROOTPATH . "../custom/pre_content.php");
 ?>

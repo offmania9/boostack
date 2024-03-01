@@ -12,7 +12,7 @@ if (empty($input['url'])) {
     $finalSetupMessageError .= "Missing URL <br/>";
 }
 $env_parameters = [
-    "current_environment" => "Environment::LOCAL",
+    "current_environment" => "Environment::".$input['current_environment'],
     "rootpath" => $input['rootpath'],
     "url" => trim($input['url'], "/") . '/',
     'protocol' => $input['protocol'],

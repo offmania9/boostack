@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Boostack: registration.php
  * ========================================================================
@@ -19,26 +20,28 @@ try {
         $psw1 = Request::getPostParam('reg-pwd1');
         $psw2 = Request::getPostParam('reg-pwd2');
         $csrfToken = null;
-        if (Config::get('csrf_on')){
+        if (Config::get('csrf_on')) {
             $csrfToken = Request::getPostParam('BCSRFT');
         }
-        Auth::registration($email,$email,$psw1,$psw2,$csrfToken);
+        Auth::registration($email, $email, $psw1, $psw2, $csrfToken);
     }
 } catch (Exception_Misconfiguration $em) {
     dd($em->getMessage());
 } catch (Exception_Registration $e) {
     $registrationError = $e->getMessage();
-}
-catch (Exception $e) {
+} catch (Exception $e) {
     $registrationError = $e->getMessage();
 }
 
 if (Auth::isLoggedIn()) {
-    Template::render("login_logged.phtml");
+    Template::render("login_logged.phtml", array(
+        "canonical" =>  Utils::getFriendlyUrl("home"),
+        "pageTitle" => Language::getLabel("navigation.home")
+    ));
 } else {
     Template::render("registration.phtml", array(
+        "canonical" =>  Utils::getFriendlyUrl("registration"),
+        "pageTitle" => Language::getLabel("navigation.registration"),
         "registrationError" => $registrationError
     ));
 }
-
-?>

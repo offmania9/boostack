@@ -94,12 +94,6 @@ $config["language_default"] = "en";             // must exists file: lang/[$defa
 $config["show_default_language_in_URL"] = FALSE;
 
 /**
- * MOBILE
- */
-$config['mobile_on'] = FALSE;       // enable or disable Mobile devices Checker
-$config['mobile_url'] = NULL;
-
-/**
  * EMAILS
  */
 $config['mail_on'] = FALSE;     // enable or disable send mail
@@ -121,6 +115,8 @@ $config["allowed_file_upload_extensions"] = array(/* TODO */);
  */
 $config["default_datetime_format"] = "d-m-Y H:i:s";
 date_default_timezone_set('UTC');
+#date_default_timezone_set('Europe/Rome');
+#setlocale(LC_TIME, 'it_IT');
 
 /**
  * SECURITY
@@ -169,6 +165,7 @@ abstract class Environment
 {
     const LOCAL = "local";
     const STAGING = "staging";
+    const PRE_PRODUCTION = "pre_production";
     const PRODUCTION = "production";
 }
 ?>
