@@ -33,7 +33,7 @@
         "howto":"How to get Boostack",
         "howtoDescription":"Boostack is available open-source under the <a href=\"https://github.com/offmania9/boostack/blob/master/LICENSE\" target=\"_blank\" title=\"Boostack github\">MIT</a> license.",
         "downloadit":"Download it!",
-        "downloaditDescription":"<b>Option 1: Get the latest version via GIT Clone</b><br/>The most recent and advanced version of Boostack can be found in our Git repository (<a href=\"https://github.com/offmania9/boostack\" target=\"_blank\">https://github.com/offmania9/boostack</a>).<br/>To obtain it, use the following shell command, which necessitates Git:<br/><code>git clone https://github.com/offmania9/boostack.git</code><br/><br/><b>Option 2: Get the latest version via Composer</b><br/><code>composer require offmania9/boostack</code>",
+        "downloaditDescription":"<b>Option 1: Get the latest version via GIT Clone</b><br/>The most recent and advanced version of Boostack can be found in our Git repository (<a href=\"https://github.com/offmania9/boostack\" target=\"_blank\">https://github.com/offmania9/boostack</a>).<br/>To obtain it, use the following shell command, which necessitates Git:<br/><code>git clone https://github.com/offmania9/boostack.git</code><br/><br/><b>Option 2: Get the latest version via Composer</b><br/><code>composer create-project offmania9/boostack</code><br/>Import as vendor: <em>composer require offmania9/boostack</em>",
         "after":"After you get it",
         "afterDescription":"Please refer to the <a href=\"docs/introduction\" title=\"Boostack Documentation\">Documentation</a> for additional guidance on configuring as a <b>standalone setup with PHP-Apache-MySQL</b> or within <b>Docker containers</b>."
     },

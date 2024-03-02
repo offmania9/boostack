@@ -20,29 +20,37 @@
         </li>
     </ul>
     <p>Virtual host configuration:</p>
-    <pre><code>&lt;Directory /var/www/html&gt;
-    Options FollowSymLinks MultiViews
-    AllowOverride All
-    Order allow,deny
-    allow from all
-&lt;/Directory&gt;</code></pre>
+    <pre><code>
+    &lt;Directory /var/www/html&gt;
+        Options FollowSymLinks MultiViews
+        AllowOverride All
+        Order allow,deny
+        allow from all
+    &lt;/Directory&gt;</code></pre>
 </section>
 
 <h3 id="Download">Download</h3>
 <section>
-    <p>Via GIT Clone</p>
-    <pre><code>git clone https://github.com/offmania9/boostack.git</code></pre>
-    <p>Via Composer</p>
-    <pre><code>composer require offmania9/boostack</code></pre>
-    <p>Direct download</p>
-    <a href="https://github.com/offmania9/boostack" target="_blank">https://github.com/offmania9/boostack</a>
+    <h5>Via Composer/Packagist</h5>
+    <p>
+        <code>composer create-project offmania9/boostack</code>
+        <br />Import as vendor: <em>composer require offmania9/boostack</em>
+    </p>
+    <h5>or Via GIT Clone</h5>
+    <p>
+        <code>git clone https://github.com/offmania9/boostack.git</code>
+    </p>
+    <h5>or Direct download</h5>
+    <p>
+        <a href="https://github.com/offmania9/boostack" target="_blank">https://github.com/offmania9/boostack</a>
+    </p>
 </section>
 
 <h3 id="Installation">Docker Installation</h3>
 <section>
-    <p>Launch Docker compose in project root</p>
-    <pre><code>docker-compose up -d --build</code></pre>
-
+    <p>Launch Docker compose in project root (<em>cd boostack</em> if you download it via composer)
+        <br /><code>docker-compose up -d --build</code>
+    </p>
     <p>In the Docker compose file, you need to comment out the user parameter for php-apache based on
         the operating system: 502:20 for macOS and 1000:1000 for Unix. Leave both lines commented out (disabled)
         in case of Windows operating systems.</p>
