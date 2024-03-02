@@ -38,7 +38,7 @@ $config["project_name"] = "Boostack";
 $config["project_sitename"] = "getBoostack.com";
 $config["project_version"] = "4.2";
 $config["project_mission"] = "getBoostack.com - Improve your development and build a modern website in minutes";
-$config["viewport"] = "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0";
+$config["viewport"] = "width=device-width, initial-scale=1.0, shrink-to-fit=no";
 $config["html_lang"] = "en";
 $config["site_title"] = "Boostack - The lightest full stack Framework for PHP";
 $config["site_keywords"] = "boostack, php, framework, website, productive, simplicity, seo, secure, mysql, open-source"; // comma separated
