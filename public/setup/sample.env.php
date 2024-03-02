@@ -8,7 +8,7 @@ define('CURRENT_ENVIRONMENT', [current_environment]);  // 'local' | 'staging' | 
 # Setup main project folder 
 define('MAIN_PROJECT_FOLDER', "[rootpath]");
 # Setup project subfolder 
-$config['document_root_subdir'] = ''; // / by default
+$config['document_root_subdir'] = '/'; // / by default
 # Setup protocol 
 $config['protocol'] = '[protocol]';
 # Setup port 
@@ -155,7 +155,8 @@ $config["mail_validTime"] = 7200;
 /**
  * DO NOT MODIFY
  */
-$defaultDN = $config['DN'].':' . $config['port'] . MAIN_PROJECT_FOLDER;
+$default_port = empty($config['port'])? '': ':' . $config['port'];
+$defaultDN = $config['DN'].$default_port ;
 $currentDN = (in_array($_SERVER['HTTP_HOST'], $config['DN_alternative'])) ? $_SERVER['HTTP_HOST'] . '' : $defaultDN . $config['document_root_subdir'];
 $config['url'] = $config['protocol'] . "://" . $currentDN;
 

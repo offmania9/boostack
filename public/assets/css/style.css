@@ -144,8 +144,6 @@ b {
 
 section.disclaimer h2 {
   color: #ffffff;
-  padding: 60px;
-  line-height: 60px;
   font-size: 3.4em;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
   font-weight: 300;
@@ -159,15 +157,6 @@ section.disclaimer h2 .title {
 }
 section.disclaimer h2 > .smaller {
   font-size: 35px;
-}
-section.disclaimer .download {
-  margin-top: -25px;
-  padding: 15px;
-  font-weight: 200;
-  color: #fff;
-  background-color: transparent;
-  border-color: #fbf7ff;
-  margin-bottom: 50px;
 }
 section.features .download {
   margin-top: -25px;
@@ -191,9 +180,7 @@ section.features .download:hover {
   border-color: #fbf7ff;
 }
 section.disclaimer .download:hover {
-  background-color: #ffffff;
-  color: #84c441;
-  border-color: #fbf7ff;
+  color: #84c441 !important;
 }
 section.features {
   margin-top: 30px;
