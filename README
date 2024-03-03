@@ -1,17 +1,3 @@
-***************************
-Boostack is a full stack framework for PHP.
-Improve your development and build a modern website in minutes
-***************************
-/**
- * Boostack
- * ========================================================================
- * Copyright 2014-2024 Spagnolo Stefano
- * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
- * ========================================================================
- * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 4.2
- */
-
 ## How to get Boostack
 Boostack is available open-source under the MIT license.
 
@@ -39,3 +25,17 @@ Please refer to the the [Documentation](https://www.getboostack.com/download) fo
 Launch Docker compose in project root
 
 `docker-compose up -d --build`
+
+***************************
+Boostack is a full stack framework for PHP.
+Improve your development and build a modern website in minutes
+***************************
+/**
+ * Boostack
+ * ========================================================================
+ * Copyright 2014-2024 Spagnolo Stefano
+ * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
+ * ========================================================================
+ * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
+ * @version 4.2
+ */
