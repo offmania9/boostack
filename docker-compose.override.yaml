@@ -8,9 +8,9 @@ services:
         ports: 
             - "8686:80"
 
-    mariadb:
-        ports: 
-            - "3306:3306"
+    # phpmyadmin:
+    #     ports:
+    #         - "8088:80"
   
     phpmyadmin:
         ports:
