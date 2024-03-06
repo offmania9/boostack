@@ -8,11 +8,10 @@ services:
         ports: 
             - "8686:80"
 
-    # phpmyadmin:
-    #     ports:
-    #         - "8088:80"
-  
+    # mariadb:
+    #   ports: 
+    #       - "${DB_PORT}:${DB_PORT}"
+
     phpmyadmin:
         ports:
             - "8687:80"
-            
