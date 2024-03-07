@@ -41,3 +41,7 @@ $pimage = !empty($image_src) ? $image_src : Config::get('url') . Config::get('ur
 
 <body class="<?= isset($bodyClasses) ? $bodyClasses : '' ?>">
     <?php Template::renderDefaultCSSFiles_nonCritical(); ?>
+
+    <?php if(Config::get('checkIfSetupFolderExists') && is_dir(ROOTPATH."setup")): ?>
+        <?php require "setup_exists_header.phtml"; ?>
+    <?php endif; ?>

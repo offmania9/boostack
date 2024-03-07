@@ -4,28 +4,28 @@
  * ENVIRONMENT
  */
 # Setup current environment
-define('CURRENT_ENVIRONMENT', [current_environment]);  // 'local' | 'staging' | 'production'
+define('CURRENT_ENVIRONMENT', Environment::LOCAL);  // 'local' | 'staging' | 'production'
 # Setup main project folder 
-define('MAIN_PROJECT_FOLDER', "[rootpath]");
+define('MAIN_PROJECT_FOLDER', "/public/");
 # Setup project subfolder 
 $config['document_root_subdir'] = '/'; // / or empty by default
 # Setup protocol 
-$config['protocol'] = '[protocol]';
+$config['protocol'] = 'http';
 # Setup port 
-$config['port'] = '[port]';
+$config['port'] = '8080';
 # Setup Domain Name
-$config['DN'] = '[dn]';
+$config['DN'] = 'localhost';
 # Setup Alternative Domain Name
 $config['DN_alternative'] = array();
 # Setup Development Mode
 $config['developmentMode'] = TRUE;
-# Alert if Setup folder is visible
+# Setup installation folder
 $config['checkIfSetupFolderExists'] = TRUE;
 
 /**
  * DATABASE
  */
-$config['database_on'] = [database_on];      // enable or disable Mysql database
+$config['database_on'] = FALSE;      // enable or disable Mysql database
 $config['driver_pdo'] = "[driver_pdo]";
 $config['db_host'] = '[db_host]';
 $config['db_port'] = '[db_port]';
@@ -36,8 +36,8 @@ $config['db_password'] = '[db_password]';
 /**
  * SESSION
  */
-$config['session_on'] = [session_on];   // enable or disable Sessions (TRUE need $database_on=TRUE)
-$config['csrf_on'] = [csrf_on];      // enable or disable CSRF validation (TRUE need $database_on=TRUE AND $session_on=TRUE)
+$config['session_on'] = FALSE;   // enable or disable Sessions (TRUE need $database_on=TRUE)
+$config['csrf_on'] = FALSE;      // enable or disable CSRF validation (TRUE need $database_on=TRUE AND $session_on=TRUE)
 $config['csrf_timeout'] = 1000;
 $config['session_timeout'] = 7200; # 2h             // session max inactivity time (seconds)
 $config['session_lifespan'] = 14400; # 4h    // session max duration (seconds)
@@ -45,12 +45,12 @@ $config['session_lifespan'] = 14400; # 4h    // session max duration (seconds)
 /**
  * Rest API
  */
-$config['api_on'] = [api_on];       // enable or disable boostack Rest API (#TRUE need $database_on=TRUE)
+$config['api_on'] = FALSE;       // enable or disable boostack Rest API (#TRUE need $database_on=TRUE)
 
 /**
  * LOG
  */
-$config['log_on'] = [log_on];       // enable or disable boostack Log (#TRUE need $database_on=TRUE)
+$config['log_on'] = FALSE;       // enable or disable boostack Log (#TRUE need $database_on=TRUE)
 $config['log_file'] = "logs/log.txt";
 $config['log_dir'] = "../logs/";
 $config['log_enabledTypes'] =
@@ -66,7 +66,7 @@ $config['username_max_length'] = 64;
 $config['password_min_length'] = 6;
 $config['password_max_length'] = 80;
 
-$config['lockStrategy_on'] = [lockStrategy_on];
+$config['lockStrategy_on'] = FALSE;
 $config['login_lockStrategy'] = '[lockStrategy_type]'; // "timer" | "recaptcha" | FALSE (if you set timer remember to set login_secondsFormBlocked)
 $config['login_maxAttempts'] = "[login_max_attempts]";
 $config['login_secondsFormBlocked'] = "[login_seconds_blocked]";
@@ -80,8 +80,8 @@ $config['custom_user_class'] = '';
 /**
  * COOKIES
  */
-$config['cookie_on'] = [cookie_on];            // enable or disable Cookies (TRUE need $database_on=TRUE AND $session_on=TRUE)
-$config['cookie_expire'] = [cookie_expire];    // Cookies expire (60*60*24*29 = 29days)
+$config['cookie_on'] = FALSE;            // enable or disable Cookies (TRUE need $database_on=TRUE AND $session_on=TRUE)
+$config['cookie_expire'] = FALSE;    // Cookies expire (60*60*24*29 = 29days)
 $config['cookie_name'] = "[cookie_name]";  // This key is used to generate custom cookie names
 
 /**
