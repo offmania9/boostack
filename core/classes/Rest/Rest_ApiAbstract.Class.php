@@ -53,7 +53,9 @@ abstract class Rest_ApiAbstract
             case 'POST':
                 if (array_key_exists('HTTP_X_HTTP_METHOD', $_SERVER)) {
                     if ($_SERVER['HTTP_X_HTTP_METHOD'] == 'PUT') {
-                        $this->file = parse_str(trim(file_get_contents("php://input")));
+                        $parsedInput = null;
+                        parse_str(trim(file_get_contents("php://input")), $parsedInput);
+                        $this->file = $parsedInput;
                         $this->file = Utils::sanitizeInput($this->file);
                         $this->request = Request::getQueryArray();
                     } else {
@@ -124,7 +126,7 @@ abstract class Rest_ApiAbstract
                 $this->messageBag->data = $classInstance->{$this->endpoint}($this->args);
                 $this->messageBag->code = StatusCodes::HTTP_OK;
             } else {
-                throw new Exception_APINotFound("No Endpoint: " . $this->endpoint . ". The resource you requested doesn't exist. For more info, please refer to  ".Boostack::getInstance()->url."docs");
+                throw new Exception_APINotFound("No Endpoint: " . $this->endpoint . ". The resource you requested doesn't exist. For more info, please refer to docs");
             }
         }
         catch (Exception_APITooManyRequests$e) {

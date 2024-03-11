@@ -139,8 +139,7 @@ class Utils
      */
     public static function goToLogout()
     {
-        $boostack = Boostack::getInstance();
-        header("Location: " . $boostack->url . "logout");
+        header("Location: " . Config::get("url") . "logout");
         exit();
     }
 
@@ -150,11 +149,10 @@ class Utils
     public static function goToLogin($callbackURL = NULL)
     {
         global $objSession;
-        $boostack = Boostack::getInstance();
         if ($callbackURL != NULL) {
             $objSession->loginCallbackURL = $callbackURL;
         }
-        header("Location: " . $boostack->url . "login");
+        header("Location: " . Config::get("url") . "login");
         exit();
     }
 
@@ -389,8 +387,7 @@ class Utils
      */
     public static function goToMaintenance()
     {
-        $boostack = Boostack::getInstance();
-        header("Location: " . $boostack->url . Config::get("url_maintenance"));
+        header("Location: " . Config::get("url") . Config::get("url_maintenance"));
         exit();
     }
 
