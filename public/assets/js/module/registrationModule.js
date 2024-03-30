@@ -36,14 +36,14 @@ define(['jquery', 'module/CSRFCheckManager'], function ($, CSRFM) {
                 return false;
             }
              */
-            if ($("#reg-first_name-ajax").val().length == 0) {
-                setFormErrorAjax("You must insert First name");
-                return false;
-            }
-            if ($("#reg-last_name-ajax").val().length == 0) {
-                setFormErrorAjax("You must insert Last name");
-                return false;
-            }
+            // if ($("#reg-first_name-ajax").val().length == 0) {
+            //     setFormErrorAjax("You must insert First name");
+            //     return false;
+            // }
+            // if ($("#reg-last_name-ajax").val().length == 0) {
+            //     setFormErrorAjax("You must insert Last name");
+            //     return false;
+            // }
             if ($("#reg-email-ajax").val().length == 0 || !isEmail($("#reg-email-ajax").val())) {
                 setFormErrorAjax("You must insert a valid e-mail address");
                 return false;
@@ -86,19 +86,6 @@ define(['jquery', 'module/CSRFCheckManager'], function ($, CSRFM) {
                 return (password.match(number) && password.match(alphabets) && password.match(special_characters))
             }
 
-
-            function checkStrength(password) {
-                // If password contains both lower and uppercase characters, increase strength value.  
-                if (!password.match(/([a-z].*[A-Z])|([A-Z].*[a-z])/)) return false;
-                // If it has numbers and characters, increase strength value.  
-                if (!password.match(/([a-zA-Z])/) && password.match(/([0-9])/)) return false;
-                // If it has one special character, increase strength value.  
-                if (password.match(/([!,%,&,@,#,$,^,*,?,_,~])/)) return false;
-                // If it has two special characters, increase strength value.  
-                //if (password.match(/(.*[!,%,&,@,#,$,^,*,?,_,~].*[!,%,&,@,#,$,^,*,?,_,~])/)) strength += 1  
-                return true;
-            }
-
             CSRFCheckManager.addToForm($("#registration-form-ajax"));
 
             var data = {};
@@ -106,8 +93,8 @@ define(['jquery', 'module/CSRFCheckManager'], function ($, CSRFM) {
             //data.password_confirm = $("#reg-pwd2-ajax").val();
             data.password_confirm = $("#reg-pwd-ajax").val();
             data.email = $("#reg-email-ajax").val();
-            data.first_name = $("#reg-first_name-ajax").val();
-            data.last_name = $("#reg-last_name-ajax").val();
+            // data.first_name = $("#reg-first_name-ajax").val();
+            // data.last_name = $("#reg-last_name-ajax").val();
             data.agree = $("#register-agree").is(":checked");
             data.BCSRFT = $("#BCSRFT").val();
             var dataToSend = JSON.stringify(data);
@@ -139,7 +126,7 @@ define(['jquery', 'module/CSRFCheckManager'], function ($, CSRFM) {
                 error: function (e) {
                     console.log(e);
                     if (typeof e.responseJSON.message !== 'undefined')
-                        $("#registration-alert").text(e.responseJSON.message).show();
+                        $("#registration-alert").text(e.responseJSON.message + ":" + e.responseJSON.data).show();
                     else
                         $("#registration-alert").text("Attention! generic error").show();
                 }
@@ -152,6 +139,19 @@ define(['jquery', 'module/CSRFCheckManager'], function ($, CSRFM) {
         }
         function setFormErrorAjax(message) {
             $("#registration-alert").text(message).show();
+        }
+
+
+        function checkStrength(password) {
+            // If password contains both lower and uppercase characters, increase strength value.  
+            if (!password.match(/([a-z].*[A-Z])|([A-Z].*[a-z])/)) return false;
+            // If it has numbers and characters, increase strength value.  
+            if (!password.match(/([a-zA-Z])/) && password.match(/([0-9])/)) return false;
+            // If it has one special character, increase strength value.  
+            if (password.match(/([!,%,&,@,#,$,^,*,?,_,~])/)) return false;
+            // If it has two special characters, increase strength value.  
+            //if (password.match(/(.*[!,%,&,@,#,$,^,*,?,_,~].*[!,%,&,@,#,$,^,*,?,_,~])/)) strength += 1  
+            return true;
         }
 
 

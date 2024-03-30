@@ -6,7 +6,7 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 5
+ * @version 5.0
  */
 
 /**
@@ -36,13 +36,13 @@ $config["default_error_page"] = "error.phtml";
 $config["sitename"] = "getBoostack.com";
 $config["project_name"] = "Boostack";
 $config["project_sitename"] = "getBoostack.com";
-$config["project_version"] = "4.2";
-$config["project_mission"] = "getBoostack.com - Improve your development and build a modern website in minutes";
+$config["project_version"] = "5.0";
+$config["project_mission"] = "getBoostack.com - Improve your development and build your ideas";
 $config["viewport"] = "width=device-width, initial-scale=1.0, shrink-to-fit=no";
 $config["html_lang"] = "en";
 $config["site_title"] = "Boostack - The lightest full stack Framework for PHP";
 $config["site_keywords"] = "boostack, php, framework, website, productive, simplicity, seo, secure, mysql, open-source"; // comma separated
-$config["site_description"] = "A full stack Framework for PHP. Improve your development and build a modern website in minutes";
+$config["site_description"] = "A full stack Framework for PHP. Improve your development and build your ideas";
 $config["site_author"] = "Stefano Spagnolo";
 
 $config["url_logo"] = $config["image_path"]."boostack_logo_x210.png";

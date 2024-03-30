@@ -7,7 +7,7 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 5
+ * @version 5.0
  */
 
 abstract class Rest_ApiAbstract
@@ -196,10 +196,14 @@ abstract class Rest_ApiAbstract
      * @param bool $fileIsJSON
      * @throws Exception
      */
-    protected function constraints($method, ?array $serverParams = null, ?array $headers = null, bool $fileIsJSON = false)
+    protected function constraints($method, $currentUserIsLogged = false, ?array $headers = null, ?array $serverParams = null, bool $fileIsJSON = true)
     {
         if (strcasecmp($this->method, $method) !== 0) {
-            throw new Exception("Only accepts $method requests");
+            throw new Exception("Only accepts $method requests.");
+        }
+
+        if ($currentUserIsLogged && !Auth::isLoggedIn()) {
+            throw new Exception("Only accepts requests from already logged in user.");
         }
 
         if (!empty($serverParams)) {

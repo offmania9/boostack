@@ -7,8 +7,8 @@ if (!empty($_POST)) { ?>
                 <?php if (!empty($finalSetupMessageError)) { ?>
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         <h3>Attention!</h3>
-                        <p style="font-size: 1.2em;"><?php echo $finalSetupMessageError ?></p>
-                        <p style="font-size: 1.2em;" class="text-start"><b><a href="javascript:window.history.back();">
+                        <p class="lead"><?php echo $finalSetupMessageError ?></p>
+                        <p class="lead" class="text-start"><b><a href="javascript:window.history.back();">
                                     << Back</a></b></p>
                     </div>
                 <?php } else { ?>
@@ -16,11 +16,11 @@ if (!empty($_POST)) { ?>
                         <div class="row">
                             <div class="col-md-12">
                                 <h3>Installation Completed Successfully!</h3>
-                                <p style="font-size: 1.2em;">You <b>MUST</b> ensure you remove the entire <b><em>setup/</em></b> directory. Leaving the setup directory in place is a very
+                                <p class="lead">You <b>MUST</b> ensure you remove the entire <b><em>setup/</em></b> directory. Leaving the setup directory in place is a very
                                     serious potential security issue which may lead to deletion or alteration of files, etc.
                                     Please note that until this directory is removed, Boostack will not operate and a warning message will be displayed.
                                 </p>
-                                <p style="font-size: 1.2em;" class="text-end"><b><a href="../../">Go to Boostack Homepage >></a></b></p>
+                                <p class="lead" class="text-end"><b><a href="../../">Go to Boostack Homepage >></a></b></p>
                             </div>
                         </div>
                     </div>

@@ -7,7 +7,7 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 5
+ * @version 5.0
  */
 
 class Rest_ApiUserAuth extends Rest_Api
@@ -25,12 +25,16 @@ class Rest_ApiUserAuth extends Rest_Api
      */
     protected function authenticate()
     {
-        $this->constraints("POST", NULL, array(
-            "CONTENT_TYPE" => "application/json",
-            "Authorization" => "*"
-        ), true);
+        $this->constraints(
+            "POST",
+            false,
+            array(
+                "Content-Type" => "application/json",
+                "Authorization" => "*"
+            )
+        );
         $res = array();
-        $user = User_ApiJWTToken::checkValidityRequestForJWTToken();
+        $user = User_ApiJWTToken::getUserFromJWTToken();
 
         //---- Custom logic
         Auth::loginByUserID($user->id);

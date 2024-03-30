@@ -2,7 +2,7 @@
     "lang_code": "en",
     "projectName":"Boostack",
     "mainDescription":"is a full stack <span>Framework</span> for PHP",
-    "mission":"Improve your development and build a modern website in minutes",
+    "mission":"Improve your development and build your ideas",
     "downloadBoostack":"Download Boostack",
     "navigation":{
         "home":"Home",
@@ -10,7 +10,8 @@
         "documentation":"Documentation",
         "login":"Login",
         "registration":"Registration",
-        "log":"Log"
+        "log":"Log",
+        "logout":"Logout"
     },
     "featuresTitles":{
         "fast":"Fast and Productive",
@@ -29,7 +30,7 @@
         "secure":"Built on PHP - MySql - HTML5 - CSS3 - JQuery Boostack runs on secure and fast-loading code for <b>optimal performance</b>."
     },
     "inclusions":"Simple to configure it.",
-    "inclusions2":"It contains JQuery, Animate.css and Bootstrap.",
+    "inclusions2":"Developers for developers",
     "download":{
         "howto":"How to get Boostack",
         "howtoDescription":"Boostack is available open-source under the <a href=\"https://github.com/offmania9/boostack/blob/master/LICENSE\" target=\"_blank\" title=\"Boostack github\">MIT</a> license.",

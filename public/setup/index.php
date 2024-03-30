@@ -10,7 +10,7 @@ if (!empty($_POST)) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>Home | Boostack - a full stack web layer for PHP | getboostack.com</title>
-    <meta name="description" content="Improve your development and build a modern website in minutes">
+    <meta name="description" content="Improve your development and build your ideas">
     <meta name="author" content="stefano spagnolo">
     <meta content="boostack, php, framework, website, productive, simplicity, seo, secure, mysql, open-source" name="Keywords" />
     <meta content="INDEX, FOLLOW" name="ROBOTS" />

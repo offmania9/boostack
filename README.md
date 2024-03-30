@@ -1,6 +1,6 @@
 ## About Boostack
 Boostack is a full stack framework for PHP.
-Improve your development and build a modern website in minutes
+Improve your development and build your ideas
 
 ## How to get Boostack
 Boostack is available open-source under the MIT license.
@@ -38,4 +38,4 @@ The Boostack framework is open-sourced software licensed under the MIT license. 
 ## Copyright
 Copyright 2014-2024 Spagnolo Stefano
 @author Spagnolo Stefano <s.spagnolo@hotmail.it>
-@version 5
+@version 5.0

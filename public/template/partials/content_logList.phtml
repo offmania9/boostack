@@ -2,83 +2,17 @@
     <div class="line">
         <div class="container">
             <div class="row">
-                <h2><?= Language::getLabel("navigation.log"); ?></h2>
+                <h2 class="text-white textShadow display-4"><?= Language::getLabel("navigation.log"); ?>
+                    <span class="small">Super Admin</span>
+                </h2>
             </div>
         </div>
     </div>
 </section>
-
-<input type="hidden" id="filterJson" value="<?= htmlspecialchars($filterField_Log)?>"/>
-            <input type="hidden" id="log_filter" value="<?= htmlspecialchars(json_encode($session_filter_log)) ?>"/>
-<p>&nbsp;</p>
-<section class="logList centerContent">
-    <div id="logBox" class="">
-        <div class="container">
-            <div class="panel panel-success">
-                <div class="panel-heading">
-                    <?php require("filter.phtml");?>
-                </div>
-                <div class="panel-body">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <small class="limitElem text-start"></small>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="text-center elemToView">
-                                    Elementi da visualizzare
-                                    <select class="sortingTable noClearEmpty select noSelectize" id="sortingTable" name="sortingTable">
-                                        <option value="25" selected>25</option>
-                                        <option value="50">50</option>
-                                        <option value="100">100</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="text-end">
-                                    <nav>
-                                        <div class="customPagination">
-                                        </div>
-                                    </nav>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-striped">
-                        <thead>
-                        <tr class="tableHeader">
-                            <th filterType="" fieldname="id" class="" title="Id">Id&nbsp;<span class="glyphicon sortingOrder"></span></th>
-                            <th filterType="" fieldname="level" class="" title="Level">Level&nbsp;<span class="glyphicon sortingOrder"></span></th>
-                            <th filterType="" fieldname="datetime" class="" title="Date and Time">Date and Time&nbsp;<span class="glyphicon sortingOrder"></span></th>
-                            <th filterType="" fieldname="ip" class="" title="IP">IP&nbsp;<span class="glyphicon sortingOrder"></span></th>
-                            <th filterType="" fieldname="useragent" class="" title="Useragent">Useragent&nbsp;<span class="glyphicon sortingOrder"></span></th>
-                            <th filterType="" fieldname="referrer" class="" title="Referrer">Referrer&nbsp;<span class="glyphicon sortingOrder"></span></th>
-                            <th filterType="" fieldname="query" class="" title="Query">Query&nbsp;<span class="glyphicon sortingOrder"></span></th>
-                            <th filterType="" fieldname="message" class="" title="Message">Message&nbsp;<span class="glyphicon sortingOrder"></span></th>
-                        </tr>
-                        </thead>
-                        <tbody class="tableToPaste">
-                        <tr>
-                            <td colspan="12" class="d-none">
-                                <small class="noData">Nessun dato disponibile</small>
-                            </td>
-                        </tr>
-                        </tbody>
-                        <tr class="tableToCopy d-none">
-                            <td class="id"></td>
-                            <td class="level"></td>
-                            <td class="datetime"></td>
-                            <td class="ip"></td>
-                            <td class="useragent"></td>
-                            <td class="referrer"></td>
-                            <td class="query"></td>
-                            <td class="message"></td>
-                        </tr>
-                    </table>
-                    </div>
-                </div>
-            </div>
+<section class="logList centerContent py-3">
+    <div class="container">
+        <div class="mx-auto col-md-8 small">
+            <?php d($logList); ?>
         </div>
     </div>
 </section>

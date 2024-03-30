@@ -1,4 +1,4 @@
-define(['jquery','bootstrap'], function($) {
+define(['jquery'], function($) {
     var exampleModuleObject = function() {
 
         var brandURL="";

@@ -7,7 +7,7 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 5
+ * @version 5.0
  */
 
 class Rest_CustomApi extends Rest_Api
@@ -17,13 +17,10 @@ class Rest_CustomApi extends Rest_Api
      */
     protected function getTest()
     {
-        if (strcasecmp($this->method, 'GET') == 0) {
-            $res = (object) array(
-                'message' => 'TEST API:OK'
-            );
-            return $res;
-        } else {
-            throw new Exception("Only accepts GET requests");
-        }
+        $this->constraints("GET");
+        $res = (object) array(
+            'message' => 'TEST API:OK'
+        );
+        return $res;
     }
 }

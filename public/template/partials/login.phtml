@@ -2,13 +2,13 @@
     <div class="line">
         <div class="container">
             <div class="row">
-                <h2><?= Language::getLabel("navigation.login");?></h2>
+                <h2 class="text-white textShadow display-4"><?= Language::getLabel("navigation.login");?></h2>
             </div>
         </div>
     </div>
 </section>
 <p>&nbsp;</p>
-<section class="login centerContent">
+<section class="login centerContent py-5 fw-light">
     <div class="container">
         <div class="row">
             <div id="" class="col-md-1">
@@ -80,14 +80,14 @@
 
                                 <div class="form-group">
                                     <div class="col-md-12 control">
-                                        <div style="border-top: 1px solid #888; padding-top: 15px;">
+                                        <div>
+                                            <hr/>
                                             <small>
                                                 <a href="<?= Utils::getFriendlyUrl("registration");?>"><?= Language::getLabel("login.donthaveaccount");?></a>
                                             </small>
                                         </div>
                                     </div>
                                 </div>
-
                             </form>
                         <?php else: ?>
                             <div id="login-alert" class="alert alert-danger col-sm-12">Too much login request. Wait some seconds</div>

@@ -55,15 +55,8 @@ function getElementByID(id) {
 
 var initLibrary = function () {
 
-    /** 
-    require(["module/cookieMessageModule"], function (object) {
-        if (cookieMessageModule != null) return;
-        cookieMessageModule = new object();
-        cookieMessageModule.init();
-    });
-    */
     if (getElementsByClassName("CSRFcheck").length) {
-        require([rootUrl+"assets/js/module/CSRFCheckManager.js"], function (ccm) {
+        require(["module/CSRFCheckManager"], function (ccm) {
             if (CSRFCheckManager != null) return;
             CSRFCheckManager = new ccm();
             CSRFCheckManager.init();
@@ -83,30 +76,6 @@ var initLibrary = function () {
             if (registrationModule != null) return;
             registrationModule = new m();
             registrationModule.init();
-        });
-    }
-
-
-    if (getElementsByClassName("logList").length) {
-        require(["module/logListModule"], function (m) {
-            if (logListModule != null) return;
-            logListModule = new m();
-            logListModule.init();
-        });
-    }
-
-    if (getElementsByClassName("editSection").length) {
-        require(["module/uploadProfilePicModule"], function (m) {
-            if (uploadProfilePicModule != null) return;
-            uploadProfilePicModule = new m();
-            uploadProfilePicModule.init();
-        });
-    }
-    if (getElementsByClassName("editSection").length) {
-        require(["module/editModule"], function (m) {
-            if (editModule != null) return;
-            editModule = new m();
-            editModule.init();
         });
     }
 

@@ -7,7 +7,7 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 5
+ * @version 5.0
  */
 
 require ROOTPATH . '../vendor/autoload.php';
@@ -100,7 +100,7 @@ class User_ApiJWTToken extends BaseClassTraced
      * @return User The authenticated user.
      * @throws Exception If the user does not exist, is inactive, or the token is invalid.
      */
-    public static function checkValidityRequestForJWTToken(): User
+    public static function getUserFromJWTToken(): User
     {
         $jwt = str_replace('Bearer ', '', Request::getHeaderParam("Authorization"));
         $token = User_ApiJWTToken::decode($jwt);
@@ -120,6 +120,23 @@ class User_ApiJWTToken extends BaseClassTraced
             throw new Exception("The token has been revoked");
 
         return $user;
+    }
+
+    /**
+     * Checks the validity of the request for a JWT token.
+     *
+     * @return User The authenticated user.
+     * @throws Exception If the user does not exist, is inactive, or the token is invalid.
+     */
+    public static function checkValidityRequestForJWTToken(): bool
+    {
+        try {
+            $jwt = str_replace('Bearer ', '', Request::getHeaderParam("Authorization"));
+            $token = User_ApiJWTToken::decode($jwt);
+            return true;
+        } catch (Exception $e) {
+            return false;
+        }
     }
 
     /**

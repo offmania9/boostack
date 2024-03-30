@@ -7,7 +7,7 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 5
+ * @version 5.0
  */
 
 /**
@@ -53,7 +53,7 @@ class Request
      */
     private static function get(string $type, $param)
     {
-        return self::${$type}[$param];
+        return isset(self::${$type}[$param]) && self::${$type}[$param] !== null ? self::${$type}[$param] : null;
     }
 
     /**

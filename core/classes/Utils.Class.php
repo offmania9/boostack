@@ -7,7 +7,7 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 5
+ * @version 5.0
  */
 class Utils
 {
@@ -18,22 +18,19 @@ class Utils
      * @param string $encoding The character encoding (default is 'UTF-8').
      * @return array|string The sanitized input data.
      */
-    public static function sanitizeInput($array, $encoding = 'UTF-8')
+    public static function sanitizeInput($data, $encoding = 'UTF-8')
     {
-        if (is_array($array)) {
-            $res = array();
-            foreach ($array as $key => $value) {
-                if (is_array($value)) {
-                    $res[$key] = self::sanitizeInput($value);
-                    continue;
-                }
-                $res[$key] = htmlspecialchars($value, ENT_QUOTES | ENT_HTML401, $encoding);
-            }
-            return $res;
+        if (is_array($data)) {
+            return array_map(function ($value) use ($encoding) {
+                return self::sanitizeInput($value, $encoding);
+            }, $data);
+        } elseif ($data !== null) {
+            return htmlspecialchars($data, ENT_QUOTES | ENT_HTML401, $encoding);
         } else {
-            return htmlspecialchars($array, ENT_QUOTES | ENT_HTML401, $encoding);
+            return $data;
         }
     }
+
 
     /**
      * Autoloads classes based on the provided class name.
