@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Boostack: MessageBag.Class.php
  * ========================================================================
@@ -6,54 +7,69 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 4.2
+ * @version 5
  */
-class MessageBag implements JsonSerializable {
 
+/**
+ * Represents a message bag for handling errors and data in a unified format.
+ */
+class MessageBag implements JsonSerializable
+{
     /**
-     * @var bool
+     * @var bool Indicates if an error has occurred.
      */
     private $error;
+
     /**
-     * @var
+     * @var int|null The error code.
      */
     private $code;
+
     /**
-     * @var null
+     * @var string|null The error message.
      */
     private $message;
+
     /**
-     * @var null
+     * @var mixed|null The data associated with the message.
      */
     private $data;
 
     /**
      * MessageBag constructor.
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->error = false;
-        $this->message = NULL;
-        $this->data = NULL;
+        $this->message = null;
+        $this->data = null;
     }
 
     /**
-     *
+     * Removes the error flag.
      */
-    public function removeError() {
+    public function removeError()
+    {
         $this->error = false;
     }
 
     /**
+     * Checks if an error has occurred.
+     *
      * @return bool
      */
-    public function hasError() {
+    public function hasError(): bool
+    {
         return $this->error;
     }
 
     /**
+     * Serializes the object to a JSON format.
+     *
      * @return array
      */
-    public function jsonSerialize():mixed {
+    public function jsonSerialize(): array
+    {
         return [
             "error" => $this->error,
             "code" => $this->code,
@@ -62,31 +78,40 @@ class MessageBag implements JsonSerializable {
         ];
     }
 
-    public function toObject() {
-        return (object) array(
-            'error'=>$this->error,
+    /**
+     * Converts the object to an stdClass object.
+     *
+     * @return object
+     */
+    public function toObject(): object
+    {
+        return (object) [
+            'error' => $this->error,
             "code" => $this->code,
-            'message'=>$this->message,
+            'message' => $this->message,
             "data" => $this->data
-        );
+        ];
     }
 
     /**
+     * Converts the object to a JSON string.
+     *
      * @return string
      */
-    public function toJSON() {
+    public function toJSON(): string
+    {
         return json_encode($this->jsonSerialize());
     }
 
-
-        /**
-     * Getter
+    /**
+     * Getter method to access properties dynamically.
      *
-     * @param $property_name
-     * @return mixed
-     * @throws Exception
+     * @param string $property_name The name of the property to access.
+     * @return mixed The value of the property.
+     * @throws Exception If the property does not exist.
      */
-    public function __get($property_name) {
+    public function __get(string $property_name)
+    {
         if (property_exists($this, $property_name)) {
             return $this->$property_name;
         } else {
@@ -95,13 +120,14 @@ class MessageBag implements JsonSerializable {
     }
 
     /**
-     * Setter
+     * Setter method to set properties dynamically.
      *
-     * @param $property_name
-     * @param $val
-     * @throws Exception
+     * @param string $property_name The name of the property to set.
+     * @param mixed $val The value to set.
+     * @throws Exception If the property does not exist.
      */
-    public function __set($property_name, $val) {
+    public function __set(string $property_name, $val)
+    {
         if (property_exists($this, $property_name)) {
             $this->$property_name = $val;
         } else {
@@ -109,4 +135,3 @@ class MessageBag implements JsonSerializable {
         }
     }
 }
-?>

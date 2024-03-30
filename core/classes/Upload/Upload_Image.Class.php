@@ -7,12 +7,8 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 4.2
+ * @version 5
  */
-// Link image type to correct image loader and saver
-// - makes it easier to add additional types later on
-// - makes the function easier to read
-
 
 const IMAGETYPE_EXTENSION = array(
     "gif" => IMAGETYPE_GIF,
@@ -74,70 +70,30 @@ const IMAGE_HANDLERS = [
 
 class Upload_Image
 {
-
-    /**
-     * @var
-     */
     private $source;
 
-    /**
-     * @var string
-     */
     private $name;
 
-    /**
-     * @var null
-     */
     private $visual_name;
 
-    /**
-     * @var
-     */
     private $type;
 
-    /**
-     * @var float|int
-     */
     private $size;
 
-    /**
-     * @var
-     */
     private $tmp_name;
 
-    /**
-     * @var string
-     */
     private $path;
 
-    /**
-     * @var
-     */
     private $extension;
 
-    /**
-     * @var
-     */
     private $height;
 
-    /**
-     * @var
-     */
     private $width;
 
-    /**
-     * @var
-     */
     private $filter;
 
-    /**
-     * @var string
-     */
     private $preview_path;
 
-    /**
-     * @var array
-     */
     private $image_types = array(
         "image/gif",
         "image/jpeg",
@@ -149,17 +105,19 @@ class Upload_Image
     );
 
     private $PNG_compression = 1;
+
     /**
-     * Upload_Image constructor.
-     * @param $file
-     * @param $destination_folder
-     * @param bool $exitifexist
-     * @param null $target_name
-     * @param null $visual_name
-     * @param null $resize
-     * @param null $preview_size
-     * @param null $filter
-     * @throws Exception
+     * Constructor for the Upload_Image class.
+     *
+     * @param array $file The $_FILES array representing the uploaded file.
+     * @param string $destination_folder The destination folder for the uploaded image.
+     * @param bool $exitifexist Whether to exit if the file already exists.
+     * @param string|null $target_name The target name for the uploaded image.
+     * @param string|null $visual_name The visual name for the uploaded image.
+     * @param int|null $resize The resize option for the image.
+     * @param int|null $preview_size The preview size option for the image.
+     * @param int|null $filter The filter option for the image.
+     * @throws Exception If an error occurs during image upload.
      */
     public function __construct($file, $destination_folder, $exitifexist = true, $target_name = NULL, $visual_name = NULL, $resize = NULL, $preview_size = NULL, $filter = NULL)
     {
@@ -183,10 +141,11 @@ class Upload_Image
                 // throw new Exception("File already exist.");
                 // }
                 // else{
-                if (move_uploaded_file($file["tmp_name"], $destination_folder . $this->name))
+                if (move_uploaded_file($file["tmp_name"], $destination_folder . $this->name)) {
                     chmod($destination_folder . $this->name, 0755);
-                else
-                    throw new Exception("Can't MoveUploaded file: " . $this->name);
+                } else {
+                    throw new Exception("Can't move uploaded file: " . $this->name);
+                }
                 // }
                 list($width, $height, $type, $attr) = getimagesize($this->path);
                 $this->height = $height;
@@ -194,15 +153,17 @@ class Upload_Image
 
                 if ($resize !== NULL) {
                     if ($this->width >= $this->height) {
-                        if ($this->width >= $resize)
+                        if ($this->width >= $resize) {
                             $this->resizeToWidth($resize, $filter);
-                        else
+                        } else {
                             $this->resizeToWidth($this->width, $filter);
+                        }
                     } else {
-                        if ($this->height >= 1237)
+                        if ($this->height >= 1237) {
                             $this->resizeToHeight(1237, $filter);
-                        else
+                        } else {
                             $this->resizeToHeight($this->height, $filter);
+                        }
                     }
                 }
                 if ($preview_size !== NULL) {
@@ -213,13 +174,14 @@ class Upload_Image
     }
 
     /**
-     * @param $file
-     * @return bool
-     * @throws Exception
+     * Check if the uploaded image meets the constraints.
+     *
+     * @param array $file The $_FILES array representing the uploaded image.
+     * @return bool Returns true if the image meets the constraints, otherwise throws an exception.
+     * @throws Exception If the image does not meet the constraints.
      */
     public function constraints($file)
     {
-        global $MAX_UPLOAD_IMAGE_SIZE, $MAX_UPLOAD_PDF_SIZE, $MAX_UPLOAD_NAMEFILE_LENGTH, $MAX_UPLOAD_GENERALFILE_SIZE, $mime_types;
         if (empty($file) || empty($file["name"]) || empty($file["type"])) {
             Logger::write("Unknown file name or file type.", Log_Level::WARNING);
             throw new Exception("Unknown file name or file type.");
@@ -241,8 +203,11 @@ class Upload_Image
         }
     }
 
+
     /**
-     * @return bool
+     * Removes the file from the filesystem.
+     *
+     * @return bool Returns true if the file is successfully removed, otherwise false.
      */
     public function remove()
     {
@@ -250,8 +215,10 @@ class Upload_Image
     }
 
     /**
-     * @param $property_name
-     * @return null
+     * Magic method to retrieve inaccessible properties.
+     *
+     * @param string $property_name The name of the property to retrieve.
+     * @return mixed|null Returns the value of the property if it exists, otherwise null.
      */
     public function __get($property_name)
     {
@@ -263,8 +230,10 @@ class Upload_Image
     }
 
     /**
-     * @param $property_name
-     * @param $val
+     * Magic method to set inaccessible properties.
+     *
+     * @param string $property_name The name of the property to set.
+     * @param mixed $val The value to set.
      */
     public function __set($property_name, $val)
     {
@@ -272,8 +241,10 @@ class Upload_Image
     }
 
     /**
-     * @param $height
-     * @param null $filter
+     * Resizes the image to a specified height.
+     *
+     * @param int $height The height to resize the image to.
+     * @param mixed|null $filter The filter to use for resizing.
      */
     function resizeToHeight($height, $filter = NULL)
     {
@@ -283,8 +254,10 @@ class Upload_Image
     }
 
     /**
-     * @param $width
-     * @param null $filter
+     * Resizes the image to a specified width.
+     *
+     * @param int $width The width to resize the image to.
+     * @param mixed|null $filter The filter to use for resizing.
      */
     function resizeToWidth($width, $filter = NULL)
     {
@@ -294,8 +267,10 @@ class Upload_Image
     }
 
     /**
-     * @param $width
-     * @param $filter
+     * Resizes the image to a specified width for preview.
+     *
+     * @param int $width The width to resize the image to.
+     * @param mixed $filter The filter to apply during resizing.
      */
     function previewResizeToWidth($width, $filter)
     {
@@ -305,7 +280,9 @@ class Upload_Image
     }
 
     /**
-     * @param $scale
+     * Scales the image by a specified percentage.
+     *
+     * @param int $scale The percentage by which to scale the image.
      */
     function scale($scale)
     {
@@ -315,212 +292,237 @@ class Upload_Image
     }
 
     /**
-     * @param $width
-     * @param $height
-     * @param null $filter
+     * Resizes the image to the specified width and height.
+     *
+     * @param int $width The target width of the resized image.
+     * @param int $height The target height of the resized image.
+     * @param string|null $filter The filter to apply to the resized image (optional).
+     * @return void
      */
     function resize($width, $height, $filter = NULL)
     {
+        // Create a new true color image resource with the specified dimensions
         $new_image = imagecreatetruecolor($width, $height);
-        if ($this->type == "image/jpeg" || $this->type == "image/pjpeg")
-            $this->source = imagecreatefromjpeg($this->path);
-        if ($this->type == "image/gif")
-            $this->source = imagecreatefromgif($this->path);
-        if ($this->type == "image/bmp")
-            $this->source = imagecreatefromwbmp($this->path);
-        if ($this->type == "image/png")
-            $this->source = imagecreatefrompng($this->path);
 
+        // Load the source image based on its type
+        switch ($this->type) {
+            case "image/jpeg":
+            case "image/pjpeg":
+                $this->source = imagecreatefromjpeg($this->path);
+                break;
+            case "image/gif":
+                $this->source = imagecreatefromgif($this->path);
+                break;
+            case "image/bmp":
+                $this->source = imagecreatefromwbmp($this->path);
+                break;
+            case "image/png":
+                $this->source = imagecreatefrompng($this->path);
+                break;
+        }
+
+        // Copy and resample the source image onto the new image resource
         imagecopyresampled($new_image, $this->source, 0, 0, 0, 0, $width, $height, $this->width, $this->height);
+
+        // Remove the original image file
         $this->remove();
 
+        // Apply the specified filter to the resized image
         switch ($filter) {
-            case "la": {
-                    imagefilter($new_image, IMG_FILTER_CONTRAST, -40);
-                    break;
-                }
-            case "ny": {
-                    imagefilter($new_image, IMG_FILTER_GRAYSCALE);
-                    break;
-                }
-            case "sd": {
-                    imagefilter($new_image, IMG_FILTER_COLORIZE, 0, 0, 100);
-                    break;
-                }
-            case "sf": {
-                    imagefilter($new_image, IMG_FILTER_COLORIZE, 0, 100, 0);
-                    break;
-                }
+            case "la":
+                imagefilter($new_image, IMG_FILTER_CONTRAST, -40);
+                break;
+            case "ny":
+                imagefilter($new_image, IMG_FILTER_GRAYSCALE);
+                break;
+            case "sd":
+                imagefilter($new_image, IMG_FILTER_COLORIZE, 0, 0, 100);
+                break;
+            case "sf":
+                imagefilter($new_image, IMG_FILTER_COLORIZE, 0, 100, 0);
+                break;
         }
-        if ($this->type == "image/jpeg" || $this->type == "image/pjpeg")
-            imagejpeg($new_image, $this->path, 100);
-        if ($this->type == "image/gif")
-            imagegif($new_image, $this->path, 100);
-        if ($this->type == "image/bmp")
-            imagewbmp($new_image, $this->path, 100);
-        if ($this->type == "image/png")
-            imagepng($new_image, $this->path, $this->PNG_compression);
 
+        // Save the resized image based on its type
+        switch ($this->type) {
+            case "image/jpeg":
+            case "image/pjpeg":
+                imagejpeg($new_image, $this->path, 100);
+                break;
+            case "image/gif":
+                imagegif($new_image, $this->path, 100);
+                break;
+            case "image/bmp":
+                imagewbmp($new_image, $this->path, 100);
+                break;
+            case "image/png":
+                imagepng($new_image, $this->path, $this->PNG_compression);
+                break;
+        }
+
+        // Update the path property
         $this->path = $this->path;
     }
 
+
     /**
-     * @param $width
-     * @param $height
-     * @param null $filter
+     * Resizes the image to the specified width and height for preview purposes.
+     *
+     * @param int $width The target width of the preview image.
+     * @param int $height The target height of the preview image.
+     * @param string|null $filter The filter to apply to the preview image (optional).
+     * @return void
      */
     function previewResize($width, $height, $filter = NULL)
     {
+        // Create a new true color image resource with the specified dimensions
         $new_image = imagecreatetruecolor($width, $height);
-        if ($this->type == "image/jpeg" || $this->type == "image/pjpeg")
-            $this->source = imagecreatefromjpeg($this->path);
-        if ($this->type == "image/gif")
-            $this->source = imagecreatefromgif($this->path);
-        if ($this->type == "image/bmp")
-            $this->source = imagecreatefromwbmp($this->path);
-        if ($this->type == "image/png")
-            $this->source = imagecreatefrompng($this->path);
 
+        // Load the source image based on its type
+        switch ($this->type) {
+            case "image/jpeg":
+            case "image/pjpeg":
+                $this->source = imagecreatefromjpeg($this->path);
+                break;
+            case "image/gif":
+                $this->source = imagecreatefromgif($this->path);
+                break;
+            case "image/bmp":
+                $this->source = imagecreatefromwbmp($this->path);
+                break;
+            case "image/png":
+                $this->source = imagecreatefrompng($this->path);
+                break;
+        }
+
+        // Copy and resample the source image onto the new image resource
         imagecopyresampled($new_image, $this->source, 0, 0, 0, 0, $width, $height, $this->width, $this->height);
 
-        if ($this->type == "image/jpeg" || $this->type == "image/pjpeg")
-            imagejpeg($new_image, $this->preview_path, 100);
-        if ($this->type == "image/gif")
-            imagegif($new_image, $this->preview_path, 100);
-        if ($this->type == "image/bmp")
-            imagewbmp($new_image, $this->preview_path, 100);
-        if ($this->type == "image/png")
-            imagepng($new_image, $this->preview_path, $this->PNG_compression);
+        // Save the preview image based on its type
+        switch ($this->type) {
+            case "image/jpeg":
+            case "image/pjpeg":
+                imagejpeg($new_image, $this->preview_path, 100);
+                break;
+            case "image/gif":
+                imagegif($new_image, $this->preview_path, 100);
+                break;
+            case "image/bmp":
+                imagewbmp($new_image, $this->preview_path, 100);
+                break;
+            case "image/png":
+                imagepng($new_image, $this->preview_path, $this->PNG_compression);
+                break;
+        }
 
+        // Update the preview_path property
         $this->preview_path = $this->preview_path;
     }
 
+
     /**
-     * @param $src - a valid file location
-     * @param $dest - a valid file target
-     * @param $targetWidth - desired output width
-     * @param $targetHeight - desired output height or null
+     * Creates a thumbnail from the given image source and saves it to the destination.
+     *
+     * @param string $src The source file location.
+     * @param string $dest The destination file location.
+     * @param int $targetWidth The desired output width.
+     * @param int|null $targetHeight The desired output height or null.
+     * @return bool|null True on success, null on failure.
      */
     public static function createThumbnail($src, $dest, $targetWidth, $targetHeight = null)
     {
+        // Check if the source file exists
+        if (!file_exists($src)) {
+            return null;
+        }
 
-        // 1. Load the image from the given $src
-        // - see if the file actually exists
-        // - check if it's of a valid image type
-        // - load the image resource
-
-        // get the type of the image
-        // we need the type to determine the correct loader
+        // Get the image type
         $type = exif_imagetype($src);
 
-        // if no valid type or no handler found -> exit
+        // Check if a valid image type and handler exist
         if (!$type || !IMAGE_HANDLERS[$type]) {
             return null;
         }
 
-        // load the image with the correct loader
+        // Load the image with the appropriate handler
         $image = call_user_func(IMAGE_HANDLERS[$type]['load'], $src);
 
-        // no image found at supplied location -> exit
+        // Check if the image was loaded successfully
         if (!$image) {
             return null;
         }
 
-        // 2. Create a thumbnail and resize the loaded $image
-        // - get the image dimensions
-        // - define the output size appropriately
-        // - create a thumbnail based on that size
-        // - set alpha transparency for GIFs and PNGs
-        // - draw the final thumbnail
-
-        // get original image width and height
+        // Get the original image dimensions
         $width = imagesx($image);
         $height = imagesy($image);
 
-        // maintain aspect ratio when no height set
-        if ($targetHeight == null) {
-
-            // get width to height ratio
+        // Calculate the height if it's not specified
+        if ($targetHeight === null) {
             $ratio = $width / $height;
-
-            // if is portrait
-            // use ratio to scale height to fit in square
             if ($width > $height) {
                 $targetHeight = floor($targetWidth / $ratio);
-            }
-            // if is landscape
-            // use ratio to scale width to fit in square
-            else {
+            } else {
                 $targetHeight = $targetWidth;
                 $targetWidth = floor($targetWidth * $ratio);
             }
         }
 
-        // create duplicate image based on calculated target size
+        // Create a new image resource for the thumbnail
         $thumbnail = imagecreatetruecolor($targetWidth, $targetHeight);
 
-        // set transparency options for GIFs and PNGs
+        // Set transparency options for GIFs and PNGs
         if ($type == IMAGETYPE_GIF || $type == IMAGETYPE_PNG) {
-
-            // make image transparent
-            imagecolortransparent(
-                $thumbnail,
-                imagecolorallocate($thumbnail, 0, 0, 0)
-            );
-
-            // additional settings for PNGs
+            imagecolortransparent($thumbnail, imagecolorallocate($thumbnail, 0, 0, 0));
             if ($type == IMAGETYPE_PNG) {
                 imagealphablending($thumbnail, false);
                 imagesavealpha($thumbnail, true);
             }
         }
 
-        // copy entire source image to duplicate image and resize
-        imagecopyresampled(
-            $thumbnail,
-            $image,
-            0,
-            0,
-            0,
-            0,
-            $targetWidth,
-            $targetHeight,
-            $width,
-            $height
-        );
-        // 3. Save the $thumbnail to disk
-        // - call the correct save method
-        // - set the correct quality level
+        // Copy and resize the original image to the thumbnail
+        imagecopyresampled($thumbnail, $image, 0, 0, 0, 0, $targetWidth, $targetHeight, $width, $height);
 
-        // save the duplicate version of the image to disk
-        return call_user_func(
-            IMAGE_HANDLERS[$type]['save'],
-            $thumbnail,
-            $dest,
-            IMAGE_HANDLERS[$type]['quality']
-        );
+        // Save the thumbnail to disk
+        return call_user_func(IMAGE_HANDLERS[$type]['save'], $thumbnail, $dest, IMAGE_HANDLERS[$type]['quality']);
     }
 
+    /**
+     * Copies an image file to a new location and converts it to a different format if necessary.
+     *
+     * @param string $src The source file location.
+     * @param string $dest The destination file location.
+     * @return bool|null True on success, null on failure.
+     */
     public static function copy($src, $dest)
     {
+        // Get the extension of the destination file
         $ext = pathinfo($dest, PATHINFO_EXTENSION);
-        if(empty(IMAGETYPE_EXTENSION[$ext])) {
+
+        // Check if the extension is supported
+        if (empty(IMAGETYPE_EXTENSION[$ext])) {
             return null;
         }
+
+        // Get the image type of the source file
         $type = exif_imagetype($src);
+
+        // Check if a valid image type and handler exist
         if (!$type || !IMAGE_HANDLERS[$type]) {
             return null;
         }
+
+        // Load the image with the appropriate handler
         $image = call_user_func(IMAGE_HANDLERS[$type]['load'], $src);
+
+        // Check if the image was loaded successfully
         if (!$image) {
             return null;
         }
-        $type_dest = IMAGETYPE_EXTENSION[$ext]; 
-        return call_user_func(
-            IMAGE_HANDLERS[$type_dest]['save'],
-            $image,
-            $dest,
-            IMAGE_HANDLERS[$type_dest]['quality']
-        );
+
+        // Get the image type of the destination file
+        $type_dest = IMAGETYPE_EXTENSION[$ext];
+
+        // Save the image to the destination with the appropriate handler
+        return call_user_func(IMAGE_HANDLERS[$type_dest]['save'], $image, $dest, IMAGE_HANDLERS[$type_dest]['quality']);
     }
 }

@@ -6,7 +6,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: boostack-php
+    #container_name: boostack-php
     restart: unless-stopped
     volumes:
       - ./:/var/www/html
@@ -19,7 +19,7 @@ services:
       - boostack-network
   mariadb:
     image: mariadb:latest
-    container_name: boostack-mariadb
+    #container_name: boostack-mariadb
     restart: unless-stopped
     environment:
       MYSQL_ROOT_HOST: '%'
@@ -36,7 +36,7 @@ services:
   
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    container_name: boostack-phpmyadmin
+    #container_name: boostack-phpmyadmin
     restart: unless-stopped
     environment:
       PMA_HOST: mariadb

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Boostack: Field.Class.php
  * ========================================================================
@@ -6,32 +7,42 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 4.2
+ * @version 5
  */
-class Field implements JsonSerializable {
+class Field implements JsonSerializable
+{
 
     private $name;
     private $type;
     private $rules;
 
-    public function __construct($name, $type) {
-        if(!FieldType::isValidValue($type))
-            throw new Exception("error: wrong field type"); 
+    public function __construct($name, $type)
+    {
+        // Check if the provided field type is valid
+        if (!FieldType::isValidValue($type)) {
+            throw new Exception("Error: Wrong field type");
+        }
         $this->name = $name;
         $this->type = $type;
         $this->rules = array();
     }
 
-    public static function rules($name, $type) {
-        if(!FieldType::isValidValue($type))
-            throw new Exception("error: wrong field type"); 
+    public static function rules($name, $type)
+    {
+        // Check if the provided field type is valid
+        if (!FieldType::isValidValue($type)) {
+            throw new Exception("Error: Wrong field type");
+        }
         return new FieldRule($name, $type);
     }
 
     /**
-     * @return array
+     * Serialize the object to JSON.
+     *
+     * @return mixed The serialized object.
      */
-    public function jsonSerialize():mixed {
+    public function jsonSerialize(): mixed
+    {
         return [
             "name" => $this->name,
             "type" => $this->type,
@@ -39,29 +50,39 @@ class Field implements JsonSerializable {
         ];
     }
 
-    public function toObject() {
-        return (object) array(
+    /**
+     * Convert the object to a stdClass object.
+     *
+     * @return object The object as stdClass.
+     */
+    public function toObject()
+    {
+        return (object) [
             "name" => $this->name,
             "type" => $this->type,
             "rules" => $this->rules,
-        );
+        ];
     }
 
     /**
-     * @return string
+     * Convert the object to JSON.
+     *
+     * @return string The object as JSON.
      */
-    public function toJSON() {
+    public function toJSON()
+    {
         return json_encode($this->jsonSerialize());
     }
 
-            /**
-     * Getter
+    /**
+     * Magic method to get a property value by name.
      *
-     * @param $property_name
-     * @return mixed
-     * @throws Exception
+     * @param string $property_name The name of the property.
+     * @return mixed The value of the property.
+     * @throws Exception If the property does not exist.
      */
-    public function &__get($property_name) {
+    public function &__get($property_name)
+    {
         if (property_exists($this, $property_name)) {
             return $this->$property_name;
         } else {
@@ -70,19 +91,18 @@ class Field implements JsonSerializable {
     }
 
     /**
-     * Setter
+     * Magic method to set a property value by name.
      *
-     * @param $property_name
-     * @param $val
-     * @throws Exception
+     * @param string $property_name The name of the property.
+     * @param mixed $val The value to set.
+     * @throws Exception If the property does not exist.
      */
-    public function __set($property_name, $val) {
+    public function __set($property_name, $val)
+    {
         if (property_exists($this, $property_name)) {
             $this->$property_name = $val;
         } else {
             throw new Exception("Field $property_name not found");
         }
     }
-
 }
-?>

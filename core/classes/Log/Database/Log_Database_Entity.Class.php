@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Boostack: Log_Database_Entity.Class.php
  * ========================================================================
@@ -6,52 +7,44 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 4.2
+ * @version 5
  */
 
+/**
+ * Class Log_Database_Entity
+ *
+ * Represents a log entry stored in the database.
+ */
 class Log_Database_Entity extends BaseClass
 {
-    /**
-     * @var
-     */
+    /** @var string The log level. */
     protected $level;
-    /**
-     * @var
-     */
+
+    /** @var string The date and time of the log entry. */
     protected $datetime;
-    /**
-     * @var
-     */
+
+    /** @var string|null The username associated with the log entry. */
     protected $username;
-    /**
-     * @var
-     */
+
+    /** @var string The IP address associated with the log entry. */
     protected $ip;
-    /**
-     * @var
-     */
+
+    /** @var string The user agent associated with the log entry. */
     protected $useragent;
-    /**
-     * @var
-     */
+
+    /** @var string|null The referrer associated with the log entry. */
     protected $referrer;
-    /**
-     * @var
-     */
+
+    /** @var string|null The query associated with the log entry. */
     protected $query;
-    /**
-     * @var
-     */
+
+    /** @var string The log message. */
     protected $message;
 
-    /**
-     *
-     */
+    /** @var string The table name for the log entity. */
     const TABLENAME = "boostack_log";
 
-    /**
-     * @var array
-     */
+    /** @var array The default values for the log entity attributes. */
     protected $default_values = [
         "id" => "",
         "level" => "information",
@@ -65,7 +58,7 @@ class Log_Database_Entity extends BaseClass
     ];
 
     /**
-     * Log constructor.
+     * Log_Database_Entity constructor.
      * @param null $id
      */
     public function __construct($id = NULL)
@@ -74,9 +67,11 @@ class Log_Database_Entity extends BaseClass
     }
 
     /**
-     * @return array
+     * Serializes the object to a JSON array.
+     *
+     * @return array The serialized JSON array.
      */
-    public function jsonSerialize():mixed
+    public function jsonSerialize(): mixed
     {
         $data_log = array();
         $data_log["id"] = $this->id;
@@ -93,7 +88,9 @@ class Log_Database_Entity extends BaseClass
     }
 
     /**
-     * @return array
+     * Retrieves the attribute list for search.
+     *
+     * @return array The attribute list for search.
      */
     public function getAttrListForSearch()
     {
@@ -109,7 +106,5 @@ class Log_Database_Entity extends BaseClass
         $data_log["message"] = $this->message;
 
         return $data_log;
-
     }
 }
-?>

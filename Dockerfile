@@ -7,6 +7,7 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN chown -R www-data:www-data /var/www/html
 RUN find /var/www/html -type d -exec chmod 755 {} \;
 RUN find /var/www/html -type f -exec chmod 644 {} \;
+RUN chmod +x /var/www/html/db
 
 COPY ./* /var/www/html
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Boostack: Cache.Class.php
  * ========================================================================
@@ -6,23 +7,35 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 4.2
+ * @version 5
  */
 class Cache
 {
     const TABLENAME = "boostack_cache";
     const ALGO = "sha1";
 
+    /**
+     * Checks if the cache contains the specified key.
+     *
+     * @param string $key The key to check.
+     * @return bool True if the key exists in the cache, false otherwise.
+     */
     public static function has($key)
     {
-        if(!Config::get("cache_enabled")) return false;
+        if (!Config::get("cache_enabled")) return false;
         $result = self::get($key);
         return $result != false;
     }
 
+    /**
+     * Retrieves the value associated with the specified key from the cache.
+     *
+     * @param string $key The key to retrieve the value for.
+     * @return mixed|false The value associated with the key if found, or false if the key does not exist.
+     */
     public static function get($key)
     {
-        if(!Config::get("cache_enabled")) return false;
+        if (!Config::get("cache_enabled")) return false;
         $hashedKey = self::hashKey($key);
         $pdo = Database_PDO::getInstance();
         $sql = "SELECT * FROM " . static::TABLENAME . " WHERE `key` = :key";
@@ -40,9 +53,16 @@ class Cache
         return json_decode($results->value, true);
     }
 
+    /**
+     * Sets a key-value pair in the cache.
+     *
+     * @param string $key The key to set.
+     * @param mixed $value The value to associate with the key.
+     * @return bool True if the operation was successful, false otherwise.
+     */
     public static function set($key, $value)
     {
-        if(!Config::get("cache_enabled")) return false;
+        if (!Config::get("cache_enabled")) return false;
         $hashedKey = self::hashKey($key);
         $pdo = Database_PDO::getInstance();
         $sql = "INSERT INTO " . static::TABLENAME . " (`key`, `value`, `created_at`) VALUES (:key, :value, :createdat)";
@@ -57,10 +77,17 @@ class Cache
         }
         return true;
     }
-
-    public static function update($key, $value) {
-        if(!Config::get("cache_enabled")) return false;
-        if(!Cache::has($key)) return Cache::set($key, $value);
+    /**
+     * Updates the value associated with the specified key in the cache.
+     *
+     * @param string $key The key to update.
+     * @param mixed $value The new value to associate with the key.
+     * @return bool True if the update operation was successful, false otherwise.
+     */
+    public static function update($key, $value)
+    {
+        if (!Config::get("cache_enabled")) return false;
+        if (!Cache::has($key)) return Cache::set($key, $value);
         $hashedKey = self::hashKey($key);
         $pdo = Database_PDO::getInstance();
         $sql = "UPDATE " . static::TABLENAME . " SET `value` = :value, `created_at` = :createdat WHERE `key` = :key";
@@ -77,9 +104,14 @@ class Cache
         return true;
     }
 
+    /**
+     * Generates a hashed representation of the cache key using the specified algorithm.
+     *
+     * @param string $key The key to hash.
+     * @return string The hashed representation of the key.
+     */
     private static function hashKey($key)
     {
         return hash(self::ALGO, $key);
     }
-
 }

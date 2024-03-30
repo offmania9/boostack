@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Boostack: Request.Class.php
  * ========================================================================
@@ -6,38 +7,25 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 4.2
+ * @version 5
  */
 
+/**
+ * Class Request
+ * Represents an HTTP request handler.
+ */
 class Request
 {
-    /**
-     * @var
-     */
     protected static $query;
-    /**
-     * @var
-     */
     protected static $post;
-    /**
-     * @var
-     */
     protected static $server;
-    /**
-     * @var
-     */
     protected static $request;
-    /**
-     * @var
-     */
     protected static $files;
-    /**
-     * @var
-     */
     protected static $cookie;
+    protected static $headers;
 
     /**
-     *
+     * Initializes the request by registering from global variables.
      */
     public static function init()
     {
@@ -45,27 +33,31 @@ class Request
     }
 
     /**
-     * @param $type
-     * @param $param
+     * Checks if a parameter exists in a specific request type.
+     *
+     * @param string $type The request type (e.g., 'POST', 'QUERY', 'SERVER', 'HEADERS', 'COOKIE', 'REQUEST', 'FILES').
+     * @param mixed $param The parameter to check.
      * @return bool
      */
-    private static function has($type,$param)
+    private static function has(string $type, $param): bool
     {
         return isset(self::${$type}[$param]);
     }
 
     /**
-     * @param $type
-     * @param $param
+     * Retrieves a parameter from a specific request type.
+     *
+     * @param string $type The request type (e.g., 'POST', 'QUERY', 'SERVER', 'HEADERS', 'COOKIE', 'REQUEST', 'FILES').
+     * @param mixed $param The parameter to retrieve.
      * @return mixed
      */
-    private static function get($type, $param)
+    private static function get(string $type, $param)
     {
         return self::${$type}[$param];
     }
 
     /**
-     *
+     * Registers request data from global variables.
      */
     private static function registerFromGlobals()
     {
@@ -75,29 +67,36 @@ class Request
         self::$request = $_REQUEST;
         self::$files = $_FILES;
         self::$cookie = $_COOKIE;
+        self::$headers = getallheaders();
     }
 
     /**
-     * @param $param
-     * @return bool
+     * Checks if a POST parameter exists.
+     *
+     * @param string $param The parameter name.
+     * @return bool True if the parameter exists, false otherwise.
      */
-    public static function hasPostParam($param)
+    public static function hasPostParam(string $param): bool
     {
         return self::has(RequestType::POST, $param);
     }
 
     /**
-     * @param $param
-     * @return array|null|string
+     * Retrieves a POST parameter value.
+     *
+     * @param string $param The parameter name.
+     * @return mixed|null|string The sanitized parameter value.
      */
-    public static function getPostParam($param)
+    public static function getPostParam(string $param)
     {
         $rt = RequestType::POST;
-        return Utils::sanitizeInput(self::get($rt,$param));
+        return Utils::sanitizeInput(self::get($rt, $param));
     }
 
     /**
-     * @return array|string
+     * Retrieves all POST parameters.
+     *
+     * @return array|string The sanitized POST parameters.
      */
     public static function getPostArray()
     {
@@ -105,26 +104,32 @@ class Request
     }
 
     /**
-     * @param $param
-     * @return bool
+     * Checks if a QUERY parameter exists.
+     *
+     * @param string $param The parameter name.
+     * @return bool True if the parameter exists, false otherwise.
      */
-    public static function hasQueryParam($param)
+    public static function hasQueryParam(string $param): bool
     {
-        return self::has(RequestType::QUERY,$param);
+        return self::has(RequestType::QUERY, $param);
     }
 
     /**
-     * @param $param
-     * @return array|null|string
+     * Retrieves a QUERY parameter value.
+     *
+     * @param string $param The parameter name.
+     * @return mixed|null|string The sanitized parameter value.
      */
-    public static function getQueryParam($param)
+    public static function getQueryParam(string $param)
     {
         $rt = RequestType::QUERY;
-        return Utils::sanitizeInput(self::get($rt,$param));
+        return Utils::sanitizeInput(self::get($rt, $param));
     }
 
     /**
-     * @return array|string
+     * Retrieves all QUERY parameters.
+     *
+     * @return array|string The sanitized QUERY parameters.
      */
     public static function getQueryArray()
     {
@@ -132,26 +137,33 @@ class Request
     }
 
     /**
-     * @param $param
-     * @return bool
+     * Checks if a SERVER parameter exists.
+     *
+     * @param string $param The parameter name.
+     * @return bool True if the parameter exists, false otherwise.
      */
-    public static function hasServerParam($param)
+    public static function hasServerParam(string $param): bool
     {
-        return self::has(RequestType::SERVER,$param);
+        return self::has(RequestType::SERVER, $param);
     }
 
+
     /**
-     * @param $param
-     * @return array|null|string
+     * Retrieves a SERVER parameter value.
+     *
+     * @param string $param The parameter name.
+     * @return mixed|null|string The sanitized parameter value.
      */
-    public static function getServerParam($param)
+    public static function getServerParam(string $param)
     {
         $rt = RequestType::SERVER;
-        return Utils::sanitizeInput(self::get($rt,$param));
+        return Utils::sanitizeInput(self::get($rt, $param));
     }
 
     /**
-     * @return array|string
+     * Retrieves all SERVER parameters.
+     *
+     * @return array|string The sanitized SERVER parameters.
      */
     public static function getServerArray()
     {
@@ -159,26 +171,64 @@ class Request
     }
 
     /**
-     * @param $param
-     * @return bool
+     * Checks if a HEADER parameter exists.
+     *
+     * @param string $param The parameter name.
+     * @return bool True if the parameter exists, false otherwise.
      */
-    public static function hasCookieParam($param)
+    public static function hasHeaderParam(string $param): bool
     {
-        return self::has(RequestType::COOKIE,$param);
+        return self::has(RequestType::HEADERS, $param);
     }
 
     /**
-     * @param $param
-     * @return array|null|string
+     * Retrieves a HEADER parameter value.
+     *
+     * @param string $param The parameter name.
+     * @return mixed|null|string The sanitized parameter value.
      */
-    public static function getCookieParam($param)
+    public static function getHeaderParam(string $param)
+    {
+        $rt = RequestType::HEADERS;
+        return Utils::sanitizeInput(self::get($rt, $param));
+    }
+
+    /**
+     * Retrieves all HEADER parameters.
+     *
+     * @return array|string The sanitized HEADER parameters.
+     */
+    public static function getHeaderArray()
+    {
+        return Utils::sanitizeInput(self::$headers);
+    }
+
+    /**
+     * Checks if a COOKIE parameter exists.
+     *
+     * @param string $param The parameter name.
+     * @return bool True if the parameter exists, false otherwise.
+     */
+    public static function hasCookieParam(string $param): bool
+    {
+        return self::has(RequestType::COOKIE, $param);
+    }
+
+    /**
+     * Retrieves a COOKIE parameter value.
+     *
+     * @param string $param The parameter name.
+     * @return mixed|null|string The sanitized parameter value.
+     */
+    public static function getCookieParam(string $param)
     {
         $rt = RequestType::COOKIE;
-        return Utils::sanitizeInput(self::get($rt,$param));
+        return Utils::sanitizeInput(self::get($rt, $param));
     }
-
     /**
-     * @return array|string
+     * Retrieves all COOKIE parameters.
+     *
+     * @return array|string The sanitized COOKIE parameters.
      */
     public static function getCookieArray()
     {
@@ -186,26 +236,32 @@ class Request
     }
 
     /**
-     * @param $param
-     * @return bool
+     * Checks if a REQUEST parameter exists.
+     *
+     * @param string $param The parameter name.
+     * @return bool True if the parameter exists, false otherwise.
      */
-    public static function hasRequestParam($param)
+    public static function hasRequestParam(string $param): bool
     {
-        return self::has(RequestType::REQUEST,$param);
+        return self::has(RequestType::REQUEST, $param);
     }
 
     /**
-     * @param $param
-     * @return array|null|string
+     * Retrieves a REQUEST parameter value.
+     *
+     * @param string $param The parameter name.
+     * @return mixed|null|string The sanitized parameter value.
      */
-    public static function getRequestParam($param)
+    public static function getRequestParam(string $param)
     {
         $rt = RequestType::REQUEST;
-        return Utils::sanitizeInput(self::get($rt,$param));
+        return Utils::sanitizeInput(self::get($rt, $param));
     }
 
     /**
-     * @return array|string
+     * Retrieves all REQUEST parameters.
+     *
+     * @return array|string The sanitized REQUEST parameters.
      */
     public static function getRequestArray()
     {
@@ -213,30 +269,35 @@ class Request
     }
 
     /**
-     * @param $param
-     * @return bool
+     * Checks if a FILES parameter exists.
+     *
+     * @param string $param The parameter name.
+     * @return bool True if the parameter exists, false otherwise.
      */
-    public static function hasFilesParam($param)
+    public static function hasFilesParam(string $param): bool
     {
-        return self::has(RequestType::FILES,$param);
+        return self::has(RequestType::FILES, $param);
     }
 
     /**
-     * @param $param
-     * @return array|null|string
+     * Retrieves a FILES parameter value.
+     *
+     * @param string $param The parameter name.
+     * @return mixed|null|string The sanitized parameter value.
      */
-    public static function getFilesParam($param)
+    public static function getFilesParam(string $param)
     {
         $rt = RequestType::FILES;
-        return Utils::sanitizeInput(self::get($rt,$param));
+        return Utils::sanitizeInput(self::get($rt, $param));
     }
 
     /**
-     * @return array|string
+     * Retrieves all FILES parameters.
+     *
+     * @return array|string The sanitized FILES parameters.
      */
     public static function getFilesArray()
     {
         return Utils::sanitizeInput(self::$files);
     }
 }
-?>

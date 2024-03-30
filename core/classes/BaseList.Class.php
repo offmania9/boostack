@@ -7,43 +7,27 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 4.2
+ * @version 5
  */
 abstract class BaseList implements IteratorAggregate, JsonSerializable
 {
 
-    /**
-     * @var
-     */
     protected $items;
-    /**
-     * @var
-     */
+
     protected $pdo;
-    /**
-     * @var
-     */
+
     protected $baseClassName;
-    /**
-     * @var
-     */
+
     protected $baseClassTablename;
 
     /** List items object class */
     const BASE_CLASS = "";
 
-    /**
-     *
-     */
     const ORDER_ASC = "ASC";
-    /**
-     *
-     */
+
     const ORDER_DESC = "DESC";
 
-    /**
-     *
-     */
+
     protected function init()
     {
         $this->pdo = Database_PDO::getInstance();
@@ -53,9 +37,8 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable
     }
 
     /**
-     * With this method you can iterate the list like an array
-     * e.g. foreach($myList as $elem) ...
-     * @return ArrayIterator
+     * Returns an iterator for iterating through the list like an array.
+     * @return \ArrayIterator
      */
     public function getIterator(): \Traversable
     {
@@ -63,6 +46,7 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable
     }
 
     /**
+     * Returns the items array.
      * @return mixed
      */
     public function getItemsArray()
@@ -71,6 +55,7 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable
     }
 
     /**
+     * Returns the size of the list.
      * @return int
      */
     public function size()
@@ -79,6 +64,7 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable
     }
 
     /**
+     * Checks if the list is empty.
      * @return bool
      */
     public function isEmpty()
@@ -87,23 +73,23 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable
     }
 
     /**
+     * Adds an element to the list.
      * @param $element
      */
     public function add($element)
     {
         $this->items[] = $element;
     }
-
     /**
-     * @return void
+     * Clears the items array.
      */
     public function clear()
     {
-        $this->items = array();
-        //$this->items = array_diff($this->items,$this->items);
+        $this->items = [];
     }
 
     /**
+     * Converts the list items to an array.
      * @return mixed
      */
     public function toArray()
@@ -112,8 +98,7 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable
     }
 
     /**
-     * This method is used when json_encode() is called
-     * It expose "items" to the json_encode() function
+     * Exposes the items to the json_encode() function.
      */
     public function jsonSerialize(): mixed
     {
@@ -121,9 +106,16 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable
     }
 
     /**
-     * Retrieve values with field filtering, ordering and pagination
+     * Retrieves values with field filtering, ordering, and pagination.
+     * @param array|null $fields
+     * @param string $orderColumn
+     * @param string $orderType
+     * @param int $numitem
+     * @param int $currentPage
+     * @return int
+     * @throws Exception
      */
-    public function view(array $fields = NULL, $orderColumn = "", $orderType = "ASC", $numitem = 25, $currentPage = 1)
+    public function view(array $fields = null, $orderColumn = "", $orderType = "ASC", $numitem = 25, $currentPage = 1): int
     {
         try {
             $sql = "";
@@ -146,7 +138,6 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable
                 foreach ($fields as $option) {
                     if ($count > 0) $sql .= $separator;
                     if ($option[0] == "datetime") {
-                        //$sql .= "FROM_UNIXTIME(" . $option[0] . ") ";
                         $sql .= $option[0] . " ";
                     } else
                         $sql .= $option[0] . " ";
@@ -194,7 +185,7 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable
             $result = $q->fetch();
 
             $queryNumberResult = intval($result[0]);
-            
+
             $maxPage = floor($queryNumberResult / $numitem) + 1;
             if ($currentPage > $maxPage) {
                 $maxPage = floor($queryNumberResult / 25) + 1;
@@ -229,15 +220,17 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable
     }
 
     /**
+     * Checks if a key exists in the items array.
      * @param $key
      * @return bool
      */
-    public function haskey($key)
+    public function hasKey($key)
     {
         return array_key_exists($key, $this->items);
     }
 
     /**
+     * Removes an item from the items array.
      * @param $key
      * @param bool $shift
      * @return bool
@@ -252,6 +245,7 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable
     }
 
     /**
+     * Retrieves an item from the items array.
      * @param $key
      * @return mixed
      */
@@ -261,9 +255,9 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable
     }
 
     /**
-     * Fill the list with an array of array of object fields
-     * For example with query results
-     * ex. $array = [ 0 => [ "field1" => "value1", .. ], 1 => [..] ]
+     * Fills the list with an array of object fields.
+     * For example, with query results.
+     * @param array $array
      */
     protected function fill($array)
     {
@@ -275,14 +269,18 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable
     }
 
     /**
+     * Loads all items from the database.
+     * @param string|null $orderColumn
+     * @param string|null $orderType
      * @return int
+     * @throws PDOException
      */
     public function loadAll($orderColumn = NULL, $orderType = NULL)
     {
         try {
-            $ob = $orderColumn==NULL?"":" ORDER BY ".$orderColumn;
-            $ot = $orderColumn==NULL?"":" ".$orderType;
-            $sql = "SELECT * FROM " . $this->baseClassTablename.$ob.$ot;
+            $ob = $orderColumn == NULL ? "" : " ORDER BY " . $orderColumn;
+            $ot = $orderType == NULL ? "" : " " . $orderType;
+            $sql = "SELECT * FROM " . $this->baseClassTablename . $ob . $ot;
             $q = $this->pdo->prepare($sql);
             $q->execute();
             $queryResults = $q->fetchAll(PDO::FETCH_ASSOC);
@@ -295,15 +293,22 @@ abstract class BaseList implements IteratorAggregate, JsonSerializable
         }
     }
 
-    public function getColums($withoutTraced = false){
+    /**
+     * Retrieves the columns of the table.
+     * @param bool $withoutTraced
+     * @return mixed
+     * @throws PDOException
+     */
+    public function getColumns($withoutTraced = false)
+    {
         try {
-            if($withoutTraced){
+            if ($withoutTraced) {
                 $sql = "SELECT column_name FROM information_schema.columns 
-                WHERE table_name = '".$this->baseClassTablename."' AND table_schema='".Config::get("db_name")."' 
-  AND column_name NOT IN ('created_at', 'last_update','last_access','created_at_datetime')";
-            }
-            else
+            WHERE table_name = '" . $this->baseClassTablename . "' AND table_schema='" . Config::get("db_name") . "' 
+AND column_name NOT IN ('created_at', 'last_update','last_access','created_at_datetime')";
+            } else {
                 $sql = "DESCRIBE " . $this->baseClassTablename;
+            }
             $q = $this->pdo->prepare($sql);
             $q->execute();
             return $q->fetchAll(PDO::FETCH_COLUMN);

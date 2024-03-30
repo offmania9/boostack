@@ -1,4 +1,4 @@
-define(['jquery'], function($,ccm) {
+define(["jquery"], function($,ccm) {
     var o = function() {
         
         var CSRFToken = null;

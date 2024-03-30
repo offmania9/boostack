@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Boostack: Validator.Class.php
  * ========================================================================
@@ -6,160 +7,142 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 4.2
+ * @version 5
  */
 
 class Validator
 {
 
-    /**
-     * @var
-     */
     private $error;
-    /**
-     * @var
-     */
+
     private $errorMessages;
 
-    /**
-     *
-     */
     const RULES_SEPARATOR = "|";
-    /**
-     *
-     */
+
     const INTRA_RULES_SEPARATOR = ":";
 
+
     /**
-     * Valida un array associativo di valori
+     * Validates an associative array of values.
      *
-     * @param $input : array associativo in cui le chiavi corrispondono ai nomi dei valori in input,
-     * ex. $elem = ['name' => 'Foo', 'age' => 42, 'email' => 'foo@bar.com' ]
-     *
-     * @param $rules : array associativo in cui le chiavi corrispondono ai nomi dei campi da validare,
-     * mentre i valori corrispondono alle regole di validazione separate dal carattere '|'
-     * ex. $rules = ['name' => 'string', 'age' => 'numeric', 'email' => 'email']
-     *
-     * @return array|bool : ritorna true in caso di successo, altrimenti ritorna un array contenente
-     * i campi che non hanno superato la validazione
+     * @param array $input An associative array where keys correspond to input value names.
+     *                     Example: ['name' => 'Foo', 'age' => 42, 'email' => 'foo@bar.com']
+     * @param array $rules An associative array where keys correspond to field names to validate,
+     *                     and values correspond to validation rules separated by '|'.
+     *                     Example: ['name' => 'string', 'age' => 'numeric', 'email' => 'email']
+     * @return array|bool Returns true on success, otherwise returns an array containing
+     *                    the fields that did not pass validation.
      */
-    public function validate($input, $rules)
+    public function validate(array $input, array $rules)
     {
         $this->error = false;
-        $this->errorMessages = array();
+        $this->errorMessages = [];
 
-        foreach($rules as $key => $value) {
-            $value = trim($value,self::RULES_SEPARATOR);
-            $elemRules = explode(self::RULES_SEPARATOR,$value);
+        foreach ($rules as $key => $value) {
+            $value = trim($value, self::RULES_SEPARATOR);
+            $elemRules = explode(self::RULES_SEPARATOR, $value);
 
             foreach ($elemRules as $rule) {
-                if($rule == "required") {
-                    if(!$this->$rule($key,$input)) {
-                        $this->setError($key,$rule);
+                if ($rule == "required") {
+                    if (!$this->$rule($key, $input)) {
+                        $this->setError($key, $rule);
                     }
                 } else {
-                    if(isset($input[$key])) {
+                    if (isset($input[$key])) {
                         $valToValidate = $input[$key];
-                        if(!$this->$rule($valToValidate)) {
-                            $this->setError($key,$rule);
+                        if (!$this->$rule($valToValidate)) {
+                            $this->setError($key, $rule);
                         }
                     }
                 }
             }
         }
 
-        if($this->hasError()) {
+        if ($this->hasError()) {
             return ["error" => true, "messages" => $this->errorMessages];
         }
         return true;
     }
 
+
     /**
-     *  --- VALIDAZIONE ---
+     * Validates form values received from the frontend.
      *
-     *  ESEMPIO DATI CHE ARRIVANO DA FRONTEND
-     *
-     *  $array [
-     *    12 => ["values" => ["Alessio"]]
-     *    3 => ["values" => ["35"]]
-     *    4 => ["values" => ["12,0000"]]
-     *    6 => ["values" => ["Yes"]]
-     *    22 => ["values" => ["Check2","Check3"]]
-     *  ]
-     *
-     *  ESEMPIO DATI DI VALIDAZIONE
-     *
-     *  $array [
-     *      12  => ["Required|String"]
-     *      3   => ["Required|Integer"]
-     *      4   => ["Required|Float"]
-     *      6   => ["Required"]
-     *      22   => ["Required|Min:1|Max:3"]
-     *      35  => ["Required"]
-     *  ]
-     *
-     *  REGOLE
-     *
-     *  Required: isset($array[ID]) && count(values) > 0 && values[0] non vuoto (!empty())
-     *  String: ogni elemento di values $validate->string()
-     *  Integer: ogni elemento di values $validate->integer()
-     *  Float: ogni elemento di values $validate->float()
-     *  Min: count(values) > min
-     *  Max: count(values) < max
-     *  In: ogni elemento di values $validate->valueIn()
-     *
+     * @param array $input An associative array where keys correspond to field IDs and values
+     *                     contain an array with the input values.
+     *                     Example:
+     *                     [
+     *                          12 => ["values" => ["Alessio"]],
+     *                          3 => ["values" => ["35"]],
+     *                          4 => ["values" => ["12,0000"]],
+     *                          6 => ["values" => ["Yes"]],
+     *                          22 => ["values" => ["Check2", "Check3"]],
+     *                     ]
+     * @param array $rules An associative array where keys correspond to field IDs and values
+     *                     contain validation rules separated by '|'.
+     *                     Example:
+     *                     [
+     *                          12 => "Required|String",
+     *                          3 => "Required|Integer",
+     *                          4 => "Required|Float",
+     *                          6 => "Required",
+     *                          22 => "Required|Min:1|Max:3",
+     *                          35 => "Required",
+     *                     ]
+     * @return array|bool Returns true on success, otherwise returns an array containing
+     *                    the fields that did not pass validation.
      */
-    public function validateFormValues($input, $rules)
+    public function validateFormValues(array $input, array $rules)
     {
         $this->error = false;
-        $this->errorMessages = array();
+        $this->errorMessages = [];
 
-        foreach($rules as $key => $value) {
-            $elemRules = explode(self::RULES_SEPARATOR,trim($value,self::RULES_SEPARATOR));
+        foreach ($rules as $key => $value) {
+            $elemRules = explode(self::RULES_SEPARATOR, trim($value, self::RULES_SEPARATOR));
 
             foreach ($elemRules as $rule) {
-                $fullRule = explode(self::INTRA_RULES_SEPARATOR,$rule);
+                $fullRule = explode(self::INTRA_RULES_SEPARATOR, $rule);
                 $rule_1 = $fullRule[0];
                 $rule_2 = count($fullRule) > 1 ? $fullRule[1] : null;
 
                 switch ($rule_1) {
                     case "required":
-                        if(!($this->required($key,$input) && count($input[$key]["values"]) && !empty($input[$key]["values"][0]))) {
-                            $this->setError($key,$rule_1);
+                        if (!($this->required($key, $input) && count($input[$key]["values"]) && !empty($input[$key]["values"][0]))) {
+                            $this->setError($key, $rule_1);
                         }
                         break;
                     case "string":
-                        if(isset($input[$key]) && count($input[$key]["values"]) > 0) {
-                            if(!$this->string($input[$key]["values"])) {
-                                $this->setError($key,$rule_1);
+                        if (isset($input[$key]) && count($input[$key]["values"]) > 0) {
+                            if (!$this->string($input[$key]["values"])) {
+                                $this->setError($key, $rule_1);
                             }
                         }
                         break;
                     case "integer":
-                        if(isset($input[$key]) && count($input[$key]["values"]) > 0) {
-                            if(!$this->integer($input[$key]["values"])) {
-                                $this->setError($key,$rule_1);
+                        if (isset($input[$key]) && count($input[$key]["values"]) > 0) {
+                            if (!$this->integer($input[$key]["values"])) {
+                                $this->setError($key, $rule_1);
                             }
                         }
                         break;
                     case "float":
-                        if(isset($input[$key]) && count($input[$key]["values"]) > 0) {
-                            if(!$this->float($input[$key]["values"])) {
-                                $this->setError($key,$rule_1);
+                        if (isset($input[$key]) && count($input[$key]["values"]) > 0) {
+                            if (!$this->float($input[$key]["values"])) {
+                                $this->setError($key, $rule_1);
                             }
                         }
                         break;
                     case "min":
-                        if(isset($input[$key])) {
-                            if(empty($rule_2) || count($input[$key]["values"]) < $rule_2 ) {
-                                $this->setError($key,$rule);
+                        if (isset($input[$key])) {
+                            if (empty($rule_2) || count($input[$key]["values"]) < $rule_2) {
+                                $this->setError($key, $rule);
                             }
                         }
                         break;
                     case "max":
-                        if(isset($input[$key])) {
-                            if(empty($rule_2) || count($input[$key]["values"]) > $rule_2 ) {
-                                $this->setError($key,$rule);
+                        if (isset($input[$key])) {
+                            if (empty($rule_2) || count($input[$key]["values"]) > $rule_2) {
+                                $this->setError($key, $rule);
                             }
                         }
                         break;
@@ -172,24 +155,34 @@ class Validator
             }
         }
 
-        if($this->hasError()) {
+        if ($this->hasError()) {
             return ["error" => true, "messages" => $this->errorMessages];
         }
         return true;
     }
 
-    /** Alternativamente le funzioni di validazione possono essere usate singolarmente
-     *  ex. $validator = new Validator();
-     *      $validator->email("foo@bar.it");
-     *  Ritornano true/false
-     **/
+    /**
+     * Alternatively, validation functions can be used individually.
+     * Example:
+     * $validator = new Validator();
+     * $validator->email("foo@bar.it");
+     * Returns true/false.
+     */
 
+
+
+    /**
+     * Validate if the input is a string or an array of strings.
+     *
+     * @param mixed $input
+     * @return bool
+     */
     public static function string($input)
     {
         $res = true;
-        if(is_array($input)) {
-            foreach($input as $elem) {
-                if(!is_string($elem) && $res) {
+        if (is_array($input)) {
+            foreach ($input as $elem) {
+                if (!is_string($elem) && $res) {
                     $res = false;
                 }
             }
@@ -200,69 +193,84 @@ class Validator
     }
 
     /**
-     * @param $input
+     * Validate strings containing only letters.
+     *
+     * @param string $input
      * @return int
-     * validate strings containing only letters
      */
-    public static function onlyChars($input){
+    public static function onlyChars($input)
+    {
         return preg_match('/^[A-Za-z]+$/', $input);
     }
 
     /**
-     * @param $input
+     * Validate strings containing only letters and spaces.
+     *
+     * @param string $input
      * @return int
-     * validate strings containing only letters and space
      */
-    public static function onlyCharsWithSpace($input){
+    public static function onlyCharsWithSpace($input)
+    {
         return preg_match('/^[A-Za-zÀ-ÿ ]+$/', $input);
     }
 
     /**
-     * @param $input
+     * Validate strings containing only letters, numbers, or "-".
+     *
+     * @param string $input
      * @return int
-     * validate strings containing only letters, numbers or "-"
      */
-    public static function onlyCharNumbersUnderscore($input){
+    public static function onlyCharNumbersUnderscore($input)
+    {
         return preg_match('/^[A-Za-z1-9_]+$/', $input);
     }
 
     /**
-     * @param $input
+     * Validate addresses like Google Maps default address or simply letters, numbers, accents, "-", "_", ",", and spaces.
+     *
+     * @param string $input
      * @return int
-     * validate address like google maps default address or simply letters, numbers, accents, "-", "_", "," and space
      */
-    public static function address ($input){
+    public static function address($input)
+    {
         return preg_match("/^[A-Za-z0-9À-ÿ _\-,]*[A-Za-z0-9À-ÿ][A-Za-z0-9À-ÿ _\-,]*$/", $input);
     }
 
     /**
-     * @param $rule
+     * Validate operators for the view method.
+     *
+     * @param string $rule
      * @return bool
-     * validate operators for view method
      */
-    public static function operators($rule){
+    public static function operators($rule)
+    {
         $rules = ["like", "not like", "&lt;&gt;", "=", "&lt;", "&lt;=", "&gt;", "&gt;="];
-        return in_array($rule , $rules);
+        return in_array($rule, $rules);
     }
 
     /**
-     * @param $input
+     * Validate if the length of the input string is less than the maximum allowed length.
+     *
+     * @param string $input
      * @return bool
      */
-    public static function varchar_max_length ($input){
+    public static function varchar_max_length($input)
+    {
         return strlen($input) < Config::get("varchar_max_length");
     }
 
     /**
-     * @param $input
+     * Validate if the input is numeric or an array of numerics.
+     *
+     * @param mixed $input
      * @return bool
      */
     public static function numeric($input)
     {
         $res = true;
-        if(is_array($input)) {
-            foreach($input as $elem) {
-                if(!is_numeric($elem) && $res) {
+        if (is_array($input)) {
+            foreach ($input as $elem) {
+                if (!is_numeric($elem) && $res) {
                     $res = false;
                 }
             }
@@ -273,74 +281,84 @@ class Validator
     }
 
     /**
-     * @param $input
+     * Validate if the input is alphanumeric or an array of alphanumeric strings.
+     *
+     * @param mixed $input
      * @return bool|int
      */
     public static function alphanumeric($input)
     {
         $res = true;
-        if(is_array($input)) {
-            foreach($input as $elem) {
-                if(!preg_match('/^[A-Za-z0-9 _]*[A-Za-z0-9_]+$/',$elem) && $res) {
+        if (is_array($input)) {
+            foreach ($input as $elem) {
+                if (!preg_match('/^[A-Za-z0-9 _]*[A-Za-z0-9_]+$/', $elem) && $res) {
                     $res = false;
                 }
             }
         } else {
-            $res = preg_match('/^[A-Za-z0-9 _]*[A-Za-z0-9_]+$/',$input);
+            $res = preg_match('/^[A-Za-z0-9 _]*[A-Za-z0-9_]+$/', $input);
         }
         return $res;
     }
 
     /**
-     * @param $input
+     * Validate if the input is an integer or an array of integers.
+     *
+     * @param mixed $input
      * @return bool|int
      */
     public static function integer($input)
     {
         $res = true;
-        if(is_array($input)) {
-            foreach($input as $elem) {
-                if(!preg_match('/^\d+$/',$elem) && $res) {
+        if (is_array($input)) {
+            foreach ($input as $elem) {
+                if (!preg_match('/^\d+$/', $elem) && $res) {
                     $res = false;
                 }
             }
         } else {
-            $res = preg_match('/^\d+$/',$input);
+            $res = preg_match('/^\d+$/', $input);
         }
         return $res;
     }
 
     /**
-     * @param $input
+     * Validate if the input is a float number or an array of float numbers.
+     *
+     * @param mixed $input
      * @return bool|int
      */
     public static function float($input)
     {
         $res = true;
-        if(is_array($input)) {
-            foreach($input as $elem) {
-                if(!preg_match('/^[-+]?(\d*[.])?\d+$/',$elem) && $res) {
+        if (is_array($input)) {
+            foreach ($input as $elem) {
+                if (!preg_match('/^[-+]?(\d*[.])?\d+$/', $elem) && $res) {
                     $res = false;
                 }
             }
         } else {
-            $res = preg_match('/^[-+]?(\d*[.])?\d+$/',$input);
+            $res = preg_match('/^[-+]?(\d*[.])?\d+$/', $input);
         }
         return $res;
     }
 
     /**
-     * @param $elem
-     * @param $array
+     * Check if an element exists in an array.
+     *
+     * @param mixed $elem
+     * @param array $array
      * @return bool
      */
     public static function in($elem, $array)
     {
-        return in_array($elem,$array);
+        return in_array($elem, $array);
     }
 
     /**
-     * @param $input
+     * Validate if the input is a valid email address.
+     *
+     * @param mixed $input
      * @return bool
      */
     public static function email($input)
@@ -348,48 +366,48 @@ class Validator
         return is_string($input) && filter_var($input, FILTER_VALIDATE_EMAIL);
     }
 
-//    /**
-//     * @param $email
-//     * @return bool
-//     */
-//    public static function checkEmailFormat($email)
-//    {
-//        $regexp = "/^[a-z0-9]+([_\\.-][a-z0-9]+)*@([a-z0-9]+([\.-][a-z0-9]+)*)+\\.[a-z]{2,}$/i";
-//        if ($email == "" || !preg_match($regexp, $email) || strlen($email >= 255)) {
-//            return false;
-//        }
-//        return true;
-//    }
-
     /**
-     * @param $input
+     * Validate if the input is a phone number.
+     *
+     * @param mixed $input
      * @return bool
      */
     public static function phone($input)
     {
-        // TODO find regex for phone numbers
-        return true;
+        // Regular expression pattern for a basic phone number validation
+        $pattern = '/^[0-9]{10}$/'; // Esempio: 1234567890
+
+        // Check if the input matches the pattern
+        return preg_match($pattern, $input);
     }
 
-    /**
-     * @param $password
-     * @return bool
-     * validate password to login (when its length is lower than a strong password)
-     */
-    public static function password_login($password){
-        return !empty($password) && (strlen(html_entity_decode($password, ENT_QUOTES)) >= Config::get("password_min_length")) && (strlen(html_entity_decode($password, ENT_QUOTES)) <= Config::get("password_max_length"));
-    }
 
     /**
-     * @param $password
+     * Validate password for login purposes.
+     *
+     * @param string $password
      * @return bool
      */
-    public static function password($password) {
-        return !empty($password) && (strlen(html_entity_decode($password, ENT_QUOTES)) >= Config::get("password_min_length")) && (strlen(html_entity_decode($password, ENT_QUOTES)) <= Config::get("password_max_length"));
+    public static function password_login($password)
+    {
+        return !empty($password) && strlen($password) >= Config::get("password_min_length") && strlen($password) <= Config::get("password_max_length");
     }
 
     /**
-     * @param $pwd
+     * Validate password.
+     *
+     * @param string $password
+     * @return bool
+     */
+    public static function password($password)
+    {
+        return !empty($password) && strlen($password) >= Config::get("password_min_length") && strlen($password) <= Config::get("password_max_length");
+    }
+
+    /**
+     * Validate if the password is strong.
+     *
+     * @param string $password
      * @return int
      */
     public static function strongPassword($password)
@@ -398,51 +416,62 @@ class Validator
     }
 
     /**
-     * @param $username
+     * Validate username.
+     *
+     * @param string $username
      * @return bool
      */
     public static function username($username)
     {
-        return !empty($username) && (strlen($username) >= Config::get("username_min_length")) && (strlen($username) <= Config::get("username_max_length"));
+        return !empty($username) && strlen($username) >= Config::get("username_min_length") && strlen($username) <= Config::get("username_max_length");
     }
 
     /**
-     * @param $filename
-     * @return int
+     * Validate filename.
+     *
+     * @param string $filename
+     * @return bool
      */
     public static function filename($filename)
     {
-        return true; // TODO find regex for filename
-        // OWASP regex NOT WORK
-        //$regex = '^(([a-zA-Z]:|\\)\\)?(((\.)|(\.\.)|([^\\/:*?"|<>. ](([^\\/:*?"|<>. ])|([^\\/:*?"|<>]*[^\\/:*?"|<>. ]))?))\\)*[^\\/:*?"|<>. ](([^\\/:*?"|<>. ])|([^\\/:*?"|<>]*[^\\/:*?"|<>. ]))?$';
-        //$regex = '/^[\w-\d]{1}[\w-\d\s\.]*(\.){1}(\w)+$/i';
+        // TODO: Implement filename validation
+        return true;
     }
 
     /**
-     * @param $input
-     * @param $array
+     * Check if a key exists in an array.
+     *
+     * @param mixed $input
+     * @param array $array
      * @return bool
      */
     public function required($input, $array)
     {
-        return array_key_exists($input,$array);
+        return array_key_exists($input, $array);
     }
 
     /** PRIVATE METHODS */
 
-    private function setError($key,$message)
+    /**
+     * Set error message.
+     *
+     * @param string $key
+     * @param string $message
+     * @return void
+     */
+    private function setError($key, $message)
     {
         $this->error = true;
         $this->errorMessages[$key]["message"][] = $message;
     }
 
     /**
+     * Check if there's an error.
+     *
      * @return mixed
      */
     private function hasError()
     {
         return $this->error;
     }
-
 }
-?>

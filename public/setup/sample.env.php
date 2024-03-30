@@ -5,8 +5,6 @@
  */
 # Setup current environment
 define('CURRENT_ENVIRONMENT', [current_environment]);  // 'local' | 'staging' | 'production'
-# Setup main project folder 
-define('MAIN_PROJECT_FOLDER', "[rootpath]");
 # Setup project subfolder 
 $config['document_root_subdir'] = '/'; // / or empty by default
 # Setup protocol 
@@ -46,7 +44,8 @@ $config['session_lifespan'] = 14400; # 4h    // session max duration (seconds)
  * Rest API
  */
 $config['api_on'] = [api_on];       // enable or disable boostack Rest API (#TRUE need $database_on=TRUE)
-
+$config['api_expire'] = 60*60*24*10;    // Cookies expire (60*60*24 = 1day)
+$config['api_secret_key'] = [api_secret_key];    // Cookies expire (60*60*24 = 1day)
 /**
  * LOG
  */
@@ -160,7 +159,12 @@ $defaultDN = $config['DN'].$default_port ;
 $currentDN = (in_array($_SERVER['HTTP_HOST'], $config['DN_alternative'])) ? $_SERVER['HTTP_HOST'] . '' : $defaultDN . $config['document_root_subdir'];
 $config['url'] = $config['protocol'] . "://" . $currentDN;
 
-define('ROOTPATH', $_SERVER['DOCUMENT_ROOT'] . MAIN_PROJECT_FOLDER);
+# Setup main project folder 
+define('MAIN_PROJECT_FOLDER', "public");
+if(!empty($_SERVER['DOCUMENT_ROOT'] ))
+    define('ROOTPATH', $_SERVER['DOCUMENT_ROOT'] ."/". MAIN_PROJECT_FOLDER . "/");
+else
+    define('ROOTPATH',  MAIN_PROJECT_FOLDER . "/");
 
 abstract class Environment
 {

@@ -127,9 +127,6 @@ header li:hover {
   display: inline-block;
   background-color: #f7f7f7;
 }
-header li a {
-  text-decoration: none;
-}
 header li a:hover {
   text-decoration: none;
 }
@@ -144,6 +141,8 @@ b {
 
 section.disclaimer h2 {
   color: #ffffff;
+  padding: 60px;
+  line-height: 60px;
   font-size: 3.4em;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
   font-weight: 300;
@@ -157,6 +156,15 @@ section.disclaimer h2 .title {
 }
 section.disclaimer h2 > .smaller {
   font-size: 35px;
+}
+section.disclaimer .download {
+  margin-top: -25px;
+  padding: 15px;
+  font-weight: 200;
+  color: #fff;
+  background-color: transparent;
+  border-color: #fbf7ff;
+  margin-bottom: 50px;
 }
 section.features .download {
   margin-top: -25px;
@@ -180,7 +188,9 @@ section.features .download:hover {
   border-color: #fbf7ff;
 }
 section.disclaimer .download:hover {
-  color: #84c441 !important;
+  background-color: #ffffff;
+  color: #84c441;
+  border-color: #fbf7ff;
 }
 section.features {
   margin-top: 30px;
@@ -336,7 +346,7 @@ footer .copy {
   color: #ffffff;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
   background-color: #2b4b90;
-  background-color: #133783;
+  *background-color: #133783;
   background-image: linear-gradient(to bottom, #3b5998, #133783);
   background-repeat: repeat-x;
   border-color: #133783 #133783 #091b40;
@@ -347,7 +357,7 @@ footer .copy {
 .btn-facebook:hover, .btn-facebook:focus, .btn-facebook:active, .btn-facebook.active, .btn-facebook.disabled, .btn-facebook[disabled] {
   color: #ffffff;
   background-color: #133783;
-  background-color: #102e6d;
+  *background-color: #102e6d;
 }
 .btn-facebook:active, .btn-facebook.active {
   background-color: #0d2456 \9 ;

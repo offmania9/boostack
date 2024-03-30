@@ -7,59 +7,29 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 4.2
+ * @version 5
  */
 class Session_HTTP
 {
 
-    /**
-     * @var array|string
-     */
     private $php_session_id;
 
-    /**
-     * @var
-     */
     private $native_session_id;
 
-    /**
-     * @var null|PDO
-     */
     private $dbhandle;
 
-    /**
-     * @var
-     */
     private $logged_in;
 
-    /**
-     * @var
-     */
     private $user_id;
 
-    /**
-     * @var int
-     */
     private $session_timeout = 0;
 
-    /**
-     * @var int
-     */
     private $session_lifespan = 0;
 
-    /**
-     * @var string
-     */
     private $http_session_table = "boostack_http_session";
 
-    /**
-     * @var string
-     */
     private $session_variable = "boostack_session_variable";
 
-    /**
-     * @var string
-     */
     private $CSRFDefaultKey = "BCSRFT";
 
     /**
@@ -69,56 +39,55 @@ class Session_HTTP
 
 
     /**
-     * Session_HTTP constructor.
-     * @param int $timeout
-     * @param int $lifespan
+     * Constructor for Session_HTTP class.
+     *
+     * @param int $timeout The session timeout value in seconds (default: 3600).
+     * @param int $lifespan The session lifespan value in seconds (default: 4600).
      */
     public function __construct($timeout = 3600, $lifespan = 4600)
     {
+        // Get a handle to the database
         $this->dbhandle = Database_PDO::getInstance();
+
+        // Set session timeout and lifespan
         $this->session_timeout = $timeout;
         $this->session_lifespan = $lifespan;
 
-        $set_save_handler = session_set_save_handler(array(
-            $this,
-            '_session_open_method'
-        ), array(
-            $this,
-            '_session_close_method'
-        ), array(
-            $this,
-            '_session_read_method'
-        ), array(
-            $this,
-            '_session_write_method'
-        ), array(
-            $this,
-            '_session_destroy_method'
-        ), array(
-            $this,
-            '_session_gc_method'
-        ));
+        // Set session save handler
+        $set_save_handler = session_set_save_handler(
+            array($this, '_session_open_method'),
+            array($this, '_session_close_method'),
+            array($this, '_session_read_method'),
+            array($this, '_session_write_method'),
+            array($this, '_session_destroy_method'),
+            array($this, '_session_gc_method')
+        );
 
+        // Check if PHPSESSID cookie is set
         if (isset($_COOKIE["PHPSESSID"])) {
             $this->php_session_id = Utils::sanitizeInput($_COOKIE["PHPSESSID"]);
-       
+
+            // Get current time
             $datetime_now = time();
-            $sql = "SELECT created,last_impression FROM " . $this->http_session_table . " WHERE ascii_session_id = :ascii_session_id ";
+
+            // Retrieve session information from the database
+            $sql = "SELECT created, last_impression FROM " . $this->http_session_table . " WHERE ascii_session_id = :ascii_session_id ";
             $q = $this->dbhandle->prepare($sql);
             $q->bindValue(':ascii_session_id', $this->php_session_id);
             $q->execute();
             $lease = $q->fetch();
-            if($lease!==FALSE){
+
+            // Check if session lease exists
+            if ($lease !== FALSE) {
                 $interval_created = $datetime_now - intval($lease[0]);
                 $interval_last_impression = $datetime_now - intval($lease[1]);
 
+                // Check if session is valid
                 $stmt = "SELECT id FROM " . $this->http_session_table . "
-                        WHERE ascii_session_id = :ascii_session_id
-                            AND :interval_created < :session_lifespan
-                            AND user_agent = :user_agent
-                            AND :interval_last_impression <= :session_timeout
-                OR last_impression = 0
-                ";
+                     WHERE ascii_session_id = :ascii_session_id
+                     AND :interval_created < :session_lifespan
+                     AND user_agent = :user_agent
+                     AND (:interval_last_impression <= :session_timeout OR last_impression = 0)";
                 $q = $this->dbhandle->prepare($stmt);
                 $q->bindValue(':ascii_session_id', $this->php_session_id);
                 $q->bindValue(':interval_created', $interval_created, PDO::PARAM_INT);
@@ -127,6 +96,8 @@ class Session_HTTP
                 $q->bindValue(':interval_last_impression', $interval_last_impression, PDO::PARAM_INT);
                 $q->bindValue(':session_timeout', $this->session_timeout, PDO::PARAM_INT);
                 $q->execute();
+
+                // If session is not valid, delete it from the database
                 if ($q->rowCount() == 0) {
                     $maxlifetime = $this->session_lifespan;
                     $sql = "DELETE FROM " . $this->http_session_table . " WHERE (ascii_session_id = :ascii_session_id) OR (:datetime_now - created > :maxlifetime)";
@@ -135,23 +106,35 @@ class Session_HTTP
                     $q->bindValue(':datetime_now', $datetime_now, PDO::PARAM_INT);
                     $q->bindValue(':maxlifetime', $maxlifetime, PDO::PARAM_INT);
                     $q->execute();
+
+                    // Clear expired session variables
                     $sql = "DELETE FROM " . $this->session_variable . " WHERE session_id NOT IN (SELECT id FROM " . $this->http_session_table . ")";
                     $result = $this->dbhandle->prepare($sql);
                     $result->execute();
+
+                    // Unset PHPSESSID cookie
                     unset($_COOKIE["PHPSESSID"]);
                 }
             }
         }
-        session_set_cookie_params($this->session_lifespan);
-        if (!session_id())
-            session_start();
 
+        // Set session cookie parameters
+        session_set_cookie_params($this->session_lifespan);
+
+        // Start session if not already started
+        if (!session_id()) {
+            session_start();
+        }
+
+        // Record session impression
         $this->Impress();
     }
 
     /**
-     * @param $save_path
-     * @param $session_name
+     * Method for session open.
+     *
+     * @param string $save_path
+     * @param string $session_name
      * @return bool
      */
     private function _session_open_method($save_path, $session_name)
@@ -159,26 +142,37 @@ class Session_HTTP
         return true;
     }
 
+
     /**
+     * Method for session close.
+     *
      * @return bool
      */
     public function _session_close_method()
     {
+        // Close the database connection
         $this->dbhandle = NULL;
         return true;
     }
 
     /**
-     * @param $id
+     * Method for session read.
+     *
+     * @param string $id
      * @return string
      */
     public function _session_read_method($id)
     {
+        // Set the PHP session ID
         $this->php_session_id = $id;
+
+        // Query the database for session information
         $sql = "SELECT id, logged_in, user_id FROM " . $this->http_session_table . " WHERE ascii_session_id = :ascii_session_id";
         $q = $this->dbhandle->prepare($sql);
         $q->bindValue(':ascii_session_id', $this->php_session_id);
         $q->execute();
+
+        // Check if session exists
         if ($q->rowCount() > 0) {
             $row = $q->fetch();
             $this->native_session_id = $row["id"];
@@ -188,10 +182,11 @@ class Session_HTTP
             } else {
                 $this->logged_in = false;
             }
-        } else { 
+        } else {
+            // If session does not exist, create a new session entry
             $this->logged_in = false;
-            $sql = "INSERT INTO " . $this->http_session_table . "(id,ascii_session_id, logged_in,user_id, created, user_agent)
-							VALUES (NULL, :ascii_session_id, :logged_in, :user_id, :created, :user_agent)";
+            $sql = "INSERT INTO " . $this->http_session_table . "(id, ascii_session_id, logged_in, user_id, created, user_agent)
+                VALUES (NULL, :ascii_session_id, :logged_in, :user_id, :created, :user_agent)";
             $q = $this->dbhandle->prepare($sql);
             $q->bindValue(':ascii_session_id', $id);
             $q->bindValue(':logged_in', "f");
@@ -200,6 +195,7 @@ class Session_HTTP
             $q->bindValue(':user_agent', Utils::getUserAgent());
             $q->execute();
 
+            // Retrieve the newly created session ID
             $sql = "SELECT id FROM " . $this->http_session_table . " WHERE ascii_session_id = :ascii_session_id";
             $q = $this->dbhandle->prepare($sql);
             $q->bindValue(':ascii_session_id', $id);
@@ -207,14 +203,17 @@ class Session_HTTP
             $row = $q->fetch();
             $this->native_session_id = $row["id"];
         }
-        return("");
+
+        // Return an empty string
+        return "";
     }
 
     /**
-     *
+     * Method to update session impression time.
      */
     public function Impress()
     {
+        // Update last impression time if session ID is set
         if ($this->native_session_id) {
             $sql = "UPDATE " . $this->http_session_table . " SET last_impression = :last_impression WHERE id = :native_session_id";
             $q = $this->dbhandle->prepare($sql);
@@ -225,51 +224,59 @@ class Session_HTTP
     }
 
     /**
-     * @return mixed
+     * Check if a user is logged in.
+     *
+     * @return bool
      */
     public function IsLoggedIn()
     {
-        return ($this->logged_in);
+        return $this->logged_in;
     }
 
     /**
-     * @return bool
+     * Get the ID of the logged-in user.
+     *
+     * @return bool|int
      */
     public function GetUserID()
     {
         if ($this->logged_in) {
-            return ($this->user_id);
+            return $this->user_id;
         } else {
-            return (false);
+            return false;
         }
     }
 
     /**
-     * @return null|User
+     * Get the User object of the logged-in user.
+     *
+     * @return User|null
      */
     public function GetUserObject()
     {
-        if ($this->logged_in) {
-            if (class_exists("User_Entity")) {
-                $objUser = new User($this->user_id);
-                return ($objUser);
-            }
+        if ($this->logged_in && class_exists("User_Entity")) {
+            return new User($this->user_id);
         }
-        return NULL;
+        return null;
     }
 
     /**
+     * Get the session identifier.
+     *
      * @return array|string
      */
     public function GetSessionIdentifier()
     {
-        return ($this->php_session_id);
+        return $this->php_session_id;
     }
 
     /**
+     * Logout the user.
+     *
      * @return bool
      */
-    public function logoutUser() {
+    public function logoutUser()
+    {
         $sql = "UPDATE " . $this->http_session_table . " SET logged_in = :logged_in, user_id = :user_id WHERE id = :native_session_id";
         $q = $this->dbhandle->prepare($sql);
         $q->bindValue(':logged_in', 'f');
@@ -282,9 +289,12 @@ class Session_HTTP
     }
 
     /**
+     * Login the user.
+     *
      * @param $userID
      */
-    public function loginUser($userID) {
+    public function loginUser($userID)
+    {
         $this->user_id = $userID;
         $this->logged_in = true;
         $sql = "UPDATE " . $this->http_session_table . " SET logged_in = :logged_in, user_id = :user_id WHERE id = :native_session_id";
@@ -296,27 +306,29 @@ class Session_HTTP
     }
 
     /**
+     * Magic method to get session variable value.
+     *
      * @param $nm
      * @return mixed|string
      */
     public function __get($nm)
     {
-        $sql = "SELECT variable_value FROM " . $this->session_variable . "
-				WHERE session_id = :session_id
-				AND variable_name = :variable_name ORDER BY id DESC";
+        $sql = "SELECT variable_value FROM " . $this->session_variable . " WHERE session_id = :session_id AND variable_name = :variable_name ORDER BY id DESC";
         $q = $this->dbhandle->prepare($sql);
         $q->bindValue(':session_id', $this->native_session_id);
         $q->bindValue(':variable_name', $nm);
         $q->execute();
         if ($q->rowCount() > 0) {
             $row = $q->fetch();
-            return (unserialize($row["variable_value"]));
+            return unserialize($row["variable_value"]);
         } else {
             return "";
         }
     }
 
     /**
+     * Magic method to set session variable value.
+     *
      * @param $nm
      * @param $val
      */
@@ -324,23 +336,20 @@ class Session_HTTP
     {
         $strSer = serialize($val);
         $this->native_session_id = ($this->native_session_id == "") ? 0 : $this->native_session_id;
-        $sql = "SELECT id FROM " . $this->session_variable . "
-				WHERE session_id = :session_id AND variable_name = :variable_name";
+        $sql = "SELECT id FROM " . $this->session_variable . " WHERE session_id = :session_id AND variable_name = :variable_name";
         $q = $this->dbhandle->prepare($sql);
         $q->bindValue(':session_id', $this->native_session_id);
         $q->bindValue(':variable_name', $nm);
         $q->execute();
         if ($q->rowCount() == 0) {
-            $sql = "INSERT INTO " . $this->session_variable . "(session_id, variable_name, variable_value)
-               VALUES(:session_id, :variable_name, :variable_value)";
+            $sql = "INSERT INTO " . $this->session_variable . "(session_id, variable_name, variable_value) VALUES(:session_id, :variable_name, :variable_value)";
             $q = $this->dbhandle->prepare($sql);
             $q->bindValue(':session_id', $this->native_session_id);
             $q->bindValue(':variable_name', $nm);
             $q->bindValue(':variable_value', $strSer);
             $q->execute();
         } else {
-            $sql = "UPDATE " . $this->session_variable . " SET variable_value = :variable_value
-               WHERE session_id = :session_id AND variable_name = :variable_name";
+            $sql = "UPDATE " . $this->session_variable . " SET variable_value = :variable_value WHERE session_id = :session_id AND variable_name = :variable_name";
             $q = $this->dbhandle->prepare($sql);
             $q->bindValue(':variable_value', $strSer);
             $q->bindValue(':session_id', $this->native_session_id);
@@ -350,9 +359,11 @@ class Session_HTTP
     }
 
     /**
-     * @param $id
-     * @param $sess_data
-     * @return bool
+     * Placeholder method for writing session data.
+     *
+     * @param mixed $id The session ID.
+     * @param mixed $sess_data The session data.
+     * @return bool Returns true as a placeholder for successful session data writing.
      */
     public function _session_write_method($id, $sess_data)
     {
@@ -360,8 +371,10 @@ class Session_HTTP
     }
 
     /**
-     * @param $id
-     * @return bool
+     * Destroys a session.
+     *
+     * @param mixed $id The session ID.
+     * @return bool Returns true if the session was successfully destroyed, false otherwise.
      */
     private function _session_destroy_method($id)
     {
@@ -369,37 +382,46 @@ class Session_HTTP
         $q = $this->dbhandle->prepare($sql);
         $q->bindValue(':ascii_session_id', $id);
         $q->execute();
-        if ($q->execute())
+        if ($q->execute()) {
             return true;
+        }
         return false;
     }
 
+
+
     /**
-     * Metodo invocato automaticamente in modo sincrono dal Garbage Collector di PHP
-     * @param $maxlifetime autoiniettato dalle config di PHP
+     * Method invoked automatically by PHP's Garbage Collector.
+     *
+     * @param $maxlifetime auto-injected by PHP config
      * @return bool
      */
     private function _session_gc_method($maxlifetime)
     {
         return true;
-//        $old = time() - $maxlifetime;
-//        /* Cancella tutte le sessioni scadute tranne quella corrente */
-//        $sql = 'DELETE FROM ' . $this->http_session_table . ' WHERE last_impression < '.$old.' AND id <> '.$this->native_session_id;
-//        $result = $this->dbhandle->prepare($sql);
-//        if ($result->execute())
-//            return true;
-//        return false;
+        //        $old = time() - $maxlifetime;
+        //        /* Remove all old expired sessions except the current session */
+        //        $sql = 'DELETE FROM ' . $this->http_session_table . ' WHERE last_impression < '.$old.' AND id <> '.$this->native_session_id;
+        //        $result = $this->dbhandle->prepare($sql);
+        //        if ($result->execute())
+        //            return true;
+        //        return false;
     }
 
+
     /**
+     * Render a hidden field containing the CSRF token.
+     *
      * @return string
      */
     public function CSRFRenderHiddenField()
     {
-        return "<input type=\"hidden\" name=\"" . $this->CSRFDefaultKey. "\" id=\"" . $this->CSRFDefaultKey . "\"  class=\"CSRFcheck\" value=\"" . self::CSRFTokenGenerator() . "\"/>";
+        return "<input type=\"hidden\" name=\"" . $this->CSRFDefaultKey . "\" id=\"" . $this->CSRFDefaultKey . "\"  class=\"CSRFcheck\" value=\"" . self::CSRFTokenGenerator() . "\"/>";
     }
 
     /**
+     * Get the default CSRF key.
+     *
      * @return string
      */
     public function getCSRFDefaultKey()
@@ -408,6 +430,8 @@ class Session_HTTP
     }
 
     /**
+     * Get the CSRF key value.
+     *
      * @return string
      */
     public function getCSRFKey()
@@ -416,33 +440,34 @@ class Session_HTTP
         return $this->$key;
     }
 
-
     /**
+     * Generate a CSRF token.
+     *
      * @return string
      */
     public function CSRFTokenGenerator()
     {
         $key = $this->CSRFDefaultKey;
-        if ($this->$key == null){
+        if ($this->$key == null) {
             $token = base64_encode(Utils::getSecureRandomString(32) . self::getRequestInfo() . time());
             $this->$key = $token; // store in session
-        }
-        else{
-            if(Auth::isLoggedIn()) {
+        } else {
+            if (Auth::isLoggedIn()) {
                 $timespan = Config::get("csrf_timeout");
                 $decodedToken = base64_decode($this->$key);
                 $decodedToken_timestamp = intval(substr($decodedToken, -10));
-                // check token validity, if expired, i generate a new one
+                // check token validity, if expired, generate a new one
                 if ($decodedToken_timestamp + $timespan < time())
                     $this->CSRFTokenInvalidation();
-            }
-            else
+            } else
                 $this->CSRFTokenInvalidation();
         }
         return $this->$key;
     }
 
     /**
+     * Get request information.
+     *
      * @return string
      */
     protected static function getRequestInfo()
@@ -451,6 +476,8 @@ class Session_HTTP
     }
 
     /**
+     * Check the validity of the CSRF token.
+     *
      * @param $postArray
      * @param bool $throwException
      * @return bool
@@ -468,7 +495,7 @@ class Session_HTTP
             else
                 return false;
 
-        if (! isset($postArray[$key]))
+        if (!isset($postArray[$key]))
             if ($throwException)
                 throw new Exception('Attention! Missing CSRF form token.');
             else
@@ -478,16 +505,14 @@ class Session_HTTP
             if ($throwException) {
                 $this->CSRFTokenInvalidation();
                 throw new Exception('Attention! Invalid CSRF token.' . $postArray[$key] . '<br>' . $sessionToken);
-            }
-            else{
+            } else {
                 $this->CSRFTokenInvalidation();
                 return false;
             }
 
         $decodedToken = base64_decode($sessionToken);
         $decodedToken_requestInfo = substr($decodedToken, 32, 40);
-        $decodedToken_timestamp = intval(substr($decodedToken, - 10));
-
+        $decodedToken_timestamp = intval(substr($decodedToken, -10));
 
         if (self::getRequestInfo() != $decodedToken_requestInfo) {
             if ($throwException)
@@ -508,31 +533,36 @@ class Session_HTTP
     }
 
     /**
+     * Invalidate the CSRF token.
+     *
      * @return null|string
      */
-    public function CSRFTokenInvalidation(){
+    public function CSRFTokenInvalidation()
+    {
         $res = NULL;
         $key = $this->CSRFDefaultKey;
         $this->$key = null;
-        if($this->newTokenGeneration){
+        if ($this->newTokenGeneration) {
             $res = $this->CSRFTokenGenerator();
         }
         return $res;
     }
 
     /**
+     * Check the validity of the CSRF token.
+     *
      * @param $postArray
      * @param bool $throwException
      * @return bool
      * @throws Exception
      */
-    public function CSRFCheckValidity($postArray, $throwException = true){
+    public function CSRFCheckValidity($postArray, $throwException = true)
+    {
         try {
             return $this->CSRFCheckTokenValidity($postArray, $throwException);
-        } catch(Exception $e) {
-            Logger::write('Session_CSRF -> CSRFCheckValidity -> Caught exception: '.$e->getMessage().$e->getTraceAsString(),Log_Level::ERROR);
-            throw new Exception('Invalid CSRF token'.$e->getMessage());
+        } catch (Exception $e) {
+            Logger::write('Session_CSRF -> CSRFCheckValidity -> Caught exception: ' . $e->getMessage() . $e->getTraceAsString(), Log_Level::ERROR);
+            throw new Exception('Invalid CSRF token' . $e->getMessage());
         }
     }
 }
-?>

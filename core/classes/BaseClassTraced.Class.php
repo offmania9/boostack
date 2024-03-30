@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Boostack: BaseClassTraced.Class.php
  * ========================================================================
@@ -6,88 +7,107 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 4.2
+ * @version 5
+ * 
+ * ALTER TABLE `[tablename]` 
+ * ADD `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+ * ADD `last_update` timestamp NOT NULL DEFAULT current_timestamp(),
+ * ADD `last_access` timestamp NOT NULL DEFAULT current_timestamp(),
+ * ADD `deleted_at` timestamp NULL DEFAULT NULL
  */
-abstract class BaseClassTraced extends BaseClass {
-
+abstract class BaseClassTraced extends BaseClass
+{
     protected $created_at;
     protected $last_update;
     protected $last_access;
-    protected $created_at_datetime;
+    protected $deleted_at;
 
     /**
-     * Abstract_Traced constructor.
+     * Constructor.
      * @param null $id
      */
-    public function __construct($id = NULL) {
+    public function __construct($id = null)
+    {
+        $this->default_values['created_at'] = '';
+        $this->default_values['last_update'] = '';
+        $this->default_values['last_access'] = '';
+        $this->default_values['deleted_at'] = null;
         parent::init($id);
-        if ($id != NULL) {
+        if ($id !== null) {
             $this->setLastAccess();
         } else {
-            $this->created_at = $this->last_update = $this->last_access = $this->created_at_datetime = date('Y-m-d H:i:s',time());
+            $currentTime = date('Y-m-d H:i:s', time());
+            $this->created_at = $currentTime;
+            $this->last_update = $currentTime;
+            $this->last_access = $currentTime;
         }
     }
 
     /**
+     * Fill the object with data from an array.
      * @param $array
      * @return bool
      */
-    public function fill($array) {
+    public function fill($array)
+    {
         $this->prepare($array);
-        if($this->id != NULL){
+        if ($this->id !== null) {
             $this->setLastAccess();
         }
         return true;
     }
 
     /**
+     * Save the object into the database.
      * @param null $forcedID
      * @return bool
      */
-    public function save($forcedID = null) {
-        if ($forcedID == null && $this->id != null) {
-            $this->setCreationTime();
+    public function save($forcedID = null)
+    {
+        if ($forcedID === null && $this->id !== null) {
             $this->setUpdateTime();
             $this->setLastAccess();
         }
         return parent::save($forcedID);
     }
 
-    /*
+    /**
+     * Delete the object from the database.
+     * @return bool
+     */
     public function delete()
     {
-        if($this->hasSoftDelete()) {
-            $this->setUpdateTime();
-        }
+        $this->setUpdateTime();
         return parent::delete();
-    } */
+    }
 
     /**
+     * Set the creation time of the object.
      * @return bool
      */
-    public function setCreationTime() {
-        //$this->created_at = time();
-         //$this->created_at_datetime = date('Y-m-d H:i:s',$this->created_at);
-        $this->created_at = date('Y-m-d H:i:s',time());
-        $this->created_at_datetime = $this->created_at;
+    public function setCreationTime()
+    {
+        $this->created_at = date('Y-m-d H:i:s', time());
         return parent::save();
     }
 
     /**
+     * Set the update time of the object.
      * @return bool
      */
-    public function setUpdateTime() {
-        //$this->last_update = time();
-        $this->last_update = date('Y-m-d H:i:s',time());
-        return parent::save();
-    }
-    /**
-     * @return bool
-     */
-    public function setLastAccess() {
-        //$this->last_access = time();
-        $this->last_access = date('Y-m-d H:i:s',time());
+    public function setUpdateTime()
+    {
+        $this->last_update = date('Y-m-d H:i:s', time());
         return parent::save();
     }
 
+    /**
+     * Set the last access time of the object.
+     * @return bool
+     */
+    public function setLastAccess()
+    {
+        $this->last_access = date('Y-m-d H:i:s', time());
+        return parent::save();
+    }
 }

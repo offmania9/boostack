@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Boostack: ListObjectId.Class.php
  * ========================================================================
@@ -6,7 +7,7 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 4.2
+ * @version 5
  */
 class ListObjectId
 {
@@ -17,8 +18,9 @@ class ListObjectId
     private $oid_list;
 
     /**
-     * ListObjectId constructor.
-     * @param null $array_objid
+     * Constructor for ListObjectId class.
+     *
+     * @param array|null $array_objid An array of object IDs (optional).
      */
     public function __construct($array_objid = null)
     {
@@ -26,7 +28,9 @@ class ListObjectId
     }
 
     /**
-     * @param $val
+     * Add an object ID to the list.
+     *
+     * @param mixed $val The object ID to add.
      */
     public function Add($val)
     {
@@ -34,7 +38,9 @@ class ListObjectId
     }
 
     /**
-     * @return null
+     * Get the list of object IDs.
+     *
+     * @return array|null The list of object IDs.
      */
     public function getList()
     {
@@ -42,25 +48,24 @@ class ListObjectId
     }
 
     /**
-     * @param $property_name
-     * @return null
+     * Magic getter method to access object properties.
+     *
+     * @param string $property_name The name of the property to access.
+     * @return mixed|null The value of the property, or null if not found.
      */
     public function __get($property_name)
     {
-        if (isset($this->$property_name)) {
-            return ($this->$property_name);
-        } else {
-            return (NULL);
-        }
+        return isset($this->$property_name) ? $this->$property_name : null;
     }
 
     /**
-     * @param $property_name
-     * @param $val
+     * Magic setter method to set object properties.
+     *
+     * @param string $property_name The name of the property to set.
+     * @param mixed $val The value to set.
      */
     public function __set($property_name, $val)
     {
         $this->$property_name = $val;
     }
 }
-?>

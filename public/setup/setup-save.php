@@ -32,6 +32,7 @@ $env_parameters = [
     "cookie_name" => $input['db-cookie-name'],
     "log_on" => $input['db-log-active'],
     "api_on" => $input['api-active'],
+    "api_secret_key" => generateRandomStringApiKey(),
     "lockStrategy_on" => !empty($input["db-lockStrategy_on"])?$input["db-lockStrategy_on"]:FALSE,
     "login_max_attempts" => isset($input["db-loginLock-max-attempts"])?$input["db-loginLock-max-attempts"]:"3",
     "lockStrategy_type" => isset($input["db-loginLock-type"]) ? $input["db-loginLock-type"] : "timer",
@@ -141,5 +142,24 @@ if ($env_parameters["database_on"] == "true" && $finalSetupMessageError == "") {
         $finalSetupMessageError = "Error. Message: " . $e2->getMessage();
         unlink($finalEnvPath);
     }
+}
+
+function generateRandomStringApiKey($length = 20) {
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $chunks = [4, 5, 5, 5, 6];
+    $chunksCount = count($chunks);
+    $separator = '-';
+    $randomString = '';
+
+    foreach ($chunks as $chunkLength) {
+        for ($i = 0; $i < $chunkLength; $i++) {
+            $randomString .= $characters[rand(0, strlen($characters) - 1)];
+        }
+        if (--$chunksCount > 0) {
+            $randomString .= $separator;
+        }
+    }
+
+    return $randomString;
 }
 ?>

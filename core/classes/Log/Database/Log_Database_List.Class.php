@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Boostack: Log_Database_List.Class.php
  * ========================================================================
@@ -6,15 +7,12 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 4.2
+ * @version 5
  */
 
 class Log_Database_List extends BaseList
 {
 
-    /**
-     *
-     */
     const BASE_CLASS = Log_Database_Entity::class;
 
     /**
@@ -24,5 +22,4 @@ class Log_Database_List extends BaseList
     {
         parent::init();
     }
-
 }

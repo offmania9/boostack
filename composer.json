@@ -10,9 +10,10 @@
   ],
   "type": "project",
     "require": {
-        "php": ">=7.4"
+        "php": ">=7.4",
+    "firebase/php-jwt": "^6.10"
     },
-  "homepage": "http://getboostack.com",
+  "homepage": "https://getboostack.com",
   "authors": [
     {
       "name": "Stefano Spagnolo",

@@ -46,13 +46,9 @@ if (!empty($_POST)) {
         </div>
     </section>
     <script type="text/javascript" src="../assets/js/lib/jquery.min.js"></script>
-    <script type="text/javascript" src="../assets/js/lib/popper.min.js"></script>
     <script type="text/javascript" src="../assets/js/lib/bootstrap.min.js"></script>
-
     <script type="text/javascript" src="../assets/js/custom.js"></script>
-    <!--[if lt IE 9]>        <script type="text/javascript" src="../assets/js/html5shiv.js"></script>
-        <script type="text/javascript" src="../assets/js/respond.min.js"></script>
-        -->
+
     <script type="text/javascript" src="setup.js"></script>
 </body>
 

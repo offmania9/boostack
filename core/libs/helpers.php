@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Boostack: helpers.php
  * ========================================================================
@@ -6,31 +7,48 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 4.2
+ * @version 5
  */
-function d() {
+
+/**
+ * Dump variables in a formatted manner for debugging.
+ *
+ * @param mixed $args One or more variables to dump.
+ */
+function d()
+{
     $args = func_get_args();
     echo "<pre>";
-    for ($i = 0; $i < count($args); $i++) {
-        var_dump($args[$i]);
+    foreach ($args as $arg) {
+        var_dump($arg);
     }
     echo "</pre>";
 }
 
-function dd() {
+/**
+ * Dump variables in a formatted manner for debugging and halt the script execution.
+ *
+ * @param mixed $args One or more variables to dump.
+ */
+function dd()
+{
     $args = func_get_args();
     echo "<pre>";
-    for ($i = 0; $i < count($args); $i++) {
-        var_dump($args[$i]);
+    foreach ($args as $arg) {
+        var_dump($arg);
     }
     echo "</pre>";
     die();
 }
 
-function dumpPreparedQuery(PDOStatement $q) {
+/**
+ * Dump a prepared query in a formatted manner for debugging.
+ *
+ * @param PDOStatement $q The prepared query to dump.
+ */
+function dumpPreparedQuery(PDOStatement $q)
+{
     echo "<pre>";
     $q->debugDumpParams();
     echo "</pre>";
 }
-
-?>

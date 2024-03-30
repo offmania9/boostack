@@ -1,6 +1,16 @@
 <?php
 
-class Rest_ApiRequest extends Abstract_Traced {
+/**
+ * Boostack: Rest_ApiRequest.Class.php
+ * ========================================================================
+ * Copyright 2014-2024 Spagnolo Stefano
+ * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
+ * ========================================================================
+ * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
+ * @version 5
+ */
+class Rest_ApiRequest extends BaseClassTraced
+{
 
     protected $id;
     protected $method;
@@ -12,7 +22,6 @@ class Rest_ApiRequest extends Abstract_Traced {
     protected $client_code;
     protected $app_code;
     protected $user_code;
-
     protected $get_args;
     protected $post_args;
     protected $file_args;
@@ -20,11 +29,6 @@ class Rest_ApiRequest extends Abstract_Traced {
     protected $remote_user_agent;
 
     protected $output;
-
-    protected $created_at;
-    protected $last_update;
-    protected $last_access;
-    protected $created_datetime;
 
     protected $default_values = [
         "id" => null,
@@ -43,18 +47,12 @@ class Rest_ApiRequest extends Abstract_Traced {
         "remote_address" => null,
         "remote_user_agent" => null,
         "output" => null,
-        "created_at" => null,
-        "last_update" => null,
-        "last_access" => null,
-        "created_datetime" => null
     ];
 
     const TABLENAME = "boostack_api_request";
 
-    public function __construct($id = NULL) {
+    public function __construct($id = NULL)
+    {
         parent::__construct($id);
-        if ($id == NULL) 
-            $this->created_datetime = date('Y-m-d H:i:s');
     }
-
 }

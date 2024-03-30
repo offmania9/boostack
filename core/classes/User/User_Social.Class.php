@@ -7,38 +7,24 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 4.2
+ * @version 5
  */
 class User_Social extends BaseClass
 {
 
-    /**
-     * @var
-     */
+    
     protected $type;
-    /**
-     * @var
-     */
+    
     protected $uid;
-    /**
-     * @var
-     */
+    
     protected $uid_token;
-    /**
-     * @var
-     */
+    
     protected $uid_token_secret;
-    /**
-     * @var
-     */
+    
     protected $autosharing;
-    /**
-     * @var
-     */
+    
     protected $website;
-    /**
-     * @var
-     */
+    
     protected $extra;
 
     /**

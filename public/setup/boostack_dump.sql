@@ -38,6 +38,22 @@ CREATE TABLE `boostack_api_request` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
+CREATE TABLE `boostack_user_api` (
+  `id` int(11) NOT NULL,
+  `id_user` int(11) NOT NULL,
+  `token` text NOT NULL,
+  `issuer_url` varchar(255) NOT NULL,
+  `audience_url` varchar(255) NOT NULL,
+  `issued_time` timestamp NOT NULL,
+  `not_before_time` timestamp NOT NULL,
+  `expired_time` timestamp NOT NULL,
+  `revoked_time` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `last_update` timestamp NOT NULL DEFAULT current_timestamp(),
+  `last_access` timestamp NOT NULL DEFAULT current_timestamp(),
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 
 # Dump of table boostack_cache
 # ------------------------------------------------------------

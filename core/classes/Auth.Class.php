@@ -7,29 +7,23 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Alessio Debernardi
- * @version 4
+ * @version 5
  */
 
 class Auth
 {
 
-    /**
-     *
-     */
     const LOCK_TIMER = -1;
-    /**
-     *
-     */
+
     const LOCK_RECAPTCHA = -2;
 
-    /*
-     * Esegue il login dell'utente con username e password in chiaro
-     */
     /**
-     * @param $username
-     * @param $password
-     * @param bool $cookieRememberMe
-     * @return MessageBag
+     * Performs user login using username and clear text password.
+     *
+     * @param string $username User's username.
+     * @param string $password User's password.
+     * @param bool $cookieRememberMe Flag to indicate whether to set the "Remember Me" cookie.
+     * @return MessageBag Object containing information about the login result.
      */
     public static function loginByUsernameAndPlainPassword($username, $password, $cookieRememberMe = false)
     {
@@ -38,109 +32,169 @@ class Auth
         $lockStrategy = Config::get("login_lockStrategy");
 
         try {
+            // Check for maximum request count
             if (!Utils::checkAcceptedTimeFromLastRequest(self::getLastTry())) {
-                throw new Exception("Too much request. Wait some seconds");
+                throw new Exception("Too many requests. Please wait a few seconds");
             }
-            if (Auth::isLoggedIn())
-                return $result;
 
-            /** LOCK STRATEGY CHECK **/
+            // If user is already logged in, return immediately
+            if (Auth::isLoggedIn()) {
+                return $result;
+            }
+
+            // Check lock strategy
             if ($isLockStrategyEnabled) {
                 if (!Session::get("failed_login_count")) Session::set("failed_login_count", 0);
                 if (Session::get("failed_login_count") >= Config::get("login_maxAttempts")) {
                     if ($lockStrategy == "timer") {
-                        if (!self::checkAcceptedTimeFromLastLogin(self::getLastTry())) throw new Exception("Too much login request. Wait some seconds", self::LOCK_TIMER);
+                        if (!self::checkAcceptedTimeFromLastLogin(self::getLastTry())) throw new Exception("Too many login requests. Please wait a few seconds", self::LOCK_TIMER);
                     } else if ($lockStrategy == "recaptcha") {
                         $recaptchaFormData = Request::hasPostParam("g-recaptcha-response") ? Request::getPostParam("g-recaptcha-response") : null;
-                        if (empty($recaptchaFormData)) throw new Exception("Missing recaptcha data", self::LOCK_RECAPTCHA);
+                        if (empty($recaptchaFormData)) throw new Exception("Missing reCAPTCHA data", self::LOCK_RECAPTCHA);
                         $recaptchaResponse = self::reCaptchaVerify(Request::getPostParam("g-recaptcha-response"));
-                        if (!$recaptchaResponse) throw new Exception("Invalid reCaptcha", self::LOCK_RECAPTCHA);
+                        if (!$recaptchaResponse) throw new Exception("Invalid reCAPTCHA", self::LOCK_RECAPTCHA);
                     }
                     Session::set("failed_login_count", 0);
                 }
             }
-            if (!Validator::username($username))
-                throw new Exception("Username format not valid");
-            if (!Validator::password($password))
-                throw new Exception("Password format not valid");
+
+            // Validate username and password format
+            if (!Validator::username($username)) throw new Exception("Invalid username format");
+            if (!Validator::password($password)) throw new Exception("Invalid password format");
+
+            // Update last login attempt
             Auth::impressLastTry();
+
+            // Increment failed login attempts count
             if ($isLockStrategyEnabled || ($isLockStrategyEnabled && Config::get('csrf_on') && Session::CSRFCheckValidity(Request::getPostArray(), false))) Session::set("failed_login_count", Session::get("failed_login_count") + 1);
+
+            // Perform user login
             Auth::checkAndLogin($username, $password, $cookieRememberMe, true);
+
+            // Reset failed login attempts count
             if ($isLockStrategyEnabled) Session::set("failed_login_count", 0);
         } catch (Exception $e) {
+            // Log error
             Logger::write($e, Log_Level::USER);
+            // Set error message and code in result object
             $result->error = ($e->getMessage());
             $result->code = ($e->getCode());
         }
 
+        // Return result object
         return $result;
     }
 
-    /*
-     * Esegue il login dell'utente con userID passato come parametero
-     */
+
     /**
-     * @param $userID
+     * Log in the user by userID.
+     *
+     * @param int $userID The user ID to log in.
      */
     public static function loginByUserID($userID)
     {
+        // Determine the user class to use
         $userClass = Config::get("use_custom_user_class") ? Config::get("custom_user_class") : User::class;
+
+        // If the user is not already logged in, proceed with login
         if (!Auth::isLoggedIn()) {
+            // Create an instance of the user class with the given userID
             $user = new $userClass($userID);
+
+            // Perform login with username, empty password, and user's stored password
             self::login($user->username, "", $user->pwd);
+
+            // Update the last access time of the user
             $user->last_access = time();
+
+            // Save the user's updated information
             $user->save();
         }
     }
 
-    /*  Esegue il login dell'utente con il "remember-me cookie"
-     *
-     *  @param $cookieValue valore del cookie
-     */
-    /**
-     * @param $cookieValue
-     * @return bool
-     */
+
+    /*
+    * Log in the user using the "remember-me cookie".
+    *
+    * @param string $cookieValue The value of the cookie.
+    * @return bool True if the login is successful, false otherwise.
+    */
     public static function loginByCookie($cookieValue)
     {
         try {
+            // Determine the user class to use
             $userClass = Config::get("use_custom_user_class") ? Config::get("custom_user_class") : User::class;
+
+            // Retrieve user credentials from the cookie value
             $userCredentials = $userClass::getCredentialByCookie($cookieValue);
-            if ($userCredentials != false) {
+
+            // If user credentials are found
+            if ($userCredentials !== false) {
+                // Check the validity of the cookie hash
                 if (Utils::checkCookieHashValidity($cookieValue)) {
+                    // Determine the username to log in based on the configuration
                     $usernameToLogin = Config::get("userToLogin") == "email" ? $userCredentials["email"] : $userCredentials["username"];
-                    $l = self::login($usernameToLogin, "", $userCredentials["pwd"]);
-                    $userObject = Session::getUserObject();
-                    $userObject->refreshRememberMeCookie();
-                    return true;
+
+                    // Perform login with the retrieved credentials
+                    $loginResult = self::login($usernameToLogin, "", $userCredentials["pwd"]);
+
+                    // If login is successful, refresh the "remember-me" cookie
+                    if ($loginResult) {
+                        $userObject = Session::getUserObject();
+                        $userObject->refreshRememberMeCookie();
+                        return true;
+                    }
                 } else {
+                    // Log the invalid cookie hash
                     Logger::write("checkCookieHashValidity(" . $cookieValue . "): false - IP:" . Utils::getIpAddress(), Log_Level::USER);
                 }
             }
         } catch (PDOException $e) {
+            // Log database-related errors
             Logger::write($e, Log_Level::ERROR, Log_Driver::FILE);
         } catch (Exception $e) {
+            // Log other exceptions
             Logger::write($e, Log_Level::ERROR);
         }
         return false;
     }
 
 
+    /**
+     * Register a new user.
+     *
+     * @param string $username The username of the new user.
+     * @param string $email The email of the new user.
+     * @param string $psw1 The password of the new user.
+     * @param string $psw2 The confirmation password of the new user.
+     * @param string|null $CSRFToken The CSRF token for validation (optional).
+     * @return bool True if registration is successful, false otherwise.
+     * @throws Exception If registration fails.
+     */
     public static function registration($username, $email, $psw1, $psw2, $CSRFToken = NULL)
     {
         $registrationError = "";
         try {
-            if ($psw1 !== $psw2) $registrationError = "Passwords must be equals";
-            if (!Validator::email($email)) $registrationError = "Username format not valid";
-            if (!Validator::password($psw1)) $registrationError = "Password format not valid";
+            // Validate passwords match
+            if ($psw1 !== $psw2) $registrationError = "Passwords must match";
+
+            // Validate email format
+            if (!Validator::email($email)) $registrationError = "Invalid email format";
+
+            // Validate password format
+            if (!Validator::password($psw1)) $registrationError = "Invalid password format";
+
+            // Check if email is already registered
             if (User::existsByEmail($email, false) || User::existsByUsername($email, false)) $registrationError = "Email already registered";
+
+            // Validate CSRF token if enabled
             if (Config::get('csrf_on')) {
-                if (empty($CSRFToken))
-                    throw new Exception("Attention! CSRF token is required.");
+                if (empty($CSRFToken)) throw new Exception("CSRF token is required");
                 $token_key = Session::getObject()->getCSRFDefaultKey();
                 Session::CSRFCheckValidity(array($token_key => $CSRFToken));
             }
 
+            // If no registration errors, proceed with registration
             if (strlen($registrationError) == 0) {
                 $user = new User();
                 $user->username = $username;
@@ -149,29 +203,35 @@ class Auth
                 $user->pwd = $psw1;
                 $user->save();
 
-
+                // Log in the newly registered user
                 Auth::loginByUserID($user->id);
+
+                // Invalidate CSRF token if enabled
                 if (Config::get('csrf_on')) {
                     Session::getObject()->CSRFTokenInvalidation();
                 }
-                return true;
+
+                return true; // Registration successful
             } else {
+                // Log registration error and throw exception
                 Logger::write($registrationError, Log_Level::ERROR);
                 throw new Exception_Registration($registrationError);
             }
         } catch (PDOException $e) {
+            // Log database-related errors
             Logger::write($e, Log_Level::ERROR, Log_Driver::FILE);
         } catch (Exception $e) {
+            // Log other exceptions and re-throw
             Logger::write($e, Log_Level::ERROR);
             throw $e;
         }
-        return false;
+        return false; // Registration failed
     }
 
-
-
     /**
-     * @return mixed
+     * Check if a user is logged in.
+     *
+     * @return mixed The user's login status.
      */
     public static function isLoggedIn()
     {
@@ -179,32 +239,45 @@ class Auth
     }
 
     /**
-     * @return bool
+     * Log out the current user.
+     *
+     * @return bool True if logout is successful, false otherwise.
      */
     public static function logout()
     {
         try {
+            // Check if user is logged in before attempting to logout
             if (self::isLoggedIn()) {
+                // Log the logout event
                 Logger::write("[Logout] uid: " . Session::getUserID(), Log_Level::USER);
+
+                // Perform logout by clearing session data
                 Session::logoutUser();
+
+                // If cookies are enabled, delete the authentication cookie
                 if (Config::get("cookie_on")) {
                     $cookieName = Config::get("cookie_name");
                     $cookieExpire = Config::get("cookie_expire");
-                    setcookie('' . $cookieName, false, time() - $cookieExpire);
-                    setcookie('' . $cookieName, false, time() - $cookieExpire, "/");
+                    setcookie($cookieName, false, time() - $cookieExpire);
+                    setcookie($cookieName, false, time() - $cookieExpire, "/");
                 }
-                return true;
+
+                return true; // Logout successful
             }
         } catch (PDOException $e) {
+            // Log database-related errors
             Logger::write($e, Log_Level::ERROR, Log_Driver::FILE);
         } catch (Exception $e) {
+            // Log other exceptions
             Logger::write($e, Log_Level::ERROR);
         }
-        return false;
+        return false; // Logout failed
     }
 
     /**
-     * @return mixed
+     * Get the timestamp of the last login attempt.
+     *
+     * @return mixed The timestamp of the last login attempt.
      */
     public static function getLastTry()
     {
@@ -212,15 +285,16 @@ class Auth
     }
 
     /**
-     *
+     * Update the timestamp of the last login attempt.
      */
     public static function impressLastTry()
     {
         Session::set("LastTryLogin", time());
     }
-
     /**
-     * @return mixed
+     * Get the user object of the logged-in user.
+     *
+     * @return mixed The user object of the logged-in user.
      */
     public static function getUserLoggedObject()
     {
@@ -231,7 +305,9 @@ class Auth
     }
 
     /**
-     * @return bool
+     * Check if the timer lock is enabled for login attempts.
+     *
+     * @return bool True if the timer lock is enabled, false otherwise.
      */
     public static function isTimerLocked()
     {
@@ -239,7 +315,9 @@ class Auth
     }
 
     /**
-     * @return bool
+     * Check if a captcha needs to be shown based on login attempts.
+     *
+     * @return bool True if a captcha needs to be shown, false otherwise.
      */
     public static function haveToShowCaptcha()
     {
@@ -247,12 +325,14 @@ class Auth
     }
 
     /**
-     * @param $username
-     * @param $password
-     * @param $cookieRememberMe
-     * @param bool $throwException
-     * @return bool
-     * @throws Exception
+     * Check and log in a user.
+     *
+     * @param string $username The username of the user.
+     * @param string $password The password of the user.
+     * @param bool $cookieRememberMe Indicates whether to remember the user with a cookie.
+     * @param bool $throwException Indicates whether to throw exceptions on failure.
+     * @return bool True if login is successful, false otherwise.
+     * @throws Exception If login fails.
      */
     private static function checkAndLogin($username, $password, $cookieRememberMe, $throwException = true)
     {
@@ -301,12 +381,13 @@ class Auth
         //Logger::write("[Login] uid: ".Session::getUserID(),Log_Level::USER);
         return true;
     }
-
     /**
-     * @param $strUsername
-     * @param $strPlainPassword
-     * @param string $hashedPassword
-     * @return bool
+     * Log in a user with the provided username and password.
+     *
+     * @param string $strUsername The username of the user.
+     * @param string $strPlainPassword The plain password of the user.
+     * @param string $hashedPassword The hashed password of the user.
+     * @return bool True if login is successful, false otherwise.
      */
     private static function login($strUsername, $strPlainPassword, $hashedPassword = "")
     {
@@ -344,8 +425,10 @@ class Auth
     }
 
     /**
-     * @param $response
-     * @return bool
+     * Verify the reCaptcha response.
+     *
+     * @param string $response The reCaptcha response.
+     * @return bool True if the reCaptcha is valid, false otherwise.
      */
     private static function reCaptchaVerify($response)
     {
@@ -364,8 +447,10 @@ class Auth
     }
 
     /**
-     * @param $lastLogin
-     * @return bool
+     * Check if enough time has passed since the last login attempt.
+     *
+     * @param int $lastLogin The timestamp of the last login attempt.
+     * @return bool True if enough time has passed, false otherwise.
      */
     private static function checkAcceptedTimeFromLastLogin($lastLogin)
     {

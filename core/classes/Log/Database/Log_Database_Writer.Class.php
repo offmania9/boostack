@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Boostack: Log_Database_Writer.Class.php
  * ========================================================================
@@ -6,56 +7,45 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 4.2
+ * @version 5
  */
 
+/**
+ * Class Log_Database_Writer
+ *
+ * Responsible for writing log entries to the database.
+ */
 class Log_Database_Writer
 {
-
-    /**
-     * @var string
-     */
+    /** @var string|null The username associated with the log entry. */
     private $username;
 
-    /**
-     * @var array|false|string
-     */
+    /** @var string The IP address associated with the log entry. */
     private $ip;
 
-    /**
-     * @var array|string
-     */
+    /** @var string The user agent associated with the log entry. */
     private $useragent;
 
-    /**
-     * @var array|string
-     */
+    /** @var string|null The referrer associated with the log entry. */
     private $referrer;
 
-    /**
-     * @var array|string
-     */
+    /** @var string|null The query associated with the log entry. */
     private $query;
 
-    /**
-     * @var null|PDO
-     */
+    /** @var PDO The PDO instance for interacting with the database. */
     private $pdo;
 
-    /**
-     * @var null
-     */
+    /** @var Log_Database_Writer|null The singleton instance of the Log_Database_Writer class. */
     private static $instance = NULL;
 
-    /**
-     *
-     */
+    /** @var string The table name for the log entries. */
     const TABLENAME = "boostack_log";
 
-
     /**
-     * @param null $objUser
-     * @return Log_Database_Writer|null
+     * Retrieves the singleton instance of the Log_Database_Writer class.
+     *
+     * @param null $objUser The user associated with the log entry.
+     * @return Log_Database_Writer|null The singleton instance of the Log_Database_Writer class.
      */
     static function getInstance($objUser = NULL)
     {
@@ -65,19 +55,21 @@ class Log_Database_Writer
     }
 
     /**
-     *
+     * Prevents cloning of the Log_Database_Writer instance.
      */
     private function __clone()
-    {}
+    {
+    }
 
     /**
      * Log_Database_Writer constructor.
-     * @param null $objUser
+     *
+     * @param null $objUser The user associated with the log entry.
      */
     private function __construct($objUser = NULL)
     {
         $this->pdo = Database_PDO::getInstance();
-        $this->username = (! is_null($objUser)) ? $objUser->id : "Anonymous";
+        $this->username = (!is_null($objUser)) ? $objUser->id : "Anonymous";
         $this->ip = Utils::getIpAddress();
         $this->useragent = Utils::sanitizeInput(getenv('HTTP_USER_AGENT'));
         $this->referrer = Request::hasServerParam("HTTP_REFERER") ? Request::getServerParam("HTTP_REFERER") : "";
@@ -85,14 +77,16 @@ class Log_Database_Writer
     }
 
     /**
-     * @param null $message
-     * @param string $level
+     * Logs a message with the specified level.
+     *
+     * @param null $message The log message.
+     * @param string $level The log level.
      */
     public function Log($message = NULL, $level = "information")
     {
-        if(!in_array($level,Config::get("log_enabledTypes")))
+        if (!in_array($level, Config::get("log_enabledTypes")))
             return;
-        $this->query = substr(htmlspecialchars($this->query,ENT_QUOTES | ENT_HTML401,'UTF-8'),0,2048);
+        $this->query = substr(htmlspecialchars($this->query, ENT_QUOTES | ENT_HTML401, 'UTF-8'), 0, 2048);
         $sql = "INSERT INTO " . self::TABLENAME . "  (id ,datetime , level, username, ip ,useragent ,referrer ,query ,message)
 				VALUES(NULL, :time , :level, :username, :ip , :useragent, :referrer, :query, :message)";
         $q = $this->pdo->prepare($sql);
@@ -106,6 +100,4 @@ class Log_Database_Writer
         $q->bindValue(':message', $message);
         $q->execute();
     }
-
 }
-?>

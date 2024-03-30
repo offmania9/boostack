@@ -6,7 +6,7 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 4.2
+ * @version 5
  */
 
 /**
@@ -21,11 +21,11 @@ $config["mail_template_path"] = "template/mail/";
 $config["language_path"] = "../lang/";
 $config["language_file_extension"] = ".inc.json";
 
-$config["default_js_files"] = array("lib/bootstrap.js","lib/popper.js","lib/require.js","helpers.js","init.js");
-$config["default_ie_js_files"] = array("lib/html5shiv.js","lib/respond.js");
-$config["default_css_files"] = array("lib/bootstrap.css");/*,"custom.css"*/
-$config["default_css_files_critical"] = array("lib/bootstrap.css");
-$config["default_css_files_noncritical"] = array("lib/animate.css","style.css");/*,"custom.css, "lib/animate.css""*/
+$config["default_js_files"] = array("lib/bootstrap.js","lib/require.js","init.js");
+$config["default_ie_js_files"] = array(); // "lib/html5shiv.js","lib/respond.js"
+$config["default_css_files"] = array();/*,"custom.css"*/
+$config["default_css_files_critical"] = array("lib/bootstrap.css"); // ""
+$config["default_css_files_noncritical"] = array("style.css");/*,"custom.css, "lib/animate.css""*/
 
 $config["default_error_page"] = "error.phtml";
 
@@ -91,7 +91,6 @@ $config["twitter_description"] = $config["site_description"];
 /**
  * CUSTOM VARIABLES
  */
-
 
 CONST PRIVILEGE_SYSTEM = 0;
 CONST PRIVILEGE_SUPERADMIN = 1;

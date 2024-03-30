@@ -7,18 +7,14 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 4.2
+ * @version 5
  */
 abstract class BaseClass implements JsonSerializable
 {
 
-    /**
-     * @var
-     */
+    
     protected $id;
-    /**
-     * @var
-     */
+    
     protected $pdo; // TODO: static? Find a way to automatically inject db instance into this field?
     /**
      * @var array
@@ -27,7 +23,7 @@ abstract class BaseClass implements JsonSerializable
     /**
      * @var array
      */
-    protected $system_excluded = ['id', 'default_values', 'system_excluded', 'custom_excluded', 'pdo'];
+    protected $system_excluded = ['id', 'default_values', 'system_excluded', 'custom_excluded', 'pdo', 'soft_delete', 'deleted_at'];
     /**
      * @var array
      */
@@ -35,12 +31,17 @@ abstract class BaseClass implements JsonSerializable
     /**
      *
      */
+    protected $soft_delete = FALSE;
+    /**
+     *
+     */
     const TABLENAME = "";
 
-
     /**
-     * Init method: creates the PDO object.
-     * Call this in your __construct() function with parent::init()
+     * Initialize the object by creating the PDO object.
+     * Call this method in your __construct() function with parent::init()
+     *
+     * @param int|null $id The ID of the object to load. Default is NULL.
      */
     protected function init($id = NULL)
     {
@@ -53,11 +54,11 @@ abstract class BaseClass implements JsonSerializable
     }
 
     /**
-     * Fill the object
+     * Fill the object with data from an array.
      *
-     * @param $array
-     * @return bool
-     * @throws Exception
+     * @param array $array The array containing data to fill the object.
+     * @return bool Always returns true.
+     * @throws Exception If an error occurs during preparation.
      */
     public function fill($array)
     {
@@ -66,8 +67,10 @@ abstract class BaseClass implements JsonSerializable
     }
 
     /**
-     * @param $array
-     * @return bool
+     * Clear the object and fill it with data from an array.
+     *
+     * @param array $array The array containing data to fill the object.
+     * @return bool Always returns true.
      */
     public function clearAndFill($array)
     {
@@ -81,17 +84,19 @@ abstract class BaseClass implements JsonSerializable
         return $this->fill($array);
     }
 
+
     /**
-     * Load the object from the database
+     * Load the object from the database by its ID.
      *
-     * @param $id
-     * @return bool
-     * @throws Exception
+     * @param int $id The ID of the object to load.
+     * @return bool Returns true if the object was successfully loaded, otherwise throws an exception.
+     * @throws Exception If no result found or if a database exception occurs.
      */
     public function load($id)
     {
         try {
-            $sql = "SELECT * FROM " . static::TABLENAME . " WHERE id = :id";
+            $SD_sql = ($this->hasSoftDelete()) ? "AND deleted_at IS NULL" : "";
+            $sql = "SELECT * FROM " . static::TABLENAME . " WHERE id = :id " . $SD_sql;
             $q = $this->pdo->prepare($sql);
             $q->bindValue(':id', $id);
             $q->execute();
@@ -109,16 +114,19 @@ abstract class BaseClass implements JsonSerializable
     }
 
     /**
-     * Check if object with specified id exist
+     * Check if an object with the specified ID exists in the database.
      *
-     * @param $id
-     * @return bool
+     * @param int $id The ID to check.
+     * @return bool Returns true if the object exists, otherwise false.
+     * @throws PDOException If a database exception occurs.
      */
     public static function exist($id)
     {
         try {
+            $current_object = new static();
+            $SD_sql = ($current_object->hasSoftDelete()) ? "AND deleted_at IS NULL" : "";
             $pdo = Database_PDO::getInstance();
-            $sql = "SELECT id FROM " . static::TABLENAME . " WHERE id = :id";
+            $sql = "SELECT id FROM " . static::TABLENAME . " WHERE id = :id " . $SD_sql;
             $q = $pdo->prepare($sql);
             $q->bindValue(':id', $id);
             $q->execute();
@@ -131,11 +139,11 @@ abstract class BaseClass implements JsonSerializable
     }
 
     /**
-     * Save the object into the database
+     * Save the object into the database.
      *
-     * @param $forcedID: if not null, insert the entity with $forceID as id
-     *
-     * @return bool
+     * @param int|null $forcedID If not null, insert the entity with $forceID as ID.
+     * @return bool Returns true if the object was successfully saved, otherwise throws an exception.
+     * @throws PDOException If a database exception occurs.
      */
     public function save($forcedID = null)
     {
@@ -155,11 +163,104 @@ abstract class BaseClass implements JsonSerializable
     }
 
     /**
-     * Delete the object from the database
+     * Determine if the model is currently using soft delete.
      *
-     * @return bool
+     * @return bool Returns true if soft delete is enabled, otherwise false.
+     * @throws PDOException If soft delete is enabled but the 'deleted_at' field is missing from the database.
+     */
+    public function hasSoftDelete()
+    {
+        if ($this->soft_delete && !property_exists($this, "deleted_at")) {
+            throw new PDOException("Soft delete is enabled, but the 'deleted_at' field is missing from the database.");
+        }
+        return $this->soft_delete;
+    }
+
+    /**
+     * Set soft delete status.
+     *
+     * @param bool $value The value to set for soft delete status.
+     */
+    public function setSoftDelete(bool $value)
+    {
+        $this->soft_delete = $value;
+    }
+
+    /**
+     * Enable soft delete.
+     */
+    public function enableSoftDelete()
+    {
+        $this->setSoftDelete(true);
+    }
+
+    /**
+     * Disable soft delete.
+     */
+    public function disableSoftDelete()
+    {
+        $this->setSoftDelete(false);
+    }
+
+    /**
+     * Delete the object from the database (set 'deleted_at' field to non-null).
+     *
+     * @return bool Returns true if the object was successfully soft deleted, otherwise purges the object.
      */
     public function delete()
+    {
+        if ($this->hasSoftDelete())
+            $this->softDelete();
+        else
+            $this->purge();
+    }
+    /**
+     * Soft delete the object from the database (set 'deleted_at' field to current timestamp).
+     *
+     * @return bool Returns true if the object was successfully soft deleted, otherwise false.
+     * @throws PDOException If a database error occurs.
+     */
+    public function softDelete()
+    {
+        try {
+            $sql = "UPDATE " . static::TABLENAME . " SET deleted_at = NOW() WHERE id = :id";
+            $q = $this->pdo->prepare($sql);
+            $q->bindValue(':id', $this->id);
+            $q->execute();
+            return ($q->rowCount() > 0);
+        } catch (PDOException $pdoEx) {
+            Logger::write($pdoEx);
+            throw new PDOException("Database Exception. Please see log file.");
+        }
+    }
+
+    /**
+     * Restore the object (set 'deleted_at' field to NULL).
+     *
+     * @return bool Returns true if the object was successfully restored, otherwise false.
+     * @throws PDOException If a database error occurs.
+     */
+    public function restore()
+    {
+        try {
+            $sql = "UPDATE " . static::TABLENAME . " SET deleted_at = NULL WHERE id = :id";
+            $q = $this->pdo->prepare($sql);
+            $q->bindValue(':id', $this->id);
+            $q->execute();
+            return ($q->rowCount() > 0);
+        } catch (PDOException $pdoEx) {
+            Logger::write($pdoEx);
+            throw new PDOException("Database Exception. Please see log file.");
+        }
+    }
+
+    /**
+     * Purge the object from the database (permanently delete).
+     *
+     * @return bool Returns true if the object was successfully purged, otherwise false.
+     * @throws PDOException If a database error occurs.
+     */
+    public function purge()
     {
         try {
             $sql = "DELETE FROM " . static::TABLENAME . " WHERE id = :id";
@@ -174,11 +275,11 @@ abstract class BaseClass implements JsonSerializable
     }
 
     /**
-     * Getter
+     * Getter magic method.
      *
-     * @param $property_name
-     * @return mixed
-     * @throws Exception
+     * @param string $property_name The name of the property to get.
+     * @return mixed The value of the property.
+     * @throws Exception If the property does not exist.
      */
     public function __get($property_name)
     {
@@ -190,11 +291,11 @@ abstract class BaseClass implements JsonSerializable
     }
 
     /**
-     * Setter
+     * Setter magic method.
      *
-     * @param $property_name
-     * @param $val
-     * @throws Exception
+     * @param string $property_name The name of the property to set.
+     * @param mixed $val The value to set.
+     * @throws Exception If the property does not exist.
      */
     public function __set($property_name, $val)
     {
@@ -206,7 +307,10 @@ abstract class BaseClass implements JsonSerializable
     }
 
     /**
-     * Magic method used for isset() and empty() methods invoked outside the object on a protected/private field
+     * Magic method used for isset() and empty() methods invoked outside the object on a protected/private field.
+     *
+     * @param string $property_name The name of the property to check.
+     * @return bool Returns true if the property is set, otherwise false.
      */
     public function __isset($property_name)
     {
@@ -214,9 +318,9 @@ abstract class BaseClass implements JsonSerializable
     }
 
     /**
-     * Get the object vars used in serialize() method
+     * Get the object vars used in serialize() method.
      *
-     * @return array
+     * @return array Returns an array of object variables to serialize.
      */
     public function __sleep()
     {
@@ -230,8 +334,8 @@ abstract class BaseClass implements JsonSerializable
     }
 
     /**
-     * Task performed after call of unserialize() method
-     * e.g. reestablish any database connections, reinitialization tasks..
+     * Task performed after the call of unserialize() method.
+     * e.g. reestablish any database connections, reinitialization tasks, etc.
      */
     public function __wakeup()
     {
@@ -239,8 +343,10 @@ abstract class BaseClass implements JsonSerializable
     }
 
     /**
-     * This method is used when json_encode() is called
-     * It expose all the variable of the object to the json_encode() function
+     * This method is used when json_encode() is called.
+     * It exposes all the variables of the object to the json_encode() function.
+     *
+     * @return mixed Returns an array of object variables to serialize.
      */
     public function jsonSerialize(): mixed
     {
@@ -254,7 +360,7 @@ abstract class BaseClass implements JsonSerializable
     }
 
     /**
-     * Lock the table for read and write operations
+     * Lock the table for read and write operations.
      */
     public function lockTable()
     {
@@ -264,7 +370,7 @@ abstract class BaseClass implements JsonSerializable
     }
 
     /**
-     * Release all the locks for all the tables
+     * Release all the locks for all the tables.
      */
     public function unlockTable()
     {
@@ -274,7 +380,9 @@ abstract class BaseClass implements JsonSerializable
     }
 
     /**
-     * Return the object database table
+     * Return the object database table.
+     *
+     * @return string The name of the database table.
      */
     public function getTablename()
     {
@@ -282,7 +390,9 @@ abstract class BaseClass implements JsonSerializable
     }
 
     /**
-     * Return the list of object attributes
+     * Return the list of object attributes.
+     *
+     * @return array An array containing the attributes of the object.
      */
     public function getAttributes()
     {
@@ -296,8 +406,10 @@ abstract class BaseClass implements JsonSerializable
     }
 
     /**
-     * @param array $array
-     * @throws Exception
+     * Prepare the object for database operations.
+     *
+     * @param array $array An array containing the data to prepare.
+     * @throws Exception If required fields are missing.
      */
     protected function prepare($array = array())
     {
@@ -318,12 +430,13 @@ abstract class BaseClass implements JsonSerializable
     }
 
     /**
-     * @return bool
+     * Insert the object into the database.
+     *
+     * @return bool Returns true on successful insertion, false otherwise.
      */
     private function insert()
     {
         $objVars = get_object_vars($this);
-        #var_dump($objVars);
 
         $firstPartOfQuery = "INSERT INTO " . static::TABLENAME . " (id";
         $secondPartOfQuery = "VALUES(NULL";
@@ -341,7 +454,6 @@ abstract class BaseClass implements JsonSerializable
         $q = $this->pdo->prepare($query);
 
         foreach ($objVars as $key => &$value) {
-            // if($value === "") $value = NULL; // TODO verificare se bindare la stringa vuota a NULL è cosa buona e giusta
             if (in_array($key, $this->system_excluded) || in_array($key, $this->custom_excluded)) continue;
             $q->bindParam(":" . $key, $value);
         }
@@ -353,8 +465,10 @@ abstract class BaseClass implements JsonSerializable
     }
 
     /**
-     * @param $id
-     * @return bool
+     * Insert the object with a specific ID into the database.
+     *
+     * @param $id The ID to insert the object with.
+     * @return bool Returns true on successful insertion, false otherwise.
      */
     protected function insertWithID($id)
     {
@@ -379,7 +493,6 @@ abstract class BaseClass implements JsonSerializable
         $q = $this->pdo->prepare($query);
 
         foreach ($objVars as $key => &$value) {
-            // if($value === "") $value = NULL; // TODO verificare se bindare la stringa vuota a NULL è cosa buona e giusta
             if (in_array($key, $system_excluded_without_id) || in_array($key, $this->custom_excluded)) continue;
             $q->bindParam(":" . $key, $value);
         }
@@ -392,7 +505,9 @@ abstract class BaseClass implements JsonSerializable
     }
 
     /**
-     * @return bool
+     * Update the object in the database.
+     *
+     * @return bool Returns true on successful update, false otherwise.
      */
     private function update()
     {
@@ -410,7 +525,6 @@ abstract class BaseClass implements JsonSerializable
         $q = $this->pdo->prepare($query);
 
         foreach ($objVars as $key => &$value) {
-            // if($value === "") $value = NULL; // TODO verificare se bindare la stringa vuota a NULL è cosa buona e giusta
             if (in_array($key, $this->system_excluded) || in_array($key, $this->custom_excluded)) continue;
             $q->bindParam(":" . $key, $value);
         }
@@ -420,55 +534,53 @@ abstract class BaseClass implements JsonSerializable
 
         return true;
     }
-
+    /**
+     * Retrieve the fields of the object's database table along with their metadata.
+     *
+     * @return array An array containing information about the fields of the database table.
+     */
     public function getFields()
     {
-        // Ottieni l'elenco delle colonne della tabella
-        //$query = "DESCRIBE " . static::TABLENAME;
-        //$stmt = $this->pdo->query($query);
-       // $columns = $stmt->fetchAll(PDO::FETCH_COLUMN);
-        // Ottieni l'elenco delle colonne e dei tipi di dati dalla tabella utilizzando INFORMATION_SCHEMA
+        // Obtain the list of columns and data types from the table using INFORMATION_SCHEMA
         $query = "SELECT COLUMN_NAME, COLUMN_TYPE, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = :tableName AND TABLE_SCHEMA = :tableSchema";
         $stmt = $this->pdo->prepare($query);
-        $stmt->execute(['tableName' => static::TABLENAME,'tableSchema' => Config::get("db_name")]);
+        $stmt->execute(['tableName' => static::TABLENAME, 'tableSchema' => Config::get("db_name")]);
         $columns = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        // Query per ottenere tutti i dati dalla tabella
-        $ids = (!empty($this->id))? " WHERE id=" . $this->id : " WHERE id=1"; 
-
-        $query = "SELECT * FROM " . static::TABLENAME .$ids;
+        // Query to retrieve all data from the table
+        $ids = (!empty($this->id)) ? " WHERE id=" . $this->id : " WHERE id=1";
+        $query = "SELECT * FROM " . static::TABLENAME . $ids;
         $stmt = $this->pdo->query($query);
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $resultArray = [];
 
-        // Itera su ciascun record
+        // Iterate over each record
         foreach ($data as $row) {
             $record = [];
             foreach ($columns as $columnInfo) {
                 $columnName = $columnInfo['COLUMN_NAME'];
                 $columnType = $columnInfo['COLUMN_TYPE'];
                 $datatype = $columnInfo['DATA_TYPE'];
-                $maxLength = $columnInfo['CHARACTER_MAXIMUM_LENGTH']; // Massima lunghezza per VARCHAR
+                $maxLength = $columnInfo['CHARACTER_MAXIMUM_LENGTH']; // Maximum length for VARCHAR
 
-                if((!empty($this->id))){
+                if ((!empty($this->id))) {
                     $record[$columnName] = [
                         'value' => $row[$columnName],
-                        'data_type' => $datatype, // Tipo di dato
-                        'column_type' => $columnType, // Tipo di dato
-                        'max_length' => $maxLength, // Massima lunghezza per VARCHAR
+                        'data_type' => $datatype, // Data type
+                        'column_type' => $columnType, // Column type
+                        'max_length' => $maxLength, // Maximum length for VARCHAR
                         'foreign' => null
                     ];
-                }
-                else{
+                } else {
                     $record[$columnName] = [
-                        'data_type' => $datatype, // Tipo di dato
-                        'column_type' => $columnType, // Tipo di dato
-                        'max_length' => $maxLength, // Massima lunghezza per VARCHAR
+                        'data_type' => $datatype, // Data type
+                        'column_type' => $columnType, // Column type
+                        'max_length' => $maxLength, // Maximum length for VARCHAR
                         'foreign' => null
                     ];
                 }
 
-
+                // Check for foreign keys
                 if (str_contains($columnName, '_id') || str_contains($columnName, 'id_')) {
                     $foreignKeysQuery = "
                     SELECT 
@@ -483,7 +595,7 @@ abstract class BaseClass implements JsonSerializable
                         AND COLUMN_NAME = :columnName 
                         AND CONSTRAINT_NAME != 'PRIMARY'
                 ";
-                
+
                     $stmt = $this->pdo->prepare($foreignKeysQuery);
                     $stmt->execute(['tableName' => static::TABLENAME, 'columnName' => $columnName]);
                     $foreignKeys = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -491,7 +603,6 @@ abstract class BaseClass implements JsonSerializable
                 }
             }
             $resultArray[] = $record;
-            
         }
         return ($resultArray);
     }

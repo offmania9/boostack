@@ -7,14 +7,16 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 4.2
+ * @version 5
  */
 class Utils
 {
     /**
-     * @param $array
-     * @param string $encoding
-     * @return array|string
+     * Sanitizes input data to prevent XSS attacks.
+     *
+     * @param array|string $array The input data to be sanitized.
+     * @param string $encoding The character encoding (default is 'UTF-8').
+     * @return array|string The sanitized input data.
      */
     public static function sanitizeInput($array, $encoding = 'UTF-8')
     {
@@ -28,12 +30,15 @@ class Utils
                 $res[$key] = htmlspecialchars($value, ENT_QUOTES | ENT_HTML401, $encoding);
             }
             return $res;
-        } else
+        } else {
             return htmlspecialchars($array, ENT_QUOTES | ENT_HTML401, $encoding);
+        }
     }
 
     /**
-     * @param $className
+     * Autoloads classes based on the provided class name.
+     *
+     * @param string $className The name of the class to autoload.
      */
     public static function autoloadClass($className)
     {
@@ -52,13 +57,15 @@ class Utils
         }
         if (is_readable($pathcore . $filename)) {
             require_once($pathcore . $filename);
-        } else
-            if (is_readable($pathcustom . $filename))
+        } else if (is_readable($pathcustom . $filename)) {
             require_once($pathcustom . $filename);
+        }
     }
 
     /**
-     * @return array|false|string
+     * Retrieves the IP address of the client.
+     *
+     * @return array|false|string The IP address of the client.
      */
     public static function getIpAddress()
     {
@@ -71,9 +78,12 @@ class Utils
         return $ip;
     }
 
+
     /**
-     * @param $pwd
-     * @return int
+     * Checks if a password meets the criteria for a strong password.
+     *
+     * @param string $pwd The password to be checked.
+     * @return int Returns 1 if the password is strong, 0 otherwise.
      */
     public static function isStrongPassword($pwd)
     {
@@ -81,7 +91,9 @@ class Utils
     }
 
     /**
-     * @return array|string
+     * Retrieves the User-Agent string from the request headers.
+     *
+     * @return array|string The User-Agent string.
      */
     public static function getUserAgent()
     {
@@ -89,8 +101,10 @@ class Utils
     }
 
     /**
-     * @param $currentUser
-     * @param $privilegeLevel
+     * Checks if the current user has the specified privilege level.
+     *
+     * @param mixed $currentUser The current user object.
+     * @param int $privilegeLevel The privilege level to be checked.
      */
     public static function checkPrivilege($currentUser, $privilegeLevel)
     {
@@ -99,8 +113,10 @@ class Utils
     }
 
     /**
-     * @param $currentUser
-     * @param $privilegeLevel
+     * Checks if the current user has the specified controller privilege level.
+     *
+     * @param mixed $currentUser The current user object.
+     * @param int $privilegeLevel The privilege level to be checked.
      */
     public static function checkControllerPrivilege($currentUser, $privilegeLevel)
     {
@@ -109,9 +125,11 @@ class Utils
     }
 
     /**
-     * @param $currentUser
-     * @param $privilegeLevel
-     * @return bool
+     * Checks if the current user has the specified privilege level.
+     *
+     * @param mixed $currentUser The current user object.
+     * @param int $privilegeLevel The privilege level to be checked.
+     * @return bool Returns true if the user has the specified privilege level, false otherwise.
      */
     public static function hasPrivilege($currentUser, $privilegeLevel)
     {
@@ -125,17 +143,18 @@ class Utils
     }
 
     /**
+     * Redirects the user to the error page.
      *
+     * @param int|null $status_code The HTTP status code to be used for the error page.
      */
     public static function goToError(int $status_code = NULL)
     {
-
         header("Location: " . Config::get("url") . "error/" . (empty($status_code) ? "" : $status_code));
         exit();
     }
 
     /**
-     *
+     * Redirects the user to the logout page.
      */
     public static function goToLogout()
     {
@@ -144,7 +163,9 @@ class Utils
     }
 
     /**
-     * @param null $callbackURL
+     * Redirects the user to the login page.
+     *
+     * @param string|null $callbackURL The URL to redirect after successful login.
      */
     public static function goToLogin($callbackURL = NULL)
     {
@@ -157,7 +178,10 @@ class Utils
     }
 
     /**
-     * @param $string
+     * Checks if a string is a valid JSON format.
+     *
+     * @param string $string The string to be checked.
+     * @return bool Returns true if the string is a valid JSON, false otherwise.
      */
     public static function isJson($string)
     {
@@ -166,7 +190,9 @@ class Utils
     }
 
     /**
-     * @param $URL
+     * Redirects the user to the specified URL.
+     *
+     * @param string $URL The URL to redirect to.
      */
     public static function goToUrl($URL)
     {
@@ -174,6 +200,9 @@ class Utils
         exit();
     }
 
+    /**
+     * Redirects the user to the home page.
+     */
     public static function goToHome()
     {
         header("Location: " . Config::get("url"));
@@ -181,8 +210,10 @@ class Utils
     }
 
     /**
-     * @param $timeLastRequest
-     * @return bool
+     * Checks if the time since the last request is within the accepted time limit.
+     *
+     * @param int|string $timeLastRequest The time of the last request.
+     * @return bool Returns true if the time since the last request is within the accepted time limit, false otherwise.
      */
     public static function checkAcceptedTimeFromLastRequest($timeLastRequest)
     {
@@ -195,8 +226,10 @@ class Utils
     }
 
     /**
-     * @param $virtualPath
-     * @return string
+     * Generates a friendly URL based on the virtual path provided.
+     *
+     * @param string $virtualPath The virtual path.
+     * @return string The friendly URL.
      */
     public static function getFriendlyUrl($virtualPath)
     {
@@ -210,7 +243,9 @@ class Utils
     }
 
     /**
-     * @param $var
+     * Displays a variable for debugging purposes.
+     *
+     * @param mixed $var The variable to be debugged.
      */
     public static function debug($var)
     {
@@ -220,21 +255,35 @@ class Utils
         echo '</pre>';
     }
 
+    /**
+     * Formats a number as currency amount.
+     *
+     * @param float|null $number The number to be formatted.
+     * @return string The formatted amount. Returns "-" if the number is null.
+     */
     public static function formatAmount($number)
     {
-        if($number == null)
+        if ($number == null)
             return "-";
         return number_format($number, 2, ",", ".");
     }
 
+    /**
+     * Formats a number with thousands separator.
+     *
+     * @param int|float $number The number to be formatted.
+     * @return string The formatted number.
+     */
     public static function formatNumber($number)
     {
         return number_format($number, 0, ",", ".");
     }
 
     /**
-     * @param $string
-     * @return string
+     * Removes accents from a string.
+     *
+     * @param string $string The string from which to remove accents.
+     * @return string The string without accents.
      */
     public static function removeAccents($string)
     {
@@ -312,9 +361,12 @@ class Utils
         return $string;
     }
 
+
     /**
-     * @param $code
-     * @return mixed
+     * Retrieves the description of a file error code.
+     *
+     * @param int $code The error code.
+     * @return string The description of the error code.
      */
     public static function getFileErrorDescription($code)
     {
@@ -332,13 +384,14 @@ class Utils
     }
 
     /**
-     * @param $timestamp
-     * @return string
+     * Converts a UNIX timestamp to a formatted date string.
+     *
+     * @param int $timestamp The UNIX timestamp.
+     * @return string|null The formatted date string or null if timestamp is not greater than 0.
      */
     public static function timestampToDate($timestamp)
     {
         if ($timestamp > 0) {
-            //return date(Config::get("default_datetime_format"), $timestamp);
             $date = new DateTime();
             $date->setTimestamp($timestamp);
             $date->setTimezone(new DateTimeZone('Europe/Rome'));
@@ -347,8 +400,10 @@ class Utils
     }
 
     /**
-     * @param $datetime_timestamp
-     * @return string
+     * Calculates the elapsed time since a given timestamp.
+     *
+     * @param int $datetime_timestamp The UNIX timestamp of the datetime.
+     * @return string The elapsed time string.
      */
     public static function getElapsedTime($datetime_timestamp)
     {
@@ -370,8 +425,10 @@ class Utils
     }
 
     /**
-     * @param $email
-     * @return bool
+     * Checks if an email address is in the correct format.
+     *
+     * @param string $email The email address to be checked.
+     * @return bool True if the email address is in correct format, false otherwise.
      */
     public static function checkEmailFormat($email)
     {
@@ -383,18 +440,19 @@ class Utils
     }
 
     /**
-     *
+     * Redirects to the maintenance page.
      */
     public static function goToMaintenance()
     {
         header("Location: " . Config::get("url") . Config::get("url_maintenance"));
         exit();
     }
-
     /**
-     * @param int $length
-     * @param int $strength
-     * @return string
+     * Generates a password string based on given length and strength.
+     *
+     * @param int $length The length of the password.
+     * @param int $strength The strength of the password.
+     * @return string The generated password.
      */
     public static function passwordGenerator($length = 9, $strength = 0)
     {
@@ -427,8 +485,10 @@ class Utils
     }
 
     /**
-     * @param $length
-     * @return string
+     * Generates a random string of specified length.
+     *
+     * @param int $length The length of the random string.
+     * @return string The generated random string.
      */
     public static function getRandomString($length)
     {
@@ -442,9 +502,11 @@ class Utils
     }
 
     /**
-     * @param $length
-     * @param string $keyspace
-     * @return string
+     * Generates a secure random string of specified length.
+     *
+     * @param int $length The length of the random string.
+     * @param string $keyspace The characters to choose from.
+     * @return string The generated random string.
      */
     public static function getSecureRandomString($length, $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
     {
@@ -457,11 +519,13 @@ class Utils
     }
 
     /**
-     * @param $string
-     * @param string $fieldname
-     * @param bool $throwException
-     * @return bool
-     * @throws Exception
+     * Checks the format of a string and optionally throws an exception if the format is not valid.
+     *
+     * @param string $string The string to check.
+     * @param string $fieldname The name of the field being checked.
+     * @param bool $throwException Whether to throw an exception if the format is not valid.
+     * @return bool True if the string format is valid, false otherwise.
+     * @throws Exception If $throwException is true and the format is not valid.
      */
     public static function checkStringFormat($string, $fieldname = "Password", $throwException = true)
     {
@@ -473,11 +537,14 @@ class Utils
         return true;
     }
 
+
     /*
-    *  Genera il valore del remember-me cookie
-    */
+ * Generates the value of the remember-me cookie.
+ */
     /**
-     * @return string
+     * Generates a hash for the remember-me cookie based on current time, IP address, and user agent.
+     *
+     * @return string The generated cookie hash.
      */
     public static function generateCookieHash()
     {
@@ -485,14 +552,24 @@ class Utils
     }
 
     /**
-     * @param $cookieValue
-     * @return bool
+     * Checks the validity of the remember-me cookie hash.
+     *
+     * @param string $cookieValue The value of the remember-me cookie.
+     * @return bool True if the cookie hash is valid, false otherwise.
      */
     public static function checkCookieHashValidity($cookieValue)
     {
         return substr($cookieValue, 32) == md5(Utils::getIpAddress() . Utils::getUserAgent());
     }
 
+    /**
+     * Extracts a substring from a string between specified start and end strings.
+     *
+     * @param string $string The input string.
+     * @param string $start The starting string.
+     * @param string|null $end The ending string (optional).
+     * @return string The extracted substring.
+     */
     public static function extractString($string, $start, $end = null)
     {
         if (is_null($end)) {
@@ -506,6 +583,15 @@ class Utils
         $len = strpos($string, $end, $ini) - $ini;
         return substr($string, $ini, $len);
     }
+
+    /**
+     * Extracts a substring from a string between two specified words.
+     *
+     * @param string $str The input string.
+     * @param string $starting_word The starting word.
+     * @param string $ending_word The ending word.
+     * @return string The extracted substring.
+     */
     public static function string_between_two_string($str, $starting_word, $ending_word)
     {
         $arr = explode($starting_word, $str);
@@ -515,17 +601,33 @@ class Utils
         }
         return '';
     }
+
+    /**
+     * Cleans a string by replacing spaces with hyphens, removing special characters, and reducing multiple hyphens to single ones.
+     *
+     * @param string $string The input string.
+     * @return string The cleaned string.
+     */
     public static function cleanStr($string)
     {
         // Replaces all spaces with hyphens.
         $string = str_replace(' ', '-', $string);
-        // Removes special chars.
+        // Removes special characters.
         $string = preg_replace('/[^A-Za-z0-9\-]/', '', $string);
-        // Replaces multiple hyphens with single one.
+        // Replaces multiple hyphens with single ones.
         $string = preg_replace('/-+/', '-', $string);
         return $string;
     }
 
+    /**
+     * Adds a string after every nth occurrence of a character in a given string.
+     *
+     * @param string $s The input string.
+     * @param string $c The character to search for.
+     * @param string $n The string to add.
+     * @param int $frequency The frequency of occurrence after which the string should be added.
+     * @return string The resulting string.
+     */
     public static function addStringAfterCharRepeats($s, $c, $n, $frequency)
     {
         $occurrences = 0;
@@ -543,15 +645,24 @@ class Utils
         return $result;
     }
 
-    public static function setObjFromArray(&$obj, $array, $arrayExcluded = array("id")){
-        if(property_exists($obj,"active")){
-            $obj->active = array_key_exists("active",$array) ? 1: 0;
+    /**
+     * Sets object properties from an array, excluding specified keys, and saves the object.
+     *
+     * @param object $obj The object to set properties for.
+     * @param array $array The array containing property values.
+     * @param array $arrayExcluded The keys to exclude from setting as properties.
+     * @return void
+     */
+    public static function setObjFromArray(&$obj, $array, $arrayExcluded = array("id"))
+    {
+        if (property_exists($obj, "active")) {
+            $obj->active = array_key_exists("active", $array) ? 1 : 0;
             $arrayExcluded[] = "active";
         }
-        foreach($array as $key => $value){
-          if(in_array($key,$arrayExcluded)) continue;
-          $obj->{$key} = $value;
+        foreach ($array as $key => $value) {
+            if (in_array($key, $arrayExcluded)) continue;
+            $obj->{$key} = $value;
         }
         $obj->save();
-      }
+    }
 }

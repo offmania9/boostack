@@ -5,8 +5,6 @@
  */
 # Setup current environment
 define('CURRENT_ENVIRONMENT', Environment::LOCAL);  // 'local' | 'staging' | 'production'
-# Setup main project folder 
-define('MAIN_PROJECT_FOLDER', "/public/");
 # Setup project subfolder 
 $config['document_root_subdir'] = '/'; // / or empty by default
 # Setup protocol 
@@ -46,6 +44,8 @@ $config['session_lifespan'] = 14400; # 4h    // session max duration (seconds)
  * Rest API
  */
 $config['api_on'] = FALSE;       // enable or disable boostack Rest API (#TRUE need $database_on=TRUE)
+$config['api_expire'] = 60*60*24*10;    // Cookies expire (60*60*24 = 1day)
+$config['api_secret_key'] = "S729s-kdF62-193jJ-EOD4w";    // Cookies expire (60*60*24 = 1day)
 
 /**
  * LOG
@@ -54,7 +54,7 @@ $config['log_on'] = FALSE;       // enable or disable boostack Log (#TRUE need $
 $config['log_file'] = "logs/log.txt";
 $config['log_dir'] = "../logs/";
 $config['log_enabledTypes'] =
-    array('error','failure','information','success','warning','user','cronjob');  //(Enable logging options ['error','failure','information','success','warning','user']
+    array('error', 'failure', 'information', 'success', 'warning', 'user', 'cronjob');  //(Enable logging options ['error','failure','information','success','warning','user']
 
 /**
  * LOGIN
@@ -70,7 +70,7 @@ $config['lockStrategy_on'] = FALSE;
 $config['login_lockStrategy'] = '[lockStrategy_type]'; // "timer" | "recaptcha" | FALSE (if you set timer remember to set login_secondsFormBlocked)
 $config['login_maxAttempts'] = "[login_max_attempts]";
 $config['login_secondsFormBlocked'] = "[login_seconds_blocked]";
-$config['google_recaptcha-endpoint']= "https://www.google.com/recaptcha/api/siteverify";        //ReCaptcha Google endpoint
+$config['google_recaptcha-endpoint'] = "https://www.google.com/recaptcha/api/siteverify";        //ReCaptcha Google endpoint
 $config['reCaptcha_public'] = "[recaptcha_public]";       //recaptcha key
 $config['reCaptcha_private'] = "[recaptcha_private]";      //recaptcha key
 
@@ -155,12 +155,17 @@ $config["mail_validTime"] = 7200;
 /**
  * DO NOT MODIFY
  */
-$default_port = empty($config['port'])? '': ':' . $config['port'];
-$defaultDN = $config['DN'].$default_port ;
+$default_port = empty($config['port']) ? '' : ':' . $config['port'];
+$defaultDN = $config['DN'] . $default_port;
 $currentDN = (in_array($_SERVER['HTTP_HOST'], $config['DN_alternative'])) ? $_SERVER['HTTP_HOST'] . '' : $defaultDN . $config['document_root_subdir'];
 $config['url'] = $config['protocol'] . "://" . $currentDN;
 
-define('ROOTPATH', $_SERVER['DOCUMENT_ROOT'] . MAIN_PROJECT_FOLDER);
+# Setup main project folder 
+define('MAIN_PROJECT_FOLDER', "public");
+if (!empty($_SERVER['DOCUMENT_ROOT']))
+    define('ROOTPATH', $_SERVER['DOCUMENT_ROOT'] . "/" . MAIN_PROJECT_FOLDER . "/");
+else
+    define('ROOTPATH',  MAIN_PROJECT_FOLDER . "/");
 
 abstract class Environment
 {
@@ -169,4 +174,3 @@ abstract class Environment
     const PRE_PRODUCTION = "pre_production";
     const PRODUCTION = "production";
 }
-?>

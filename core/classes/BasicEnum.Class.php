@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Boostack: BasicEnum.Class.php
  * ========================================================================
@@ -6,14 +7,16 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 3.1
+ * @version 4
  */
 
- abstract class BasicEnum {
+abstract class BasicEnum
+{
     private static $constCacheArray = NULL;
 
-    private static function getConstants() {
-        if (self::$constCacheArray == NULL) {
+    private static function getConstants()
+    {
+        if (self::$constCacheArray === null) {
             self::$constCacheArray = [];
         }
         $calledClass = get_called_class();
@@ -23,20 +26,35 @@
         }
         return self::$constCacheArray[$calledClass];
     }
-
-    public static function isValidName($name, $strict = false) {
+    
+    /**
+     * Checks if a given name is a valid constant in the class.
+     * @param string $name The constant name.
+     * @param bool $strict Whether to perform a strict case-sensitive check.
+     * @return bool
+     */
+    public static function isValidName($name, $strict = false)
+    {
         $constants = self::getConstants();
-
+    
         if ($strict) {
             return array_key_exists($name, $constants);
         }
-
+    
         $keys = array_map('strtolower', array_keys($constants));
         return in_array(strtolower($name), $keys);
     }
-
-    public static function isValidValue($value, $strict = true) {
+    
+    /**
+     * Checks if a given value is a valid constant value in the class.
+     * @param mixed $value The constant value.
+     * @param bool $strict Whether to perform a strict type check.
+     * @return bool
+     */
+    public static function isValidValue($value, $strict = true)
+    {
         $values = array_values(self::getConstants());
         return in_array($value, $values, $strict);
     }
+    
 }
