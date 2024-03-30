@@ -17,8 +17,7 @@ if (!empty($_POST)) {
     <link rel="shortcut icon" href="../assets/img/favicon.ico" />
     <link rel="image_src" href="img/boostack_logo_x210.png" />
     <link href="../assets/css/lib/bootstrap.min.css" rel="stylesheet">
-    <link href="../assets/css/lib/animate.min.css" rel="stylesheet">
-    <link href="../assets/css/custom.css" rel="stylesheet">
+    <link href="custom.css" rel="stylesheet">
 </head>
 
 <body class="setup">
@@ -47,7 +46,6 @@ if (!empty($_POST)) {
     </section>
     <script type="text/javascript" src="../assets/js/lib/jquery.min.js"></script>
     <script type="text/javascript" src="../assets/js/lib/bootstrap.min.js"></script>
-    <script type="text/javascript" src="../assets/js/custom.js"></script>
 
     <script type="text/javascript" src="setup.js"></script>
 </body>

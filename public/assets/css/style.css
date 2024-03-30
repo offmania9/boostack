@@ -49,10 +49,10 @@ body {
 }
 
 a {
-  color: #84c441;
+  color: #79b53a;
 }
 a:hover {
-  color: #84c441;
+  color: #79b53a;
 }
 
 hr {
@@ -80,10 +80,10 @@ hr {
 .btn-success {
   background-image: linear-gradient(310deg, #76b237, #84c441);
   color: #ffffff;
-  border-color: #84c441;
+  border-color: #79b53a;
 }
 .btn-success:hover {
-  border-color: #84c441;
+  border-color: #79b53a;
   background-image: linear-gradient(270deg, #84c441, #84c441);
 }
 
@@ -100,15 +100,15 @@ hr {
 }
 
 .mainColorBackground {
-  background-color: #84c441;
+  background-color: #79b53a;
 }
 
 .line {
-  background-color: #84c441;
+  background-color: #79b53a;
 }
 
 .btn-main {
-  background-color: #84c441 !important;
+  background-color: #79b53a !important;
 }
 
 .line-gray {

@@ -1,79 +1,81 @@
-<section id="lockStrategies">
-    <h2>Login Lock Strategies</h2>
-    <p>
-        Login lock strategy was created with the purpose to
-        block multiple attempts made for example by an automated bot
-    </p>
-    <p>
-        There are 2 kinds of Login Lock Strategies Implemented:
-    </p>
-    <ul>
-        <li>Timer</li>
-        <li>Google reCAPTCHA</li>
-    </ul>
-</section>
-<section>
-    <h4>Setting up Parameters</h4>
-    <p>
-        In the setup (if you enable login lock strategy) the first decision to make is to set the max attempts the
-        user can do before being blocked by our strategy; you will choose it here:
-    </p>
-    <img class="img-fluid" src="<?= Template::getImageLink("boostack_setup_4.jpg") ?>" alt="Boostack Setup 4"/>
-    <p>
-        Then you will be prompted to choose between the two lock strategies implemented: google reCAPTCHA or Timer;
-        if you select reCAPTCHA:
-    </p>
-    <img class="img-fluid" src="<?= Template::getImageLink("boostack_setup_5.jpg") ?>" alt="Boostack Setup 5"/>
-    <p>
-        You will have to insert your public key and your private key. Here you can get the key pair and specify the
-        key pair to work for your site: <a href="https://developers.google.com/recaptcha/docs/start">Click here</a>
-    </p>
-    <p>
-        If you select timer:
-    </p>
-    <img class="img-fluid" src="<?= Template::getImageLink("boostack_setup_6.jpg") ?>" alt="Boostack Setup 6"/>
-    <p>
-        You will have to insert the seconds the user will not be able to try the next login.
-    </p>
-</section>
-<section id="Timer">
-    <h3>Timer</h3>
-    <p>
-        The timer solution will make the login blocked for the seconds specified in the setup section.
-    </p>
-    <ul>
-        <li>
+<div class="row">
+    <div class="col-md-9">
+        <section id="lockStrategies">
+            <h2>Login Lock Strategies</h2>
             <p>
-                For what concerns the PHP part:
+                Login lock strategy was created with the purpose to
+                block multiple attempts made for example by an automated bot
             </p>
             <p>
-                In the template .phtml file we dont show the login by using this syntax:
+                There are 2 kinds of Login Lock Strategies Implemented:
             </p>
-<pre><code>if(!Auth::isTimerLocked()):
+            <ul>
+                <li>Timer</li>
+                <li>Google reCAPTCHA</li>
+            </ul>
+        </section>
+        <section>
+            <h4>Setting up Parameters</h4>
+            <p>
+                In the setup (if you enable login lock strategy) the first decision to make is to set the max attempts the
+                user can do before being blocked by our strategy; you will choose it here:
+            </p>
+            <img class="img-fluid" src="<?= Template::getImageLink("boostack_setup_4.jpg") ?>" alt="Boostack Setup 4" />
+            <p>
+                Then you will be prompted to choose between the two lock strategies implemented: google reCAPTCHA or Timer;
+                if you select reCAPTCHA:
+            </p>
+            <img class="img-fluid" src="<?= Template::getImageLink("boostack_setup_5.jpg") ?>" alt="Boostack Setup 5" />
+            <p>
+                You will have to insert your public key and your private key. Here you can get the key pair and specify the
+                key pair to work for your site: <a href="https://developers.google.com/recaptcha/docs/start">Click here</a>
+            </p>
+            <p>
+                If you select timer:
+            </p>
+            <img class="img-fluid" src="<?= Template::getImageLink("boostack_setup_6.jpg") ?>" alt="Boostack Setup 6" />
+            <p>
+                You will have to insert the seconds the user will not be able to try the next login.
+            </p>
+        </section>
+        <section id="Timer">
+            <h3>Timer</h3>
+            <p>
+                The timer solution will make the login blocked for the seconds specified in the setup section.
+            </p>
+            <ul>
+                <li>
+                    <p>
+                        For what concerns the PHP part:
+                    </p>
+                    <p>
+                        In the template .phtml file we dont show the login by using this syntax:
+                    </p>
+                    <pre><code>if(!Auth::isTimerLocked()):
     //Login form goes here.
 endif;
 </code></pre>
+                    <p>
+                        In the <code>loginByUsernameAndPlainPassword</code> function located in
+                        <code>core/classes/Auth.Class.php</code> the login process gets blocked if the function
+                        <code>checkAcceptedTimeFromLastLogin($lastLogin)</code> does not return true and that’s why the waiting
+                        time is not passed; if the function returns true then the process to login can go ahead.
+                    </p>
+                </li>
+            </ul>
+        </section>
+        <section id="Recaptcha">
+            <h3>Google recaptcha</h3>
             <p>
-                In the <code>loginByUsernameAndPlainPassword</code> function located in
-                <code>core/classes/Auth.Class.php</code> the login process gets blocked if the function
-                <code>checkAcceptedTimeFromLastLogin($lastLogin)</code> does not return true and that’s why the waiting
-                time is not passed; if the function returns true then the process to login can go ahead.
+                Google reCAPTCHA will block the login until it’s not completed correctly.
+                We will divide the correct implementation in 3 different parts: the html, the javascript and the php part.
             </p>
-        </li>
-    </ul>
-</section>
-<section id="Recaptcha">
-    <h3>Google recaptcha</h3>
-    <p>
-        Google reCAPTCHA will block the login until it’s not completed correctly.
-        We will divide the correct implementation in 3 different parts: the html, the javascript and the php part.
-    </p>
-    <ul>
-        <li>
-            <p>
-                For what concerns the HTML part:
-            </p>
-<pre><code>&lt;script type=&quot;text/javascript&quot; src=&quot;https://www.google.com/recaptcha/api.js&quot;&gt;&lt;/script&gt;
+            <ul>
+                <li>
+                    <p>
+                        For what concerns the HTML part:
+                    </p>
+                    <pre><code>&lt;script type=&quot;text/javascript&quot; src=&quot;https://www.google.com/recaptcha/api.js&quot;&gt;&lt;/script&gt;
 &lt;div id=&quot;reCaptcha-align&quot;&gt;
     &lt;div name=&quot;response&quot; class=&quot;g-recaptcha&quot; data-callback=&quot;verifyCaptcha&quot; data-sitekey=&rdquo;yoursite-publickey&quot;&gt;
     &lt;/div&gt;
@@ -81,42 +83,48 @@ endif;
 </code></pre>
 
 
-            <p>
-                The important thing about this simple <code>div</code> and the google’s recaptcha api import is the
-                <code>data-callback</code> function that will be used to verify “front-end” side to know if the user
-                completed correctly the reCAPTCHA.
-            </p>
-        </li>
-        <li>
-            <p>
-                For what concerns the Javascript part:
-            </p>
-<pre><code>var captchaResult = false;
+                    <p>
+                        The important thing about this simple <code>div</code> and the google’s recaptcha api import is the
+                        <code>data-callback</code> function that will be used to verify “front-end” side to know if the user
+                        completed correctly the reCAPTCHA.
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        For what concerns the Javascript part:
+                    </p>
+                    <pre><code>var captchaResult = false;
 function verifyCaptcha(response){
     if(response) captchaResult = true;
 }
 </code></pre>
-            <p>
-                This is the js function that will be invoked when the reCAPTCHA is completed and will verify
-                that the response given is correct.
-            </p>
-        </li>
-        <li>
-            <p>
-                For what concerns the PHP part:
-            </p>
-            <p>
-                In the <code>loginByUsernameAndPlainPassword</code> function located in
-                <code>core/classes/Auth.Class.php</code>
-                we will check “back-end” side the response. This double check: front end and back end side is usefull when
-                you want to check that the response was not manipulated; so we need a validation by making a <code>CURL</code>
-                to the google recaptcha endpoint set in <code>env.php</code> : <code>https://www.google.com/recaptcha/api/siteverify</code>
-            </p>
-            <pre><code>$recaptchaResponse = self::reCaptchaVerify($boostack, $_POST["g-recaptcha-response"]);</code></pre>
-            <p>
-                We invoke the <code>reCaptchaVerify</code> function that returns true in case of success, false in case
-                of failure; it makes a CURL request to the google endpoint and validate it by decoding the json response.
-            </p>
-        </li>
-    </ul>
-</section>
+                    <p>
+                        This is the js function that will be invoked when the reCAPTCHA is completed and will verify
+                        that the response given is correct.
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        For what concerns the PHP part:
+                    </p>
+                    <p>
+                        In the <code>loginByUsernameAndPlainPassword</code> function located in
+                        <code>core/classes/Auth.Class.php</code>
+                        we will check “back-end” side the response. This double check: front end and back end side is usefull when
+                        you want to check that the response was not manipulated; so we need a validation by making a <code>CURL</code>
+                        to the google recaptcha endpoint set in <code>env.php</code> : <code>https://www.google.com/recaptcha/api/siteverify</code>
+                    </p>
+                    <pre><code>$recaptchaResponse = self::reCaptchaVerify($boostack, $_POST["g-recaptcha-response"]);</code></pre>
+                    <p>
+                        We invoke the <code>reCaptchaVerify</code> function that returns true in case of success, false in case
+                        of failure; it makes a CURL request to the google endpoint and validate it by decoding the json response.
+                    </p>
+                </li>
+            </ul>
+        </section>
+        <div class="col-md-3">
+            <ul class="list-unstyled sticky-top small lh-lg">
+                <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light d-none" title="" href="<?= Utils::getFriendlyUrl("docs/setup#item") ?>">Item</a></li>
+            </ul>
+        </div>
+    </div>

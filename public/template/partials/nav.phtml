@@ -15,16 +15,15 @@
         <li class="nav-item">
             <a class="nav-link px-3" title="Registration" href="<?= Utils::getFriendlyUrl("registration"); ?>"><?= Language::getLabel("navigation.registration"); ?></a>
         </li>
-    <?php endif; ?>
-
-    <?php if (Auth::isLoggedIn()) {
-        if (Utils::hasPrivilege(Auth::getUserLoggedObject(), PRIVILEGE_SUPERADMIN)) { ?>
+        <?php if (Auth::isLoggedIn()) {
+            if (Utils::hasPrivilege(Auth::getUserLoggedObject(), PRIVILEGE_SUPERADMIN)) { ?>
+                <li class="nav-item">
+                    <a class="nav-link px-3" title="Log" href="<?= Utils::getFriendlyUrl("log"); ?>"><?= Language::getLabel("navigation.log"); ?></a>
+                </li>
+            <?php } ?>
             <li class="nav-item">
-                <a class="nav-link px-3" title="Log" href="<?= Utils::getFriendlyUrl("log"); ?>"><?= Language::getLabel("navigation.log"); ?></a>
+                <a class="nav-link px-3" title="Logout" href="<?= Utils::getFriendlyUrl("logout"); ?>"><?= Language::getLabel("navigation.logout"); ?></a>
             </li>
         <?php } ?>
-        <li class="nav-item">
-            <a class="nav-link px-3" title="Logout" href="<?= Utils::getFriendlyUrl("logout"); ?>"><?= Language::getLabel("navigation.logout"); ?></a>
-        </li>
-    <?php } ?>
+    <?php endif; ?>
 </ul>

@@ -1,24 +1,32 @@
-<h2>Session</h2>
-<p>The session is a way to store and retrieve information across multiple pages, get logged user details and other useful methods.</p>
-<h4>Methods</h4>
-<ul>
-    <li><code>Session::get($key)</code><br/>
-    Used to access the session information stored on the database. To access the session use this method in this way: Session::get("key").</li>
-    <li><code>Session::set($key, $value)</code><br/>
-    This method is used to set the session information into the database.<br/> And the method accept parameter in this way: Session::set("key",value).</li>
-    <li><code>Session::getUserObject()</code><br/>
-    This method is same the Auth::getUserLoggedObject method, used to obtain the current logged User object.</li>
-    <li><code>Session::getUserID()</code><br/>
-    Used to view the current logged user id.</li>
-    <li><code>Session::loginUser($userID)</code><br/>
-    This method update the session information that user is logged in successfully.</li>
-    <li><code>Session::logoutUser()</code><br/>
-    This method update the session information about the user is logout successfully.</li>
-    <li><code>Session::isLoggedIn()</code><br/>
-    Check if the user has already done the login session.</li>
-    <li><code>Session::CSRFCheckValidity($postArray, $throwException)</code><br/>
-    Check the validity of CSRF token</li>
-    <li><code>Session::CSRFRenderHiddenField()</code><br/>
-        Used to inject in the document dom the input with CSRF token.
-    </li>
-</ul>
+<div class="row">
+    <div class="col-md-9">
+        <h2>Session</h2>
+        <p>The session is a way to store and retrieve information across multiple pages, get logged user details and other useful methods.</p>
+        <h4>Methods</h4>
+        <ul>
+            <li><code>Session::get($key)</code><br />
+                Used to access the session information stored on the database. To access the session use this method in this way: Session::get("key").</li>
+            <li><code>Session::set($key, $value)</code><br />
+                This method is used to set the session information into the database.<br /> And the method accept parameter in this way: Session::set("key",value).</li>
+            <li><code>Session::getUserObject()</code><br />
+                This method is same the Auth::getUserLoggedObject method, used to obtain the current logged User object.</li>
+            <li><code>Session::getUserID()</code><br />
+                Used to view the current logged user id.</li>
+            <li><code>Session::loginUser($userID)</code><br />
+                This method update the session information that user is logged in successfully.</li>
+            <li><code>Session::logoutUser()</code><br />
+                This method update the session information about the user is logout successfully.</li>
+            <li><code>Session::isLoggedIn()</code><br />
+                Check if the user has already done the login session.</li>
+            <li><code>Session::CSRFCheckValidity($postArray, $throwException)</code><br />
+                Check the validity of CSRF token</li>
+            <li><code>Session::CSRFRenderHiddenField()</code><br />
+                Used to inject in the document dom the input with CSRF token.
+            </li>
+        </ul>
+        <div class="col-md-3">
+            <ul class="list-unstyled sticky-top small lh-lg">
+                <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light d-none" title="" href="<?= Utils::getFriendlyUrl("docs/setup#item") ?>">Item</a></li>
+            </ul>
+        </div>
+    </div>

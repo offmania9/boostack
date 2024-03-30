@@ -1,110 +1,106 @@
 <section class="disclaimer sectionTitle">
-	<div class="line">
-		<div class="container">
-			<div class="row">
-				<h2 class="text-white textShadow display-4"><?= Language::getLabel("navigation.documentation");?></h2>
-			</div>
-		</div>
-	</div>
+    <div class="line">
+        <div class="container">
+            <div class="row">
+                <h2 class="text-white textShadow display-4"><?= Language::getLabel("navigation.documentation"); ?></h2>
+            </div>
+        </div>
+    </div>
 </section>
 <section class="documentation centerContent py-5 fw-light">
-	<div class="container">
-		<div class="row description">
-			<div class="col-md-3">
-				<ul class="list-unstyled documentationMenu sticky-top">
-                    <li class="title">Getting Started</li>
-                    <li class="item"><a href="<?= Utils::getFriendlyUrl("docs/setup")?>">Setup</a>
-                        <ul class="list-unstyled">
-                            <li class="item"><a title="Server Requirements" href="<?= Utils::getFriendlyUrl("docs/setup#ServerRequirements")?>">Server Requirements</a></li>
-                            <li class="item"><a title="Download" href="<?= Utils::getFriendlyUrl("docs/setup#Download")?>">Download</a></li>
-                            <li class="item"><a title="Installation" href="<?= Utils::getFriendlyUrl("docs/setup#Installation")?>">Docker Installation</a></li>
-                            <li class="item"><a title="Automatic Configuration" href="<?= Utils::getFriendlyUrl("docs/setup#AutomaticConfiguration")?>">Automatic Configuration</a></li>
-                            <li class="item"><a title="Manual Configuration" href="<?= Utils::getFriendlyUrl("docs/setup#ManualConfiguration")?>">Manual Configuration</a></li>
-                            <li class="item"><a title="Friendly URLs Configuration" href="<?= Utils::getFriendlyUrl("docs/setup#FriendlyURLsConfiguration")?>">Friendly URLs Configuration</a></li>
-                            <li class="item"><a title="Accessing Configuration Values" href="<?= Utils::getFriendlyUrl("docs/setup#AccessingConfigurationValues")?>">Accessing Configuration Values</a></li>
-                            <li class="item"><a title="Development Mode" href="<?= Utils::getFriendlyUrl("docs/setup#DevelopmentMode")?>">Development Mode</a></li>
-                            <li class="item"><a title="Server Configuration" href="<?= Utils::getFriendlyUrl("docs/setup#ServerConfiguration")?>">Server Configuration</a></li>
-                        </ul>
+    <div class="container">
+        <div class="row description">
+            <div class="col-md-3">
+                <ul class="list-unstyled documentationMenu sticky-top">
+                    <li class="title fw-bold pt-2">Getting Started</li>
+                    <li class="ps-3">
+                        <a class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Utils::getFriendlyUrl("docs/setup") ?>">Setup</a>
                     </li>
-                    <li class="item"><a title="Directory structure" href="<?= Utils::getFriendlyUrl("docs/directory-structure")?>">Directory structure</a></li>
-                    <li class="title">Architecture</li>
-                    <li class="item"><a title="Models" href="<?= Utils::getFriendlyUrl("docs/models")?>">Models</a></li>
-                    <li class="item"><a title="Controllers" href="<?= Utils::getFriendlyUrl("docs/controllers")?>">Controllers</a></li>
-                    <li class="item"><a title="Template" href="<?= Utils::getFriendlyUrl("docs/template")?>">Template</a></li>
-                    <li class="title">Utilities</li>
-                    <li class="item"><a title="" href="<?= Utils::getFriendlyUrl("docs/auth")?>">Auth</a>
-                        <ul class="list-unstyled">
-                            <li class="item"><a title="Lock Strategies" href="<?= Utils::getFriendlyUrl("docs/loginSecurity")?>">Lock Strategies</a></li>
-                        </ul></li>
-                    <li class="item"><a title="" href="<?= Utils::getFriendlyUrl("docs/users")?>">Users</a></li>
-                    <li class="item"><a title="" href="<?= Utils::getFriendlyUrl("docs/session")?>">Session</a></li>
-                    <li class="item"><a title="" href="<?= Utils::getFriendlyUrl("docs/curl")?>">CURL</a></li>
-                    <li class="item"><a title="" href="<?= Utils::getFriendlyUrl("docs/log")?>">Log</a></li>
-                    <li class="item"><a title="" href="<?= Utils::getFriendlyUrl("docs/validator")?>">Validator</a></li>
-			</div>
-			<div class="col-md-6 documentationInnerContent">
+                    <li class="ps-3">
+                        <a class="link-opacity-75-hover link-underline-light fw-normal" title="Directory structure" href="<?= Utils::getFriendlyUrl("docs/directory-structure") ?>">Directory structure</a>
+                    </li>
+                    <li class="title fw-bold pt-3">Architecture</li>
+                    <li class="ps-3">
+                        <a title="Models" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Utils::getFriendlyUrl("docs/models") ?>">Models</a>
+                    </li>
+                    <li class="ps-3">
+                        <a title="Controllers" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Utils::getFriendlyUrl("docs/controllers") ?>">Controllers</a>
+                    </li>
+                    <li class="ps-3">
+                        <a title="Template" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Utils::getFriendlyUrl("docs/template") ?>">Template</a>
+                    </li>
+                    <li class="title fw-bold pt-3">Utilities</li>
+                    <li class="ps-3">
+                        <a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Utils::getFriendlyUrl("docs/auth") ?>">Auth</a>
+                    </li>
+                    <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Utils::getFriendlyUrl("docs/loginSecurity") ?>">Lock Strategies</a></li>
+                    <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Utils::getFriendlyUrl("docs/users") ?>">Users</a></li>
+                    <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Utils::getFriendlyUrl("docs/session") ?>">Session</a></li>
+                    <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Utils::getFriendlyUrl("docs/curl") ?>">CURL</a></li>
+                    <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Utils::getFriendlyUrl("docs/log") ?>">Log</a></li>
+                    <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Utils::getFriendlyUrl("docs/validator") ?>">Validator</a></li>
+            </div>
+            <div class="col-md-9 documentationInnerContent">
                 <?php
                 $defaultPage = "documentation/setup.phtml";
-                if(Request::hasQueryParam("docpath")) {
+                if (Request::hasQueryParam("docpath")) {
                     switch (Request::getQueryParam("docpath")) {
                         case "setup": {
-                            require "documentation/setup.phtml";
-                            break;
-                        }
+                                require "documentation/setup.phtml";
+                                break;
+                            }
                         case "directory-structure": {
-                            require "documentation/directory_structure.phtml";
-                            break;
-                        }
+                                require "documentation/directory_structure.phtml";
+                                break;
+                            }
                         case "controllers": {
-                            require "documentation/controllers.phtml";
-                            break;
-                        }
+                                require "documentation/controllers.phtml";
+                                break;
+                            }
                         case "models": {
-                            require "documentation/models.phtml";
-                            break;
-                        }
+                                require "documentation/models.phtml";
+                                break;
+                            }
                         case "loginSecurity": {
-                            require "documentation/loginSecurity.phtml";
-                            break;
-                        }
+                                require "documentation/loginSecurity.phtml";
+                                break;
+                            }
                         case "template": {
-                            require "documentation/template.phtml";
-                            break;
-                        }
+                                require "documentation/template.phtml";
+                                break;
+                            }
                         case "auth": {
-                            require "documentation/auth.phtml";
-                            break;
-                        }
+                                require "documentation/auth.phtml";
+                                break;
+                            }
                         case "users": {
-                            require "documentation/users.phtml";
-                            break;
-                        }
+                                require "documentation/users.phtml";
+                                break;
+                            }
                         case "session": {
-                            require "documentation/session.phtml";
-                            break;
-                        }
+                                require "documentation/session.phtml";
+                                break;
+                            }
                         case "curl": {
-                            require "documentation/curl.phtml";
-                            break;
-                        }
+                                require "documentation/curl.phtml";
+                                break;
+                            }
                         case "log": {
-                            require "documentation/log.phtml";
-                            break;
-                        }
+                                require "documentation/log.phtml";
+                                break;
+                            }
                         case "validator": {
-                            require "documentation/validator.phtml";
-                            break;
-                        }
+                                require "documentation/validator.phtml";
+                                break;
+                            }
                         default: {
-                            require $defaultPage;
-                        }
+                                require $defaultPage;
+                            }
                     }
-                }
-                else
+                } else
                     require $defaultPage;
                 ?>
             </div>
-            <div class="col-md-3"></div>
-		</div>
-	</div>
+        </div>
+    </div>
 </section>
