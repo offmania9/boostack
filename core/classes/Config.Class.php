@@ -56,4 +56,16 @@ class Config
         if (isset(self::$configs[$configKey]) && self::$configs[$configKey] == $configvalue) return true;
         throw new Exception_Misconfiguration("You must enable '" . $configKey . "' configuration attribute in config/env.php file");
     }
+
+    /**
+     * Set the value of a configuration attribute.
+     *
+     * @param string $configKey The key of the configuration attribute.
+     * @param string $configValue The value of the configuration attribute.
+     * @throws Exception_Misconfiguration If the configuration attribute is not found.
+     */
+    public static function set($configKey, $configValue)
+    {
+        self::$configs[$configKey] = $configValue;
+    }
 }

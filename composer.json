@@ -9,10 +9,10 @@
     "js"
   ],
   "type": "project",
-    "require": {
-        "php": ">=7.4",
+  "require": {
+    "php": ">=7.4",
     "firebase/php-jwt": "^6.10"
-    },
+  },
   "homepage": "https://getboostack.com",
   "authors": [
     {

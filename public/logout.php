@@ -12,7 +12,6 @@
 require_once "../core/environment_init.php";
 
 Auth::logout();
-header("location: " . Config::get("url"));
-exit();
+Utils::goToUrl("home");
 
 ?>
