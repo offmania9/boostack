@@ -1,5 +1,6 @@
 <?php
-
+require __DIR__ . '/../vendor/autoload.php';
+Core\Environment::init();
 /**
  * Boostack: api.php
  * ========================================================================
@@ -10,7 +11,8 @@
  * @version 5.0
  */
 
-require_once "../core/environment_init.php";
+use Core\Models\Request;
+use Core\Models\Rest\Rest_Api;
 /*
 * JWT TOKEN Usage
 *
@@ -30,6 +32,6 @@ if (!array_key_exists('HTTP_ORIGIN', Request::getServerArray()))
 try {
     $api = Request::hasRequestParam('request') ? new Rest_Api(Request::getRequestParam('request')) : new Rest_Api("");
     echo $api->processAPI();
-} catch (Exception $e) {
+} catch (\Exception $e) {
     echo $e->getMessage();
 }

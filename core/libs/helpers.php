@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Boostack: helpers.php
  * ========================================================================
@@ -44,9 +43,9 @@ function dd()
 /**
  * Dump a prepared query in a formatted manner for debugging.
  *
- * @param PDOStatement $q The prepared query to dump.
+ * @param \PDOStatement $q The prepared query to dump.
  */
-function dumpPreparedQuery(PDOStatement $q)
+function dumpPreparedQuery(\PDOStatement $q)
 {
     echo "<pre>";
     $q->debugDumpParams();

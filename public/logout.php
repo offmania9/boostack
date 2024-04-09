@@ -1,4 +1,6 @@
 <?php
+require __DIR__ . '/../vendor/autoload.php';
+Core\Environment::init();
 /**
  * Boostack: logout.php
  * ========================================================================
@@ -9,9 +11,5 @@
  * @version 5.0
  */
 
-require_once "../core/environment_init.php";
-
-Auth::logout();
-Utils::goToUrl("home");
-
-?>
+Core\Models\Auth::logout();
+Core\Models\Request::goToUrl("home");

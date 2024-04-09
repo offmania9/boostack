@@ -6,12 +6,12 @@ $username = $_POST["username"];
 $password = $_POST["password"];
 $port = $_POST["port"];
 try {
-    $conn = new PDO("$driver_pdo:host=$servername;port=$port;dbname=$dbname", $username, $password);
-    // set the PDO error mode to exception
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $conn = new \PDO("$driver_pdo:host=$servername;port=$port;dbname=$dbname", $username, $password);
+    // set the \PDO error mode to \Exception
+    $conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
     echo "success";
 }
-catch(PDOException $e)
+catch(\PDOException $e)
 {
     echo $e->getMessage();
 }

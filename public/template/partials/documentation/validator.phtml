@@ -1,3 +1,7 @@
+<?php
+
+use Core\Models\Request;
+?>
 <div class="row">
     <div class="col-md-9">
         <h2>Validator</h2>
@@ -82,7 +86,7 @@
         </ul>
         <div class="col-md-3">
             <ul class="list-unstyled sticky-top small lh-lg">
-                <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light d-none" title="" href="<?= Utils::getFriendlyUrl("docs/setup#item") ?>">Item</a></li>
+                <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light d-none" title="" href="<?= Request::getFriendlyUrl("docs/setup#item") ?>">Item</a></li>
             </ul>
         </div>
     </div>

@@ -100,7 +100,7 @@ $("form").submit(function (e) {
 function checkDB(callback) {
     var data = {
         "host": $("#db-host").val(),
-        "driver_pdo": $("#driver-pdo").val(),
+        "driver_pdo": $("#driver-PDO").val(),
         "dbname": $("#db-name").val(),
         "port": $("#db-port").val(),
         "username": $("#db-username").val(),

@@ -1,5 +1,6 @@
 <?php
-
+require __DIR__ . '/../vendor/autoload.php';
+Core\Environment::init();
 /**
  * Boostack: registration.php
  * ========================================================================
@@ -10,7 +11,9 @@
  * @version 5.0
  */
 
-require_once "../core/environment_init.php";
+use Core\Models\Config;
+use Core\Models\Request;
+use Core\Models\Auth;
 
 $registrationError = "";
 try {
@@ -25,23 +28,23 @@ try {
         }
         Auth::registration($email, $email, $psw1, $psw2, $csrfToken);
     }
-} catch (Exception_Misconfiguration $em) {
+} catch (\Core\Exception\Exception_Misconfiguration $em) {
     dd($em->getMessage());
-} catch (Exception_Registration $e) {
+} catch (\Core\Exception\Exception_Registration $e) {
     $registrationError = $e->getMessage();
-} catch (Exception $e) {
+} catch (\Exception $e) {
     $registrationError = $e->getMessage();
 }
 
 if (Auth::isLoggedIn()) {
-    Template::render("login_logged.phtml", array(
-        "canonical" =>  Utils::getFriendlyUrl("home"),
-        "pageTitle" => Language::getLabel("navigation.home")
+    Core\Models\Template::render("login_logged.phtml", array(
+        "canonical" =>  Core\Models\Request::getFriendlyUrl("home"),
+        "pageTitle" => Core\Models\Language::getLabel("navigation.home"),
     ));
 } else {
-    Template::render("registration.phtml", array(
-        "canonical" =>  Utils::getFriendlyUrl("registration"),
-        "pageTitle" => Language::getLabel("navigation.registration"),
+    Core\Models\Template::render("registration.phtml", array(
+        "canonical" =>  Core\Models\Request::getFriendlyUrl("registration"),
+        "pageTitle" => Core\Models\Language::getLabel("navigation.registration"),
         "registrationError" => $registrationError
     ));
 }

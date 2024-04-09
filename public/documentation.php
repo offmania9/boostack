@@ -1,4 +1,6 @@
 <?php
+require __DIR__ . '/../vendor/autoload.php';
+Core\Environment::init();
 /**
  * Boostack: documentation.php
  * ========================================================================
@@ -9,14 +11,7 @@
  * @version 5.0
  */
 
-require_once "../core/environment_init.php";
-
-Template::addCssFile("lib/atom-one-light.min.css");
-
-Template::render("documentation.phtml", array(
-    "canonical" =>  Utils::getFriendlyUrl("documentation"),
-    "pageTitle" => Language::getLabel("navigation.documentation"),
+Core\Models\Template::render("documentation.phtml", array(
+    "canonical" =>  Core\Models\Request::getFriendlyUrl("documentation"),
+    "pageTitle" => Core\Models\Language::getLabel("navigation.documentation"),
 ));
-
-
-?>

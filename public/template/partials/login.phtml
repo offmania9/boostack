@@ -1,3 +1,10 @@
+<?php
+use Core\Models\Config;
+use Core\Models\Language;
+use Core\Models\Request;
+use Core\Models\Auth;
+
+?>
 <section class="disclaimer sectionTitle">
     <div class="line">
         <div class="container">
@@ -20,7 +27,7 @@
                     </div>
                     <div class="card-body">
                         <div class="text-end">
-                                <small> <a href="<?= Utils::getFriendlyUrl("login");?>">
+                                <small> <a href="<?= Request::getFriendlyUrl("login");?>">
                                         <?= Language::getLabel("form.login.forgotpwd");?>
                                     </a>
                                 </small>
@@ -28,7 +35,7 @@
                         <?php if(!Auth::isTimerLocked()): ?>
                             <div id="login-alert" class="alert alert-danger col-sm-12 <?= $errorMessage == "" ? "d-none" : "" ?>"><?= $errorMessage; ?></div>
                             <form id="loginform"
-                                action="<?= Utils::getFriendlyUrl("login");?>" name="loginform"
+                                action="<?= Request::getFriendlyUrl("login");?>" name="loginform"
                                 class="form-horizontal" method="post" role="form">
 
                                 <div style="margin-bottom: 25px; margin-top: 25px;"
@@ -83,7 +90,7 @@
                                         <div>
                                             <hr/>
                                             <small>
-                                                <a href="<?= Utils::getFriendlyUrl("registration");?>"><?= Language::getLabel("login.donthaveaccount");?></a>
+                                                <a href="<?= Request::getFriendlyUrl("registration");?>"><?= Language::getLabel("login.donthaveaccount");?></a>
                                             </small>
                                         </div>
                                     </div>
@@ -136,7 +143,7 @@
                         if(Config::constraint("api_on")){?>
                             <div id="login-alert" class="alert alert-danger col-sm-12 <?= $errorMessage == "" ? "d-none" : "" ?>"><?= $errorMessage; ?></div>
                             <form id="loginform-ajax"
-                                action="<?= Utils::getFriendlyUrl("login");?>" name="loginform-ajax"
+                                action="<?= Request::getFriendlyUrl("login");?>" name="loginform-ajax"
                                 class="form-horizontal" method="post" role="form">
 
                                 <div class="input-group mb-3 mt-3">
@@ -172,7 +179,7 @@
                             </form>          
                             <?php }
                     }
-                    catch (Exception_Misconfiguration $e){
+                    catch (\Core\Exception\Exception_Misconfiguration $e){
                         echo $e->getMessage();
                     }?>             
                     </div>

@@ -1,4 +1,6 @@
 <?php
+use Core\Models\User;
+
 $input = $_POST;
 $error = FALSE;
 $finalSetupMessageError = "";
@@ -19,7 +21,7 @@ $env_parameters = [
     'port' => $input['port'],
     'dn' => $input['dn'],
     "database_on" => $input['db-active'],
-    "driver_pdo" => $input["driver-pdo"],
+    "driver_pdo" => $input["driver-\PDO"],
     "db_host" => $input['db-host'],
     "db_port" => $input['db-port'],
     "db_name" => $input['db-name'],
@@ -69,9 +71,9 @@ if ($env_parameters["database_on"] == "true" && $finalSetupMessageError == "") {
         require_once("../../core/classes/Utils.Class.php");
         spl_autoload_register('Utils::autoloadClass');
 
-        Config::init();
-        $db = Database_PDO::getInstance($env_parameters["db_host"], $env_parameters["db_name"], $env_parameters["db_username"], $env_parameters["db_password"], $env_parameters["db_port"]);
-        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        \Core\Models\Config::init();
+        $db = \Core\Models\Database\Database_PDO::getInstance($env_parameters["db_host"], $env_parameters["db_name"], $env_parameters["db_username"], $env_parameters["db_password"], $env_parameters["db_port"]);
+        $db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
         if ($_POST["db-dump-active"] == "true") {
             $sql = file_get_contents('boostack_dump.sql');
@@ -135,10 +137,10 @@ if ($env_parameters["database_on"] == "true" && $finalSetupMessageError == "") {
         $u->company = "Boostack";
         $u->last_name = "SuperAdmin";
         $u->save(4);
-    } catch (PDOException $e) {
+    } catch (\PDOException $e) {
         $finalSetupMessageError = "Database Error. Message: " . $e->getMessage();
         unlink($finalEnvPath);
-    } catch (Exception $e2) {
+    } catch (\Exception $e2) {
         $finalSetupMessageError = "Error. Message: " . $e2->getMessage();
         unlink($finalEnvPath);
     }

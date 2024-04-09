@@ -1,5 +1,6 @@
 <?php
-
+require __DIR__ . '/../vendor/autoload.php';
+Core\Environment::init();
 /**
  * Boostack: error.php
  * ========================================================================
@@ -10,9 +11,7 @@
  * @version 5.0
  */
 
-require_once "../core/environment_init.php";
-
-Template::render("error.phtml", array(
-    "canonical" =>  Utils::getFriendlyUrl("error"),
-    "pageTitle" => Language::getLabel("navigation.error"),
+Core\Models\Template::render("error.phtml", array(
+    "canonical" =>  Core\Models\Request::getFriendlyUrl("error"),
+    "pageTitle" => Core\Models\Language::getLabel("navigation.error"),
 ));

@@ -1,9 +1,10 @@
 <nav class="navbar navbar-expand-lg bg-white py-3">
 	<div class="container" itemscope itemtype="http://schema.org/SoftwareApplication">
-		<a class="navbar-brand" title="Boostack" href="<?= Config::get("url"); ?>">
+		<a class="navbar-brand" title="Boostack" href="<?= \Core\Models\Config::get("url"); ?>">
 			<h1>
-				<img itemprop="image" src="<?= Template::getImageLink("boostack_logo_xs2.png"); ?>" alt="<?= Language::getLabel("projectName"); ?> main logo" class="rounded d-inline-block align-text-top">
-				<span class="ms-2" itemprop="name"><?= Language::getLabel("projectName"); ?></span>
+				<img itemprop="image" src="<?= \Core\Models\Template::getImageLink("boostack_logo_xs2.png"); ?>" 
+				alt="<?= \Core\Models\Language::getLabel("projectName"); ?> main logo" class="rounded d-inline-block align-text-top">
+				<span class="ms-2" itemprop="name"><?= \Core\Models\Language::getLabel("projectName"); ?></span>
 				<span class="d-none" itemprop="applicationCategory">PHP Framework</span>
 			</h1>
 		</a>

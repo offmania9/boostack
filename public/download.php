@@ -1,5 +1,6 @@
 <?php
-
+require __DIR__ . '/../vendor/autoload.php';
+Core\Environment::init();
 /**
  * Boostack: download.php
  * ========================================================================
@@ -10,9 +11,7 @@
  * @version 5.0
  */
 
-require_once "../core/environment_init.php";
-
-Template::render("download.phtml", array(
-    "canonical" =>  Utils::getFriendlyUrl("download"),
-    "pageTitle" => Language::getLabel("navigation.download"),
+Core\Models\Template::render("download.phtml", array(
+    "canonical" =>  Core\Models\Request::getFriendlyUrl("download"),
+    "pageTitle" => Core\Models\Language::getLabel("navigation.download"),
 ));

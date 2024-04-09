@@ -1,3 +1,8 @@
+<?php
+use Core\Models\Config;
+use Core\Models\Language;
+use Core\Models\Request;
+?>
 <section class="disclaimer sectionTitle">
     <div class="line">
         <div class="container">
@@ -18,13 +23,13 @@
                     </div>
                     <div class="card-body">
                             <div class="text-end">
-                                <small> <a href="<?= Utils::getFriendlyUrl("login");?>">
+                                <small> <a href="<?= Request::getFriendlyUrl("login");?>">
                                         <?= Language::getLabel("form.login.signin");?>
                                     </a>
                                 </small>
                             </div>
                         <div class="alert alert-danger col-sm-12 <?= $registrationError == "" ? "d-none" : "" ?>"><?= $registrationError; ?></div>
-                        <form id="registration-form" class="form-horizontal" method="post" action="<?= Utils::getFriendlyUrl("registration"); ?>">
+                        <form id="registration-form" class="form-horizontal" method="post" action="<?= Request::getFriendlyUrl("registration"); ?>">
                             <div class="mb-3">
                                 <label for="reg-email" class="control-label"><?= Language::getLabel("form.registration.email");?></label>
                                 <div class="">
@@ -67,12 +72,12 @@
                     <?php try{ 
                         if(Config::constraint("api_on")){?>
                             <div class="text-end">
-                                <small> <a href="<?= Utils::getFriendlyUrl("login");?>">
+                                <small> <a href="<?= Request::getFriendlyUrl("login");?>">
                                         <?= Language::getLabel("form.login.signin");?>
                                     </a>
                                 </small>
                             </div>
-                        <form id="registration-form-ajax" class="form-horizontal" method="post" action="<?= Utils::getFriendlyUrl("registration"); ?>">
+                        <form id="registration-form-ajax" class="form-horizontal" method="post" action="<?= Request::getFriendlyUrl("registration"); ?>">
                             <div class="mb-3">
                                 <label for="reg-email-ajax" class="control-label"><?= Language::getLabel("form.registration.email");?></label>
                                 <div class="">
@@ -116,7 +121,7 @@
             
                     <?php  }
                     }
-                    catch (Exception_Misconfiguration $e){
+                    catch (\Core\Exception\Exception_Misconfiguration $e){
                         dd($e->getMessage());
                     }?>
                 </div>

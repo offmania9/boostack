@@ -1,3 +1,8 @@
+<?php
+use Core\Models\Language;
+use Core\Models\Request;
+use Core\Models\Auth;
+?>
 <section class="disclaimer sectionTitle">
     <div class="line">
         <div class="container">
@@ -23,7 +28,7 @@
                     </div>
                     <div class="card-body">
                         <div class="text-center col-sm-12">
-                            <a class="btn btn-outline-dark btn-sm" href="<?= Utils::getFriendlyUrl("logout") ?>">Logout</a>
+                            <a class="btn btn-outline-dark btn-sm" href="<?= Request::getFriendlyUrl("logout") ?>">Logout</a>
                         </div>
                     </div>
                 </div>

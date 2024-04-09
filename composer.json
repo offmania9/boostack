@@ -8,10 +8,18 @@
     "css",
     "js"
   ],
-  "type": "project",
+  "type": "library",
   "require": {
     "php": ">=7.4",
     "firebase/php-jwt": "^6.10"
+  },
+  "autoload": {
+    "psr-4": {
+      "Core\\Exception\\": "core/exception/",
+      "Core\\Models\\": "core/models/",
+      "My\\Models\\": "my/models/",
+      "Core\\": "core/"
+    }
   },
   "homepage": "https://getboostack.com",
   "authors": [

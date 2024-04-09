@@ -1,3 +1,8 @@
+<?php
+use Core\Models\Config;
+use Core\Models\Language;
+use Core\Models\Request;
+?>
 <section class="disclaimer">
     <div class="line">
         <div class="container">
@@ -11,7 +16,7 @@
                 </h2>
             </div>
             <div class="row text-center animated fadeInUp pb-4">
-                <a title="Download Boostack" href="<?= Utils::getFriendlyUrl("download") ?>" class="btn btn-lg my-4 btn-outline-light p-3 download mx-auto w-auto px-5"><?= Language::getLabel("downloadBoostack"); ?> <?= Config::get("project_version"); ?></a>
+                <a title="Download Boostack" href="<?= Request::getFriendlyUrl("download") ?>" class="btn btn-lg my-4 btn-outline-light p-3 download mx-auto w-auto px-5"><?= Language::getLabel("downloadBoostack"); ?> <?= Config::get("project_version"); ?></a>
             </div>
         </div>
     </div>
@@ -85,7 +90,7 @@
             </div>
             <div class="col-md-6 mx-auto">
                 <p>
-                    <a title="Download Boostack" href="<?= Utils::getFriendlyUrl("download") ?>" 
+                    <a title="Download Boostack" href="<?= Request::getFriendlyUrl("download") ?>" 
                     class="btn btn-lg my-4 btn-outline-dark p-3 download mx-auto w-100 px-5"><?= Language::getLabel("downloadBoostack"); ?> <?= Config::get("project_version"); ?></a>
                 </p>
             </div>

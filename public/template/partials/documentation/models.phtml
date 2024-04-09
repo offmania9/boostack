@@ -1,10 +1,13 @@
+<?php
+use Core\Models\Request;
+?>
 <div class="row">
     <div class="col-md-9">
         <h2>BaseClass</h2>
         <section>
             <p><code>BaseClass</code> provides powerful methods to allow your custom classes to use a database table. To start
                 using the benefits, your class must extends the <code>BaseClass</code>:</p>
-            <pre><code>class &lt;Your_Class&gt; extends BaseClass {
+            <pre><code>class &lt;Your_Class&gt; extends \Core\Models\BaseClass {
     ...
 }
 </code></pre>
@@ -65,13 +68,13 @@ protected $custom_excluded = ["myVar"];
         <section>
             <p><code>BaseList</code> provides powerful methods to allow your custom classes to use a database table as List. To start
                 using the benefits, your class must extends the <code>BaseList</code>:</p>
-            <pre><code>class &lt;Your_Class&gt; extends BaseList {
+            <pre><code>class &lt;Your_Class&gt; extends \Core\Models\BaseList {
     ...
 }
 </code></pre>
-            <p>To use BaseList you need to first declare the <code>BaseClass</code> table into a Constant</p>
+            <p>To use \Core\Models\BaseList you need to first declare the <code>BaseClass</code> table into a Constant</p>
             <pre><code>CONST BASE_CLASS = <Your_Class>::class;</code></pre>
-            <p>Than initialize the constructor method of the BaseList class</p>
+            <p>Than initialize the constructor method of the \Core\Models\BaseList class</p>
             <pre><code>public function __construct(){
             parent::init()
 }</code></pre>
@@ -178,7 +181,7 @@ protected $custom_excluded = ["myVar"];
         </section>
         <div class="col-md-3">
             <ul class="list-unstyled sticky-top small lh-lg">
-                <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light d-none" title="" href="<?= Utils::getFriendlyUrl("docs/setup#item") ?>">Item</a></li>
+                <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light d-none" title="" href="<?= Request::getFriendlyUrl("docs/setup#item") ?>">Item</a></li>
             </ul>
         </div>
     </div>

@@ -1,28 +1,34 @@
+<?php
+use Core\Models\Auth;  
+use Core\Models\Config;
+use Core\Models\Language;
+use Core\Models\Request;
+?>
 <ul class="navbar-nav ms-auto mb-2 mb-lg-0 fw-light list-group-horizontal float-end">
     <li class="nav-item">
-        <a class="nav-link px-3" title="Home" href="<?= Utils::getFriendlyUrl("home"); ?>"><?= Language::getLabel("navigation.home"); ?></a>
+        <a class="nav-link px-3" title="Home" href="<?= Request::getFriendlyUrl("home"); ?>"><?= Language::getLabel("navigation.home"); ?></a>
     </li>
     <li class="nav-item">
-        <a class="nav-link px-3" title="Download" href="<?= Utils::getFriendlyUrl("download"); ?>"><?= Language::getLabel("navigation.download"); ?></a>
+        <a class="nav-link px-3" title="Download" href="<?= Request::getFriendlyUrl("download"); ?>"><?= Language::getLabel("navigation.download"); ?></a>
     </li>
     <li class="nav-item">
-        <a class="nav-link px-3" title="Documentation" href="<?= Utils::getFriendlyUrl("docs/setup"); ?>"><?= Language::getLabel("navigation.documentation"); ?></a>
+        <a class="nav-link px-3" title="Documentation" href="<?= Request::getFriendlyUrl("docs/setup"); ?>"><?= Language::getLabel("navigation.documentation"); ?></a>
     </li>
     <?php if (Config::get("database_on") && Config::get("session_on")) : ?>
         <li class="nav-item">
-            <a class="nav-link px-3" title="Login" href="<?= Utils::getFriendlyUrl("login"); ?>"><?= Language::getLabel("navigation.login"); ?></a>
+            <a class="nav-link px-3" title="Login" href="<?= Request::getFriendlyUrl("login"); ?>"><?= Language::getLabel("navigation.login"); ?></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link px-3" title="Registration" href="<?= Utils::getFriendlyUrl("registration"); ?>"><?= Language::getLabel("navigation.registration"); ?></a>
+            <a class="nav-link px-3" title="Registration" href="<?= Request::getFriendlyUrl("registration"); ?>"><?= Language::getLabel("navigation.registration"); ?></a>
         </li>
         <?php if (Auth::isLoggedIn()) {
-            if (Utils::hasPrivilege(Auth::getUserLoggedObject(), PRIVILEGE_SUPERADMIN)) { ?>
+            if (Auth::hasPrivilege(Auth::getUserLoggedObject(), PRIVILEGE_SUPERADMIN)) { ?>
                 <li class="nav-item">
-                    <a class="nav-link px-3" title="Log" href="<?= Utils::getFriendlyUrl("log"); ?>"><?= Language::getLabel("navigation.log"); ?></a>
+                    <a class="nav-link px-3" title="Log" href="<?= Request::getFriendlyUrl("log"); ?>"><?= Language::getLabel("navigation.log"); ?></a>
                 </li>
             <?php } ?>
             <li class="nav-item">
-                <a class="nav-link px-3" title="Logout" href="<?= Utils::getFriendlyUrl("logout"); ?>"><?= Language::getLabel("navigation.logout"); ?></a>
+                <a class="nav-link px-3" title="Logout" href="<?= Request::getFriendlyUrl("logout"); ?>"><?= Language::getLabel("navigation.logout"); ?></a>
             </li>
         <?php } ?>
     <?php endif; ?>

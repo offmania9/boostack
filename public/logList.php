@@ -1,5 +1,6 @@
 <?php
-
+require __DIR__ . '/../vendor/autoload.php';
+Core\Environment::init();
 /**
  * Boostack: logList.php
  * ========================================================================
@@ -10,10 +11,16 @@
  * @version 5.0
  */
 
-require_once "../core/environment_init.php";
+use Core\Models\Config;
+use Core\Models\Request;
+use Core\Models\Auth;
+use Core\Models\Log\Database\Log_Database_List;
+use Core\Models\Language;
+use Core\Models\Template;
 
-if (!(Config::get('session_on') && Auth::isLoggedIn() && Utils::hasPrivilege(Auth::getUserLoggedObject(), PRIVILEGE_SUPERADMIN)))
-    Utils::goToUrl("home");
+
+if (!(Config::get('session_on') && Auth::isLoggedIn() && Auth::hasPrivilege(Auth::getUserLoggedObject(), PRIVILEGE_SUPERADMIN)))
+    Request::goToUrl("home");
 
 $logList = new Log_Database_List();
 $logList->loadAll("id", "desc");

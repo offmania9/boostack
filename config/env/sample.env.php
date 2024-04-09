@@ -46,6 +46,8 @@ $config['session_lifespan'] = 14400; # 4h    // session max duration (seconds)
 $config['api_on'] = FALSE;       // enable or disable boostack Rest API (#TRUE need $database_on=TRUE)
 $config['api_expire'] = 60*60*24*10;    // Cookies expire (60*60*24 = 1day)
 $config['api_secret_key'] = "S729s-kdF62-193jJ-EOD4w";    // Cookies expire (60*60*24 = 1day)
+$config['api_my_extended_classes_dir'] = $_SERVER['DOCUMENT_ROOT']."/my/models/Rest/"; 
+$config['api_my_extended_namespace'] = '\My\Models\Rest\\'; 
 
 /**
  * LOG

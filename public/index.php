@@ -1,5 +1,6 @@
 <?php
-
+require __DIR__ . '/../vendor/autoload.php';
+Core\Environment::init();
 /**
  * Boostack: index.php
  * ========================================================================
@@ -10,9 +11,7 @@
  * @version 5.0
  */
 
-require_once "../core/environment_init.php";
-
-Template::render("index.phtml", array(
-    "canonical" =>  Utils::getFriendlyUrl("home"),
-    "pageTitle" => Language::getLabel("navigation.home"),
+Core\Models\Template::render("index.phtml", array(
+    "canonical" =>  Core\Models\Request::getFriendlyUrl("home"),
+    "pageTitle" => Core\Models\Language::getLabel("navigation.home"),
 ));

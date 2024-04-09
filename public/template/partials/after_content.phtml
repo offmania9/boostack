@@ -1,11 +1,18 @@
-        <?php if (Config::get('session_on') && Config::get('csrf_on')) : ?>
-            <?= Session::CSRFRenderHiddenField(); ?>
-        <?php endif; ?>
-        <script type="text/javascript">
-            var rootUrl = "<?= Config::get("url") ?>";
-            var developmentMode = "<?= Config::get('developmentMode') ?>";
-        </script>
-        <?php Template::renderDefaultJSFiles(); ?>
-        <?php Template::renderCustomJSFiles(); ?>
-        </body>
-        </html>
+<?php
+use Core\Models\Config;
+use Core\Models\Session\Session;
+use Core\Models\Template;
+
+
+if (Config::get('session_on') && Config::get('csrf_on')) : ?>
+    <?= Session::CSRFRenderHiddenField(); ?>
+<?php endif; ?>
+<script type="text/javascript">
+    var rootUrl = "<?= Config::get("url") ?>";
+    var developmentMode = "<?= Config::get('developmentMode') ?>";
+</script>
+<?php Template::renderDefaultJSFiles(); ?>
+<?php Template::renderCustomJSFiles(); ?>
+</body>
+
+</html>

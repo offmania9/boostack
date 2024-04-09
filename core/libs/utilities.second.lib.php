@@ -1,5 +1,5 @@
 <?php
-
+use Core\Models\Database\Database_PDO;
 /**
  * Boostack: utilities.second.lib.php
  * ========================================================================
@@ -64,8 +64,8 @@ function date_format_string_to_slashedformat($date_sql)
  */
 function getDateTime()
 {
-    $pdo = Database_PDO::getInstance();
-    $datetime = $pdo->query("SELECT NOW() as datetime_now");
+    $PDO = Database_PDO::getInstance();
+    $datetime = $PDO->query("SELECT NOW() as datetime_now");
     $data = $datetime->fetch();
     return $data['datetime_now'];
 }
@@ -77,8 +77,8 @@ function getDateTime()
  */
 function getDateN()
 {
-    $pdo = Database_PDO::getInstance();
-    $date = $pdo->query("SELECT CURDATE() as date_now");
+    $PDO = Database_PDO::getInstance();
+    $date = $PDO->query("SELECT CURDATE() as date_now");
     $data = $date->fetch();
     return $data['date_now'];
 }
@@ -90,8 +90,8 @@ function getDateN()
  */
 function getTimeN()
 {
-    $pdo = Database_PDO::getInstance();
-    $time = $pdo->query("SELECT CURTIME() as time_now");
+    $PDO = Database_PDO::getInstance();
+    $time = $PDO->query("SELECT CURTIME() as time_now");
     $data = $time->fetch();
     return $data['time_now'];
 }
@@ -177,63 +177,5 @@ function getElapsedTime($datetime_timestamp)
     } else {
         $days = (int) ($elapsed_time / 86400);
         return ($days > 1) ? "$days days ago" : "$days day ago";
-    }
-}
-
-/**
- * Check if the email address is valid and not already in use.
- *
- * @param string $email The email address to check.
- * @return int Returns:
- *   -1 if the email is invalid or exceeds the maximum length.
- *    0 if the email is already in use.
- *    1 if the email is valid and available.
- */
-function check_email($email)
-{
-    $regexp = "/^[a-z0-9]+([_\\.-][a-z0-9]+)*@([a-z0-9]+([\.-][a-z0-9]+)*)+\\.[a-z]{2,}$/i";
-
-    if ($email === "" || !preg_match($regexp, $email) || strlen($email) >= 255) {
-        return -1;
-    } elseif (Database_PDO::getInstance()->query("SELECT id FROM user WHERE email = '" . $email . "'")->rowCount() > 0) {
-        return 0;
-    } else {
-        return 1;
-    }
-}
-
-/**
- * Check if the password meets the required length criteria.
- *
- * @param string $password The password to check.
- * @return int Returns:
- *    0 if the password length is invalid.
- *    1 if the password length is valid.
- */
-function check_password($password)
-{
-    $len = strlen($password);
-    return ($len >= 6 && $len <= 25) ? 1 : 0;
-}
-
-/**
- * Check if the username meets the required length criteria and is not already in use.
- *
- * @param string $username The username to check.
- * @return int Returns:
- *   -1 if the username length is invalid.
- *    0 if the username is already in use.
- *    1 if the username is valid and available.
- */
-function check_username($username)
-{
-    $len = strlen($username);
-
-    if ($len < 3 || $len > 50) {
-        return -1;
-    } elseif (Database_PDO::getInstance()->query("SELECT id FROM user WHERE username = '" . $username . "'")->rowCount() > 0) {
-        return 0;
-    } else {
-        return 1;
     }
 }

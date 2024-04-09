@@ -1,5 +1,6 @@
 <?php
-
+require __DIR__ . '/../vendor/autoload.php';
+Core\Environment::init();
 /**
  * Boostack: login.php
  * ========================================================================
@@ -7,10 +8,12 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * 
+ * @version 5.0
  */
 
-require_once "../core/environment_init.php";
+use Core\Models\Config;
+use Core\Models\Request;
+use Core\Models\Auth;
 
 $errorMessage = "";
 $errorCode = null;
@@ -26,21 +29,19 @@ try {
             $errorCode = $loginResult->code;
         }
     }
-} catch (Exception_Misconfiguration $em) {
-    dd($em->getMessage());
-} catch (Exception $e) {
+} catch (\Exception $e) {
     $errorMessage = $e->getMessage();
 }
 
 if (Auth::isLoggedIn()) {
-    Template::render("login_logged.phtml", array(
-        "canonical" =>  Utils::getFriendlyUrl("home"),
-        "pageTitle" => Language::getLabel("navigation.home")
+    Core\Models\Template::render("login_logged.phtml", array(
+        "canonical" =>  Core\Models\Request::getFriendlyUrl("home"),
+        "pageTitle" => Core\Models\Language::getLabel("navigation.home"),
     ));
 } else {
-    Template::render("login.phtml", array(
-        "canonical" =>  Utils::getFriendlyUrl("login"),
-        "pageTitle" => Language::getLabel("navigation.login"),
+    Core\Models\Template::render("login.phtml", array(
+        "canonical" =>  Core\Models\Request::getFriendlyUrl("login"),
+        "pageTitle" => Core\Models\Language::getLabel("navigation.login"),
         "errorMessage" => $errorMessage
     ));
 }

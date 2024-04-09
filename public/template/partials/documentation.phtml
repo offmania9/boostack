@@ -1,3 +1,8 @@
+<?php
+use Core\Models\Language;
+use Core\Models\Utils\Utils;
+use Core\Models\Request;
+?>
 <section class="disclaimer sectionTitle">
     <div class="line py-2">
         <div class="container">
@@ -14,31 +19,31 @@
                 <ul class="list-unstyled documentationMenu sticky-top">
                     <li class="title fw-bold pt-2">Getting Started</li>
                     <li class="ps-3">
-                        <a class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Utils::getFriendlyUrl("docs/setup") ?>">Setup</a>
+                        <a class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/setup") ?>">Setup</a>
                     </li>
                     <li class="ps-3">
-                        <a class="link-opacity-75-hover link-underline-light fw-normal" title="Directory structure" href="<?= Utils::getFriendlyUrl("docs/directory-structure") ?>">Directory structure</a>
+                        <a class="link-opacity-75-hover link-underline-light fw-normal" title="Directory structure" href="<?= Request::getFriendlyUrl("docs/directory-structure") ?>">Directory structure</a>
                     </li>
                     <li class="title fw-bold pt-3">Architecture</li>
                     <li class="ps-3">
-                        <a title="Models" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Utils::getFriendlyUrl("docs/models") ?>">Models</a>
+                        <a title="Models" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/models") ?>">Models</a>
                     </li>
                     <li class="ps-3">
-                        <a title="Controllers" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Utils::getFriendlyUrl("docs/controllers") ?>">Controllers</a>
+                        <a title="Controllers" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/controllers") ?>">Controllers</a>
                     </li>
                     <li class="ps-3">
-                        <a title="Template" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Utils::getFriendlyUrl("docs/template") ?>">Template</a>
+                        <a title="Template" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/template") ?>">Template</a>
                     </li>
                     <li class="title fw-bold pt-3">Utilities</li>
                     <li class="ps-3">
-                        <a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Utils::getFriendlyUrl("docs/auth") ?>">Auth</a>
+                        <a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/auth") ?>">Auth</a>
                     </li>
-                    <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Utils::getFriendlyUrl("docs/loginSecurity") ?>">Lock Strategies</a></li>
-                    <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Utils::getFriendlyUrl("docs/users") ?>">Users</a></li>
-                    <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Utils::getFriendlyUrl("docs/session") ?>">Session</a></li>
-                    <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Utils::getFriendlyUrl("docs/curl") ?>">CURL</a></li>
-                    <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Utils::getFriendlyUrl("docs/log") ?>">Log</a></li>
-                    <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Utils::getFriendlyUrl("docs/validator") ?>">Validator</a></li>
+                    <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/loginSecurity") ?>">Lock Strategies</a></li>
+                    <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/users") ?>">Users</a></li>
+                    <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/session") ?>">Session</a></li>
+                    <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/curl") ?>">CURL</a></li>
+                    <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/log") ?>">Log</a></li>
+                    <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/validator") ?>">Validator</a></li>
             </div>
             <div class="col-md-9 documentationInnerContent">
                 <?php
