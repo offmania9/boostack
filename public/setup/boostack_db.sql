@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mariadb
--- Creato il: Mar 30, 2024 alle 16:34
+-- Creato il: Apr 10, 2024 alle 15:33
 -- Versione del server: 11.3.2-MariaDB-1:11.3.2+maria~ubu2204
 -- Versione PHP: 8.2.8
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `boostack-db`
+-- Database: `boostack_db`
 --
 
 -- --------------------------------------------------------
@@ -195,6 +195,16 @@ CREATE TABLE `boostack_user_privilege` (
   `description` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
+--
+-- Dump dei dati per la tabella `boostack_user_privilege`
+--
+
+INSERT INTO `boostack_user_privilege` (`id`, `title`, `description`) VALUES
+(0, 'SYSTEM', 'only \"boostack\" user'),
+(1, 'SUPERADMIN', ''),
+(2, 'ADMIN', ''),
+(3, 'USER', '');
+
 -- --------------------------------------------------------
 
 --
@@ -348,7 +358,7 @@ ALTER TABLE `boostack_user_api`
 -- AUTO_INCREMENT per la tabella `boostack_user_privilege`
 --
 ALTER TABLE `boostack_user_privilege`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Limiti per le tabelle scaricate
@@ -376,7 +386,7 @@ ALTER TABLE `boostack_user`
 -- Limiti per la tabella `boostack_user_api`
 --
 ALTER TABLE `boostack_user_api`
-  ADD CONSTRAINT `boostack_user_api_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `boostack_user` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `boostack_user_api_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `boostack_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limiti per la tabella `boostack_user_info`

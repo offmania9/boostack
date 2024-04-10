@@ -20,7 +20,7 @@ $apache_modules_optional = array(
 );
 $php_extensions_required = array(
     "curl",
-    "\PDO",
+    "PDO",
     "json",
     "session"
 );

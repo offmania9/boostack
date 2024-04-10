@@ -36,22 +36,21 @@ class Config
      */
     public static function init()
     {
-        $envRelativePath = __DIR__ . "/../../config/env/env.php";
+        $envRelativePath = Request::getServerParam("DOCUMENT_ROOT") . "/config/env/env.php";
         $envPath = realpath($envRelativePath);
-        if ($envPath && is_file($envPath)) {
-            require_once $envPath;
+        if (file_exists($envPath)) {
+            require_once($envPath);
+            require_once(Request::getServerParam("DOCUMENT_ROOT") . "/config/env/global.env.php");
+            self::$configs = $config;
+            return self::$configs;
         } else {
-            if (is_dir(__DIR__ . "setup")) {
+            if (is_dir(Request::getServerParam("DOCUMENT_ROOT") . "/public/setup")) {
                 header("Location: setup");
             } else {
                 echo "Rename 'config/env/sample.env.php' into 'env.php'";
             }
             exit();
         }
-        require_once(__DIR__ . "/../../config/env/global.env.php");
-        //global $config;
-        self::$configs = $config;
-        return self::$configs;
     }
 
     /**

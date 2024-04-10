@@ -1,6 +1,16 @@
 <?php
 
 /**
+ * Boostack: env.php
+ * ========================================================================
+ * Copyright 2014-2024 Spagnolo Stefano
+ * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
+ * ========================================================================
+ * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
+ * @version 6.0
+ */
+
+/**
  * ENVIRONMENT
  */
 # Setup current environment
@@ -44,10 +54,10 @@ $config['session_lifespan'] = 14400; # 4h    // session max duration (seconds)
  * Rest API
  */
 $config['api_on'] = [api_on];       // enable or disable boostack Rest API (#TRUE need $database_on=TRUE)
-$config['api_expire'] = 60*60*24*10;    // Cookies expire (60*60*24 = 1day)
+$config['api_expire'] = 60 * 60 * 24 * 10;    // Cookies expire (60*60*24 = 1day)
 $config['api_secret_key'] = "[api_secret_key]";    // Cookies expire (60*60*24 = 1day)
-$config['api_my_extended_classes_dir'] = $_SERVER['DOCUMENT_ROOT']."/my/models/Rest/"; 
-$config['api_my_extended_namespace'] = '\My\Models\Rest\\'; 
+$config['api_my_extended_classes_dir'] = $_SERVER['DOCUMENT_ROOT'] . "/my/models/Rest/";
+$config['api_my_extended_namespace'] = '\My\Models\Rest\\';
 
 /**
  * LOG
@@ -56,7 +66,7 @@ $config['log_on'] = [log_on];       // enable or disable boostack Log (#TRUE nee
 $config['log_file'] = "logs/log.txt";
 $config['log_dir'] = "../logs/";
 $config['log_enabledTypes'] =
-    array('error','failure','information','success','warning','user','cronjob');  //(Enable logging options ['error','failure','information','success','warning','user']
+    array('error', 'failure', 'information', 'success', 'warning', 'user', 'cronjob');  //(Enable logging options ['error','failure','information','success','warning','user']
 
 /**
  * LOGIN
@@ -72,7 +82,7 @@ $config['lockStrategy_on'] = [lockStrategy_on];
 $config['login_lockStrategy'] = '[lockStrategy_type]'; // "timer" | "recaptcha" | FALSE (if you set timer remember to set login_secondsFormBlocked)
 $config['login_maxAttempts'] = "[login_max_attempts]";
 $config['login_secondsFormBlocked'] = "[login_seconds_blocked]";
-$config['google_recaptcha-endpoint']= "https://www.google.com/recaptcha/api/siteverify";        //ReCaptcha Google endpoint
+$config['google_recaptcha-endpoint'] = "https://www.google.com/recaptcha/api/siteverify";        //ReCaptcha Google endpoint
 $config['reCaptcha_public'] = "[recaptcha_public]";       //recaptcha key
 $config['reCaptcha_private'] = "[recaptcha_private]";      //recaptcha key
 
@@ -157,15 +167,15 @@ $config["mail_validTime"] = 7200;
 /**
  * DO NOT MODIFY
  */
-$default_port = empty($config['port'])? '': ':' . $config['port'];
-$defaultDN = $config['DN'].$default_port ;
+$default_port = empty($config['port']) ? '' : ':' . $config['port'];
+$defaultDN = $config['DN'] . $default_port;
 $currentDN = (in_array($_SERVER['HTTP_HOST'], $config['DN_alternative'])) ? $_SERVER['HTTP_HOST'] . '' : $defaultDN . $config['document_root_subdir'];
 $config['url'] = $config['protocol'] . "://" . $currentDN;
 
 # Setup main project folder 
 define('MAIN_PROJECT_FOLDER', "public");
-if(!empty($_SERVER['DOCUMENT_ROOT'] ))
-    define('ROOTPATH', $_SERVER['DOCUMENT_ROOT'] ."/". MAIN_PROJECT_FOLDER . "/");
+if (!empty($_SERVER['DOCUMENT_ROOT']))
+    define('ROOTPATH', $_SERVER['DOCUMENT_ROOT'] . "/" . MAIN_PROJECT_FOLDER . "/");
 else
     define('ROOTPATH',  MAIN_PROJECT_FOLDER . "/");
 
@@ -176,4 +186,3 @@ abstract class Environment
     const PRE_PRODUCTION = "pre_production";
     const PRODUCTION = "production";
 }
-?>

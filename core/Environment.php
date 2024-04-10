@@ -17,7 +17,7 @@ class Environment
     {
         try {
             require_once(__DIR__ . "/../core/libs/helpers.php");
-
+            Request::init();
             Config::init();
 
             if (Config::get('developmentMode')) {
@@ -29,7 +29,7 @@ class Environment
             }
             require_once(__DIR__ . "/../my/pre_content.php");
 
-            Request::init();
+            
 
             if (Config::get('database_on')) {
                 Database_PDO::getInstance(Config::get('db_host'), Config::get('db_name'), Config::get('db_username'), Config::get('db_password'), Config::get('db_port'));

@@ -1,5 +1,7 @@
 <?php
-use Core\Models\User;
+use Core\Models\User\User;
+use Core\Models\Config;
+use Core\Models\Request;
 
 $input = $_POST;
 $error = FALSE;
@@ -21,7 +23,7 @@ $env_parameters = [
     'port' => $input['port'],
     'dn' => $input['dn'],
     "database_on" => $input['db-active'],
-    "driver_pdo" => $input["driver-\PDO"],
+    "driver_pdo" => $input["driver-PDO"],
     "db_host" => $input['db-host'],
     "db_port" => $input['db-port'],
     "db_name" => $input['db-name'],
@@ -67,16 +69,19 @@ if ($envContent === FALSE) {
 
 if ($env_parameters["database_on"] == "true" && $finalSetupMessageError == "") {
     try {
-        require_once("../../config/env/env.php");
-        require_once("../../core/classes/Utils.Class.php");
-        spl_autoload_register('Utils::autoloadClass');
-
-        \Core\Models\Config::init();
+        // require_once("../../config/env/env.php");
+        // require_once("../../core/classes/Utils.Class.php");
+        // spl_autoload_register('Utils::autoloadClass');
+        require __DIR__ . '/../../vendor/autoload.php';
+        Request::init();
+        Config::init();
         $db = \Core\Models\Database\Database_PDO::getInstance($env_parameters["db_host"], $env_parameters["db_name"], $env_parameters["db_username"], $env_parameters["db_password"], $env_parameters["db_port"]);
         $db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
+        print_r("ss");
+
         if ($_POST["db-dump-active"] == "true") {
-            $sql = file_get_contents('boostack_dump.sql');
+            $sql = file_get_contents('boostack_db.sql');
             $qr = $db->exec($sql);
         }
         $users = array();
