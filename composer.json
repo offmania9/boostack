@@ -15,10 +15,13 @@
   },
   "autoload": {
     "psr-4": {
+      "Core\\": "core/",
       "Core\\Exception\\": "core/exception/",
       "Core\\Models\\": "core/models/",
+      "Core\\Controllers\\": "core/controllers/",
       "My\\Models\\": "my/models/",
-      "Core\\": "core/"
+      "My\\Controllers\\": "my/controllers/",
+      "My\\": "my/"
     }
   },
   "homepage": "https://getboostack.com",

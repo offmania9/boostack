@@ -1,4 +1,6 @@
 <?php
+require __DIR__ . '/../vendor/autoload.php';
+Core\Environment::init();
 /**
  * Boostack: downloadlatest.php
  * ========================================================================
@@ -6,10 +8,7 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 5.0
+ * @version 6.0
  */
-// #######################
-require_once "../core/environment_init.php";
-header("location: https://github.com/offmania9/boostack/archive/master.zip");
-exit();
-?>
+
+My\Controllers\DownloadLatest::init();

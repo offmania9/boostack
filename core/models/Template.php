@@ -8,7 +8,7 @@ use Core\Exception\Exception_FileNotFound;
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Alessio Debernardi
- * @version 5.0
+ * @version 6.0
  */
 
 class Template

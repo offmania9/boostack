@@ -8,7 +8,7 @@ use Core\Models\Config;
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 5.0
+ * @version 6.0
  */
 
 class Validator

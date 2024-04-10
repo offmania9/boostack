@@ -38,4 +38,4 @@ The Boostack framework is open-sourced software licensed under the MIT license. 
 ## Copyright
 Copyright 2014-2024 Spagnolo Stefano
 @author Spagnolo Stefano <s.spagnolo@hotmail.it>
-@version 5.0
+@version 6.0

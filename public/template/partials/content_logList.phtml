@@ -1,4 +1,5 @@
 <?php
+
 use Core\Models\Language;
 ?>
 <section class="disclaimer sectionTitle">
@@ -14,8 +15,39 @@ use Core\Models\Language;
 </section>
 <section class="logList centerContent py-3">
     <div class="container">
-        <div class="mx-auto col-md-8 small">
-            <?php d($logList); ?>
+        <div class="mx-auto col-md-12 small">
+            <table class="table table-striped table-hover small">
+                <thead>
+                    <tr>
+                        <th scope="col">id</th>
+                        <th scope="col">level</th>
+                        <th scope="col">datetime</th>
+                        <th scope="col">username</th>
+                        <th scope="col">ip</th>
+                        <th scope="col">useragent</th>
+                        <th scope="col">referrer</th>
+                        <th scope="col">query</th>
+                        <th scope="col">message</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    foreach ($logList as $logItem) {
+                        echo "<tr>";
+                        echo "<td>" . $logItem->id . "</td>";
+                        echo "<td>" . $logItem->level . "</td>";
+                        echo "<td>" . $logItem->datetime . "</td>";
+                        echo "<td>" . $logItem->username . "</td>";
+                        echo "<td>" . $logItem->ip . "</td>";
+                        echo "<td>" . $logItem->useragent . "</td>";
+                        echo "<td>" . $logItem->referrer . "</td>";
+                        echo "<td>" . $logItem->query . "</td>";
+                        echo "<td>" . $logItem->message . "</td>";
+                        echo "</tr>";
+                    }
+                    ?>
+                </tbody>
+            </table>
         </div>
     </div>
 </section>

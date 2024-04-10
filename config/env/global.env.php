@@ -6,7 +6,7 @@
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 5.0
+ * @version 6.0
  */
 
 /**
@@ -36,7 +36,7 @@ $config["default_error_page"] = "error.phtml";
 $config["sitename"] = "getBoostack.com";
 $config["project_name"] = "Boostack";
 $config["project_sitename"] = "getBoostack.com";
-$config["project_version"] = "5.0";
+$config["project_version"] = "6.0";
 $config["project_mission"] = "getBoostack.com - Improve your development and build your ideas";
 $config["viewport"] = "width=device-width, initial-scale=1.0, shrink-to-fit=no";
 $config["html_lang"] = "en";

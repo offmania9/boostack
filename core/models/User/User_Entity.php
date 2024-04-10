@@ -8,7 +8,7 @@ use Core\Models\Database\Database_PDO;
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
- * @version 5.0
+ * @version 6.0
  */
 class User_Entity extends \Core\Models\BaseClass
 {
@@ -100,14 +100,14 @@ class User_Entity extends \Core\Models\BaseClass
     }
 
     /**
-     * Hashes a clean password using PHP's built-in password_hash function or sha512 if PHP version is lower than 5.5.0.
+     * Hashes a clean password using PHP's built-in password_hash function or sha512 if PHP version is lower than 5.6.0.
      *
      * @param string $cleanPassword The password to hash.
      * @return bool|string The hashed password.
      */
     public function passwordToHash($cleanPassword)
     {
-        if (version_compare(PHP_VERSION, '5.5.0') >= 0) {
+        if (version_compare(PHP_VERSION, '5.6.0') >= 0) {
             return password_hash($cleanPassword, PASSWORD_DEFAULT);
         } else {
             return hash("sha512", $cleanPassword);
