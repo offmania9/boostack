@@ -1,7 +1,7 @@
 <?php
 use Core\Models\Config;
 use Core\Models\Session\Session;
-use Core\Models\Template;
+use Core\Views\View;
 
 
 if (Config::get('session_on') && Config::get('csrf_on')) : ?>
@@ -11,8 +11,8 @@ if (Config::get('session_on') && Config::get('csrf_on')) : ?>
     var rootUrl = "<?= Config::get("url") ?>";
     var developmentMode = "<?= Config::get('developmentMode') ?>";
 </script>
-<?php Template::renderDefaultJSFiles(); ?>
-<?php Template::renderCustomJSFiles(); ?>
+<?php View::renderDefaultJSFiles(); ?>
+<?php View::renderCustomJSFiles(); ?>
 </body>
 
 </html>

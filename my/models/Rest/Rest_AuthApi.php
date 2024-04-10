@@ -90,7 +90,7 @@ class Rest_AuthApi extends \Core\Models\Rest\Rest_Api
             //$user->pwd = Utils::passwordGenerator();
 
             // if (Config::get("mail_on")) {
-            //     $msg = Template::getMailTemplate('[TEMPLATE MAIL].html', [
+            //     $msg = View::getMailTemplate('[TEMPLATE MAIL].html', [
             //         "help_mail" => Config::get('mail_from'),
             //         "fullname" => $user->first_name,
             //         "username" => $user->email,

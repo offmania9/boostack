@@ -2,7 +2,7 @@
 
 namespace My\Controllers;
 
-use Core\Models\Template;
+use Core\Views\View;
 use Core\Models\Request;
 use Core\Models\Language;
 

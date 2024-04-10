@@ -26,9 +26,9 @@ use Core\Models\Request;
 
 
     // If you just need to render your template use this function
-        Template::render("yourController.phtml");
+        View::render("yourController.phtml");
     // If you need variable on your template you can use array parameter into template render function
-        Template::render("yourController.phtml", array(
+        View::render("yourController.phtml", array(
             "key" => value,
             "key" => value
             ));

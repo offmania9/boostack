@@ -5,7 +5,7 @@ namespace My\Controllers;
 use Core\Models\Config;
 use Core\Models\Request;
 use Core\Models\Auth;
-use Core\Models\Template;
+use Core\Views\View;
 use Core\Models\Language;
 
 class Login extends \My\Controller
@@ -31,12 +31,12 @@ class Login extends \My\Controller
             $errorMessage = $e->getMessage();
         }
         if (Auth::isLoggedIn()) {
-            Template::render("login_logged.phtml", array(
+            View::render("login_logged.phtml", array(
                 "canonical" =>  Request::getFriendlyUrl("home"),
                 "pageTitle" => Language::getLabel("navigation.home"),
             ));
         } else {
-            Template::render("login.phtml", array(
+            View::render("login.phtml", array(
                 "canonical" =>  Request::getFriendlyUrl("login"),
                 "pageTitle" => Language::getLabel("navigation.login"),
                 "errorMessage" => $errorMessage,

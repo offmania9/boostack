@@ -5,7 +5,7 @@ namespace My\Controllers;
 use Core\Models\Config;
 use Core\Models\Request;
 use Core\Models\Auth;
-use Core\Models\Template;
+use Core\Views\View;
 use Core\Models\Language;
 use Core\Models\Log\Database\Log_Database_List;
 
@@ -20,7 +20,7 @@ class LogList extends \My\Controller
         $logList = new Log_Database_List();
         $logList->loadAll("id", "desc");
 
-        Template::render("logList.phtml", array(
+        View::render("logList.phtml", array(
             "logList" => $logList,
             "pageTitle" => Language::getLabel("navigation.log"),
         ));

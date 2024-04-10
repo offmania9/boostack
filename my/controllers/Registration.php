@@ -5,7 +5,7 @@ namespace My\Controllers;
 use Core\Models\Config;
 use Core\Models\Request;
 use Core\Models\Auth;
-use Core\Models\Template;
+use Core\Views\View;
 use Core\Models\Language;
 
 class Registration extends \My\Controller
@@ -35,12 +35,12 @@ class Registration extends \My\Controller
         }
 
         if (Auth::isLoggedIn()) {
-            Template::render("login_logged.phtml", array(
+            View::render("login_logged.phtml", array(
                 "canonical" =>  Request::getFriendlyUrl("home"),
                 "pageTitle" => Language::getLabel("navigation.home"),
             ));
         } else {
-            Template::render("registration.phtml", array(
+            View::render("registration.phtml", array(
                 "canonical" =>  Request::getFriendlyUrl("registration"),
                 "pageTitle" => Language::getLabel("navigation.registration"),
                 "registrationError" => $registrationError

@@ -5,7 +5,7 @@ use Core\Models\Log\Log_Driver;
 use Core\Models\Log\Log_Level;
 use Core\Models\Log\Logger;
 use Core\Models\Request;
-use Core\Models\Template;
+use Core\Views\View;
 use Core\Models\Config;
 use Core\Models\Language;
 use \Firebase\JWT\JWT;
@@ -408,7 +408,7 @@ class User implements \JsonSerializable
      */
     public function sendConfirmationMail(string $HTMLtemplate = "new_pre_user.html"): void
     {
-        $msg = Template::getMailTemplate($HTMLtemplate, [
+        $msg = View::getMailTemplate($HTMLtemplate, [
             "help_mail" => Config::get('mail_from'),
             "fullname" => $this->first_name,
             "username" => $this->email,
@@ -442,7 +442,7 @@ class User implements \JsonSerializable
      */
     public function sendWelcomeMail(string $HTMLtemplate = "new_user_welcome.html"): void
     {
-        $msg = Template::getMailTemplate($HTMLtemplate, [
+        $msg = View::getMailTemplate($HTMLtemplate, [
             "help_mail" => Config::get('mail_from'),
             "fullname" => $this->first_name,
             "username" => $this->email,

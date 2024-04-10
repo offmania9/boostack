@@ -1,6 +1,9 @@
 <?php
-namespace Core\Models;
+
+namespace Core\Views;
+use Core\Models\Config;
 use Core\Exception\Exception_FileNotFound;
+
 /**
  * Boostack: Template.Class.php
  * ========================================================================
@@ -11,7 +14,8 @@ use Core\Exception\Exception_FileNotFound;
  * @version 6.0
  */
 
-class Template
+abstract class View
+
 {
     private static $customCssFiles;
 
@@ -150,9 +154,6 @@ class Template
             }
         }
     }
-
-
-
 
     /**
      * Render custom JS files specified on-the-fly.

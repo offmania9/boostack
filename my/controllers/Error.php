@@ -2,7 +2,7 @@
 
 namespace My\Controllers;
 
-use Core\Models\Template;
+use Core\Views\View;
 use Core\Models\Request;
 use Core\Models\Language;
 
@@ -12,7 +12,7 @@ class Error extends \My\Controller
     {
         parent::init();
         // Call a template view Rendering
-        Template::render("error.phtml", array(
+        View::render("error.phtml", array(
             "canonical" =>  Request::getFriendlyUrl("error"),
             "pageTitle" => Language::getLabel("navigation.error"),
         ));

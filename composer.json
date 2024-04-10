@@ -19,9 +19,11 @@
       "Core\\Exception\\": "core/exception/",
       "Core\\Models\\": "core/models/",
       "Core\\Controllers\\": "core/controllers/",
+      "Core\\Views\\": "core/views/",
+      "My\\": "my/",
       "My\\Models\\": "my/models/",
       "My\\Controllers\\": "my/controllers/",
-      "My\\": "my/"
+      "My\\Views\\": "comyre/views/"
     }
   },
   "homepage": "https://getboostack.com",
