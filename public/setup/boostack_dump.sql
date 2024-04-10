@@ -195,6 +195,36 @@ CREATE TABLE `boostack_user_privilege` (
   `description` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
+LOCK TABLES `boostack_user_privilege` WRITE;
+/*!40000 ALTER TABLE `boostack_user_privilege` DISABLE KEYS */;
+
+
+INSERT INTO `boostack_user_privilege` (`id`, `title`, `description`)
+VALUES
+  (0,'SYSTEM','only \"boostack\" user'),
+  (1,'SUPERADMIN',''),
+  (2,'ADMIN',''),
+  (3,'USER','');
+
+
+/*!40000 ALTER TABLE `boostack_user_privilege` ENABLE KEYS */;
+UNLOCK TABLES;
+
+LOCK TABLES `boostack_user_privilege` WRITE;
+/*!40000 ALTER TABLE `boostack_user_privilege` DISABLE KEYS */;
+
+
+INSERT INTO `boostack_user_privilege` (`id`, `title`, `description`)
+VALUES
+  (0,'SYSTEM','only \"boostack\" user'),
+  (1,'SUPERADMIN',''),
+  (2,'ADMIN',''),
+  (3,'USER','');
+
+
+/*!40000 ALTER TABLE `boostack_user_privilege` ENABLE KEYS */;
+UNLOCK TABLES;
+
 -- --------------------------------------------------------
 
 --
