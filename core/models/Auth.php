@@ -180,27 +180,30 @@ class Auth
      * @return bool True if registration is successful, false otherwise.
      * @throws \Exception If registration fails.
      */
-    public static function registration($username, $email, $psw1, $psw2, $CSRFToken = NULL)
+    public static function registration($username, $email, $psw1, $psw2, $CSRFToken = NULL) : User
     {
         $registrationError = "";
         try {
-            // Validate passwords match
-            if ($psw1 !== $psw2) $registrationError = "Passwords must match";
-
             // Validate email format
             if (!Validator::email($email)) $registrationError = "Invalid email format";
+
+             // Check if email is already registered
+             if (User::existsByEmail($email, false) || User::existsByUsername($email, false)) $registrationError = "Email already registered";
 
             // Validate password format
             if (!Validator::password($psw1)) $registrationError = "Invalid password format";
 
-            // Check if email is already registered
-            if (User::existsByEmail($email, false) || User::existsByUsername($email, false)) $registrationError = "Email already registered";
-
+            // Validate passwords match
+            if ($psw1 !== $psw2) $registrationError = "Passwords must match";
+           
             // Validate CSRF token if enabled
             if (Config::get('csrf_on')) {
-                if (empty($CSRFToken)) throw new \Exception("CSRF token is required");
+                if (empty($CSRFToken)) 
+                    throw new \Exception("Attention! CSRF token is required.");
                 $token_key = Session::getObject()->getCSRFDefaultKey();
-                Session::CSRFCheckValidity(array($token_key => $CSRFToken));
+                if(Session::CSRFCheckValidity(array($token_key => $CSRFToken))){
+                    Session::getObject()->CSRFTokenInvalidation();
+                }
             }
 
             // If no registration errors, proceed with registration
@@ -219,8 +222,7 @@ class Auth
                 if (Config::get('csrf_on')) {
                     Session::getObject()->CSRFTokenInvalidation();
                 }
-
-                return true; // Registration successful
+                return $user; // Registration successful
             } else {
                 // Log registration error and throw \Exception
                 Logger::write($registrationError, Log_Level::ERROR);
@@ -234,7 +236,7 @@ class Auth
             Logger::write($e, Log_Level::ERROR);
             throw $e;
         }
-        return false; // Registration failed
+        return null; // Registration failed
     }
 
     /**
