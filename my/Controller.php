@@ -2,11 +2,11 @@
 
 namespace My;
 
-use Core\Models\Config;
-use Core\Models\Request;
-use Core\Models\Auth;
+use Boostack\Models\Config;
+use Boostack\Models\Request;
+use Boostack\Models\Auth;
 
-class Controller extends \Core\Controllers\Controller
+class Controller extends \Boostack\Controllers\Controller
 {
     public static function init()
     {

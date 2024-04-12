@@ -1,7 +1,7 @@
 <?php
-use Core\Models\User\User;
-use Core\Models\Config;
-use Core\Models\Request;
+use Boostack\Models\User\User;
+use Boostack\Models\Config;
+use Boostack\Models\Request;
 
 $input = $_POST;
 $error = FALSE;
@@ -75,7 +75,7 @@ if ($env_parameters["database_on"] == "true" && $finalSetupMessageError == "") {
         require __DIR__ . '/../../vendor/autoload.php';
         Request::init();
         Config::init();
-        $db = \Core\Models\Database\Database_PDO::getInstance($env_parameters["db_host"], $env_parameters["db_name"], $env_parameters["db_username"], $env_parameters["db_password"], $env_parameters["db_port"]);
+        $db = \Boostack\Models\Database\Database_PDO::getInstance($env_parameters["db_host"], $env_parameters["db_name"], $env_parameters["db_username"], $env_parameters["db_password"], $env_parameters["db_port"]);
         $db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
         print_r("ss");

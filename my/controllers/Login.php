@@ -2,11 +2,11 @@
 
 namespace My\Controllers;
 
-use Core\Models\Config;
-use Core\Models\Request;
-use Core\Models\Auth;
-use Core\Views\View;
-use Core\Models\Language;
+use Boostack\Models\Config;
+use Boostack\Models\Request;
+use Boostack\Models\Auth;
+use Boostack\Views\View;
+use Boostack\Models\Language;
 
 class Login extends \My\Controller
 {

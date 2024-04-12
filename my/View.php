@@ -2,6 +2,6 @@
 
 namespace My;
 
-class View extends \Core\Views\View
+class View extends \Boostack\Views\View
 {
 }

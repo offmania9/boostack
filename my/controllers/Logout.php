@@ -8,7 +8,7 @@ class Logout extends \My\Controller
     public static function init()
     {
         parent::init();
-        \Core\Models\Auth::logout();
-        \Core\Models\Request::goToUrl("home");        
+        \Boostack\Models\Auth::logout();
+        \Boostack\Models\Request::goToUrl("home");        
     }
 }

@@ -1,7 +1,7 @@
 <?php
-use Core\Models\Config;
-use Core\Models\Language;   
-use Core\Views\View;
+use Boostack\Models\Config;
+use Boostack\Models\Language;   
+use Boostack\Views\View;
 
 $ptitle = !empty($pageTitle) ? $pageTitle . " | " . Config::get('site_title') : Config::get('site_title');
 $pdescription = !empty($pdescription) ? $pdescription : Config::get('site_description') . " - " . strtoupper($pageTitle) . " " . Language::getLabel("lang_code");

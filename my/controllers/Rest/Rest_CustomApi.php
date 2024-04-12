@@ -1,5 +1,5 @@
 <?php
-namespace My\Models\Rest;
+namespace My\Controllers\Rest;
 /**
  * Boostack: Rest_Api.Class.php
  * ========================================================================
@@ -10,7 +10,7 @@ namespace My\Models\Rest;
  * @version 6.0
  */
 
-class Rest_CustomApi extends \Core\Models\Rest\Rest_Api
+class Rest_CustomApi extends \Boostack\Models\Rest\Rest_Api
 {
     /**
      * @return array|string

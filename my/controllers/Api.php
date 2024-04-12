@@ -2,8 +2,8 @@
 
 namespace My\Controllers;
 
-use Core\Models\Request;
-use Core\Models\Rest\Rest_Api;
+use Boostack\Models\Request;
+use Boostack\Models\Rest\Rest_Api;
 
 class Api extends \My\Controller
 {

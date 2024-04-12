@@ -2,9 +2,9 @@
 
 namespace My\Controllers;
 
-use Core\Views\View;
-use Core\Models\Request;
-use Core\Models\Language;
+use Boostack\Views\View;
+use Boostack\Models\Request;
+use Boostack\Models\Language;
 
 class DownloadLatest extends \My\Controller
 {

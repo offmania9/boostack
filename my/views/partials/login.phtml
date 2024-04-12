@@ -1,8 +1,8 @@
 <?php
-use Core\Models\Config;
-use Core\Models\Language;
-use Core\Models\Request;
-use Core\Models\Auth;
+use Boostack\Models\Config;
+use Boostack\Models\Language;
+use Boostack\Models\Request;
+use Boostack\Models\Auth;
 
 ?>
 <section class="disclaimer sectionTitle">
@@ -179,7 +179,7 @@ use Core\Models\Auth;
                             </form>          
                             <?php }
                     }
-                    catch (\Core\Exception\Exception_Misconfiguration $e){
+                    catch (\Boostack\Exception\Exception_Misconfiguration $e){
                         echo $e->getMessage();
                     }?>             
                     </div>

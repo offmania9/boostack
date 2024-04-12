@@ -1,7 +1,7 @@
 <?php
-namespace My\Models\Rest;
-use Core\Models\Auth;
-use Core\Models\User\User_ApiJWTToken;
+namespace My\Controllers\Rest;
+use Boostack\Models\Auth;
+use Boostack\Models\User\User_ApiJWTToken;
 /**
  * Boostack: Rest_UserApi.Class.php
  * ========================================================================
@@ -12,7 +12,7 @@ use Core\Models\User\User_ApiJWTToken;
  * @version 6.0
  */
 
-class Rest_ApiUserAuth extends \Core\Models\Rest\Rest_Api
+class Rest_ApiUserAuth extends \Boostack\Models\Rest\Rest_Api
 {
     /**
      * Handle an authentication request using a JWT token for a user.

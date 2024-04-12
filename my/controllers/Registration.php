@@ -2,11 +2,11 @@
 
 namespace My\Controllers;
 
-use Core\Models\Config;
-use Core\Models\Request;
-use Core\Models\Auth;
-use Core\Views\View;
-use Core\Models\Language;
+use Boostack\Models\Config;
+use Boostack\Models\Request;
+use Boostack\Models\Auth;
+use Boostack\Views\View;
+use Boostack\Models\Language;
 
 class Registration extends \My\Controller
 {
@@ -26,9 +26,9 @@ class Registration extends \My\Controller
                 }
                 Auth::registration($email, $email, $psw1, $psw2, $csrfToken);
             }
-        } catch (\Core\Exception\Exception_Misconfiguration $em) {
+        } catch (\Boostack\Exception\Exception_Misconfiguration $em) {
             dd($em->getMessage());
-        } catch (\Core\Exception\Exception_Registration $e) {
+        } catch (\Boostack\Exception\Exception_Registration $e) {
             $registrationError = $e->getMessage();
         } catch (\Exception $e) {
             $registrationError = $e->getMessage();

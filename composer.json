@@ -15,15 +15,8 @@
   },
   "autoload": {
     "psr-4": {
-      "Core\\": "core/",
-      "Core\\Exception\\": "core/exception/",
-      "Core\\Models\\": "core/models/",
-      "Core\\Controllers\\": "core/controllers/",
-      "Core\\Views\\": "core/views/",
-      "My\\": "my/",
-      "My\\Models\\": "my/models/",
-      "My\\Controllers\\": "my/controllers/",
-      "My\\Views\\": "comyre/views/"
+      "Boostack\\": "vendor/boostack-framework/core/",
+      "My\\": "my/"
     }
   },
   "homepage": "https://getboostack.com",

@@ -1,17 +1,15 @@
 <?php
 
-namespace My\Models\Rest;
+namespace My\Controllers\Rest;
 
-use Core\Models\Auth;
-use Core\Models\Config;
-use Core\Models\Language;
-use Core\Models\User\User;
-use Core\Models\Session\Session;
-use Core\Models\Log\Database\Log_Database_List;
-use Core\Models\Utils\Validator;
-use Core\Models\Utils\Utils;
-use Core\Models\Field\Field;
-use Core\Models\Field\FieldType;
+use Boostack\Models\Auth;
+use Boostack\Models\Config;
+use Boostack\Models\Language;
+use Boostack\Models\User\User;
+use Boostack\Models\Session\Session;
+use Boostack\Models\Log\Database\Log_Database_List;
+use Boostack\Models\Field\Field;
+use Boostack\Models\Field\FieldType;
 
 /**
  * Boostack: Rest_AuthApi.Class.php
@@ -23,7 +21,7 @@ use Core\Models\Field\FieldType;
  * @version 6.0
  */
 
-class Rest_AuthApi extends \Core\Models\Rest\Rest_Api
+class Rest_AuthApi extends \Boostack\Models\Rest\Rest_Api
 {
 
     protected function login()

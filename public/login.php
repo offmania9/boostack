@@ -1,6 +1,6 @@
 <?php
 require __DIR__ . '/../vendor/autoload.php';
-Core\Environment::init();
+Boostack\Environment::init();
 /**
  * Boostack: login.php
  * ========================================================================

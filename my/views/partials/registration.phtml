@@ -1,7 +1,7 @@
 <?php
-use Core\Models\Config;
-use Core\Models\Language;
-use Core\Models\Request;
+use Boostack\Models\Config;
+use Boostack\Models\Language;
+use Boostack\Models\Request;
 ?>
 <section class="disclaimer sectionTitle">
     <div class="line">
@@ -121,7 +121,7 @@ use Core\Models\Request;
             
                     <?php  }
                     }
-                    catch (\Core\Exception\Exception_Misconfiguration $e){
+                    catch (\Boostack\Exception\Exception_Misconfiguration $e){
                         dd($e->getMessage());
                     }?>
                 </div>
