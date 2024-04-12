@@ -16,9 +16,9 @@
 $config["css_path"] = "assets/css/";
 $config["js_path"] = "assets/js/";
 $config["image_path"] = "assets/img/";
-$config["template_path"] = "../my/views/";
-$config["mail_template_path"] = "../my/views/mail/";
-$config["language_path"] = "../lang/";
+$config["template_path"] = "/my/views/";
+$config["mail_template_path"] = "/my/views/mail/";
+$config["language_path"] = "/lang/";
 $config["language_file_extension"] = ".inc.json";
 
 $config["default_js_files"] = array("lib/bootstrap.js","lib/require.js","init.js");
