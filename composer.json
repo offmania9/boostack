@@ -1,6 +1,7 @@
 {
   "name": "offmania9/boostack",
   "description": "Boostack is PHP Framework for developers. Improve your development and build your ideas",
+  "version": "5.0",
   "keywords": [
     "php",
     "framework",
