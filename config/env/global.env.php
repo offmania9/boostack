@@ -16,8 +16,8 @@
 $config["css_path"] = "assets/css/";
 $config["js_path"] = "assets/js/";
 $config["image_path"] = "assets/img/";
-$config["template_path"] = "/my/Views/template/";
-$config["mail_template_path"] = "/my/Views/template/mail/";
+$config["template_path"] = "my/Views/templates/";
+$config["mail_template_path"] = "my/Views/templates/mail/";
 $config["language_path"] = "/lang/";
 $config["language_file_extension"] = ".inc.json";
 
