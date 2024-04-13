@@ -1,0 +1,187 @@
+<?php
+use Boostack\Models\Request;
+?>
+<div class="row">
+    <div class="col-md-9">
+        <h2>BaseClass</h2>
+        <section>
+            <p><code>BaseClass</code> provides powerful methods to allow your custom classes to use a database table. To start
+                using the benefits, your class must extends the <code>BaseClass</code>:</p>
+            <pre><code>class &lt;Your_Class&gt; extends \Boostack\Models\BaseClass {
+    ...
+}
+</code></pre>
+            <p>Then, all you need to do is to declare some pre-defined variables:</p>
+            <ul>
+                <li>
+                    <code>protected $attribute1<br> protected $attribute2<br> protected $attribute3</code><br>
+                    An instance variable for each table attribute (EXCEPT for the ID attribute: it is automatically added)
+                </li>
+                <li>
+                    <code>protected $default_values = [<br>
+                        &nbsp;&nbsp;&nbsp;"attribute1" => "default_value", <br>
+                        &nbsp;&nbsp;&nbsp;"attribute2" => "default_value",<br>
+                        &nbsp;&nbsp;&nbsp;...<br>
+                        ]</code><br>
+                    An associative array that contains a list of table attributes with its default value (EXCEPT for the ID attribute: it is automatically added)
+                </li>
+                <li>
+                    <code>const TABLENAME = "tablename"</code><br>
+                    A constant that have to contain the name of the table on the database
+                </li>
+            </ul>
+            <p>In the class constructor, you have to invoke the <code>init</code> method of the <code>BaseClass</code>
+                and, optionally, it can accept an <code>$id</code> parameter to automatically load the instance with that ID:</p>
+            <pre><code>public function __construct($id = NULL) {
+    parent::init($id);
+}
+</code></pre>
+            <p>Optionally, you can declare some variables that are not linked with the database table. This kind of variables are excluded from every
+                operation that involves database (insert and update).<br>For that, you can declare you custom variable
+                and then the <code>$custom_excluded</code> instance variable that must contains all of this attributes name. <br> For example:</p>
+            <pre><code>protected $myVar;  // variable not in the database table
+protected $custom_excluded = ["myVar"];
+</code></pre>
+
+            <h4>Available Methods</h4>
+            <ul>
+                <li><code>fill($array)</code><br>
+                    Fill the object with an associative array passed as parameter</li>
+                <li><code>clearAndFill($array)</code><br>
+                    Fill the object with an associative array passed as parameter, ignoring extra attributes contained in the array</li>
+                <li><code>load($id)</code><br>
+                    Load from the database the entry with the ID passed ad parameter</li>
+                <li><code>exist($id)</code><br>
+                    Tell if the entry with the ID passed as paramenter exist in the database</li>
+                <li><code>save()</code><br>
+                    Save the object in the database. If the object is already saved on the database, it will be updated. Otherwise it will be created.<br>
+                    It's possible to force the ID used on the database table by passing that as an extra parameter to the method (<code>save($id)</code>)</li>
+                <li><code>delete()</code><br>
+                    Delete the entry (if exist) from the database.</li>
+                <li><code>lockTable()</code><br>
+                    Lock every read and write operation on the database table until is invoked the <code>unlockTable()</code> method</li>
+                <li><code>unlockTable()</code><br>
+                    Unlock the database table</li>
+            </ul>
+        </section>
+        <h3>BaseList</h3>
+        <section>
+            <p><code>BaseList</code> provides powerful methods to allow your custom classes to use a database table as List. To start
+                using the benefits, your class must extends the <code>BaseList</code>:</p>
+            <pre><code>class &lt;Your_Class&gt; extends \Boostack\Models\BaseList {
+    ...
+}
+</code></pre>
+            <p>To use \Boostack\Models\BaseList you need to first declare the <code>BaseClass</code> table into a Constant</p>
+            <pre><code>CONST BASE_CLASS = <Your_Class>::class;</code></pre>
+            <p>Than initialize the constructor method of the \Boostack\Models\BaseList class</p>
+            <pre><code>public function __construct(){
+            parent::init()
+}</code></pre>
+            <h4>Available Methods</h4>
+            <ul>
+                <li>
+                    <code>
+                        view($fields,$orderColumn,$orderType,$numitem,$currentPage).
+                    </code><br />
+                    The view method can be used to obtain data from the table filtered and paginated
+                    <pre><code>view($fields, $orderColumn, $orderType, $numitem, $currentPage);</code></pre><br />
+                    The view method accept only this type of parameter:
+                    <ul>
+                        <li>
+                            <code>$fields is a Array composed by three option: columnName, operator and the word to search.</code>
+                        </li>
+                        <li>
+                            <code>$orderColumn contain the name of column to order by.</code>
+                        </li>
+                        <li>
+                            <code>$orderType can be "ASC" or "DESC" to get data Ascended or Descended.</code>
+                        </li>
+                        <li>
+                            <code>$numitem container the Limit element of how much item to view.</code>
+                        </li>
+                        <li>
+                            <code>$currentPage contain the current page number according to the number of item to view.</code>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <code>
+                        loadAll()
+                    </code><br />
+                    Load from the database table all the item and return the number of item as result.
+                </li>
+                <li>
+                    <code>
+                        truncate()
+                    </code><br />
+                    Used for truncate the database.
+                </li>
+                <li>
+                    <code>
+                        getIterator()
+                    </code><br />
+                    If you are used loadAll method you can use getIterator method to iterate the list like an array.
+                </li>
+                <li>
+                    <code>
+                        getItemsArray()
+                    </code><br />
+                    Return the database table item as array.
+                </li>
+                <li>
+                    <code>
+                        size()
+                    </code><br />
+                    Return the number of items.
+                </li>
+                <li>
+                    <code>
+                        isEmpty()
+                    </code><br />
+                    Return boolean if the table is empty.
+                </li>
+                <li>
+                    <code>
+                        jsonSerialize()
+                    </code><br />
+                    This method is used when json_encode() is called, it expose "items" to the json_encode() function.
+                </li>
+                <li>
+                    <code>
+                        add($element)
+                    </code><br />
+                    This method is used to add item into array.
+                </li>
+                <li>
+                    <code>
+                        get($key)
+                    </code><br />
+                    This method is used to get item by key.
+                </li>
+                <li>
+                    <code>
+                        remove($key,$shift)
+                    </code><br />
+                    This method is used to remove item from array.
+                </li>
+                <li>
+                    <code>
+                        clear()
+                    </code><br />
+                    This method is used to clear the item array.
+                </li>
+                <li>
+                    <code>
+                        fill
+                    </code><br />
+                    This method is used to Fill the list with an array of array of object fields
+                </li>
+            </ul>
+        </section>
+        <div class="col-md-3">
+            <ul class="list-unstyled sticky-top small lh-lg">
+                <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light d-none" title="" href="<?= Request::getFriendlyUrl("docs/setup#item") ?>">Item</a></li>
+            </ul>
+        </div>
+    </div>

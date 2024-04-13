@@ -11,7 +11,7 @@ use Boostack\Models\Request;
             <ul>
                 <li><code>PHP >= 7.4</code></li>
                 <li><code>Short tag enabled into php.ini (short_open_tag = On)</code></li>
-                <li><code>\PDO PHP Extension</code></li>
+                <li><code>PDO PHP Extension</code></li>
             </ul>
             <p>Apache modules enabled (httpd.conf):</p>
             <ul>
@@ -95,7 +95,7 @@ use Boostack\Models\Request;
         <pre><code>
             RewriteRule ^home$ index.php [L]
             RewriteRule ^setup$ /setup/index.php [L]
-            RewriteRule ^docs/([a-zA-Z0-9_-]+)$ documentation.php?docpath=$1 [L]
+            RewriteRule ^docs/".$currentVersion."/([a-zA-Z0-9_-]+)$ documentation.php?docpath=$1 [L]
             RewriteRule ^docs$ documentation.php [L]
             RewriteRule ^download$ download.php [L]
             RewriteRule ^login$ login.php [L]
@@ -131,15 +131,15 @@ use Boostack\Models\Request;
     </div>
     <div class="col-md-3">
         <ul class="list-unstyled sticky-top small lh-lg">
-            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Server Requirements" href="<?= Request::getFriendlyUrl("docs/setup#ServerRequirements") ?>">Server Requirements</a></li>
-            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Download" href="<?= Request::getFriendlyUrl("docs/setup#Download") ?>">Download</a></li>
-            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Installation" href="<?= Request::getFriendlyUrl("docs/setup#Installation") ?>">Docker Installation</a></li>
-            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Automatic Configuration" href="<?= Request::getFriendlyUrl("docs/setup#AutomaticConfiguration") ?>">Automatic Configuration</a></li>
-            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Manual Configuration" href="<?= Request::getFriendlyUrl("docs/setup#ManualConfiguration") ?>">Manual Configuration</a></li>
-            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Friendly URLs Configuration" href="<?= Request::getFriendlyUrl("docs/setup#FriendlyURLsConfiguration") ?>">Friendly URLs Configuration</a></li>
-            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Accessing Configuration Values" href="<?= Request::getFriendlyUrl("docs/setup#AccessingConfigurationValues") ?>">Accessing Configuration Values</a></li>
-            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Development Mode" href="<?= Request::getFriendlyUrl("docs/setup#DevelopmentMode") ?>">Development Mode</a></li>
-            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Server Configuration" href="<?= Request::getFriendlyUrl("docs/setup#ServerConfiguration") ?>">Server Configuration</a></li>
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Server Requirements" href="<?= Request::getFriendlyUrl("docs/".$currentVersion."/setup#ServerRequirements") ?>">Server Requirements</a></li>
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Download" href="<?= Request::getFriendlyUrl("docs/".$currentVersion."/setup#Download") ?>">Download</a></li>
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Installation" href="<?= Request::getFriendlyUrl("docs/".$currentVersion."/setup#Installation") ?>">Docker Installation</a></li>
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Automatic Configuration" href="<?= Request::getFriendlyUrl("docs/".$currentVersion."/setup#AutomaticConfiguration") ?>">Automatic Configuration</a></li>
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Manual Configuration" href="<?= Request::getFriendlyUrl("docs/".$currentVersion."/setup#ManualConfiguration") ?>">Manual Configuration</a></li>
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Friendly URLs Configuration" href="<?= Request::getFriendlyUrl("docs/".$currentVersion."/setup#FriendlyURLsConfiguration") ?>">Friendly URLs Configuration</a></li>
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Accessing Configuration Values" href="<?= Request::getFriendlyUrl("docs/".$currentVersion."/setup#AccessingConfigurationValues") ?>">Accessing Configuration Values</a></li>
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Development Mode" href="<?= Request::getFriendlyUrl("docs/".$currentVersion."/setup#DevelopmentMode") ?>">Development Mode</a></li>
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Server Configuration" href="<?= Request::getFriendlyUrl("docs/".$currentVersion."/setup#ServerConfiguration") ?>">Server Configuration</a></li>
         </ul>
     </div>
 </div>

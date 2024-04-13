@@ -12,7 +12,7 @@ use Boostack\Models\Request;
         <a class="nav-link px-3" title="Download" href="<?= Request::getFriendlyUrl("download"); ?>"><?= Language::getLabel("navigation.download"); ?></a>
     </li>
     <li class="nav-item">
-        <a class="nav-link px-3" title="Documentation" href="<?= Request::getFriendlyUrl("docs/setup"); ?>"><?= Language::getLabel("navigation.documentation"); ?></a>
+        <a class="nav-link px-3" title="Documentation" href="<?= Request::getFriendlyUrl("docs"); ?>"><?= Language::getLabel("navigation.documentation"); ?></a>
     </li>
     <?php if (Config::get("database_on") && Config::get("session_on")) : ?>
         <li class="nav-item">
