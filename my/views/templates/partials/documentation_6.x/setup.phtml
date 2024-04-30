@@ -1,45 +1,17 @@
 <?php
-use Boostack\Views\View;
 use Boostack\Models\Request;
 ?>
 <div class="row">
     <div class="col-md-9">
-        <h2>Setup</h2>
-        <h3 id="ServerRequirements">Server Requirements</h3>
-        <section>
-            <p>General requirements</p>
-            <ul>
-                <li><code>PHP >= 7.4</code></li>
-                <li><code>PDO PHP Extension</code></li>
-            </ul>
-            <p>Apache modules enabled (httpd.conf):</p>
-            <ul>
-                <li>
-                    <code>mod_rewrite</code>
-                </li>
-                <li>
-                    <code>mod_headers</code>
-                </li>
-                <li>
-                    <code>mod_filters</code>
-                </li>
-            </ul>
-            <p>Virtual host configuration:</p>
-            <pre><code>
-    &lt;Directory /var/www/html&gt;
-        Options FollowSymLinks MultiViews
-        AllowOverride All
-        Order allow,deny
-        allow from all
-    &lt;/Directory&gt;</code></pre>
-        </section>
+        <h2 class="fw-bold">Setup</h2>
 
-        <h3 id="Download">Download</h3>
-        <section>
+        <section id="Download">
+            <h3 class="pt-3">Download</h3>
             <h5>Via Composer/Packagist</h5>
             <p>
                 <code>composer create-project offmania9/boostack</code>
-                <br />Import as vendor: <em>composer require offmania9/boostack</em>
+                <br />
+                <small>Import as vendor: <em>composer require offmania9/boostack</em></small>
             </p>
             <h5>or Via GIT Clone</h5>
             <p>
@@ -47,94 +19,69 @@ use Boostack\Models\Request;
             </p>
         </section>
 
-        <h3 id="Installation">Docker Installation</h3>
-        <section>
-            <p>Launch Docker compose in project root (<em>cd boostack</em> if you download it via composer)
+        <section id="Installation">
+            <h3 class="pt-3">Installation</h3>
+            You can install Boostack using two distinct installation procedures:
+            <ul>
+                <li><b>[recommended] via Docker</b> which will install 3 containers (php-apache, maria db, phpmyadmin) including all the requirements necessary for the operation of Boostack. Jump to Docker Installation chapter.</li>
+                <li>or as a <b>stand-alone</b> application within an Apache web application server
+                    <div class="ps-5">
+                        <p>General requirements</p>
+                        <ul>
+                            <li><code>PHP >= 7.4</code></li>
+                            <li><code>PDO PHP Extension</code></li>
+                        </ul>
+                        <p>Apache modules enabled (httpd.conf):</p>
+                        <ul>
+                            <li>
+                                <code>mod_rewrite</code>
+                            </li>
+                            <li>
+                                <code>mod_headers</code>
+                            </li>
+                            <li>
+                                <code>mod_filters</code>
+                            </li>
+                        </ul>
+                        <p>Virtual host configuration:</p>
+                        <pre class="smallx2">
+    &lt;Directory /var/www/html&gt;
+        Options FollowSymLinks MultiViews
+        AllowOverride All
+        Order allow,deny
+        allow from all
+    &lt;/Directory&gt;</pre>
+                        <h6>Optimal Server Configuration</h6>
+                        HTTP Strict Transport Security (HSTS) is an opt-in security enhancement that is specified by a web application through the use of a special response header. Once a supported browser receives this header that browser will prevent any communications from being sent over HTTP to the specified domain and will instead send all communications over HTTPS. It also prevents HTTPS click through prompts on browsers.
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+
+        <section id="InstallationDocker">
+            <h3 class="pt-3">Docker Installation</h3>
+            <p>Launch Docker compose in project root
                 <br /><code>docker-compose up -d --build</code>
             </p>
             <p>In the Docker compose file, you need to comment out the user parameter for php-apache based on
                 the operating system: 502:20 for macOS and 1000:1000 for Unix. Leave both lines commented out (disabled)
                 in case of Windows operating systems.</p>
-            <pre><code>
+            <pre tabindex="0">
     php-apache:
-        # user: "502:20" #-> MacOS
-        # user: "1000:1000" #-> Unix
-    </code></pre>
-
+    # user: "502:20" #-> MacOS
+    # user: "1000:1000" #-> Unix
+        </pre>
+            <p class="text-end">
+                Jump to <a class="fw-bold " href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/first-configuration") ?>">First Configuration &#8594;</a>
+            </p>
         </section>
-
-        <h3 id="AutomaticConfiguration">Automatic Configuration</h3>
-        <section>
-            <p>Go to</p>
-            <pre><code>http://&lt;your_local_path_to_boostack_installation&gt;/setup</code></pre>
-            <p>and begin the automated setup procedure.</p>
-            <p>At first, the setup will check for the PHP and Apache configurations</p>
-            <img class="img-fluid" src="<?= View::getImageLink("boostack_setup_1.jpg") ?>" alt="Boostack Setup 1" />
-            <p>Then you will be prompted to insert your environment configuration parameters</p>
-            <img class="img-fluid" src="<?= View::getImageLink("boostack_setup_2.jpg") ?>" alt="Boostack Setup 2" />
-            <p>When the setup procedure is ended, you will see a message that remember you to delete or rename "setup" folder
-                from the project.</p>
-            <img class="img-fluid" src="<?= View::getImageLink("boostack_setup_3.jpg") ?>" alt="Boostack Setup 3" />
-        </section>
-
-        <h3 id="ManualConfiguration">Manual Configuration</h3>
-        <p>Alternatively to the automatic setup, you can proceed with manual configuration by copying and renaming the file
-            <code>config/env/sample.env.php</code>
-            to <code>config/env/env.php</code> and fill it with your preferred configurations.
-        </p>
-
-        <h3 id="FriendlyURLsConfiguration">Friendly URLs Configuration</h3>
-        <p>Boostack includes a <code>.htaccess</code> file that is used to provide friendly URLs without the file extension .php
-            in the path.</p>
-        <p>There are the one served by default:</p>
-        <pre><code>
-            RewriteRule ^home$ index.php [L]
-            RewriteRule ^setup$ /setup/index.php [L]
-            RewriteRule ^docs/".$currentVersion."/([a-zA-Z0-9_-]+)$ documentation.php?docpath=$1 [L]
-            RewriteRule ^docs$ documentation.php [L]
-            RewriteRule ^download$ download.php [L]
-            RewriteRule ^login$ login.php [L]
-            RewriteRule ^registration$ registration.php [L]
-            RewriteRule ^logout$ logout.php [L]
-            RewriteRule ^api/([^\.]+)$ api.php?request=$1 [L]
-</code></pre>
-
-        <h3 id="AccessingConfigurationValues">Accessing Configuration Values</h3>
-        <p>You may easily access your configuration values using the <code>Config</code> class from anywhere in your
-            application.</p>
-        <pre><code>Config::get("configuration_key")</code></pre>
-
-        <h3 id="DevelopmentMode">Development Mode</h3>
-        <p>
-            When your application is in development mode, errors and \Exceptions will be displayed for all requests into your
-            application.
-            This makes it easy to debug your application while coding.
-            You can edit the development mode configuration in the <code>config/env/env.php</code> file.
-            To check if the application is in development mode, you can use:
-        <pre><code>if(Config::get('developmentMode')) {
-                ...
-            }
-        </code></pre>
-        </p>
-        <h3 id="ServerConfiguration">Optimal Server Configuration</h3>
-        <p>
-            HTTP Strict Transport Security (HSTS) is an opt-in security enhancement that is specified by a web application
-            through the use of a special response header. Once a supported browser receives this header that browser will
-            prevent any communications from being sent over HTTP to the specified domain and will instead send all
-            communications over HTTPS. It also prevents HTTPS click through prompts on browsers.
-        </p>
     </div>
     <div class="col-md-3">
         <ul class="list-unstyled sticky-top small lh-lg">
-            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Server Requirements" href="<?= Request::getFriendlyUrl("docs/".$currentVersion."/setup#ServerRequirements") ?>">Server Requirements</a></li>
-            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Download" href="<?= Request::getFriendlyUrl("docs/".$currentVersion."/setup#Download") ?>">Download</a></li>
-            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Installation" href="<?= Request::getFriendlyUrl("docs/".$currentVersion."/setup#Installation") ?>">Docker Installation</a></li>
-            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Automatic Configuration" href="<?= Request::getFriendlyUrl("docs/".$currentVersion."/setup#AutomaticConfiguration") ?>">Automatic Configuration</a></li>
-            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Manual Configuration" href="<?= Request::getFriendlyUrl("docs/".$currentVersion."/setup#ManualConfiguration") ?>">Manual Configuration</a></li>
-            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Friendly URLs Configuration" href="<?= Request::getFriendlyUrl("docs/".$currentVersion."/setup#FriendlyURLsConfiguration") ?>">Friendly URLs Configuration</a></li>
-            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Accessing Configuration Values" href="<?= Request::getFriendlyUrl("docs/".$currentVersion."/setup#AccessingConfigurationValues") ?>">Accessing Configuration Values</a></li>
-            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Development Mode" href="<?= Request::getFriendlyUrl("docs/".$currentVersion."/setup#DevelopmentMode") ?>">Development Mode</a></li>
-            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Server Configuration" href="<?= Request::getFriendlyUrl("docs/".$currentVersion."/setup#ServerConfiguration") ?>">Server Configuration</a></li>
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Download" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/setup#Download") ?>">Download</a></li>
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Installation" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/setup#Installation") ?>">Installation</a></li>
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Installation Docker" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/setup#InstallationDocker") ?>">Docker Installation</a></li>
         </ul>
     </div>
 </div>

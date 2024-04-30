@@ -1,0 +1,234 @@
+<?php
+
+use Boostack\Models\Request;
+?>
+<div class="row">
+    <div class="col-md-9">
+        <h2 class="fw-bold">Models</h2>
+
+        <section id="BaseClass">
+            <h3 class="pt-3">BaseClass</h3>
+            <p>
+                Boostack has its own way of instantiating model objects that allows for complete instance management and interaction with the database.
+            </p>
+            <p>
+                The Boostack standard involves extending the <code>BaseClass</code> or <code>BaseClassTraced</code> class in a new file, which should be placed inside the <code>my/Models</code> folder.
+            </p>
+            <p>
+                BaseClass provides powerful methods to allow your custom classes to use a database table. To start using the benefits, your class must extend the BaseClass:
+            <pre>
+namespace My\Models;
+class &lt;Your_Class&gt; extends \Boostack\Models\BaseClass {
+    protected $attribute1
+    protected $attribute2
+    protected $attribute3
+        ...
+
+    protected $default_values = [
+        "attribute1" => "default_value",
+        "attribute2" => "default_value",
+        ...
+    ]
+
+    const TABLENAME = "tablename"; //name of the database table
+
+    /**
+    * Constructor.
+    *
+    * @param mixed|null $id The ID of the object.
+    */
+    public function __construct($id = NULL) {
+            parent::__construct($id);
+    }
+}
+</pre>
+            </p>
+
+            <p>Then, all you need to do is to declare some pre-defined variables:</p>
+            <ul>
+                <li class="pb-2">
+                    <span class="fw-bold">protected $attribute1</span><br />
+                    <span class="fw-bold">protected $attribute2</span><br />
+                    <span class="fw-bold">protected $attribute3</span><br />
+                    An instance variable for each table attribute (<u>EXCEPT for the ID attribute: it is automatically added</u>)
+                </li>
+                <li class="pb-2">
+                    <span class="fw-bold">
+                        protected $default_values = [<br />
+                        &nbsp;&nbsp;&nbsp;"attribute1" => "default_value", <br />
+                        &nbsp;&nbsp;&nbsp;"attribute2" => "default_value",<br />
+                        &nbsp;&nbsp;&nbsp;...]</span><br />
+                    An associative array that contains a list of table attributes with its default value (<u>EXCEPT for the ID attribute: it is automatically added</u>)
+                </li>
+                <li class="pb-2">
+                    <span class="fw-bold">const TABLENAME = "tablename"</span><br />
+                    A constant that have to contain the name of the table on the database
+                </li>
+            </ul>
+            <p>In the class constructor, you have to invoke the <code>init</code> method of the BaseClass
+                and, optionally, it can accept an <b>$id</b> parameter to automatically load the instance with that ID:</p>
+            <pre>public function __construct($id = NULL) {
+    parent::init($id);
+}</pre>
+            <p><u>Optionally, you can declare some variables that are not linked with the database table. This kind of variables are excluded from every
+                    operation that involves database (insert and update).</u><br />For that, you can declare you custom variable
+                and then the <b>$custom_excluded</b> instance variable that must contains all of this attributes name. <br /> For example:</p>
+            <pre>protected $myVar;  // variable not in the database table
+protected $custom_excluded = ["myVar"];
+</pre>
+        </section>
+
+        <section id="BaseClassTraced">
+            <h3 class="pt-3">BaseClassTraced</h3>
+            <p>
+                BaseClassTraced extends the functionality of BaseClass by including complete management of the <b><code>created_at, last_update, last_access and deleted_at events</code></b>.
+            </p>
+            <p>
+                Updating these fields within the database is handled automatically by BaseClassTraced, so you don't have to worry about anything.
+            </p>
+            <p>
+                The only requirement is that the database table must have the following columns:
+            <pre>
+ALTER TABLE `[tablename]` 
+ADD `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+ADD `last_update` timestamp NOT NULL DEFAULT current_timestamp(),
+ADD `last_access` timestamp NOT NULL DEFAULT current_timestamp(),
+ADD `deleted_at` timestamp NULL DEFAULT NULL
+</pre>
+            </p>
+        </section>
+
+        <section id="SoftDelete">
+            <h3 class="pt-3">Soft Delete</h3>
+            <p>
+                Boostack allows for automatic management of the soft delete procedure.
+                It's sufficient to include the command <br /><code>$this->soft_delete = true;</code> in the constructor.
+            </p>
+            <p>
+                This way, when the `delete()` method is used to remove the object, it will not be deleted from the database but its 'deleted_at' field will be set to the value of the current timestamp.
+                <br />
+                By default, the soft_delete for objects that extend the BaseClass is set to FALSE.
+            <pre>
+/**
+* Constructor.
+*
+* @param mixed|null $id The ID of the object.
+*/
+public function __construct($id = null)
+{
+    parent::__construct($id);
+    <code>$this->soft_delete = true;</code>
+}
+                </pre>
+            </p>
+        </section>
+
+        <section id="AvailableMethods">
+            <h3 class="pt-3">Available Methods</h3>
+            <ul>
+                <li><code>fill($array)</code><br />
+                    Fill the object with an associative array passed as parameter</li>
+                <li><code>clearAndFill($array)</code><br />
+                    Fill the object with an associative array passed as parameter, ignoring extra attributes contained in the array</li>
+                <li><code>load($id)</code><br />
+                    Load from the database the entry with the ID passed ad parameter</li>
+                <li>static <code>exist($id)</code><br />
+                    Tell if the entry with the ID passed as paramenter exist in the database</li>
+                <li><code>save()</code><br />
+                    Save the object in the database. If the object is already saved on the database, it will be updated. Otherwise it will be created.<br />
+                    It's possible to force the ID used on the database table by passing that as an extra parameter to the method (<code>save($id)</code>)</li>
+                <li><code>delete()</code><br />
+                    Delete the entry (if exist) from the database. If soft_delete = true call <code>softDelete()</code> otherwise call <code>purge()</code> to permanently delete from database. </li>
+                <li><code>restore()</code><br />
+                    Restore object from database only if soft_delete = true.</li>
+                <li><code>lockTable()</code><br />
+                    Lock every read and write operation on the database table until is invoked the <code>unlockTable()</code> method</li>
+                <li><code>unlockTable()</code><br />
+                    Unlock the database table.</li>
+                <li><code>jsonSerialize()</code><br />
+                    This method is used when json_encode() is called.</li>
+                <li><code>getTablename()</code><br />
+                    The name of the database table.</li>
+                <li><code>getAttributes()</code><br />
+                    Return the list of object attributes.</li>
+                <li><code>getFields()</code><br />
+                    Retrieve the fields of the object's database table along with their metadata.</li>
+                <li><code>setObjFromArray()</code><br />
+                    Sets object properties from an array, excluding specified keys, and saves the object.</li>
+            </ul>
+        </section>
+
+        <section id="Example">
+            <h3 class="pt-3">Example</h3>
+            <p>
+            Create a table in the database and name it, for example, "boostack_course" with the following SQL structure:
+<pre>
+CREATE TABLE `boostack_course` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `description` text,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `last_update` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `last_access` timestamp NOT NULL DEFAULT current_timestamp(),
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+</pre>
+            </p>
+            <p>
+Create a folder named "Courses" in the my/Models folder.<br/>
+Create a new folder named Courses in the my/Models folder.<br/>
+Create a new PHP file named <code>Course.php</code> in the <code>my/Models/Courses folder</code>.
+            </p>
+
+            <p>
+                For example, the <code>Course.php</code> file should look like this:
+            <pre>
+namespace My\Models\Courses;
+class Course extends \Boostack\Models\BaseClassTraced {
+    //do not set the $id field. It is already set by default
+    protected $name;
+    protected $description;
+    protected $date_start;
+    protected $date_end;
+    //do not set the created_at, last_update, last_access and deleted_at fields. They are already set by default by BaseListTraced
+
+    protected $default_values = [
+        "name" => "",
+        "description" => "",
+        "date_start" => NULL,
+        "date_end" => NULL
+    ];
+
+    const TABLENAME = "boostack_course";
+
+    /**
+    * Constructor.
+    *
+    * @param mixed|null $id The ID of the object.
+    */
+    public function __construct($id = NULL) {
+            parent::__construct($id);
+            $this->soft_delete = true;
+    }
+}
+</pre>    
+            </p>
+        </section>
+
+    </div>
+    <div class="col-md-3">
+        <ul class="list-unstyled sticky-top small lh-lg">
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="BaseClass" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/models-baseclass#BaseClass") ?>">BaseClass</a>
+            </li>
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="BaseClassTraced" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/models-baseclass#BaseClassTraced") ?>">BaseClassTraced</a>
+            </li>
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Soft Delete" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/models-baseclass#SoftDelete") ?>">Soft Delete</a>
+            </li>
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Available Methods" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/models-baseclass#AvailableMethods") ?>">Available Methods</a>
+            </li>
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Example" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/models-baseclass#Example") ?>">Example</a>
+            </li>
+        </ul>
+    </div>
+</div>

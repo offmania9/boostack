@@ -121,7 +121,8 @@ hr {
 
 pre {
   border: 0;
-  background-color: #fafafa;
+  background-color: #f4f4f4;
+  padding: 1rem;
 }
 
 .navbar li.nav-item :hover {

@@ -5,7 +5,7 @@ use Boostack\Models\Request;
 <div class="row">
     <div class="col-md-9">
         <h2>Setup</h2>
-        <h3 id="ServerRequirements">Server Requirements</h3>
+       <h3 class="pt-3" id="ServerRequirements">Server Requirements</h3>
         <section>
             <p>General requirements</p>
             <ul>
@@ -35,7 +35,7 @@ use Boostack\Models\Request;
     &lt;/Directory&gt;</code></pre>
         </section>
 
-        <h3 id="Download">Download</h3>
+       <h3 class="pt-3" id="Download">Download</h3>
         <section>
             <h5>Via Composer/Packagist</h5>
             <p>
@@ -52,7 +52,7 @@ use Boostack\Models\Request;
             </p>
         </section>
 
-        <h3 id="Installation">Docker Installation</h3>
+       <h3 class="pt-3" id="Installation">Docker Installation</h3>
         <section>
             <p>Launch Docker compose in project root (<em>cd boostack</em> if you download it via composer)
                 <br /><code>docker-compose up -d --build</code>
@@ -68,7 +68,7 @@ use Boostack\Models\Request;
 
         </section>
 
-        <h3 id="AutomaticConfiguration">Automatic Configuration</h3>
+       <h3 class="pt-3" id="AutomaticConfiguration">Automatic Configuration</h3>
         <section>
             <p>Go to</p>
             <pre><code>http://&lt;your_local_path_to_boostack_installation&gt;/setup</code></pre>
@@ -82,13 +82,13 @@ use Boostack\Models\Request;
             <img class="img-fluid" src="<?= View::getImageLink("boostack_setup_3.jpg") ?>" alt="Boostack Setup 3" />
         </section>
 
-        <h3 id="ManualConfiguration">Manual Configuration</h3>
+       <h3 class="pt-3" id="ManualConfiguration">Manual Configuration</h3>
         <p>Alternatively to the automatic setup, you can proceed with manual configuration by copying and renaming the file
             <code>config/env/sample.env.php</code>
             to <code>config/env/env.php</code> and fill it with your preferred configurations.
         </p>
 
-        <h3 id="FriendlyURLsConfiguration">Friendly URLs Configuration</h3>
+       <h3 class="pt-3" id="FriendlyURLsConfiguration">Friendly URLs Configuration</h3>
         <p>Boostack includes a <code>.htaccess</code> file that is used to provide friendly URLs without the file extension .php
             in the path.</p>
         <p>There are the one served by default:</p>
@@ -104,12 +104,12 @@ use Boostack\Models\Request;
             RewriteRule ^api/([^\.]+)$ api.php?request=$1 [L]
 </code></pre>
 
-        <h3 id="AccessingConfigurationValues">Accessing Configuration Values</h3>
+       <h3 class="pt-3" id="AccessingConfigurationValues">Accessing Configuration Values</h3>
         <p>You may easily access your configuration values using the <code>Config</code> class from anywhere in your
             application.</p>
         <pre><code>Config::get("configuration_key")</code></pre>
 
-        <h3 id="DevelopmentMode">Development Mode</h3>
+       <h3 class="pt-3" id="DevelopmentMode">Development Mode</h3>
         <p>
             When your application is in development mode, errors and \Exceptions will be displayed for all requests into your
             application.
@@ -121,7 +121,7 @@ use Boostack\Models\Request;
             }
         </code></pre>
         </p>
-        <h3 id="ServerConfiguration">Optimal Server Configuration</h3>
+       <h3 class="pt-3" id="ServerConfiguration">Optimal Server Configuration</h3>
         <p>
             HTTP Strict Transport Security (HSTS) is an opt-in security enhancement that is specified by a web application
             through the use of a special response header. Once a supported browser receives this header that browser will

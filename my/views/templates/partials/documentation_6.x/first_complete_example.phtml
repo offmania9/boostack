@@ -1,0 +1,20 @@
+<?php
+
+use Boostack\Models\Request;
+?>
+<div class="row">
+    <div class="col-md-9">
+        <h2 class="fw-bold">First Example</h2>
+        <section id="AutomaticConfiguration">
+            <h3 class="pt-3">Lorem</h3>
+            <p>
+                Lorem
+            </p>
+        </section>
+    </div>
+    <div class="col-md-3">
+        <ul class="list-unstyled sticky-top small lh-lg">
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Automatic Configuration" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/first-configuration#AutomaticConfiguration") ?>">Automatic Configuration</a></li>
+        </ul>
+    </div>
+</div>

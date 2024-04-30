@@ -3,38 +3,34 @@ use Boostack\Models\Request;
 ?>
 <div class="row">
     <div class="col-md-9">
-        <h2>Directory structure</h2>
+        <h2 class="fw-bold">Directory structure</h2>
         <section>
             <ul>
-                <li><code>ajax</code><br>
-                    The ajax directory contains the ajax endpoint of your application.
-                </li>
-                <li><code>assets</code><br>
-                    The assets directory contains assets such as CSS, fonts, JavaScript and images
-                </li>
-                <li><code>classes</code><br>
-                    The classes directory contains all of your custom classes.
-                </li>
-                <li><code>config</code><br>
+            <li><code>config</code><br/>
                     The config directory, contains all of your application's configuration files.
                 </li>
-                <li><code>core</code><br>
-                    The core directory contains all of the core classes of Boostack
-                </li>
-                <li><code>lang</code><br>
+                <li><code>lang</code><br/>
                     The lang directoy contains a series of JSON file representing the labels and translations of your
-                    application
+                    application.
                 </li>
-                <li><code>logs</code><br>
-                    The logs folder contains auto-generated raw log files
+                <li><code>logs</code><br/>
+                    The logs folder contains auto-generated raw log files.
                 </li>
-                <li><code>setup</code><br>
+                <li><code>my</code><br/>
+                    The my directory contains all of your application's custom classes and files.
+                    <br/>Controllers, Models, Views, etc.
+                </li>
+                <li><code>public</code><br/>
+                    The public directory contains the pages, the main controllers and your assets (images, JavaScript, CSS, etc.).
+                </li>
+                
+                <li><code>vendor</code><br/>
+                    The vendor directory contains your Composer dependencies and all of the core classes of Boostack.
+                </li>
+                
+                <li><code>public/setup</code><br/>
                     The setup folder contains all the files needed by the automated setup procedure. You MUST delete or rename
-                    this folder when you
-                    have successfully completed this procedure.
-                </li>
-                <li><code>template</code><br>
-                    The template folder contains all of the template files needed by your application.
+                    this folder when you have successfully completed the installation procedure.
                 </li>
             </ul>
         </section>

@@ -14,19 +14,19 @@ use Boostack\Models\Request;
             <p>Then, all you need to do is to declare some pre-defined variables:</p>
             <ul>
                 <li>
-                    <code>protected $attribute1<br> protected $attribute2<br> protected $attribute3</code><br>
+                    <code>protected $attribute1<br/> protected $attribute2<br/> protected $attribute3</code><br/>
                     An instance variable for each table attribute (EXCEPT for the ID attribute: it is automatically added)
                 </li>
                 <li>
-                    <code>protected $default_values = [<br>
-                        &nbsp;&nbsp;&nbsp;"attribute1" => "default_value", <br>
-                        &nbsp;&nbsp;&nbsp;"attribute2" => "default_value",<br>
-                        &nbsp;&nbsp;&nbsp;...<br>
-                        ]</code><br>
+                    <code>protected $default_values = [<br/>
+                        &nbsp;&nbsp;&nbsp;"attribute1" => "default_value", <br/>
+                        &nbsp;&nbsp;&nbsp;"attribute2" => "default_value",<br/>
+                        &nbsp;&nbsp;&nbsp;...<br/>
+                        ]</code><br/>
                     An associative array that contains a list of table attributes with its default value (EXCEPT for the ID attribute: it is automatically added)
                 </li>
                 <li>
-                    <code>const TABLENAME = "tablename"</code><br>
+                    <code>const TABLENAME = "tablename"</code><br/>
                     A constant that have to contain the name of the table on the database
                 </li>
             </ul>
@@ -37,30 +37,30 @@ use Boostack\Models\Request;
 }
 </code></pre>
             <p>Optionally, you can declare some variables that are not linked with the database table. This kind of variables are excluded from every
-                operation that involves database (insert and update).<br>For that, you can declare you custom variable
-                and then the <code>$custom_excluded</code> instance variable that must contains all of this attributes name. <br> For example:</p>
+                operation that involves database (insert and update).<br/>For that, you can declare you custom variable
+                and then the <code>$custom_excluded</code> instance variable that must contains all of this attributes name. <br/> For example:</p>
             <pre><code>protected $myVar;  // variable not in the database table
 protected $custom_excluded = ["myVar"];
 </code></pre>
 
             <h4>Available Methods</h4>
             <ul>
-                <li><code>fill($array)</code><br>
+                <li><code>fill($array)</code><br/>
                     Fill the object with an associative array passed as parameter</li>
-                <li><code>clearAndFill($array)</code><br>
+                <li><code>clearAndFill($array)</code><br/>
                     Fill the object with an associative array passed as parameter, ignoring extra attributes contained in the array</li>
-                <li><code>load($id)</code><br>
+                <li><code>load($id)</code><br/>
                     Load from the database the entry with the ID passed ad parameter</li>
-                <li><code>exist($id)</code><br>
+                <li><code>exist($id)</code><br/>
                     Tell if the entry with the ID passed as paramenter exist in the database</li>
-                <li><code>save()</code><br>
-                    Save the object in the database. If the object is already saved on the database, it will be updated. Otherwise it will be created.<br>
+                <li><code>save()</code><br/>
+                    Save the object in the database. If the object is already saved on the database, it will be updated. Otherwise it will be created.<br/>
                     It's possible to force the ID used on the database table by passing that as an extra parameter to the method (<code>save($id)</code>)</li>
-                <li><code>delete()</code><br>
+                <li><code>delete()</code><br/>
                     Delete the entry (if exist) from the database.</li>
-                <li><code>lockTable()</code><br>
+                <li><code>lockTable()</code><br/>
                     Lock every read and write operation on the database table until is invoked the <code>unlockTable()</code> method</li>
-                <li><code>unlockTable()</code><br>
+                <li><code>unlockTable()</code><br/>
                     Unlock the database table</li>
             </ul>
         </section>

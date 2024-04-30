@@ -1,4 +1,5 @@
 <?php
+
 use Boostack\Models\Language;
 use Boostack\Models\Request;
 ?>
@@ -12,89 +13,127 @@ use Boostack\Models\Request;
     </div>
 </section>
 <section class="documentation centerContent py-5 fw-light">
-    <div class="container">
+    <div class="container small">
         <div class="row description">
             <div class="col-md-3">
                 <ul class="list-unstyled documentationMenu sticky-top">
                     <li class="title fw-bold pt-2">Getting Started</li>
                     <li class="ps-3">
-                        <a class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/".$currentVersion."/setup") ?>">Setup</a>
+                        <a class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/setup") ?>">Setup</a>
                     </li>
                     <li class="ps-3">
-                        <a class="link-opacity-75-hover link-underline-light fw-normal" title="Directory structure" href="<?= Request::getFriendlyUrl("docs/".$currentVersion."/directory-structure") ?>">Directory structure</a>
+                        <a class="link-opacity-75-hover link-underline-light fw-normal" title="First Configuration" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/first-configuration") ?>">First Configuration</a>
+                    </li>
+                    <li class="ps-3">
+                        <a class="link-opacity-75-hover link-underline-light fw-normal" title="Boostack Configs" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/boostack-configs") ?>">Boostack Configs</a>
+                    </li>
+                    <li class="ps-3">
+                        <a class="link-opacity-75-hover link-underline-light fw-normal" title="Directory structure" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/directory-structure") ?>">Directory structure</a>
                     </li>
                     <li class="title fw-bold pt-3">Architecture</li>
                     <li class="ps-3">
-                        <a title="Models" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/".$currentVersion."/models") ?>">Models</a>
+                        <a title="Models BaseClass" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/models-baseclass") ?>">Models: BaseClass</a>
                     </li>
                     <li class="ps-3">
-                        <a title="Controllers" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/".$currentVersion."/controllers") ?>">Controllers</a>
+                        <a title="Models BaseList" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/models-baselist") ?>">Models: BaseList</a>
                     </li>
                     <li class="ps-3">
-                        <a title="Template" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/".$currentVersion."/template") ?>">Template</a>
+                        <a title="Controllers" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/controllers") ?>">Controllers</a>
                     </li>
+                    <li class="ps-3">
+                        <a title="Template" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/template") ?>">Views</a>
+                    </li>
+                    <li class="title fw-bold pt-3">Examples</li>
+                    <li class="ps-3">
+                        <a title="first complete example" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/first-complete-example") ?>">First complete example</a>
+                    </li>
+                    <li class="ps-3">
+                        <a title="login example" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/login-example") ?>">Login example</a>
+                    </li>
+                    <li class="ps-3">
+                        <a title="api example" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/api-example") ?>">API example</a>
+                    </li>
+
                     <li class="title fw-bold pt-3">Utilities</li>
-                    <li class="ps-3">
-                        <a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/".$currentVersion."/auth") ?>">Auth</a>
-                    </li>
-                    <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/".$currentVersion."/loginSecurity") ?>">Lock Strategies</a></li>
-                    <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/".$currentVersion."/users") ?>">Users</a></li>
-                    <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/".$currentVersion."/session") ?>">Session</a></li>
-                    <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/".$currentVersion."/curl") ?>">CURL</a></li>
-                    <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/".$currentVersion."/log") ?>">Log</a></li>
-                    <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/".$currentVersion."/validator") ?>">Validator</a></li>
+                    <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/auth") ?>">Auth</a></li>
+                    <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/users") ?>">Users</a></li>
+                    <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/session") ?>">Session</a></li>
+                    <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/curl") ?>">CURL</a></li>
+                    <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/log") ?>">Log</a></li>
+                    <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/validator") ?>">Validator</a></li>
             </div>
             <div class="col-md-9 documentationInnerContent">
                 <?php
-                $defaultPage = "documentation_".$currentVersion."/setup.phtml";
+                $defaultPage = "documentation_" . $currentVersion . "/setup.phtml";
                 if (Request::hasQueryParam("docpath")) {
                     switch (Request::getQueryParam("docpath")) {
                         case "setup": {
-                                require "documentation_".$currentVersion."/setup.phtml";
+                                require "documentation_" . $currentVersion . "/setup.phtml";
                                 break;
                             }
                         case "directory-structure": {
-                                require "documentation_".$currentVersion."/directory_structure.phtml";
+                                require "documentation_" . $currentVersion . "/directory_structure.phtml";
                                 break;
                             }
+                        case "boostack-configs": {
+                                require "documentation_" . $currentVersion . "/boostack_configs.phtml";
+                                break;
+                            }
+                        case "first-configuration": {
+                                require "documentation_" . $currentVersion . "/first_configuration.phtml";
+                                break;
+                            }
+
                         case "controllers": {
-                                require "documentation_".$currentVersion."/controllers.phtml";
+                                require "documentation_" . $currentVersion . "/controllers.phtml";
                                 break;
                             }
-                        case "models": {
-                                require "documentation_".$currentVersion."/models.phtml";
+                            case "models-baseclass": {
+                                require "documentation_" . $currentVersion . "/models_baseclass.phtml";
                                 break;
                             }
-                        case "loginSecurity": {
-                                require "documentation_".$currentVersion."/loginSecurity.phtml";
+                            case "models-baselist": {
+                                require "documentation_" . $currentVersion . "/models_baselist.phtml";
                                 break;
                             }
                         case "template": {
-                                require "documentation_".$currentVersion."/template.phtml";
+                                require "documentation_" . $currentVersion . "/template.phtml";
+                                break;
+                            }
+                        case "first-complete-example": {
+                                require "documentation_" . $currentVersion . "/first_complete_example.phtml";
+                                break;
+                            }
+                            case "login-example": {
+                                require "documentation_" . $currentVersion . "/login_example.phtml";
+                                break;
+                            }
+                            case "api-example": {
+                                require "documentation_" . $currentVersion . "/api_example.phtml";
                                 break;
                             }
                         case "auth": {
-                                require "documentation_".$currentVersion."/auth.phtml";
+                                require "documentation_" . $currentVersion . "/auth.phtml";
                                 break;
                             }
                         case "users": {
-                                require "documentation_".$currentVersion."/users.phtml";
+                                require "documentation_" . $currentVersion . "/users.phtml";
                                 break;
                             }
                         case "session": {
-                                require "documentation_".$currentVersion."/session.phtml";
+                                require "documentation_" . $currentVersion . "/session.phtml";
                                 break;
                             }
                         case "curl": {
-                                require "documentation_".$currentVersion."/curl.phtml";
+                                require "documentation_" . $currentVersion . "/curl.phtml";
                                 break;
                             }
                         case "log": {
-                                require "documentation_".$currentVersion."/log.phtml";
+                                require "documentation_" . $currentVersion . "/log.phtml";
                                 break;
                             }
                         case "validator": {
-                                require "documentation_".$currentVersion."/validator.phtml";
+                                require "documentation_" . $currentVersion . "/validator.phtml";
                                 break;
                             }
                         default: {

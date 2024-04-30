@@ -1,0 +1,78 @@
+<?php
+
+use Boostack\Models\Request;
+?>
+<div class="row">
+    <div class="col-md-9">
+        <h2 class="fw-bold">Boostack Configs</h2>
+
+        <section id="GeneralConfigs">
+            <h3 class="pt-3">General Configs</h3>
+            <p>
+                Boostack manages configurations through two files <code>config/env/global.php</code> and <code>config/env/env.php</code>.
+            </p>
+            <p class="ps-4">
+                The <code>global.php</code> file contains all global variables such as paths for assets (css, js, font, images, etc.), meta tags for SEO, and social network meta tags.
+                These configurations are "global," meaning they refer to any possible "environment."
+            </p>
+            <p class="ps-4">
+                The <code>env.php</code> file contains all configurations of the specific "environment" (dev, staging, pre-prod, prod). This file includes the main environment configurations such as project paths, database configurations, sessions, cookies, lob, api, etc.
+                This file is set by default within the .gitignore to allow customization by each developer and in each possible environment (dev, staging, pre-prod, prod).
+                This file is precompiled with the default settings of Boostack through the automatic configuration process. Be careful: modify the default configuration values following the instructions in the file.
+            </p>
+            <p>
+                If you need to add a new configuration, simply add a new value to the $config array, for example:
+            <pre>$config["config-key"] = "config-value"</pre>
+            Choose to insert it into the global.php file if it is a global configuration shared by all developers and environments, or into the env.php file if it is a specific configuration of an environment or a specific developer.
+            </p>
+            <p>These files are precompiled with the default settings of Boostack through the
+                <a href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/first-configuration") ?>">automatic configuration</a> process.
+            </p>
+        </section>
+
+        <section id="AccessingConfigurationValues">
+            <h3 class="pt-3">Accessing Configuration Values</h3>
+            <p>You may easily access your configuration values using the <code>Config</code> class from anywhere in your
+                application.</p>
+            <pre><code>Config::get("configuration_key")</code></pre>
+        </section>
+
+        <section id="DevelopmentMode">
+            <h3 class="pt-3">Example: Development Mode configuration</h3>
+            <p>
+                An example of default configuration is the variable
+            <pre><code>$config['developmentMode'] = TRUE;</code></pre>
+            present in the env.php file.
+            </p>
+            <p>
+                With this configuration, you can set the development mode of Boostack, which allows displaying errors and exceptions on screen for all requests in your application. This simplifies application debugging during coding.
+            </p>
+            <p>
+                To check if the application is in development mode, you can use the Config class as follows:
+            <pre>
+if(Config::get('developmentMode')) {
+    ...
+}
+</pre>
+            </p>
+        </section>
+
+        <section id="AutomaticPreload">
+            <h3 class="pt-3">Automatic Preload</h3>
+            <p>
+                All configurations from the env.php and global.php files are automatically loaded by the default environment initialization procedure in all controllers using the code:
+            <pre><code>Boostack\Environment::init();</code></pre>
+            </p>
+        </section>
+
+
+    </div>
+    <div class="col-md-3">
+        <ul class="list-unstyled sticky-top small lh-lg">
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="General Configs" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/boostack-configs#GeneralConfigs") ?>">General Configs</a></li>
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Accessing Configuration Values" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/boostack-configs#AccessingConfigurationValues") ?>">Accessing Configuration Values</a></li>
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Development Mode" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/boostack-configs#DevelopmentMode") ?>">Development Mode</a></li>
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Automatic Preload" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/boostack-configs#AutomaticPreload") ?>">Automatic Preload</a></li>
+        </ul>
+    </div>
+</div>
