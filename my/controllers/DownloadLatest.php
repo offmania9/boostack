@@ -2,10 +2,6 @@
 
 namespace My\Controllers;
 
-use Boostack\Views\View;
-use Boostack\Models\Request;
-use Boostack\Models\Language;
-
 class DownloadLatest extends \My\Controller
 {
     public static function init()

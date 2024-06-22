@@ -62,8 +62,8 @@ RewriteCond %{HTTP:Authorization} .
 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
 #---------
-RewriteCond %{DOCUMENT_ROOT}/boostack/maintenance.php -f
-RewriteCond %{DOCUMENT_ROOT}/boostack/maintenance.enable -f
+RewriteCond %{DOCUMENT_ROOT}/public/maintenance.php -f
+RewriteCond %{DOCUMENT_ROOT}/maintenance.enable -f
 RewriteCond %{SCRIPT_FILENAME} !maintenance.php
 RewriteRule ^.*$ /maintenance.php [R=503,L]
 #----------
