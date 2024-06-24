@@ -110,7 +110,18 @@ $isWritebleLogFolder = is_writable_r($logPath);
 if(!$isWritebleLogFolder)
     $requirements_satisfaction = false;
 
-require_once "content_setup.phtml";
+
+// get DB configs from .env
+require '../../vendor/autoload.php';
+use Dotenv\Dotenv;
+$dotenv = Dotenv::createImmutable(__DIR__ . '/../../');
+$dotenv->load();
+$init_db_database = $_ENV['DB_DATABASE'] ?? '';
+$init_db_password_root = $_ENV['DB_PASSWORD_ROOT'] ?? '';
+$init_db_username = $_ENV['DB_USERNAME'] ?? '';
+$init_db_password = $_ENV['DB_PASSWORD'] ?? '';
+
+require_once "content_setup_docker.phtml";
 
 //-- FUNCTIONS
 function is_writable_r($dir) {
@@ -147,5 +158,6 @@ function urlpath_calculation($urlOrPath){
     $r = rtrim($r, '/') . '/';
     return $r;
 }
+
 
 ?>

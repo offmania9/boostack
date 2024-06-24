@@ -1,3 +1,8 @@
+<?php
+if (!empty($_POST)) {
+    require_once "setup-save.php";
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -29,27 +34,15 @@
         </div>
     </section>
     <section class="checker">
-        <div class="container mt-5">
-            <div class="row w-75 mx-auto pt-5">
-                <div class="col-md-5 mx-auto">
-                    <div class="card bg-light">
-                        <div class="card-body">
-                            <h4 class="card-title">Boostack on Docker</h4>
-                            <p class="card-text">Automatically configure Boostack if you have installed it in the Docker environment.</p>
-                            <a href="index_docker.php" class="btn btn-dark w-100 text-white">Start</a>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="col-md-5 mx-auto ">
-                    <div class="card bg-light">
-                        <div class="card-body">
-                            <h4 class="card-title">Custom Webserver</h4>
-                            <p class="card-text">Manually configure the Boostack environment to install it on your own webserver, such as Apache.</p>
-                            <a href="index_custom.php" class="btn btn-dark w-100 text-white">Start</a>
-                        </div>
-                    </div>
-                </div>
+        <div class="container">
+            <div class="row">
+                <?php
+                if (!empty($_POST)) {
+                    require_once "content_setup_docker.phtml";
+                } else {
+                    require_once "setup_docker.php";
+                }
+                ?>
             </div>
         </div>
     </section>

@@ -86,12 +86,12 @@ CREATE TABLE `boostack_http_session` (
 CREATE TABLE `boostack_log` (
   `id` int(11) NOT NULL,
   `level` enum('error','failure','information','success','warning','user','cronjob') DEFAULT NULL,
-  `datetime` int(11) NOT NULL,
+  `datetime` timestamp NOT NULL,
   `username` varchar(60) NOT NULL,
   `ip` varchar(16) NOT NULL,
   `useragent` varchar(255) NOT NULL,
   `referrer` varchar(255) NOT NULL,
-  `query` varchar(255) NOT NULL,
+  `query` text NOT NULL,
   `message` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
@@ -230,7 +230,7 @@ CREATE TABLE `boostack_user_social` (
   `id` int(11) NOT NULL,
   `type` varchar(2) NOT NULL,
   `uid` varchar(90) NOT NULL,
-  `uid_token` varchar(90) NOT NULL,
+  `uid_token` text NOT NULL,
   `uid_token_secret` varchar(90) NOT NULL,
   `autosharing` varchar(1) NOT NULL DEFAULT '1',
   `website` varchar(255) NOT NULL,

@@ -78,8 +78,6 @@ if ($env_parameters["database_on"] == "true" && $finalSetupMessageError == "") {
         $db = \Boostack\Models\Database\Database_PDO::getInstance($env_parameters["db_host"], $env_parameters["db_name"], $env_parameters["db_username"], $env_parameters["db_password"], $env_parameters["db_port"]);
         $db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
-        print_r("ss");
-
         if ($_POST["db-dump-active"] == "true") {
             $sql = file_get_contents('boostack_db.sql');
             $qr = $db->exec($sql);

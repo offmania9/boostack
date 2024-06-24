@@ -47,6 +47,6 @@ $pcanonical = !empty($canonical) ? $canonical : "";
 <body class="<?= isset($bodyClasses) ? $bodyClasses : '' ?>">
     <?php View::renderDefaultCSSFiles_nonCritical(); ?>
 
-    <?php if(Config::get('checkIfSetupFolderExists') && is_dir($_SERVER['DOCUMENT_ROOT']."/setup")): ?>
+    <?php if(Config::get('checkIfSetupFolderExists') && is_dir(ROOTPATH."/setup")): ?>
         <?php require "setup_exists_header.phtml"; ?>
     <?php endif; ?>

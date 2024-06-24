@@ -1,4 +1,5 @@
 <?php
+
 use Boostack\Models\Request;
 ?>
 <div class="row">
@@ -13,36 +14,35 @@ use Boostack\Models\Request;
                 <br />
                 <small>Import as vendor: <em>composer require offmania9/boostack</em></small>
             </p>
-            <h5>or Via GIT Clone</h5>
-            <p>
-                <code>git clone https://github.com/offmania9/boostack.git</code>
-            </p>
         </section>
 
         <section id="Installation">
             <h3 class="pt-3">Installation</h3>
             You can install Boostack using two distinct installation procedures:
             <ul>
-                <li><b>[recommended] via Docker</b> which will install 3 containers (php-apache, maria db, phpmyadmin) including all the requirements necessary for the operation of Boostack. Jump to Docker Installation chapter.</li>
+                <li><b>[recommended] via Docker</b> which will install 3 containers (php-apache, maria db, phpmyadmin) including all the requirements necessary for the operation of Boostack. <a href="<?= Request::getFriendlyUrl("docs/".$currentVersion."/setup#InstallationDocker") ?>">Jump to Docker Installation chapter</a>.</li>
                 <li>or as a <b>stand-alone</b> application within an Apache web application server
                     <div class="ps-5">
-                        <p>General requirements</p>
-                        <ul>
-                            <li><code>PHP >= 7.4</code></li>
-                            <li><code>PDO PHP Extension</code></li>
-                        </ul>
-                        <p>Apache modules enabled (httpd.conf):</p>
-                        <ul>
-                            <li>
-                                <code>mod_rewrite</code>
-                            </li>
-                            <li>
-                                <code>mod_headers</code>
-                            </li>
-                            <li>
-                                <code>mod_filters</code>
-                            </li>
-                        </ul>
+                       
+                            General requirements
+                            <ul>
+                                <li>PHP >= 7.4</li>
+                                <li>PDO PHP Extension</li>
+                            </ul>
+
+                            Apache modules enabled (httpd.conf):
+                            <ul>
+                                <li>
+                                mod_rewrite
+                                </li>
+                                <li>
+                                    mod_headers
+                                </li>
+                                <li>
+                                mod_filters
+                                </li>
+                            </ul>
+                        
                         <p>Virtual host configuration:</p>
                         <pre class="smallx2">
     &lt;Directory /var/www/html&gt;
@@ -61,8 +61,21 @@ use Boostack\Models\Request;
 
         <section id="InstallationDocker">
             <h3 class="pt-3">Docker Installation</h3>
-            <p>Launch Docker compose in project root
-                <br /><code>docker-compose up -d --build</code>
+            <p>
+                Before launching Boostack installation via Docker, make sure you have set the variables found in the <b> .env file at the project root</b>
+            <pre>
+    DB_HOST=db
+    DB_PORT=3306
+    DB_DATABASE=boostack_db
+    DB_PASSWORD_ROOT=ROOT
+    DB_USERNAME=boostack_usr
+    DB_PASSWORD=boostack_pwd</pre>
+            </p>
+
+            <p>
+                Ok, now you're ready to run the <b>"docker compose"</b> command at <b>the project root</b>.
+                <br />
+            <pre><code>docker-compose up -d --build</code></pre>
             </p>
             <p>In the Docker compose file, you need to comment out the user parameter for php-apache based on
                 the operating system: 502:20 for macOS and 1000:1000 for Unix. Leave both lines commented out (disabled)
