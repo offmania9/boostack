@@ -33,7 +33,7 @@
     "inclusions2":"Developers for developers",
     "download":{
         "howto":"How to get Boostack",
-        "howtoDescription":"Boostack is available open-source under the <a href=\"https://github.com/offmania9/boostack/blob/master/LICENSE\" target=\"_blank\" title=\"Boostack github\">MIT</a> license.<br/>The most recent and advanced version of Boostack can be found in our Git repository (<a href=\"https://github.com/offmania9/\" target=\"_blank\">https://github.com/offmania9/boostack</a>).",
+        "howtoDescription":"Boostack is available open-source under the <a href=\"https://github.com/offmania9/boostack/blob/master/LICENSE\" target=\"_blank\" title=\"Boostack github\">MIT</a> license.<br/>The most recent and advanced versions of Boostack can be found in our Git repositories (<a href=\"https://github.com/offmania9/boostack\" target=\"_blank\">https://github.com/offmania9/boostack</a> and <a href=\"https://github.com/offmania9/boostack-framework\" target=\"_blank\">https://github.com/offmania9/boostack-framework</a>).",
         "downloadit":"Download it!",
         "downloaditDescription":"<b>Get the latest version via Composer</b><br/><code>composer create-project offmania9/boostack</code><br/><span class=\"small\">Import as vendor: <em>composer require offmania9/boostack</em></span>",
         "after":"After you get it",
