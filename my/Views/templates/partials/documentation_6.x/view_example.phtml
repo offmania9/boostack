@@ -1,0 +1,45 @@
+<?php
+
+use Boostack\Models\Request;
+?>
+<div class="row">
+    <div class="col-md-9">
+        <h2 class="fw-bold">Course: View Example</h2>
+
+        <section id="Example">
+    <h3 class="pt-3">Example</h3>
+    <p>
+        Create the <b>course.phtml</b> file in the <b>Views/templates</b> directory with the following content:
+    </p>
+    <pre>&lt;?php require "partials/before_content.phtml"; // Pre-content code that can be shared across all pages ?&gt;
+&lt;?php require "partials/header.phtml"; // Header code that can be shared across all pages ?&gt;
+&lt;?php require "partials/course.phtml";  // Custom code for the specific course page ?&gt;
+&lt;?php require "partials/footer.phtml"; // Footer code that can be shared across all pages ?&gt;
+&lt;?php require "partials/after_content.phtml";  // Closing code that can be shared across all pages ?&gt;
+</pre>
+
+    <p>
+        Then create your "partial" file <b>course.phtml</b> in the <b>Views/templates/partials</b> directory with the following content:
+    </p>
+    <pre>
+&lt;section class="py-1"&gt;
+    &lt;div class="py-2"&gt;
+        &lt;div class="container"&gt;
+            &lt;div class="row"&gt;
+                &lt;h2 class=""&gt;Course&lt;/h2&gt;
+                &lt;p class="lead"&gt;This is the courses page&lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/section&gt;
+</pre>
+</section>
+
+
+    </div>
+    <div class="col-md-3">
+        <ul class="list-unstyled sticky-top small lh-lg">
+
+        </ul>
+    </div>
+</div>

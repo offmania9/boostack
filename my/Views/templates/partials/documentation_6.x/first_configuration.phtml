@@ -1,0 +1,86 @@
+<?php
+
+use Boostack\Models\Request;
+use Boostack\Views\View;
+?>
+<div class="row">
+    <div class="col-md-9">
+        <h2 class="fw-bold">First Configuration</h2>
+
+        <section id="AutomaticConfiguration">
+            <h3 class="pt-3">Automatic Configuration</h3>
+            <p>Go to</p>
+            <pre><code>http://&lt;your_local_path_to_boostack_installation&gt;/setup</code></pre>
+            <p>and begin the automated setup procedure. You can choose between automatic configuration in the docker environment and manual configuration in your webserver (like Apache).</p>
+            <div class="">
+                <picture>
+                    <source srcset="<?= View::getImageLink("boostack_docs_setup.webp") ?>" type="image/webp">
+                    <img src="<?= View::getImageLink("boostack_docs_setup.jpg") ?>" class="mx-auto img-fluid" alt="Boostack Setup">
+                </picture>
+            </div>
+
+            <h5 class="">Boostack on Docker</h5>
+            <p class="text-decoration-underline fw-bold">
+                If you are in installation mode via Docker the "General configurations" (Environment, Database, API, etc.) are already all set for correct operation via Docker, so it is not necessary to modify the form fields but you can proceed with saving the form.
+            <div class="">
+                <picture>
+                    <source srcset="<?= View::getImageLink("boostack_docs_setup_docker.webp") ?>" type="image/webp">
+                    <img src="<?= View::getImageLink("boostack_docs_setup_docker.jpg") ?>" class="mx-auto img-fluid" alt="Boostack Docker Setup">
+                </picture>
+            </div>
+            </p>
+            <hr />
+            <h5 class="">Custom Webserver</h5>
+            <p>If you are in Custom Webserver installation mode, at first, the setup will check for the PHP and Apache configurations. Then you will be prompted to insert your environment configuration parameters.</p>
+            <hr />
+            <p>When the setup procedure is ended, you will see a message that remember you to delete or rename "setup" folder
+                from the project.<br/>
+                <picture>
+                    <source srcset="<?= View::getImageLink("boostack_setup_3.webp") ?>" type="image/webp">
+                    <img src="<?= View::getImageLink("boostack_setup_3.jpg") ?>" class="img-fluid" alt="Boostack Setup 3">
+                </picture>
+            </p>
+            <p class="fw-bold">Remember:To restore the automated setup procedure, simply delete the <code>config/env/env.php file.</code></p>
+        </section>
+
+        <section id="ManualConfiguration">
+            <h3 class="pt-3">Manual Configuration</h3>
+            <p>Alternatively to the automatic setup, you can proceed with manual configuration by copying and renaming the file
+                <code>config/env/sample.env.php</code>
+                to <code>config/env/env.php</code> and fill it with your preferred configurations.
+            </p>
+        </section>
+
+        <section id="FriendlyURLsConfiguration">
+            <h3 class="pt-3">Routing and friendly URLs Configuration</h3>
+            <p>Boostack includes in "public" folder a <code>.htaccess</code> file that is used to provide friendly URLs without the file extension .php
+                in the path.
+                <span class="text-decoration-underline fw-bold">This is the primary method used by Boostack to route main requests to the controllers.</span>
+            </p>
+            for example:
+            <pre>
+    RewriteRule ^[friendly-path]$ [Php page controller in public folder] [L]</pre>
+            <p>There are the one served by default:</p>
+            <pre>
+    RewriteRule ^home$ index.php [L]
+    RewriteRule ^setup$ /first-configuration/index.php [L]
+    RewriteRule ^docs$ documentation.php [L]
+    RewriteRule ^download$ download.php [L]
+    RewriteRule ^login$ login.php [L]
+    RewriteRule ^registration$ registration.php [L]
+    RewriteRule ^logout$ logout.php [L]
+    RewriteRule ^api/([^\.]+)$ api.php?request=$1 [L]
+    </pre>
+            It is possible to modify the above rules to your liking.
+            Pay attention to the "RewriteRule ^api/([^\.]+)$ api.php?request=$1 [L]" rule which allows the default Boostack API to work correctly.
+        </section>
+
+    </div>
+    <div class="col-md-3">
+        <ul class="list-unstyled sticky-top small lh-lg">
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Automatic Configuration" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/first-configuration#AutomaticConfiguration") ?>">Automatic Configuration</a></li>
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Manual Configuration" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/first-configuration#ManualConfiguration") ?>">Manual Configuration</a></li>
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Friendly URLs Configuration" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/first-configuration#FriendlyURLsConfiguration") ?>">Friendly URLs Configuration</a></li>
+        </ul>
+    </div>
+</div>

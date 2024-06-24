@@ -1,0 +1,18 @@
+<nav class="navbar navbar-expand-lg bg-white py-3">
+	<div class="container" itemscope itemtype="http://schema.org/SoftwareApplication">
+		<a class="navbar-brand" title="Boostack" href="<?= \Boostack\Models\Config::get("url"); ?>">
+			<h1>
+				<img itemprop="image" src="<?= \Boostack\Views\View::getImageLink("boostack_logo_xs2.png"); ?>" 
+				alt="<?= \Boostack\Models\Language::getLabel("projectName"); ?> main logo" class="rounded d-inline-block align-text-top">
+				<span class="ms-2" itemprop="name"><?= \Boostack\Models\Language::getLabel("projectName"); ?></span>
+				<span class="d-none" itemprop="applicationCategory">PHP Framework</span>
+			</h1>
+		</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<?php require("nav.phtml"); ?>
+		</div>
+	</div>
+</nav>
