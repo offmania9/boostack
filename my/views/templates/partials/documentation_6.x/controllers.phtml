@@ -1,20 +1,23 @@
 <?php
+
 use Boostack\Models\Request;
 ?>
 <div class="row">
     <div class="col-md-9">
         <h2 class="fw-bold">Controllers</h2>
-        <p>Controllers can be found in the root folder of the project.</p>
-        <p>Ax example of default controllers provided by Boostack are <code>index.php</code> or <code>login.php</code></p>
-        <p>To create a new controller, you can create a brand new file in the root folder of your project and follow the logic above:</p>
-        <pre><code>&lt;?php
-    require_once "core/environment_init.php";
+        <p>You can organize your controllers inside the <b>My/Controllers</b> folder and call them within the pages located in the project's "public" folder.</p>
+        <p>To create a new controller, you can create a brand new file in the My/Controllers folder of your project and follow the logic above:</p>
+        <pre>&lt;?php
+    namespace My\Controllers;
 
-
-    // INSERT HERE YOUR LOGIC
-
-
-?&gt;</code></pre>
+    class Course extends \My\Controller
+    {
+        public static function init()
+        {
+            echo "This is the courses page";
+        }
+    }
+?&gt;</pre>
 
         <div class="col-md-3">
             <ul class="list-unstyled sticky-top small lh-lg">

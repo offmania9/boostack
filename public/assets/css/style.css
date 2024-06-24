@@ -37,6 +37,10 @@
   font-weight: 700;
   src: local("Lato Bold"), local("Lato-Bold"), url("../fonts/lato/lato-v13-latin-700.woff2") format("woff2"), url("../fonts/lato/lato-v13-latin-700.woff") format("woff");
 }
+.text-dark-green {
+  color: #618c33 !important;
+}
+
 .text-secondary-light {
   color: rgb(176, 176, 176) !important;
 }

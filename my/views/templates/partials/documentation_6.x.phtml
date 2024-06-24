@@ -30,33 +30,48 @@ use Boostack\Models\Request;
                     <li class="ps-3">
                         <a class="link-opacity-75-hover link-underline-light fw-normal" title="Boostack Configs" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/boostack-configs") ?>">Boostack Configs</a>
                     </li>
+                    <li class="ps-3">
+                        <a class="link-opacity-75-hover link-underline-light fw-normal text-dark-green fw-bold" title="Course First Example" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/first-example") ?>">Course: First Example</a>
+                    </li>
                     <li class="title fw-bold pt-3">Architecture</li>
                     <li class="ps-3">
                         <a title="Models BaseClass" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/models-baseclass") ?>">Models: BaseClass</a>
                     </li>
                     <li class="ps-3">
+                        <a title="Course: Model BaseClass Example" class="link-opacity-75-hover link-underline-light fw-normal text-dark-green fw-bold" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/models-baseclass-example") ?>">Course: Model BaseClass Example</a>
+                    </li>
+                    <li class="ps-3">
                         <a title="Models BaseList" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/models-baselist") ?>">Models: BaseList</a>
+                    </li>
+                    <li class="ps-3">
+                        <a title="Course: Model BaseList Example" class="link-opacity-75-hover link-underline-light fw-normal text-dark-green fw-bold" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/models-baselist-example") ?>">Course: Model BaseList Example</a>
                     </li>
                     <li class="ps-3">
                         <a title="Controllers" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/controllers") ?>">Controllers</a>
                     </li>
                     <li class="ps-3">
-                        <a title="Template" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/template") ?>">Views</a>
-                    </li>
-                    <li class="title fw-bold pt-3">Examples</li>
-                    <li class="ps-3">
-                        <a title="first complete example" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/first-complete-example") ?>">First complete example</a>
+                        <a title="Controller Example" class="link-opacity-75-hover link-underline-light fw-normal text-dark-green fw-bold" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/controller-example") ?>">Coures: Controller Example</a>
                     </li>
                     <li class="ps-3">
+                        <a title="Views" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/views") ?>">Views</a>
+                    </li>
+                    <li class="ps-3">
+                        <a title="View Example" class="link-opacity-75-hover link-underline-light fw-normal text-dark-green fw-bold" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/view-example") ?>">Coures: View Example</a>
+                    </li>
+                    <li class="title fw-bold pt-3 d-none">Examples</li>
+                    <li class="ps-3 d-none">
+                        <a title="first complete example d-none" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/first-complete-example") ?>">First complete example</a>
+                    </li>
+                    <li class="ps-3 d-none">
                         <a title="login example" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/login-example") ?>">Login example</a>
                     </li>
-                    <li class="ps-3">
+                    <li class="ps-3 d-none">
                         <a title="api example" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/api-example") ?>">API example</a>
                     </li>
 
                     <li class="title fw-bold pt-3">Utilities</li>
-                    <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/auth") ?>">Auth</a></li>
                     <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/users") ?>">Users</a></li>
+                    <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/auth") ?>">Auth</a></li>
                     <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/session") ?>">Session</a></li>
                     <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/curl") ?>">CURL</a></li>
                     <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/log") ?>">Log</a></li>
@@ -79,36 +94,55 @@ use Boostack\Models\Request;
                                 require "documentation_" . $currentVersion . "/boostack_configs.phtml";
                                 break;
                             }
+                        case "first-example": {
+                                require "documentation_" . $currentVersion . "/first_example.phtml";
+                                break;
+                            }
                         case "first-configuration": {
                                 require "documentation_" . $currentVersion . "/first_configuration.phtml";
                                 break;
                             }
-
                         case "controllers": {
                                 require "documentation_" . $currentVersion . "/controllers.phtml";
                                 break;
                             }
-                            case "models-baseclass": {
+                        case "controller-example": {
+                                require "documentation_" . $currentVersion . "/controllers_example.phtml";
+                                break;
+                            }
+                        case "models-baseclass": {
                                 require "documentation_" . $currentVersion . "/models_baseclass.phtml";
                                 break;
                             }
-                            case "models-baselist": {
+                        case "models-baseclass-example": {
+                                require "documentation_" . $currentVersion . "/models_baseclass_example.phtml";
+                                break;
+                            }
+                        case "models-baselist": {
                                 require "documentation_" . $currentVersion . "/models_baselist.phtml";
                                 break;
                             }
-                        case "template": {
-                                require "documentation_" . $currentVersion . "/template.phtml";
+                        case "models-baselist-example": {
+                                require "documentation_" . $currentVersion . "/models_baselist_example.phtml";
+                                break;
+                            }
+                        case "views": {
+                                require "documentation_" . $currentVersion . "/views.phtml";
+                                break;
+                            }
+                        case "view-example": {
+                                require "documentation_" . $currentVersion . "/view_example.phtml";
                                 break;
                             }
                         case "first-complete-example": {
                                 require "documentation_" . $currentVersion . "/first_complete_example.phtml";
                                 break;
                             }
-                            case "login-example": {
+                        case "login-example": {
                                 require "documentation_" . $currentVersion . "/login_example.phtml";
                                 break;
                             }
-                            case "api-example": {
+                        case "api-example": {
                                 require "documentation_" . $currentVersion . "/api_example.phtml";
                                 break;
                             }

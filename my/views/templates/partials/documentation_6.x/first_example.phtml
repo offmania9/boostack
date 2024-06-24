@@ -1,0 +1,41 @@
+<div class="row">
+    <div class="col-md-9">
+        <h2 class="fw-bold">Course: First Example</h2>
+        <section id="FirstExample">
+            <h3 class="pt-3">Routing</h3>
+            <p>
+                Open the .htaccess file in the "public" folder, and add the following rule in the Rewrite Rules block:
+            <pre><code>RewriteRule ^course$ course.php [L]</code></pre>
+            Now you can create the course.php page inside the "public" folder. All requests to urlpath/course will be redirected to the course.php page.
+            </p>
+            <h3 class="">Page: course.php</h3>
+            <p class="">
+                Insert the following code into the course.php page:
+            <pre>
+    // load Boostack Environment
+    require __DIR__ . '/../vendor/autoload.php';
+    Boostack\Environment::init();
+
+    // call the custom controller Course stored in the My/Controller folder
+    My\Controllers\Course::init();
+                </pre>
+            </p>
+            <h3 class="">Controller: Course.php</h3>
+            <p class="">
+                Now you need to create your custom controller Course.php in the <b>My/Controllers</b> folder
+            <pre>&lt;?php
+    namespace My\Controllers;
+
+    class Course extends \My\Controller
+    {
+        public static function init()
+        {
+            echo "This is the courses page";
+        }
+}?&gt;</pre>
+            </p>
+        </section>
+    </div>
+    <div class="col-md-3">
+    </div>
+</div>
