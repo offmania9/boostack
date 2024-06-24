@@ -6,43 +6,43 @@
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 <url>
   <loc>https://www.getboostack.com/</loc>
-  <lastmod>2024-04-15T22:28:21+00:00</lastmod>
+  <lastmod>2024-06-24T16:28:21+00:00</lastmod>
   <changefreq>daily</changefreq>
   <priority>1.00</priority>
 </url>
 <url>
   <loc>https://www.getboostack.com/home</loc>
-  <lastmod>2024-04-15T22:28:21+00:00</lastmod>
+  <lastmod>2024-06-24T16:28:21+00:00</lastmod>
   <changefreq>daily</changefreq>
   <priority>1.00</priority>
 </url>
 <url>
   <loc>https://www.getboostack.com/download</loc>
-  <lastmod>2024-04-15T22:28:21+00:00</lastmod>
+  <lastmod>2024-06-24T16:28:21+00:00</lastmod>
   <changefreq>daily</changefreq>
   <priority>1.00</priority>
 </url>
 <url>
   <loc>https://www.getboostack.com/docs</loc>
-  <lastmod>2024-04-15T22:28:21+00:00</lastmod>
+  <lastmod>2024-06-24T16:28:21+00:00</lastmod>
   <changefreq>daily</changefreq>
   <priority>1.00</priority>
 </url>
 <url>
   <loc>https://www.getboostack.com/docs/setup</loc>
-  <lastmod>2024-04-15T22:28:21+00:00</lastmod>
+  <lastmod>2024-06-24T16:28:21+00:00</lastmod>
   <changefreq>daily</changefreq>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://www.getboostack.com/docs/directory-structure</loc>
-  <lastmod>2024-04-15T22:28:21+00:00</lastmod>
+  <lastmod>2024-06-24T16:28:21+00:00</lastmod>
   <changefreq>daily</changefreq>
   <priority>0.64</priority>
 </url>
 <url>
   <loc>https://www.getboostack.com/docs/controllers</loc>
-  <lastmod>2024-04-15T22:28:21+00:00</lastmod>
+  <lastmod>2024-06-24T16:28:21+00:00</lastmod>
   <changefreq>daily</changefreq>
   <priority>0.64</priority>
 </url>
