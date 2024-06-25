@@ -9,19 +9,19 @@ use Boostack\Models\Request;
             <b>The Language class is used for the automated management of application labels and translations.</b> The labels are centralized in JSON files located in the "lang" folder. Using these language-specific JSON files (e.g., en.inc.json, us.inc.json), labels can be utilized throughout the application.
         </p>
 
-        <h4>Auto-discovery of Language</h4>
-<p>
-If the <code>$config["language_on"] = TRUE</code> setting is specified in the env.php configuration file, the system (during the initial Environment init phase) will automatically detect the language (by searching for it in the query, session, or configurations) and automatically load the associated language JSON file.
-</p>
-<p>
-Additionally, the following configurations work as follows:
-<ul>
-<li><code>$config["language_force_default"]</code> forces the use of the default language set in $config["language_default"].</li>
-<li><code>$config["enabled_languages"]</code> is an array of enabled languages (e.g., array("en","us","it","fr",....).</li>
-<li><code>$config["show_default_language_in_URL"]</code> automatically inserts the language code into the URLs of the pages.</li>
-</ul>
-</p>
-        <h4>
+        <h4 id="AutoDiscovery">Auto-discovery of Language</h4>
+        <p>
+            If the <code>$config["language_on"] = TRUE</code> setting is specified in the env.php configuration file, the system (during the initial Environment init phase) will automatically detect the language (by searching for it in the query, session, or configurations) and automatically load the associated language JSON file.
+        </p>
+        <p>
+            Additionally, the following configurations work as follows:
+        <ul>
+            <li><code>$config["language_force_default"]</code> forces the use of the default language set in $config["language_default"].</li>
+            <li><code>$config["enabled_languages"]</code> is an array of enabled languages (e.g., array("en","us","it","fr",....).</li>
+            <li><code>$config["show_default_language_in_URL"]</code> automatically inserts the language code into the URLs of the pages.</li>
+        </ul>
+        </p>
+        <h4 id="UsageExample">
             Usage Example
         </h4>
         <pre>
@@ -75,6 +75,9 @@ foreach ($services as $service) {
     echo $service["description"]."/n";
 }
 </pre>
+        <h4 id="Methods">
+            Methods
+        </h4>
         <ul>
             <li><code>__construct()</code><br />
                 Prevents direct instantiation of Language.
@@ -120,7 +123,9 @@ foreach ($services as $service) {
     </div>
     <div class="col-md-3">
         <ul class="list-unstyled sticky-top small lh-lg">
-            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light d-none" title="" href="<?= Request::getFriendlyUrl("docs/setup#item") ?>">Item</a></li>
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/language#AutoDiscovery") ?>">Language Auto-discovery</a></li>
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Usage Example" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/language#UsageExample") ?>">Usage Example</a></li>
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Methods" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/language#Methods") ?>">Methods</a></li>
         </ul>
     </div>
 </div>

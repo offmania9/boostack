@@ -69,8 +69,9 @@ use Boostack\Models\Request;
                         <a title="api example" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/api-example") ?>">API example</a>
                     </li>
 
-                    <li class="title fw-bold pt-3">Utilities</li>
+                    <li class="title fw-bold pt-3">Core Features</li>
                     <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/language") ?>">Language</a></li>
+                    <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/request") ?>">Request</a></li>
                     <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/users") ?>">Users</a></li>
                     <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/auth") ?>">Auth</a></li>
                     <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/session") ?>">Session</a></li>
@@ -148,7 +149,11 @@ use Boostack\Models\Request;
                                 require "documentation_" . $currentVersion . "/api_example.phtml";
                                 break;
                             }
-                            case "language": {
+                        case "request": {
+                                require "documentation_" . $currentVersion . "/request.phtml";
+                                break;
+                            }
+                        case "language": {
                                 require "documentation_" . $currentVersion . "/language.phtml";
                                 break;
                             }
@@ -176,7 +181,7 @@ use Boostack\Models\Request;
                                 require "documentation_" . $currentVersion . "/validator.phtml";
                                 break;
                             }
-                            case "tablehandler": {
+                        case "tablehandler": {
                                 require "documentation_" . $currentVersion . "/tablehandler.phtml";
                                 break;
                             }

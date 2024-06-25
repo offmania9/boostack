@@ -1,0 +1,270 @@
+<?php
+
+use Boostack\Models\Request;
+?>
+<div class="row">
+    <div class="col-md-9">
+        <h2 class="fw-bold">Request</h2>
+        <p>
+            The Request class represents an <b>HTTP request handler, providing methods to manage and sanitize request data from various sources, such as GET, POST, SERVER, COOKIE, and FILES</b>. 
+            It offers methods to check for the existence of parameters, retrieve their values, sanitize inputs, and handle redirections. Below is a detailed overview of the class and its methods.
+        </p>
+
+        <p><b>All values returned by methods of the Request class are already sanitized.</b></p>
+        <h4 id="UsageExample">
+            Usage Example
+        </h4>
+        <pre>
+# Request::init();
+if (Request::hasPostParam('username')) { // POST param
+    $username = Request::getPostParam('username');
+    echo "Hello, $username!";
+}
+if (Request::hasQueryParam('article-id')) { // url GET params
+    $article_id = Request::getQueryParam('article-id');
+    echo "This is the Article ID: $article_id";
+}
+print_r(Request::getHeaderArray());
+</pre>
+<p><code>Request::init()</code> is typically invoked by the Environment controller. You can remove the call to Request::init() since it is invoked by Boostack\Environment::init() during application startup.</p>
+
+        <h4 id="Methods">Methods</h4>
+        <ul>
+            <li><code>public static function init()</code><br />
+                Initializes the request by registering data from global variables.
+                <ul>
+                    <li>This method returns void: It sets up the internal state of the Request class.</li>
+                </ul>
+            </li>
+            <li><code>public static function hasPostParam(string $param): bool</code><br />
+                Checks if a POST parameter exists.
+                <ul>
+                    <li><b>$param</b>: The name of the POST parameter.</li>
+                    <li>This method returns bool: True if the parameter exists, false otherwise.</li>
+                </ul>
+            </li>
+            <li><code>public static function getPostParam(string $param)</code><br />
+                Retrieves a POST parameter value and sanitizes it.
+                <ul>
+                    <li><b>$param</b>: The name of the POST parameter.</li>
+                    <li>This method returns mixed: The sanitized parameter value or null if it doesn't exist.</li>
+                </ul>
+            </li>
+            <li><code>public static function getPostArray()</code><br />
+                Retrieves all POST parameters and sanitizes them.
+                <ul>
+                    <li>This method returns array|string: The sanitized POST parameters.</li>
+                </ul>
+            </li>
+            <li><code>public static function hasQueryParam(string $param): bool</code><br />
+                Checks if a QUERY parameter exists.
+                <ul>
+                    <li><b>$param</b>: The name of the QUERY parameter.</li>
+                    <li>This method returns bool: True if the parameter exists, false otherwise.</li>
+                </ul>
+            </li>
+            <li><code>public static function getQueryParam(string $param)</code><br />
+                Retrieves a QUERY parameter value and sanitizes it.
+                <ul>
+                    <li><b>$param</b>: The name of the QUERY parameter.</li>
+                    <li>This method returns mixed: The sanitized parameter value or null if it doesn't exist.</li>
+                </ul>
+            </li>
+            <li><code>public static function getQueryArray()</code><br />
+                Retrieves all QUERY parameters and sanitizes them.
+                <ul>
+                    <li>This method returns array|string: The sanitized QUERY parameters.</li>
+                </ul>
+            </li>
+            <li><code>public static function hasServerParam(string $param): bool</code><br />
+                Checks if a SERVER parameter exists.
+                <ul>
+                    <li><b>$param</b>: The name of the SERVER parameter.</li>
+                    <li>This method returns bool: True if the parameter exists, false otherwise.</li>
+                </ul>
+            </li>
+            <li><code>public static function getServerParam(string $param)</code><br />
+                Retrieves a SERVER parameter value and sanitizes it.
+                <ul>
+                    <li><b>$param</b>: The name of the SERVER parameter.</li>
+                    <li>This method returns mixed: The sanitized parameter value or null if it doesn't exist.</li>
+                </ul>
+            </li>
+            <li><code>public static function getServerArray()</code><br />
+                Retrieves all SERVER parameters and sanitizes them.
+                <ul>
+                    <li>This method returns array|string: The sanitized SERVER parameters.</li>
+                </ul>
+            </li>
+            <li><code>public static function hasHeaderParam(string $param): bool</code><br />
+                Checks if a HEADER parameter exists.
+                <ul>
+                    <li><b>$param</b>: The name of the HEADER parameter.</li>
+                    <li>This method returns bool: True if the parameter exists, false otherwise.</li>
+                </ul>
+            </li>
+            <li><code>public static function getHeaderParam(string $param)</code><br />
+                Retrieves a HEADER parameter value and sanitizes it.
+                <ul>
+                    <li><b>$param</b>: The name of the HEADER parameter.</li>
+                    <li>This method returns mixed: The sanitized parameter value or null if it doesn't exist.</li>
+                </ul>
+            </li>
+            <li><code>public static function getHeaderArray()</code><br />
+                Retrieves all HEADER parameters and sanitizes them.
+                <ul>
+                    <li>This method returns array|string: The sanitized HEADER parameters.</li>
+                </ul>
+            </li>
+            <li><code>public static function hasCookieParam(string $param): bool</code><br />
+                Checks if a COOKIE parameter exists.
+                <ul>
+                    <li><b>$param</b>: The name of the COOKIE parameter.</li>
+                    <li>This method returns bool: True if the parameter exists, false otherwise.</li>
+                </ul>
+            </li>
+            <li><code>public static function getCookieParam(string $param)</code><br />
+                Retrieves a COOKIE parameter value and sanitizes it.
+                <ul>
+                    <li><b>$param</b>: The name of the COOKIE parameter.</li>
+                    <li>This method returns mixed: The sanitized parameter value or null if it doesn't exist.</li>
+                </ul>
+            </li>
+            <li><code>public static function getCookieArray()</code><br />
+                Retrieves all COOKIE parameters and sanitizes them.
+                <ul>
+                    <li>This method returns array|string: The sanitized COOKIE parameters.</li>
+                </ul>
+            </li>
+            <li><code>public static function hasRequestParam(string $param): bool</code><br />
+                Checks if a REQUEST parameter exists.
+                <ul>
+                    <li><b>$param</b>: The name of the REQUEST parameter.</li>
+                    <li>This method returns bool: True if the parameter exists, false otherwise.</li>
+                </ul>
+            </li>
+            <li><code>public static function getRequestParam(string $param)</code><br />
+                Retrieves a REQUEST parameter value and sanitizes it.
+                <ul>
+                    <li><b>$param</b>: The name of the REQUEST parameter.</li>
+                    <li>This method returns mixed: The sanitized parameter value or null if it doesn't exist.</li>
+                </ul>
+            </li>
+            <li><code>public static function getRequestArray()</code><br />
+                Retrieves all REQUEST parameters and sanitizes them.
+                <ul>
+                    <li>This method returns array|string: The sanitized REQUEST parameters.</li>
+                </ul>
+            </li>
+            <li><code>public static function hasFilesParam(string $param): bool</code><br />
+                Checks if a FILES parameter exists.
+                <ul>
+                    <li><b>$param</b>: The name of the FILES parameter.</li>
+                    <li>This method returns bool: True if the parameter exists, false otherwise.</li>
+                </ul>
+            </li>
+            <li><code>public static function getFilesParam(string $param)</code><br />
+                Retrieves a FILES parameter value and sanitizes it.
+                <ul>
+                    <li><b>$param</b>: The name of the FILES parameter.</li>
+                    <li>This method returns mixed: The sanitized parameter value or null if it doesn't exist.</li>
+                </ul>
+            </li>
+            <li><code>public static function getFilesArray()</code><br />
+                Retrieves all FILES parameters and sanitizes them.
+                <ul>
+                    <li>This method returns array|string: The sanitized FILES parameters.</li>
+                </ul>
+            </li>
+            <li><code>public static function goToMaintenance()</code><br />
+                Redirects to the maintenance page.
+                <ul>
+                    <li>This method returns void: It exits the script after redirection.</li>
+                </ul>
+            </li>
+            <li><code>public static function getFriendlyUrl($virtualPath)</code><br />
+                Generates a friendly URL based on the virtual path provided.
+                <ul>
+                    <li><b>$virtualPath</b>: The virtual path.</li>
+                    <li>This method returns string: The friendly URL.</li>
+                </ul>
+            </li>
+            <li><code>public static function goToUrl($URL)</code><br />
+                Redirects the user to the specified URL.
+                <ul>
+                    <li><b>$URL</b>: The URL to redirect to.</li>
+                    <li>This method returns void: It exits the script after redirection.</li>
+                </ul>
+            </li>
+            <li><code>public static function goToHome()</code><br />
+                Redirects the user to the home page.
+            </li>
+
+            <li><code>public static function goToError(int $status_code = NULL)</code><br />
+                Redirects the user to the error page.<br />
+                <ul>
+                    <li><b>$status_code</b>: Optional. The HTTP status code to be used for the error page.</li>
+                    <li>This method returns void: It redirects the user to the error page specified by the HTTP status code.</li>
+                </ul>
+            </li>
+            <li><code>public static function goToLogout()</code><br />
+                Redirects the user to the logout page.<br />
+                <ul>
+                    <li>This method has no input variables.</li>
+                    <li>This method returns void: It redirects the user to the logout page.</li>
+                </ul>
+            </li>
+            <li><code>public static function getUserAgent()</code><br />
+                Retrieves the User-Agent string from the request headers.<br />
+                <ul>
+                    <li>This method has no input variables.</li>
+                    <li>This method returns string|array: The User-Agent string from the request headers.</li>
+                </ul>
+            </li>
+            <li><code>public static function getIpAddress()</code><br />
+                Retrieves the IP address of the client.<br />
+                <ul>
+                    <li>This method has no input variables.</li>
+                    <li>This method returns string|false|array: The IP address of the client.</li>
+                </ul>
+            </li>
+            <li><code>public static function sanitizeInput($data, $encoding = 'UTF-8')</code><br />
+                Sanitizes input data to prevent XSS attacks.<br />
+                <ul>
+                    <li><b>$data</b>: The input data to be sanitized, can be an array or string.</li>
+                    <li><b>$encoding</b>: Optional. The character encoding (default is 'UTF-8').</li>
+                    <li>This method returns array|string: The sanitized input data.</li>
+                </ul>
+            </li>
+            <li><code>public static function generateCookieHash()</code><br />
+                Generates a hash for the remember-me cookie based on current time, IP address, and user agent.<br />
+                <ul>
+                    <li>This method has no input variables.</li>
+                    <li>This method returns string: The generated cookie hash.</li>
+                </ul>
+            </li>
+            <li><code>public static function checkCookieHashValidity($cookieValue)</code><br />
+                Checks the validity of the remember-me cookie hash.<br />
+                <ul>
+                    <li><b>$cookieValue</b>: The value of the remember-me cookie.</li>
+                    <li>This method returns bool: True if the cookie hash is valid, false otherwise.</li>
+                </ul>
+            </li>
+            <li><code>public static function checkAcceptedTimeFromLastRequest($timeLastRequest)</code><br />
+                Checks if the time since the last request is within the accepted time limit.<br />
+                <ul>
+                    <li><b>$timeLastRequest</b>: The time of the last request.</li>
+                    <li>This method returns bool: True if the time since the last request is within the accepted time limit, false otherwise.</li>
+                </ul>
+            </li>
+
+
+
+    </div>
+    <div class="col-md-3">
+        <ul class="list-unstyled sticky-top small lh-lg">    
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Usage Example" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/request#UsageExample") ?>">Usage Example</a></li>
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Methods" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/request#Methods") ?>">Methods</a></li>
+        </ul>
+    </div>
+</div>
