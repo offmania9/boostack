@@ -10,27 +10,27 @@ use Boostack\Models\Request;
             <h3 class="pt-3">BaseList</h3>
             <p><code>BaseList</code> provides powerful methods to allow your custom classes to use a database table as List. To start
                 using the benefits, your class must extends the <code>BaseList</code>:</p>
-            <pre><code>class &lt;Your_Class&gt; extends \Boostack\Models\BaseList {
+            <pre>class &lt;Your_Class&gt; extends \Boostack\Models\BaseList {
     ...
 }
-</code></pre>
+</pre>
             <p>To use \Boostack\Models\BaseList you need to first declare the <code>BaseClass</code> table into a Constant</p>
-            <pre><code>CONST BASE_CLASS = <Your_Class>::class;</code></pre>
+            <pre>CONST BASE_CLASS = <Your_Class>::class;</pre>
             <p>Than initialize the constructor method of the \Boostack\Models\BaseList class</p>
-            <pre><code>public function __construct(){
+            <pre>public function __construct(){
             parent::init()
-}</code></pre>
+}</pre>
         </section>
 
         <section id="AvailableMethods">
-            <h3 class="pt-3">Available Methods</h3>
+            <h3 class="pt-3">Methods</h3>
             <ul>
                 <li>
                     <code>
                         view($fields,$orderColumn,$orderType,$numitem,$currentPage).
                     </code><br />
                     The view method can be used to obtain data from the table filtered and paginated
-                    <pre><code>view($fields, $orderColumn, $orderType, $numitem, $currentPage);</code></pre><br />
+                    <pre>view($fields, $orderColumn, $orderType, $numitem, $currentPage);</pre><br />
                     The view method accept only this type of parameter:
                     <ul>
                         <li>
@@ -127,7 +127,7 @@ use Boostack\Models\Request;
 
         <section id="Example">
             <h3 class="pt-3">Example</h3>
-            <p class="text-end">
+            <p class="text-start">
                 Jump to <a class="fw-bold " href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/models-baselist-example") ?>">BaseList Example &#8594;</a>
             </p>
         </section>

@@ -1,0 +1,119 @@
+<?php
+
+use Boostack\Models\Request;
+?>
+<div class="row">
+    <div class="col-md-9">
+        <h2 class="fw-bold">Table Handler</h2>
+        <p>
+
+            The TableHandler class is designed to facilitate the creation and management of database tables using a PHP object-oriented approach.<br />
+            <b>It provides methods to define table structures, add columns and foreign keys, create and drop tables, and generate PHP class files 
+                that represent the database tables in a format compatible with the Boostack framework.</b>
+        </p>
+        <h4>
+            Usage Example
+        </h4>
+        <pre>
+$tableHandler = new TableHandler();
+$tableHandler->setTableName("example_table");
+$tableHandler->addColumn("name", "VARCHAR(255)");
+$tableHandler->addColumn("description", "TEXT");
+$tableHandler->addColumn("created_at", "DATETIME DEFAULT CURRENT_TIMESTAMP");
+$tableHandler->addForeignKey("user_id", "users", "id");
+
+// Create the table in the database
+$tableHandler->createTable();
+
+// Generate the PHP class file for the table
+$className = "ExampleTable";
+$tableHandler->generateClassFileFromDatabase($className);
+
+// Generate the PHP list class file for the table
+$tableHandler->generateListClassFile($className);</pre>
+        <h4>Methods</h4>
+        <ul>
+            <li><code>__construct($objUser = NULL)</code><br />
+                Initializes the TableHandler instance with a PDO instance.
+                <ul>
+                    <li><b>$objUser</b>: Optional. A user object, default is NULL.<br /></li>
+                    <li>This method returns <code>void</code>: No return value.</li>
+                </ul>
+            </li>
+            <li><code>setTableName($tableName)</code><br />
+                Sets the name of the table.
+                <ul>
+                    <li><b>$tableName</b>: The name of the table.<br /></li>
+                    <li>This method returns <code>void</code>: No return value.</li>
+                </ul>
+            </li>
+            <li><code>addColumn($columnName, $definition)</code><br />
+                Adds a column definition to the table.
+                <ul>
+                    <li><b>$columnName</b>: The name of the column.<br /></li>
+                    <li><b>$definition</b>: The definition of the column (e.g., data type, constraints).<br /></li>
+                    <li>This method returns <code>void</code>: No return value.</li>
+                </ul>
+            </li>
+            <li><code>addForeignKey($columnName, $referencedTable, $referencedColumn, $onDelete = 'CASCADE', $onUpdate = 'CASCADE')</code><br />
+                Adds a foreign key definition to the table.
+                <ul>
+                    <li><b>$columnName</b>: The name of the column that will be a foreign key.<br /></li>
+                    <li><b>$referencedTable</b>: The table that the foreign key references.<br /></li>
+                    <li><b>$referencedColumn</b>: The column in the referenced table.<br /></li>
+                    <li><b>$onDelete</b>: Action on delete (default is 'CASCADE').<br /></li>
+                    <li><b>$onUpdate</b>: Action on update (default is 'CASCADE').<br /></li>
+                    <li>This method returns <code>void</code>: No return value.</li>
+                </ul>
+            </li>
+            <li><code>createTable()</code><br />
+                Creates the table in the database based on the defined columns and foreign keys.
+                <ul>
+                    <li>This method returns <code>void</code>: No return value.</li>
+                </ul>
+            </li>
+            <li><code>reset()</code><br />
+                Resets the table definition by clearing the table name, columns, and foreign keys.
+                <ul>
+                    <li>This method returns <code>void</code>: No return value.</li>
+                </ul>
+            </li>
+            <li><code>dropTable($tableName)</code><br />
+                Drops a specified table from the database.
+                <ul>
+                    <li><b>$tableName</b>: The name of the table to drop.<br /></li>
+                    <li>This method returns <code>void</code>: No return value.</li>
+                </ul>
+            </li>
+            <li><code>dropAllTables()</code><br />
+                Drops all tables in the database.
+                <ul>
+                    <li>This method returns <code>void</code>: No return value.</li>
+                </ul>
+            </li>
+            <li><code>generateClassFileFromDatabase($className, $namespace = "My\Models")</code><br />
+                Generates and saves the PHP class file for the table based on database information.
+                <ul>
+                    <li><b>$className</b>: The name of the class (e.g., "[ClassName]").<br /></li>
+                    <li><b>$namespace</b>: The namespace for the class (default is "My\Models").<br /></li>
+                    <li>This method returns <code>void</code>: No return value.</li>
+                </ul>
+            </li>
+            <li><code>generateListClassFile($className, $namespace = "My\Models")</code><br />
+                Generates and saves the PHP list class file for the table based on database information.
+                <ul>
+                    <li><b>$className</b>: The name of the main class (e.g., "[ClassName]").<br /></li>
+                    <li><b>$namespace</b>: The namespace for the list class (default is "My\Models").<br /></li>
+                    <li>This method returns <code>void</code>: No return value.</li>
+                </ul>
+            </li>
+        </ul>
+
+
+    </div>
+    <div class="col-md-3">
+        <ul class="list-unstyled sticky-top small lh-lg">
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light d-none" title="" href="<?= Request::getFriendlyUrl("docs/setup#item") ?>">Item</a></li>
+        </ul>
+    </div>
+</div>

@@ -76,6 +76,7 @@ use Boostack\Models\Request;
                     <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/curl") ?>">CURL</a></li>
                     <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/log") ?>">Log</a></li>
                     <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/validator") ?>">Validator</a></li>
+                    <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/tablehandler") ?>">Table Handler</a></li>
             </div>
             <div class="col-md-9 documentationInnerContent">
                 <?php
@@ -168,6 +169,10 @@ use Boostack\Models\Request;
                             }
                         case "validator": {
                                 require "documentation_" . $currentVersion . "/validator.phtml";
+                                break;
+                            }
+                            case "tablehandler": {
+                                require "documentation_" . $currentVersion . "/tablehandler.phtml";
                                 break;
                             }
                         default: {

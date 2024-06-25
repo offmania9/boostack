@@ -5,12 +5,12 @@ use Boostack\Models\Request;
 <div class="row">
     <div class="col-md-9">
         <h2 class="fw-bold">Course: Model Example</h2>
-        
+
         <section id="Example">
             <h3 class="pt-3">Example</h3>
             <p>
-            Create a table in the database and name it, for example, "boostack_course" with the following SQL structure:
-<pre>
+                Create a table in the database and name it, for example, "boostack_course" with the following SQL structure:
+            <pre>
 CREATE TABLE `boostack_course` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
@@ -23,9 +23,26 @@ CREATE TABLE `boostack_course` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 </pre>
             </p>
+
             <p>
-Create a folder named "Courses" in the my/Models folder.<br/>
-Create a new PHP file named <code>Course.php</code> in the <code>my/Models/Courses folder</code>.
+                Optionally, you can create the table in the database using the Boostack <a href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/tablehandler") ?>">Table Handler</a><br />
+            <pre>
+ $tableHandler = new \Boostack\Models\Database\TableHandler();
+ $tableHandler->dropTable("boostack_course");
+ $tableHandler->setTableName("boostack_course");
+ $tableHandler->addColumn('id', 'INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY');
+ $tableHandler->addColumn("name", "varchar(255) NOT NULL");
+ $tableHandler->addColumn("description", "TEXT");
+ $tableHandler->addColumn('created_at', 'TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP()');
+ $tableHandler->addColumn('last_update', 'TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE current_timestamp()');
+ $tableHandler->addColumn('last_access', 'TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP()');
+ $tableHandler->addColumn('deleted_at', 'TIMESTAMP NULL DEFAULT NULL');
+ $tableHandler->createTable();</pre>
+            </p>
+
+            <p>
+                Create a folder named "Courses" in the my/Models folder.<br />
+                Create a new PHP file named <code>Course.php</code> in the <code>my/Models/Courses folder</code>.
             </p>
 
             <p>
@@ -60,7 +77,7 @@ class Course extends \Boostack\Models\BaseClassTraced {
     }
 }
 ?&gt;
-</pre>    
+</pre>
             </p>
         </section>
 
