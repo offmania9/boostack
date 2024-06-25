@@ -70,6 +70,7 @@ use Boostack\Models\Request;
                     </li>
 
                     <li class="title fw-bold pt-3">Utilities</li>
+                    <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/language") ?>">Language</a></li>
                     <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/users") ?>">Users</a></li>
                     <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/auth") ?>">Auth</a></li>
                     <li class="ps-3"><a title="" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/session") ?>">Session</a></li>
@@ -145,6 +146,10 @@ use Boostack\Models\Request;
                             }
                         case "api-example": {
                                 require "documentation_" . $currentVersion . "/api_example.phtml";
+                                break;
+                            }
+                            case "language": {
+                                require "documentation_" . $currentVersion . "/language.phtml";
                                 break;
                             }
                         case "auth": {

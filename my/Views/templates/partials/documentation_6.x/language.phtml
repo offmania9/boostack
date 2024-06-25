@@ -1,0 +1,126 @@
+<?php
+
+use Boostack\Models\Request;
+?>
+<div class="row">
+    <div class="col-md-9">
+        <h2 class="fw-bold">Language</h2>
+        <p>
+            <b>The Language class is used for the automated management of application labels and translations.</b> The labels are centralized in JSON files located in the "lang" folder. Using these language-specific JSON files (e.g., en.inc.json, us.inc.json), labels can be utilized throughout the application.
+        </p>
+
+        <h4>Auto-discovery of Language</h4>
+<p>
+If the <code>$config["language_on"] = TRUE</code> setting is specified in the env.php configuration file, the system (during the initial Environment init phase) will automatically detect the language (by searching for it in the query, session, or configurations) and automatically load the associated language JSON file.
+</p>
+<p>
+Additionally, the following configurations work as follows:
+<ul>
+<li><code>$config["language_force_default"]</code> forces the use of the default language set in $config["language_default"].</li>
+<li><code>$config["enabled_languages"]</code> is an array of enabled languages (e.g., array("en","us","it","fr",....).</li>
+<li><code>$config["show_default_language_in_URL"]</code> automatically inserts the language code into the URLs of the pages.</li>
+</ul>
+</p>
+        <h4>
+            Usage Example
+        </h4>
+        <pre>
+use Boostack\Models\Language;
+// Get a label
+$label = Language::getLabel('mainDescription');
+
+echo $label; // Output depends on the current language settings
+</pre>
+
+        <p>Language::init() is typically invoked by the Environment controller (automatically called by Environment.php).</p>
+        <p>
+            <b>You can structure the language JSON file (e.g., en.inc.json) as you like and refer to specific labels using dot notation. For example, if the JSON contains this:</b>
+        </p>
+
+        <pre>
+{
+    "services": {
+        "title": "Custom Hosted & Managed Services",
+        "description": "improves process management and business workflow performance.",
+        "items": [
+            {
+                "title": "Web Dev",
+                "description": "Multiplatform and multimarket websites and web portals",
+                "image": "services/webdev.png"
+            },
+            {
+                "title": "Mobile Dev",
+                "description": "Mobile apps for Android and iOS systems with hybrid and native technologies",
+                "image": "services/mobdev.png"
+            },
+            {
+                "title": "Custom Dev",
+                "description": "Custom software solutions aimed at automating business processes.",
+                "image": "services/cusdev.png"
+            }
+        ]
+    }
+}
+</pre>
+        <p><b>you can print the content like this:</b></p>
+        <pre>
+use Boostack\Models\Language;
+
+// Get and print a nested label
+echo Language::getLabel('services.title'); // Output: Custom Hosted & Managed Services
+
+$services = (Object)Language::getLabel("services.items");
+foreach ($services as $service) { 
+    echo $service["title"]."/n";
+    echo $service["description"]."/n";
+}
+</pre>
+        <ul>
+            <li><code>__construct()</code><br />
+                Prevents direct instantiation of Language.
+                <ul>
+                    <li>This method returns <code>void</code>: No return value.</li>
+                </ul>
+            </li>
+            <li><code>init()</code><br />
+                Initialize the language settings.
+                <ul>
+                    <li>This method returns <code>void</code>: No return value.</li>
+                </ul>
+            </li>
+            <li><code>getLabel($key)</code><br />
+                Get the label for the given key.
+                <ul>
+                    <li><b>$key</b>: The key for the label.<br /></li>
+                    <li>This method returns <code>string</code>: The translated label.</li>
+                </ul>
+            </li>
+            <li><code>findLanguage()</code><br />
+                Find the language based on configuration and request.
+                <ul>
+                    <li>This method returns <code>string</code>: The language found.</li>
+                </ul>
+            </li>
+            <li><code>setSessionLanguage($lang)</code><br />
+                Set the session language.
+                <ul>
+                    <li><b>$lang</b>: The language to set in session.<br /></li>
+                    <li>This method returns <code>void</code>: No return value.</li>
+                </ul>
+            </li>
+            <li><code>getLabelsFromLanguage($lang)</code><br />
+                Get translated labels from language file.
+                <ul>
+                    <li><b>$lang</b>: The language for which to get labels.<br /></li>
+                    <li>This method returns <code>array</code>: The translated labels.</li>
+                </ul>
+            </li>
+        </ul>
+
+    </div>
+    <div class="col-md-3">
+        <ul class="list-unstyled sticky-top small lh-lg">
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light d-none" title="" href="<?= Request::getFriendlyUrl("docs/setup#item") ?>">Item</a></li>
+        </ul>
+    </div>
+</div>
