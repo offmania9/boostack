@@ -72,7 +72,7 @@ class Course extends \Boostack\Models\BaseClassTraced {
     * @param mixed|null $id The ID of the object.
     */
     public function __construct($id = NULL) {
-            parent::__construct($id);
+            parent::init($id);
             $this->soft_delete = true;
     }
 }

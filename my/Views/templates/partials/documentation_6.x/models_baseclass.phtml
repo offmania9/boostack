@@ -38,7 +38,7 @@ class &lt;Your_Class&gt; extends \Boostack\Models\BaseClass {
     * @param mixed|null $id The ID of the object.
     */
     public function __construct($id = NULL) {
-            parent::__construct($id);
+            parent::init($id);
     }
 }
 </pre>
@@ -116,7 +116,7 @@ ADD `deleted_at` timestamp NULL DEFAULT NULL
 */
 public function __construct($id = null)
 {
-    parent::__construct($id);
+    parent::init($id);
     <code>$this->soft_delete = true;</code>
 }
                 </pre>
