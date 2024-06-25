@@ -1,11 +1,14 @@
 <?php
+
 use Boostack\Models\Request;
 ?>
 <div class="row">
     <div class="col-md-9">
         <h2 class="fw-bold">Logs</h2>
-        <p>Boostack log provides an easy way to store system messages.<br /></p>
-        <h4>Levels</h4>
+        <p><b>The Logger class is a utility for writing log messages to different types of log drivers. It supports logging to a database or a file</b>, depending on the specified log driver.<br />
+            <u>The class checks if logging is enabled via configuration settings and handles exceptions by falling back to file logging if database logging fails.</u>
+        </p>
+        <h4 id="Levels">Levels</h4>
         <p>Is composed by several levels:</p>
         <ul>
             <li><code>Log_Level::ERROR</code></li>
@@ -16,21 +19,51 @@ use Boostack\Models\Request;
             <li><code>Log_Level::CRONJOB</code></li>
         </ul>
 
-        <h4>Types</h4>
-        <p>There are two types of log types:</p>
+        <h4 id="Types">Types</h4>
+        <p>There are two types of log types:
         <ul>
             <li><code>Log_Driver:FILE</code></li>
             <li><code>Log_Driver:DATABASE</code></li>
         </ul>
+        </p>
 
-        <h4>Use</h4>
-        <pre><code>Logger::write($message, $level, $type)</code></pre><br />
+        <h4 id="UsageExample">Usage Example</h4>
+        <p>
+        <pre>
+//Logger::write($message, $level, $type)
+Logger::write("Write example Error text in file", Log_Level::ERROR, Log_Driver::FILE);
+Logger::write("Write example Info text in database", Log_Level::INFORMATION, Log_Driver::DATABASE);</pre>
+        </p>
 
-        <h4>List</h4>
-        <p>You can also use <code>Log_Database_List</code> class to view list of your log.</p>
-        <div class="col-md-3">
-            <ul class="list-unstyled sticky-top small lh-lg">
-                <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light d-none" title="" href="<?= Request::getFriendlyUrl("docs/setup#item") ?>">Item</a></li>
-            </ul>
-        </div>
+        <h4 id="List">List</h4>
+        <p>
+            You can also use <code>Log_Database_List</code> class to view list of your log.
+            <pre>
+$logList = new Log_Database_List();
+$logList->loadAll("id", "desc");
+print_r($logList->items);</pre>
+        </p>
+        <h4 id="Methods">Methods</h4>
+        <ul>
+            <li><code>public static function write($message = "", $level = Log_Level::INFORMATION, $type = Log_Driver::DATABASE)</code><br />
+                Write a log message to the specified log driver.<br />
+                <ul>
+                    <li><b>$message</b>: The log message to write (default is an empty string).<br /></li>
+                    <li><b>$level</b>: The level of the log message (default is Log_Level::INFORMATION).<br /></li>
+                    <li><b>$type</b>: The type of log driver to use (default is Log_Driver::DATABASE).<br /></li>
+                    <li>This method returns <code>void</code>: No return value.</li>
+                </ul>
+            </li>
+        </ul>
+
     </div>
+    <div class="col-md-3">
+        <ul class="list-unstyled sticky-top small lh-lg">
+        <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Levels" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/log#Levels") ?>">Levels</a></li>
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Types" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/log#Types") ?>">Types</a></li>
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Usage Example" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/log#UsageExample") ?>">Usage Example</a></li>
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Methods" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/log#List") ?>">List</a></li>
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Methods" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/log#Methods") ?>">Methods</a></li>
+        </ul>
+    </div>
+</div>

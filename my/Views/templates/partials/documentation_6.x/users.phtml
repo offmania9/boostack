@@ -1,22 +1,42 @@
 <?php
+
 use Boostack\Models\Request;
 ?>
 <div class="row">
     <div class="col-md-9">
         <h2 class="fw-bold">Users</h2>
-        <p>The <code>User</code> class can be used to create, view or edit user instances.</p>
-        <p>The <code>User</code> class is a Proxy class that provides a unified interface to access information on the other user sub-classes.</p>
-        <p> The sub-classes are: </p>
+        <p><b>The <code>User</code> class can be used to create, view or edit user instances</b>. It is a <b>Proxy class</b> that provides a unified interface to access information on the other user sub-classes.<br/>
+        The sub-classes are: 
         <ul>
             <li><code>User_Entity</code></li>
             <li><code>User_Social</code></li>
             <li><code>User_Registration</code></li>
             <li><code>User_Info</code></li>
         </ul>
+        </p>
 
+        <h4 id="UsageExample">
+            Usage Example
+        </h4>
+        <pre>
+$u = new User();
+$u->username = "boostack";
+$u->name = "Boostack System";
+$u->email = "system@getboostack.com";
+$u->pwd = "testing";
+$u->privilege = "0";
+$u->first_name = "Boostack";
+$u->company = "Boostack";
+$u->last_name = "System";
+$u->save();// new user registration
 
+$u = new User([id of an existing user]);
+$u->name = "New Name ";
+$u->save();// update user data
+</pre>
+<p>Use the <a href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/auth") ?>">Auth</a> class to manage login and logout for the current user.</p>
 
-        <h4>Methods</h4>
+        <h4 id="Methods">Methods</h4>
         <ul>
             <li><code>fill($array)</code><br />
                 The method fill the user object with array of key-value.</li>
@@ -33,9 +53,9 @@ use Boostack\Models\Request;
             </li>
             <li><code>User::existsByEmail($email, $throwException)</code><br />
                 Check with email parameter the existence of user on the database.</li>
-            <li><code>User::existsByUsername($username, $throwException)</code>
+            <li><code>User::existsByUsername($username, $throwException)</code><br />
                 Check with username parameter the existence of user on the database.</li>
-            <li><code>User::getUserIDByEmail($email, $throwException)</code>
+            <li><code>User::getUserIDByEmail($email, $throwException)</code><br />
                 Return the User Id from Email parameter.</li>
             <li><code>User::getCredentialByCookie($cookieValue)</code><br />
                 Return username and password by cookie parameter.</li>
@@ -56,7 +76,7 @@ use Boostack\Models\Request;
         </ul>
         <br />
 
-        <h4>List</h4>
+        <h4 id="List">List</h4>
         <p>You can use <code>UserList</code> class to handle multiple user instances.</p>
         <ul>
             <li><code>loadAll()</code><br />
@@ -68,9 +88,12 @@ use Boostack\Models\Request;
             <li><code>getSQLFromJoinPart()</code><br />
                 This method used to perform a join of other table with User main table.</li>
         </ul>
-        <div class="col-md-3">
-            <ul class="list-unstyled sticky-top small lh-lg">
-                <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light d-none" title="" href="<?= Request::getFriendlyUrl("docs/setup#item") ?>">Item</a></li>
-            </ul>
-        </div>
     </div>
+    <div class="col-md-3">
+        <ul class="list-unstyled sticky-top small lh-lg">
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Usage Example" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/users#UsageExample") ?>">Usage Example</a></li>
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Methods" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/users#Methods") ?>">Methods</a></li>
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Methods" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/users#List") ?>">List</a></li>
+        </ul>
+    </div>
+</div>

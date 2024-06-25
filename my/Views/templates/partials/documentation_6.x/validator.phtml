@@ -5,88 +5,191 @@ use Boostack\Models\Request;
 <div class="row">
     <div class="col-md-9">
         <h2 class="fw-bold">Validator</h2>
-        <p>Validator handles backend validation of all your data, where you need.</p>
-        <h4>Methods</h4>
+        <p>
+            <b>The Validator class provides methods for validating input data against specified rules, ensuring data integrity and correctness.</b>
+            It supports various validation rules such as required fields, string validation, numeric validation, email validation, and more.
+        </p>
+
+        <h4 id="UsageExample">Usage Example</h4>
+        <p>
+        <pre>
+if (!Validator::username($username)) throw new \Exception("Invalid username format");
+if (!Validator::email($email)) throw new \Exception("Invalid email format");
+if (!Validator::password($password)) throw new \Exception("Invalid password format");</pre>
+        </p>
+        <h4 id="Methods">Methods</h4>
         <ul>
-            <li><code>Validator::validate($input, $rules)</code><br />
-                Validate an associative array of values.<br />
-                <b>$input</b>: an associative array where the key correspond the name of the value in input.<br />
-                <b>$rules</b>: an associative array where the name correspond the type of field to validate.<br />
-                This method return boolean: true in case of validate success, otherwise return an array containing the name of field that not pass the validation.
+            <li><code>validate(array $input, array $rules)</code><br />
+                Validates an associative array of values.
+                <ul>
+                    <li><b>$input</b>: An associative array where keys correspond to input value names. Example: ['name' => 'Foo', 'age' => 42, 'email' => 'foo@bar.com']</li>
+                    <li><b>$rules</b>: An associative array where keys correspond to field names to validate, and values correspond to validation rules separated by '|'. Example: ['name' => 'string', 'age' => 'numeric', 'email' => 'email']</li>
+                    <li>This method returns <code>array|bool</code>: Returns true on success, otherwise returns an array containing the fields that did not pass validation.</li>
+                </ul>
             </li>
-            <li><code>Validator::validateFormValues($input, $rules)</code><br />
-                In <b>$input</b> put your form data, and <b>$rules</b> contain for every input the type of rule. Like this:
-                Format for input:<br />
-                <code>$input[
-                    0 => ["values" => ["your_value"]],<br />
-                    1 => ["values" => ["check_1","check_2"]]
-                    ]</code><br />
-                Format for rule:<br />
-                <code>$rules[
-                    0 => ["required|string"],<br />
-                    1 => ["Required|Min:1|Max:3"]
-                    ]</code>
-                <br />
-                Here is the list of rule you can use in your validator:<br />
-                <code>
-                    Required,
-                    String,
-                    Integer,
-                    Float,
-                    Min,
-                    Max,
-                    In
-                </code>
+            <li><code>validateFormValues(array $input, array $rules)</code><br />
+                Validates form values received from the frontend.
+                <ul>
+                    <li><b>$input</b>: An associative array where keys correspond to field IDs and values contain an array with the input values. Example: [12 => ["values" => ["Alessio"]], 3 => ["values" => ["35"]]]</li>
+                    <li><b>$rules</b>: An associative array where keys correspond to field IDs and values contain validation rules separated by '|'. Example: [12 => "Required|String", 3 => "Required|Integer"]</li>
+                    <li>This method returns <code>array|bool</code>: Returns true on success, otherwise returns an array containing the fields that did not pass validation.</li>
+                </ul>
             </li>
-            <li><code>Validator::string($input)</code><br />
-                Use this method to validate an field that can only accept <b>string</b> as input</li>
-            <li><code>Validator::onlyChars($input)</code><br />
-                Use this method to validate an field that can only accept <b>char</b> as input</li>
-            <li><code>Validator::onlyCharsWithSpace($input)</code><br />
-                Use this method to validate an field that can only accept <b>char with space</b> as input</li>
-            <li><code>Validator::onlyCharNumbersUnderscore($input)</code>
-                Use this method to validate an field that can only accept <b>char with number and underscore</b> as input</li>
-            <li><code>Validator::address($input)</code><br />
-                Use this method to validate an field that can only accept <b>address type</b> as input</li>
-            <li><code>Validator::operators($rule)</code><br />
-                Use this method to validate an field that can only accept <b>operator</b> as input like: "like", "not like", "&lt;&gt;", "=", "&lt;", "&lt;=", "&gt;", "&gt;=".</li>
-            <li><code>Validator::varchar_max_length($input)</code><br />
-                Use this method to validate an field that can only accept <b>max string length setup into env</b> as input</li>
-            <li><code>Validator::numeric($input)</code><br />
-                Use this method to validate an field that can only accept <b>number</b> as input</li>
-            <li><code>Validator::alphanumeric($input)</code><br />
-                Use this method to validate an field that can only accept <b>number and char</b> as input</li>
-            <li><code>Validator::integer($input)</code><br />
-                Use this method to validate an field that can only accept <b>integer</b> as input</li>
-            <li><code>Validator::float($input)</code><br />
-                Use this method to validate an field that can only accept <b>float</b> as input</li>
-            <li><code>Validator::in($elem, $array)</code><br />
-                Use this method to validate an field that check if in the array the element is exists or not.</li>
-            <li><code>Validator::email($input)</code><br />
-                Use this method to validate an field that can only accept <b>email</b> as input</li>
-            <li><code>Validator::phone($input)</code><br />
-                (TODO)Use this method to validate an field that can only accept <b>phone</b> as input</li>
-            <li><code>Validator::password_login($password)</code><br />
-                Use this method to validate an field that can only accept <b>password</b> as input</li>
-            <li><code>Validator::password($password)</code><br />
-                Use this method to validate an field that can only accept <b>password</b> as input</li>
-            <li><code>Validator::strongPassword($password)</code><br />
-                Use this method to validate an field that check if the password is a strong password</li>
-            <li><code>Validator::username($username)</code><br />
-                Use this method to validate an field that can only accept <b>username format</b> as input</li>
-            <li><code>Validator::filename($filename)</code><br />
-                (TODO)</li>
-            <li><code>Validator::required($input, $array)</code><br />
-                Use this method to check if the input is in array or not</li>
-            <li><code>Validator::setError($key,$message)</code><br />
-                This method set error for <code>Validator</code> class.
+            <li><code>string($input)</code><br />
+                Validate if the input is a string or an array of strings.
+                <ul>
+                    <li><b>$input</b>: The input value to validate.</li>
+                    <li>This method returns <code>bool</code>: True if the input is a string or array of strings, false otherwise.</li>
+                </ul>
             </li>
-            <li><code>Validator::hasError()</code><br />
-                This method check if <code>Validator</code> class has error</li>
+            <li><code>onlyChars($input)</code><br />
+                Validate strings containing only letters.
+                <ul>
+                    <li><b>$input</b>: The input string to validate.</li>
+                    <li>This method returns <code>int</code>: 1 if the string only contains letters, 0 otherwise.</li>
+                </ul>
+            </li>
+            <li><code>onlyCharsWithSpace($input)</code><br />
+                Validate strings containing only letters and spaces.
+                <ul>
+                    <li><b>$input</b>: The input string to validate.</li>
+                    <li>This method returns <code>int</code>: 1 if the string only contains letters and spaces, 0 otherwise.</li>
+                </ul>
+            </li>
+            <li><code>onlyCharNumbersUnderscore($input)</code><br />
+                Validate strings containing only letters, numbers, or underscores.
+                <ul>
+                    <li><b>$input</b>: The input string to validate.</li>
+                    <li>This method returns <code>int</code>: 1 if the string only contains letters, numbers, and underscores, 0 otherwise.</li>
+                </ul>
+            </li>
+            <li><code>address($input)</code><br />
+                Validate addresses like Google Maps default address or simply letters, numbers, accents, "-", "_", ",", and spaces.
+                <ul>
+                    <li><b>$input</b>: The input string to validate.</li>
+                    <li>This method returns <code>int</code>: 1 if the address is valid, 0 otherwise.</li>
+                </ul>
+            </li>
+            <li><code>operators($rule)</code><br />
+                Validate operators for query building.
+                <ul>
+                    <li><b>$rule</b>: The rule string to validate.</li>
+                    <li>This method returns <code>bool</code>: True if the operator is valid, false otherwise.</li>
+                </ul>
+            </li>
+            <li><code>numeric($input)</code><br />
+                Validate if the input is numeric or an array of numerics.
+                <ul>
+                    <li><b>$input</b>: The input value to validate.</li>
+                    <li>This method returns <code>bool</code>: True if the input is numeric or an array of numerics, false otherwise.</li>
+                </ul>
+            </li>
+            <li><code>alphanumeric($input)</code><br />
+                Validate if the input is alphanumeric or an array of alphanumeric strings.
+                <ul>
+                    <li><b>$input</b>: The input value to validate.</li>
+                    <li>This method returns <code>bool|int</code>: True or 1 if the input is alphanumeric or an array of alphanumeric strings, false or 0 otherwise.</li>
+                </ul>
+            </li>
+            <li><code>integer($input)</code><br />
+                Validate if the input is an integer or an array of integers.
+                <ul>
+                    <li><b>$input</b>: The input value to validate.</li>
+                    <li>This method returns <code>bool|int</code>: True or 1 if the input is an integer or an array of integers, false or 0 otherwise.</li>
+                </ul>
+            </li>
+            <li><code>float($input)</code><br />
+                Validate if the input is a float number or an array of float numbers.
+                <ul>
+                    <li><b>$input</b>: The input value to validate.</li>
+                    <li>This method returns <code>bool|int</code>: True or 1 if the input is a float or an array of float numbers, false or 0 otherwise.</li>
+                </ul>
+            </li>
+            <li><code>in($elem, $array)</code><br />
+                Check if an element exists in an array.
+                <ul>
+                    <li><b>$elem</b>: The element to check.</li>
+                    <li><b>$array</b>: The array to search.</li>
+                    <li>This method returns <code>bool</code>: True if the element exists in the array, false otherwise.</li>
+                </ul>
+            </li>
+            <li><code>email($input)</code><br />
+                Validate if the input is a valid email address.
+                <ul>
+                    <li><b>$input</b>: The input value to validate.</li>
+                    <li>This method returns <code>bool</code>: True if the input is a valid email address, false otherwise.</li>
+                </ul>
+            </li>
+            <li><code>phone($input)</code><br />
+                Validate if the input is a phone number.
+                <ul>
+                    <li><b>$input</b>: The input value to validate.</li>
+                    <li>This method returns <code>bool</code>: True if the input matches the phone number pattern, false otherwise.</li>
+                </ul>
+            </li>
+            <li><code>password_login($password)</code><br />
+                Validate password for login purposes.
+                <ul>
+                    <li><b>$password</b>: The password string to validate.</li>
+                    <li>This method returns <code>bool</code>: True if the password is valid, false otherwise.</li>
+                </ul>
+            </li>
+            <li><code>password($password)</code><br />
+                Validate a password.
+                <ul>
+                    <li><b>$password</b>: The password string to validate.</li>
+                    <li>This method returns <code>bool</code>: True if the password is valid, false otherwise.</li>
+                </ul>
+            </li>
+            <li><code>strongPassword($password)</code><br />
+                Validate if the password is strong.
+                <ul>
+                    <li><b>$password</b>: The password string to validate.</li>
+                    <li>This method returns <code>int</code>: 1 if the password is strong, 0 otherwise.</li>
+                </ul>
+            </li>
+            <li><code>username($username)</code><br />
+                Validate a username.
+                <ul>
+                    <li><b>$username</b>: The username string to validate.</li>
+                    <li>This method returns <code>bool</code>: True if the username is valid, false otherwise.</li>
+                </ul>
+            </li>
+            <li><code>filename($filename)</code><br />
+                Validate a filename.
+                <ul>
+                    <li><b>$filename</b>: The filename string to validate.</li>
+                    <li>This method returns <code>bool</code>: True if the filename is valid. Note: This method is currently not fully implemented.</li>
+                </ul>
+            </li>
+            <li><code>required($input, $array)</code><br />
+                Check if a key exists in an array.
+                <ul>
+                    <li><b>$input</b>: The key to check.</li>
+                    <li><b>$array</b>: The array to search.</li>
+                    <li>This method returns <code>bool</code>: True if the key exists in the array, false otherwise.</li>
+                </ul>
+            </li>
+            <li><code>setError(string $key, string $message)</code><br />
+                Set an error message.
+                <ul>
+                    <li><b>$key</b>: The key associated with the error.</li>
+                    <li><b>$message</b>: The error message to set.</li>
+                    <li>This method returns <code>void</code>.</li>
+                </ul>
+            </li>
+            <li><code>hasError()</code><br />
+                Check if there's an error.
+                <ul>
+                    <li>This method returns <code>bool</code>: True if there is an error, false otherwise.</li>
+                </ul>
+            </li>
         </ul>
-        <div class="col-md-3">
-            <ul class="list-unstyled sticky-top small lh-lg">
-                <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light d-none" title="" href="<?= Request::getFriendlyUrl("docs/setup#item") ?>">Item</a></li>
-            </ul>
-        </div>
     </div>
+    <div class="col-md-3">
+        <ul class="list-unstyled sticky-top small lh-lg">
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Usage Example" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/validator#UsageExample") ?>">Usage Example</a></li>
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Methods" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/validator#Methods") ?>">Methods</a></li>
+        </ul>
+    </div>
+</div>

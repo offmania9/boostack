@@ -1,11 +1,31 @@
 <?php
+
 use Boostack\Models\Request;
 ?>
 <div class="row">
     <div class="col-md-9">
         <h2 class="fw-bold">Session</h2>
-        <p>The session is a way to store and retrieve information across multiple pages, get logged user details and other useful methods.</p>
-        <h4>Methods</h4>
+        <p>
+            The Session class within the Boostack\Models\Session namespace <b>handles user session operations in a web application</b>.<br />
+            The Session class is designed to manage user sessions, providing methods to initialize a session, retrieve and set session values, handle user login and logout, check login status, and manage CSRF protection.
+        </p>
+        <p>
+            <b>To enable session management, you need to set <code>$config['session_on']</code> to TRUE</b> in the config/env.php configuration file.<br />
+            Session management is done using the database and therefore requires that <code>$config['database_on']</code> is set to TRUE.
+        </p>
+        <h4 id="UsageExample">Usage Example</h4>
+        <p>
+            <pre>
+use Boostack\Models\Session\Session;
+if (empty(Session::get("current_year"))) {
+    Session::set("current_year", date("Y")); // store session variable in database
+}
+</pre>
+        </p>
+        <h4 id="Methods">Methods</h4>
+        <p>
+        The methods of the Session class that handle the login and logout of the current user are wrapped within specific methods of the <a href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/auth") ?>">Auth</a> class. It is recommended to use the <a href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/auth") ?>">Auth</a> class to manage these scenarios.
+        </p>
         <ul>
             <li><code>Session::get($key)</code><br />
                 Used to access the session information stored on the database. To access the session use this method in this way: Session::get("key").</li>
@@ -27,9 +47,11 @@ use Boostack\Models\Request;
                 Used to inject in the document dom the input with CSRF token.
             </li>
         </ul>
-        <div class="col-md-3">
-            <ul class="list-unstyled sticky-top small lh-lg">
-                <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light d-none" title="" href="<?= Request::getFriendlyUrl("docs/setup#item") ?>">Item</a></li>
-            </ul>
-        </div>
     </div>
+    <div class="col-md-3">
+        <ul class="list-unstyled sticky-top small lh-lg">
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Usage Example" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/session#UsageExample") ?>">Usage Example</a></li>
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Methods" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/session#Methods") ?>">Methods</a></li>
+        </ul>
+    </div>
+</div>

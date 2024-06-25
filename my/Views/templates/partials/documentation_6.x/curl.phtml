@@ -1,15 +1,34 @@
 <?php
+
 use Boostack\Models\Request;
 ?>
 <div class="row">
     <div class="col-md-9">
         <h2 class="fw-bold">CURL</h2>
-        <p>The CurlRequest class lets you make HTTP requests in PHP.</p>
+        <p>
+            <b>The CurlRequest class within the Boostack\Models\Curl namespace is designed to facilitate the management and execution of cURL requests in PHP.</b>
+            It provides a series of methods that allow you to configure various aspects of the request, such as the endpoint URL, GET and POST fields, custom headers, request type (GET or POST), returning the transfer as a string, and the user agent. Once the necessary parameters are configured, the class allows you to send the request and obtain the response, thereby simplifying the interaction with external APIs or other web services.
+        </p>
 
-        <h4>Requirements</h4>
+        <h4 id="Requirements">Requirements</h4>
         <p>In order to use PHP's cURL functions you need to install the » libcurl package.</p>
 
-        <h4>Methods</h4>
+        <h4 id="UsageExample">
+            Usage Example
+        </h4>
+        <pre>
+$request = new CurlRequest();
+$request->setEndpoint(Config::get("url")."/api/getLogList");
+$request->setCustomHeader(array("Authorization: Bearer {[example api_key]}"));
+$request->setPostFields(json_encode(array(
+    'input' => $raw_content,
+    'model' => $model
+)));
+$request->setContentTypeJSON(true);
+$mb = $request->send();
+</pre>
+
+        <h4 id="Methods">Methods</h4>
         <ul>
             <li><code>CurlRequest::setEndpoint($endpoint)</code><br />
                 Set the endpoint where make HTTP request to the cUrl.</li>
@@ -28,21 +47,12 @@ use Boostack\Models\Request;
                 The result if the cUrl request have success can be obtained by using method <code>getData</code>.<br />
                 In case of error you can check the existing of error using method <code>hasError</code> and <code>getErrorMessage</code></li>
         </ul>
-
-        <h4>Example</h4>
-        <pre>
-    $request = new CurlRequest();
-    $request->setEndpoint(Config::get("url")."/api/getLogList");
-    $request->setPostFields(json_encode(array(
-        'input' => "s",
-        'model' => "w"
-    )));
-    $request->setContentTypeJSON(true);
-    $mb = $request->send();
-</pre>
-        <div class="col-md-3">
-            <ul class="list-unstyled sticky-top small lh-lg">
-                <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light d-none" title="" href="<?= Request::getFriendlyUrl("docs/setup#item") ?>">Item</a></li>
-            </ul>
-        </div>
     </div>
+    <div class="col-md-3">
+        <ul class="list-unstyled sticky-top small lh-lg">
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Usage Example" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/curl#Requirements") ?>">Requirements</a></li>
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Usage Example" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/curl#UsageExample") ?>">Usage Example</a></li>
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Methods" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/curl#Methods") ?>">Methods</a></li>
+        </ul>
+    </div>
+</div>

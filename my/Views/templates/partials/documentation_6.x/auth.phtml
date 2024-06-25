@@ -1,4 +1,5 @@
 <?php
+
 use Boostack\Models\Request;
 ?>
 <div class="row">
@@ -6,7 +7,25 @@ use Boostack\Models\Request;
         <h2 class="fw-bold">Auth</h2>
         <p>Boostack comes with a user authentication system.
             It handles user accounts, permissions and cookie-based user sessions.</p>
-        <h4>Methods</h4>
+
+        <h4 id="UsageExample">
+            Usage Example
+        </h4>
+        <pre>
+use Boostack\Models\Auth;
+if (Auth::isLoggedIn()) { // chech if current user is logged in
+    // chech if current user has SuperAdmin privilege
+    $current_user = Auth::getUserLoggedObject();
+    if (Auth::hasPrivilege($current_user, PRIVILEGE_SUPERADMIN)) {
+        echo "Hello Admin!";
+    } else {
+        echo "Hello User!";
+    }
+    echo "This is my username:" . $current_user->username;
+}</pre>
+
+        <p>See "Login example" in my/Controllers/Login.php.</p>
+        <h4 id="Methods">Methods</h4>
         <ul>
             <li><code>Auth::loginByUsernameAndPlainPassword($user, $password, $rememberMe)</code><br />
                 This method accept three parameter: User, Password and boolean value(true or false) to remember the user,<br />
@@ -51,9 +70,11 @@ use Boostack\Models\Request;
                 The method check the time from last login fail and compare with the second to block to retry to login.
             </li>
         </ul>
-        <div class="col-md-3">
-            <ul class="list-unstyled sticky-top small lh-lg">
-                <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light d-none" title="" href="<?= Request::getFriendlyUrl("docs/setup#item") ?>">Item</a></li>
-            </ul>
-        </div>
     </div>
+    <div class="col-md-3">
+        <ul class="list-unstyled sticky-top small lh-lg">
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Usage Example" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/auth#UsageExample") ?>">Usage Example</a></li>
+            <li class="item"><a class="link-secondary link-opacity-75-hover link-underline-light fw-light" title="Methods" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/auth#Methods") ?>">Methods</a></li>
+        </ul>
+    </div>
+</div>
