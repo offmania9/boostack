@@ -1,0 +1,119 @@
+{
+        "categories": [
+                {
+                        "title": "Getting Started",
+                        "items": [
+                                {
+                                        "path": "setup",
+                                        "title": "Setup",
+                                        "partial_filename": "setup.phtml"
+                                },
+                                {
+                                        "path": "first-configuration",
+                                        "title": "First Configuration",
+                                        "partial_filename": "first_configuration.phtml"
+                                },
+                                {
+                                        "path": "directory-structure",
+                                        "title": "Directory structure",
+                                        "partial_filename": "directory_structure.phtml"
+                                },
+                                {
+                                        "path": "boostack-configs",
+                                        "title": "Boostack Configs",
+                                        "partial_filename": "boostack_configs.phtml"
+                                },
+                                {
+                                        "path": "first-example",
+                                        "title": "Course: First Example",
+                                        "partial_filename": "first_example.phtml"
+                                }
+                        ]
+                },
+                {
+                        "title": "Architecture",
+                        "items": [
+                                {
+                                        "path": "models-baseclass",
+                                        "title": "Models: BaseClass",
+                                        "partial_filename": "models_baseclass.phtml"
+                                },
+                                {
+                                        "path": "models-baseclass-example",
+                                        "title": "Course: Model BaseClass Example",
+                                        "partial_filename": "models_baseclass_example.phtml"
+                                },
+                                {
+                                        "path": "models-baselist",
+                                        "title": "Models: BaseList",
+                                        "partial_filename": "models_baselist.phtml"
+                                },
+                                {
+                                        "path": "models-baselist-example",
+                                        "title": "Course: Model BaseList Example",
+                                        "partial_filename": "models_baselist_example.phtml"
+                                },
+                                {
+                                        "path": "controllers",
+                                        "title": "Controllers",
+                                        "partial_filename": "controllers.phtml"
+                                },
+                                {
+                                        "path": "controller-example",
+                                        "title": "Coures: Controller Example",
+                                        "partial_filename": "controllers_example.phtml"
+                                }
+                        ]
+                },
+                {
+                        "title": "Core Features",
+                        "items": [
+                                {
+                                        "path": "language",
+                                        "title": "Language",
+                                        "partial_filename": "language.phtml"
+                                },
+                                {
+                                        "path": "request",
+                                        "title": "Request",
+                                        "partial_filename": "request.phtml"
+                                },
+                                {
+                                        "path": "users",
+                                        "title": "Users",
+                                        "partial_filename": "users.phtml"
+                                },
+                                {
+                                        "path": "auth",
+                                        "title": "Auth",
+                                        "partial_filename": "auth.phtml"
+                                },
+                                {
+                                        "path": "session",
+                                        "title": "Session",
+                                        "partial_filename": "session.phtml"
+                                },
+                                {
+                                        "path": "curl",
+                                        "title": "CURL",
+                                        "partial_filename": "curl.phtml"
+                                },
+                                {
+                                        "path": "log",
+                                        "title": "Log",
+                                        "partial_filename": "log.phtml"
+                                },
+                                {
+                                        "path": "validator",
+                                        "title": "Validator",
+                                        "partial_filename": "validator.phtml"
+                                },
+                                {
+                                        "path": "tablehandler",
+                                        "title": "Table Handler",
+                                        "partial_filename": "tablehandler.phtml"
+                                }
+                        ]
+                }
+        ]
+}
