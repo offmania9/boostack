@@ -6,21 +6,34 @@ use Boostack\Models\Request;
     <div class="col-md-9">
         <h2 class="fw-bold">Table Handler</h2>
         <p>
-
             The TableHandler class is designed to facilitate the creation and management of database tables using a PHP object-oriented approach.<br />
-            <b>It provides methods to define table structures, add columns and foreign keys, create and drop tables, and generate PHP class files 
+            <b>It provides methods to define table structures, add columns and foreign keys, create and drop tables, and generate PHP class files
                 that represent the database tables in a format compatible with the Boostack framework.</b>
         </p>
         <h4>
             Usage Example
         </h4>
         <pre>
-$tableHandler = new TableHandler();
-$tableHandler->setTableName("example_table");
-$tableHandler->addColumn("name", "VARCHAR(255)");
-$tableHandler->addColumn("description", "TEXT");
-$tableHandler->addColumn("created_at", "DATETIME DEFAULT CURRENT_TIMESTAMP");
-$tableHandler->addForeignKey("user_id", "users", "id");
+$tableHandler = new \Boostack\Models\Database\TableHandler();
+$tableHandler->dropTable("offer");
+$tableHandler->setTableName("offer");
+$tableHandler->addColumn('id', 'INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY');
+$tableHandler->addColumn('id_customer', 'INT(11) NOT NULL');
+$tableHandler->addColumn('id_project', 'INT(11) NULL DEFAULT NULL');
+$tableHandler->addColumn('id_product', 'INT(11) NOT NULL');
+$tableHandler->addColumn("name", "varchar(255) NOT NULL");
+$tableHandler->addColumn("subject", "TEXT NOT NULL");
+$tableHandler->addColumn("date", "DATE NOT NULL");
+$tableHandler->addColumn("amount", "FLOAT NOT NULL");
+$tableHandler->addColumn('created_at', 'TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP()');
+$tableHandler->addColumn('last_update', 'TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE current_timestamp()');
+$tableHandler->addColumn('last_access', 'TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP()');
+$tableHandler->addColumn('deleted_at', 'TIMESTAMP NULL DEFAULT NULL');
+$tableHandler->addIndex("id_customer");
+$tableHandler->addIndex("id_project");
+#$tableHandler->addForeignKey("id_customer", "gds_customer", "id"); // set up the foreign key sql relations like this
+#$tableHandler->addForeignKey("id_project", "gds_project", "id"); //set up the foreign key sql relations like this
+#$tableHandler->addForeignKey("id_product", "gds_product", "id"); //set up the foreign key sql relations like this
 
 // Create the table in the database
 $tableHandler->createTable();
@@ -31,6 +44,7 @@ $tableHandler->generateClassFileFromDatabase($className);
 
 // Generate the PHP list class file for the table
 $tableHandler->generateListClassFile($className);</pre>
+
         <h4>Methods</h4>
         <ul>
             <li><code>__construct($objUser = NULL)</code><br />
@@ -52,6 +66,14 @@ $tableHandler->generateListClassFile($className);</pre>
                 <ul>
                     <li><b>$columnName</b>: The name of the column.<br /></li>
                     <li><b>$definition</b>: The definition of the column (e.g., data type, constraints).<br /></li>
+                    <li>This method returns <code>void</code>: No return value.</li>
+                </ul>
+            </li>
+            <li><code>addIndex($columnName, $indexType)</code><br />
+                Adds an index to a column.
+                <ul>
+                    <li><b>$columnName</b>: The name of the column.<br /></li>
+                    <li><b>$indexType</b>: The type of the index (e.g., 'INDEX', 'UNIQUE', 'PRIMARY KEY').<br /></li>
                     <li>This method returns <code>void</code>: No return value.</li>
                 </ul>
             </li>
@@ -108,8 +130,6 @@ $tableHandler->generateListClassFile($className);</pre>
                 </ul>
             </li>
         </ul>
-
-
     </div>
     <div class="col-md-3">
         <ul class="list-unstyled sticky-top small lh-lg">
