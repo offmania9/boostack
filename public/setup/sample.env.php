@@ -24,7 +24,7 @@ $config['port'] = '[port]';
 # Setup Domain Name
 $config['DN'] = '[dn]';
 # Setup Alternative Domain Name
-$config['DN_alternative'] = array();
+$config['DN_alternative'] = array(); // / or empty by default
 # Setup Development Mode
 $config['developmentMode'] = TRUE;
 # Alert if Setup folder is visible
@@ -112,15 +112,21 @@ $config['mail_on'] = FALSE;     // enable or disable send mail
 $config["mail_admin"] = "info@getboostack.com";
 $config["mail_noreply"] = "no-reply@getboostack.com";
 $config["mail_maintenance"] = "mntn@getboostack.com";
+$config['useMailgun'] = FALSE;
+$config['useSendGrid'] = FALSE;
+$config['SendGrid_apikey'] = "";
+$config['useMailJet'] = FALSE;
+$config['MailJet_apiKey'] = "";
+$config['MailJet_secretKey'] = "";
 
 /**
  * FILES AND IMAGES
  */
-$config["max_upload_image_size"] = 2097152; // 2 MB
-$config["max_upload_filename_length"] = 100;
-$config["max_upload_filesize"] = 4194304; // 4 MB
-$config["allowed_file_upload_types"] = array(/* TODO */);
-$config["allowed_file_upload_extensions"] = array(/* TODO */);
+$config["max_upload_image_size"] = 16777216; // 16 MB
+$config["max_upload_filename_length"] = 150;
+$config["max_upload_filesize"] = 16777216; // 16 MB
+$config["allowed_file_upload_types"] = "*"; // * = all or array with specific value 
+$config["allowed_file_upload_extensions"] = ["jpg", "png", "jpeg", "gif", "pdf", "doc","docx"];  // * = all or array with specific value 
 
 /**
  * DATES AND TIMES
@@ -142,27 +148,9 @@ ini_set('session.use_only_cookies', 1);
 #ini_set('session.cookie_secure', 1);
 
 /**
- * GEOLOCALIZATION
- */
-$config['geolocation_on'] = FALSE;  // enable or disable Geolocalization
-
-/**
  * CUSTOM VARIABLES
  */
-// TODO
-// ====== MAINGUN CONFIFURATION
-$config['useMailgun'] = TRUE;
-$config["mail_from"] = "no-reply@getboostack.com";
-$config["name_from"] = "";
-$config["mail_bcc"] = "";
-$config["mailgun_key"] = "";
-$config["mailgun_endpoint"] = "https://api.eu.mailgun.net"; // For EU servers
-$config["mailgun_domain"] = "";
-$config["mail_validTime"] = 7200;
-
-//function isSecureProtocol($forceTrueForReverseProxy = false) {
-//    return $forceTrueForReverseProxy || (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443;
-//}
+$config["notification_email_max_retries"] = -1; // default -1 = no limit
 
 /**
  * DO NOT MODIFY
