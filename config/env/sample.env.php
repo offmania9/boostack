@@ -143,17 +143,22 @@ $config["notification_email_max_retries"] = -1; // default -1 = no limit
 /**
  * DO NOT MODIFY
  */
-$default_port = empty($config['port']) ? '' : ':' . $config['port'];
-$defaultDN = $config['DN'] . $default_port;
-$currentDN = (in_array($_SERVER['HTTP_HOST'], $config['DN_alternative'])) ? $_SERVER['HTTP_HOST'] . '' : $defaultDN . $config['document_root_subdir'];
-$config['url'] = $config['protocol'] . "://" . $currentDN;
+if (php_sapi_name() == 'cli' || empty($_SERVER['REQUEST_METHOD'])) {
+    define('ROOTPATH',  __DIR__ . "/../../");
+    $currentDN = "";
+} else {
+    $default_port = empty($config['port']) ? '' : ':' . $config['port'];
+    $defaultDN = $config['DN'] . $default_port;
+    $currentDN = (in_array($_SERVER['HTTP_HOST'], $config['DN_alternative'])) ? $_SERVER['HTTP_HOST'] . '' : $defaultDN . $config['document_root_subdir'];
 
-# Setup main project folder 
-define('MAIN_PROJECT_FOLDER', "public");
-if (!empty($_SERVER['DOCUMENT_ROOT']))
-    define('ROOTPATH', $_SERVER['DOCUMENT_ROOT'] . "/" . MAIN_PROJECT_FOLDER . "/");
-else
-    define('ROOTPATH',  MAIN_PROJECT_FOLDER . "/");
+    # Setup main project folder 
+    define('MAIN_PROJECT_FOLDER', "public");
+    if (!empty($_SERVER['DOCUMENT_ROOT']))
+        define('ROOTPATH', $_SERVER['DOCUMENT_ROOT'] . "/" . MAIN_PROJECT_FOLDER . "/");
+    else
+        define('ROOTPATH',  MAIN_PROJECT_FOLDER . "/");
+}
+$config['url'] = $config['protocol'] . "://" . $currentDN;
 
 abstract class Environment
 {
