@@ -61,10 +61,12 @@ CREATE TABLE `boostack_api_request` (
 --
 
 CREATE TABLE `boostack_cache` (
-    `key` varchar(255) NOT NULL DEFAULT '',
-    `value` longtext DEFAULT NULL,
-    `created_at` bigint(20) NOT NULL
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb3 COLLATE = utf8mb3_general_ci;
+  `key` varchar(255) NOT NULL DEFAULT '',
+  `key_plain` text NOT NULL,
+  `value` longtext DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `last_update` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 -- --------------------------------------------------------
 

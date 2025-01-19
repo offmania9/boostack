@@ -148,6 +148,11 @@ ini_set('session.use_only_cookies', 1);
 #ini_set('session.cookie_secure', 1);
 
 /**
+ * CACHING
+ */
+$config['cache_enabled'] = TRUE;  // enable or disable Chaching
+
+/**
  * CUSTOM VARIABLES
  */
 $config["notification_email_max_retries"] = -1; // default -1 = no limit
