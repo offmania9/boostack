@@ -1,16 +1,26 @@
-#php_value zlib.output_compression on
+php_value zlib.output_compression on
 
 ###### SHOW ERRORS
 #php_flag display_startup_errors on
 #php_flag display_errors on
 #php_flag html_errors on
-#php_flag  log_errors on
+#php_flag log_errors on
+
+
+# --------------------------------------
+# ERROR PAGES
+# --------------------------------------
+ErrorDocument 400 /error.php?code=400
+ErrorDocument 401 /error.php?code=401
+ErrorDocument 403 /error.php?code=403
+ErrorDocument 404 /error.php?code=404
+ErrorDocument 500 /error.php?code=500
+ErrorDocument 503 /maintenance.php
 
 ###### TIME
 SetEnv TZ Europe/Rome
 
-# disable the server signature
-#ServerTokens ProductOnly
+# disable the server signature (#ServerTokens Prod in httpd.conf or apache2.conf)
 ServerSignature Off
 
 AddDefaultCharset utf-8
@@ -18,113 +28,111 @@ AddDefaultCharset utf-8
 # set the server administrator email
 SetEnv SERVER_ADMIN info@getboostack.com
 
-#AuthType Basic
-#AuthName "Authentication Required"
-#AuthUserFile /var/www/html/boostack/.htpasswd
-#Require valid-user
+# --------------------------------------
+# ENVIRONMENT CONFIGURATION
+# --------------------------------------
 
-ErrorDocument 400 /error.php?code=400
-ErrorDocument 401 /error.php?code=401
-ErrorDocument 403 /error.php?code=403
-ErrorDocument 404 /error.php?code=404
-ErrorDocument 500 /error.php?code=500
-ErrorDocument 503 /maintenance.php
-#ErrorDocument 400 http/error.php?code=400
-#ErrorDocument 401 http://getboostack.com/error.php?code=401
-#ErrorDocument 403 http://getboostack.com/error.php?code=403
-#ErrorDocument 404 http://getboostack.com/error.php?code=404
-#ErrorDocument 500 http://getboostack.com/error.php?code=500
-#ErrorDocument 503 http://getboostack.com/maintenance.php
-
-###### RULES
-# Block access to "hidden" directories whose names begin with a period
 <IfModule mod_rewrite.c>
-#Options -MultiViews
-Options +FollowSymlinks -MultiViews
+    Options +FollowSymlinks -MultiViews
+    RewriteEngine on
 
-RewriteEngine on
-#--------- redirect to hhtps
-#First rewrite any request to the wrong domain to use the correct one (here www.)
-#RewriteCond %{HTTP_HOST} !^www\.
-#RewriteRule ^(.*)$ https://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-#Now, rewrite to HTTPS:
-#RewriteCond %{HTTPS} off
-#RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-#--------- end redirect to hhtps
+    ###############################################################################
+    # PRESERVE AUTHORIZATION HEADER (for API requests)
+    ###############################################################################
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
-#from getboostack.com to www.getboostack.com
-#RewriteCond %{HTTP_HOST} ^http://www.getboostack.com [NC]
-#RewriteRule ^(.*)$ getboostack.com/$1 [L,R=301]
+    ###############################################################################
+    # MAINTENANCE MODE
+    ###############################################################################
+    RewriteCond %{DOCUMENT_ROOT}/public/maintenance.php -f
+    RewriteCond %{DOCUMENT_ROOT}/maintenance.enable -f
+    RewriteCond %{SCRIPT_FILENAME} !maintenance.php
+    RewriteRule ^.*$ /maintenance.php [R=503,L]
 
+    ###############################################################################
+    # SECURITY MEASURES
+    ###############################################################################
 
-# Authorization Header
-RewriteCond %{HTTP:Authorization} .
-RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-
-#---------
-RewriteCond %{DOCUMENT_ROOT}/public/maintenance.php -f
-RewriteCond %{DOCUMENT_ROOT}/maintenance.enable -f
-RewriteCond %{SCRIPT_FILENAME} !maintenance.php
-RewriteRule ^.*$ /maintenance.php [R=503,L]
-#----------
-# Block access to "hidden" directories whose names begin with a period
+    # Block access to hidden directories (e.g., .git, .env)
     RewriteCond %{SCRIPT_FILENAME} -d
     RewriteCond %{SCRIPT_FILENAME} -f
     RewriteRule "(^|/)\." - [F]
-#----------------
 
-# Remove trailing slash
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_URI} (.+)/$
-RewriteRule ^ %1 [R=301,L]
-# end Remove trailing slash
+    ###############################################################################
+    # BLOCK MALICIOUS QUERY STRINGS
+    ###############################################################################
 
-#RewriteCond %{REQUEST_URI} !^public
-#RewriteRule ^(.*)$ public/$1 [L]
-#RewriteCond %{REQUEST_URI} ^/$
-#RewriteRule ^(.*)$ /public/index.php [L]
+    # Block access to /?=proc/self/environ
+    RewriteCond %{QUERY_STRING} proc/self/environ [NC,OR]
 
-# redirect to routing
-# RewriteCond %{REQUEST_FILENAME} !-d
-# RewriteCond %{REQUEST_FILENAME} !-f
-# RewriteRule ^ index.php [L]
+    # Block Joomla-related config injection attempts
+    RewriteCond %{QUERY_STRING} mosConfig_[a-zA-Z_]{1,21}(=|%3D) [NC,OR]
 
-RewriteRule ^home$ index.php [L]
-RewriteRule ^setup$ /setup/index.php [L]
-RewriteRule ^docs/(\d{1,3}(?:\.[\dx]{1,3}){0,2})/([a-zA-Z0-9_-]+)?$ documentation.php?version=$1&docpath=$2 [L]
-RewriteRule ^docs/(\d{1,3}(?:\.[\dx]{1,3}){0,2})$ documentation.php?version=$1 [L]
-RewriteRule ^docs$ documentation.php [L]
-RewriteRule ^download$ download.php [L]
-RewriteRule ^login$ login.php [L]
-RewriteRule ^registration$ registration.php [L]
-RewriteRule ^logout$ logout.php [L]
-RewriteRule ^api/([^\.]+)$ api.php?request=$1 [L]
-RewriteRule ^downloadLatest$ downloadlatest.php [L]
-RewriteRule ^log$ logList.php [L]
+    # Block base64_encode attempts in query string
+    RewriteCond %{QUERY_STRING} base64_encode.* [NC,OR]
 
-# proc/self/environ? no!
-RewriteCond %{QUERY_STRING} proc/self/environ [OR]
+    # Block <script> injections in query string
+    RewriteCond %{QUERY_STRING} (<|%3C).*script.*(>|%3E) [NC,OR]
 
-#Blocca ogni script che cerca di settare un valore mosConfig attraverso l'URL
-RewriteCond %{QUERY_STRING} mosConfig_[a-zA-Z_]{1,21}(=|\%3D) [OR]
+    # Block attempts to set GLOBALS[] via URL
+    RewriteCond %{QUERY_STRING} GLOBALS(=|\[|%[0-9A-Z]{0,2}) [NC,OR]
 
-# Block all script: base64_encode crap
-RewriteCond %{QUERY_STRING} base64_encode.*(.*) [OR]
+    # Block attempts to set _REQUEST[] via URL
+    RewriteCond %{QUERY_STRING} _REQUEST(=|\[|%[0-9A-Z]{0,2}) [NC]
 
-# Block all requests that contains <script> tag in the URL
-RewriteCond %{QUERY_STRING} (<|%3C).*script.*(>|%3E) [NC,OR]
+    # Deny access if any of the above rules match
+    RewriteRule ^ - [F,L]
 
-# block all requests trying to set the PHP global variable via URL
-RewriteCond %{QUERY_STRING} GLOBALS(=|[|\%[0-9A-Z]{0,2}) [OR]
+    ###############################################################################
+    # BLOCK BAD USER AGENTS
+    ###############################################################################
 
-# block all requests trying to set the PHP _Request variable via URL
-RewriteCond %{QUERY_STRING} _REQUEST(=|[|\%[0-9A-Z]{0,2})[OR]
+    # Block requests from libwww-perl user agent (common in malicious bots)
+    RewriteCond %{HTTP_USER_AGENT} libwww-perl [NC]
+    RewriteRule ^ - [F,L]
 
-# Redirect all blocked request to error page
-RewriteRule ^(.*)$ error.php [F,L]
+    ###############################################################################
+    # BLOCK DIRECTORY TRAVERSAL ATTEMPTS
+    ###############################################################################
 
-RewriteCond %{HTTP_USER_AGENT} libwww-perl.*
-RewriteRule .* ? [F,L]
+    # Block ../ or ..\ in URI (path traversal)
+    RewriteCond %{REQUEST_URI} (\.\./|\.\.\\) [NC]
+    RewriteRule ^ - [F,L]
+
+    ###############################################################################
+    # BLOCK EXTERNAL URL REQUESTS
+    ###############################################################################
+
+    # Block GET/POST requests containing external URLs
+    RewriteCond %{REQUEST_METHOD} ^(GET|POST)$ [NC]
+    RewriteCond %{REQUEST_URI} (http:|https:|ftp:) [NC]
+    RewriteRule ^ - [F,L]
+
+    ###############################################################################
+    # CLEAN URL RULES
+    ###############################################################################
+
+    # Remove trailing slash from URLs (except for directories)
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [R=301,L]
+
+    # Define custom rewrite rules (e.g., for home, login, etc.)
+    RewriteRule ^home$ index.php [L]
+    RewriteRule ^setup$ /setup/index.php [L]
+    RewriteRule ^docs/(\d{1,3}(?:\.[\dx]{1,3}){0,2})/([a-zA-Z0-9_-]+)?$ documentation.php?version=$1&docpath=$2 [L]
+    RewriteRule ^docs/(\d{1,3}(?:\.[\dx]{1,3}){0,2})$ documentation.php?version=$1 [L]
+    RewriteRule ^docs$ documentation.php [L]
+    RewriteRule ^download$ download.php [L]
+    RewriteRule ^login$ login.php [L]
+    RewriteRule ^registration$ registration.php [L]
+    RewriteRule ^logout$ logout.php [L]
+    RewriteRule ^api/([^\.]+)$ api.php?request=$1 [L]
+    RewriteRule ^downloadLatest$ downloadlatest.php [L]
+    RewriteRule ^log$ logList.php [L]
+    # end rewrite rules
+
 </IfModule>
 
 <IfModule mod_gzip.c>
@@ -137,7 +145,6 @@ RewriteRule .* ? [F,L]
     mod_gzip_item_exclude mime      ^image/.*
     mod_gzip_item_exclude rspheader ^Content-Encoding:.*gzip.*
 </IfModule>
-
 
 <IfModule mod_expires.c>
     ExpiresActive On
@@ -198,13 +205,23 @@ RewriteRule .* ? [F,L]
 
 </IfModule>
 
-
-<FilesMatch "\.(htaccess|htpasswd|ini|phps|fla|psd|log|sh|sql|inc|phtml|inc.php|Class.php)|startupCustom.php$">
+<FilesMatch "\.(htaccess|htpasswd|ini|phps|fla|psd|log|sh|sql|inc|phtml|inc.php|Class.php|DS_Store|old|swp|bak|dist|md|env)$">
     Order Allow,Deny
     Deny from all
 </FilesMatch>
 
 <ifModule mod_headers.c>
+    # --------------------------------------
+    # CORS CONFIGURATION
+    # --------------------------------------
+
+    <IfModule mod_headers.c>
+        Header always set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+        Header always set Access-Control-Allow-Headers "Content-Type, Authorization"
+        # remove follow line and manage in my/pre_content.php 
+        # Header always set Access-Control-Allow-Origin "*" 
+    </IfModule>
+
     <filesMatch "\\.(ico|pdf|flv|jpg|jpeg|png|gif|swf)$">
     Header set Cache-Control "max-age=2592000, public"
     </filesMatch>
@@ -231,52 +248,47 @@ RewriteRule .* ? [F,L]
        Header set X-UA-Compatible "IE=Edge,chrome=1" env=ie
     </filesMatch>
 
-
     # enable X-XSS-Protection  for Internet Explorer 8 and newer
     Header set X-XSS-Protection: "1; mode=block"
-
     # hide server header (apache and php version)
     Header unset Server
-
     Header unset Last-Modified
     Header unset X-UA-Compatible
     Header set X-UA-Compatible "IE=Edge,chrome=1"
     Header append Vary: Accept-Encoding
-    Header unset Server
     Header unset X-Powered-By
     FileETag None
     Header unset ETag
 
-    #Header edit Set-Cookie ^(.*)$ $1;HttpOnly;Secure
-    #Header always edit Set-Cookie (.*) "$1; HTTPOnly;Secure"
-    Header always edit Set-Cookie (.*) "$1;HttpOnly;Secure;samesite=lax"
-    Header always edit Set-Cookie (.*) "$1; SameSite=Lax"
+    #only authentication areas
+    Header always edit Set-Cookie (.*) "$1; Secure; HttpOnly; SameSite=Strict"
+    #otherwise
+        # Header always edit Set-Cookie (.*) "$1;HttpOnly;Secure;samesite=lax"
+        # Header always edit Set-Cookie (.*) "$1; SameSite=Lax"
 
-    <IfModule mod_php5.c>
+    #session.cookie_secure = true ONLY IF HTTPS, disabled if HTTP
+    <IfModule mod_php.c>
         php_value session.cookie_httponly true
         php_flag session.cookie_httponly on
+        php_value session.cookie_secure true
+        php_flag session.cookie_secure on
+        php_value session.use_strict_mode 1
     </IfModule>
-    <IfModule mod_php7.c>
-        php_value session.cookie_httponly true
-        php_flag session.cookie_httponly on
-    </IfModule>
-
-    # allow CORS globally
-    Header add Access-Control-Allow-Origin "*"
 
     # Only allow JavaScript from the same domain to be run.
     # don't allow inline JavaScript to run.
     #Header set X-Content-Security-Policy "allow 'self';"
+    Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.google.com/recaptcha/api.js https://www.gstatic.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-src https://www.google.com/recaptcha/api.js https://www.gstatic.com; object-src 'none'; base-uri 'self';"
 
     Header always set Strict-Transport-Security "max-age=63072000; includeSubdomains;"
 
+    # Prevents the browser from "sniffing" the content type and enforces respect for the declared type
     Header set X-Content-Type-Options nosniff
 
-    # Don't allow any pages to be framed by my site or any others
+    # Don't allow any pages to be framed by my site or any others, optionally use SAMEORIGIN like below
     Header set X-Frame-Options DENY
-
     # prevent Clickjacking Attack
-    Header always append X-Frame-Options SAMEORIGIN
+    #Header always append X-Frame-Options SAMEORIGIN
 
 </ifModule>
 
@@ -340,6 +352,9 @@ RewriteRule .* ? [F,L]
         <ifmodule mod_headers.c>
             SetEnvIfNoCase ^(Accept-EncodXng|X-cept-Encoding|X{15}|~{15}|-{15})$ ^((gzip|deflate)\s*,?\s*)+|[X~-]{4,13}$ HAVE_Accept-Encoding
             RequestHeader append Accept-Encoding "gzip,deflate" env=HAVE_Accept-Encoding
+
+            SetEnvIfNoCase User-Agent "bot|crawler|spider" bad_bot
+            Deny from env=bad_bot
         </ifmodule>
     </ifmodule>
 
@@ -364,7 +379,7 @@ RewriteRule .* ? [F,L]
     SetEnvIf User-Agent ".*MSIE.*" nokeepalive ssl-unclean-shutdown downgrade-1.0 force-response-1.0
     # Don't compress images
     SetEnvIfNoCase Request_URI .(?:gif|jpe?g)$ no-gzip dont-vary
-    AddOutputFilter DEFLATE image/png
+    #AddOutputFilter DEFLATE image/png
 
     AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css image/png
     <FilesMatch ".(js|css|html|htm|php|xml|png)$">
@@ -453,6 +468,7 @@ RewriteRule .* ? [F,L]
 <ifmodule mod_autoindex.c="">
     Options -Indexes
 </ifmodule>
+
 
 #Cache disable
 #Header Set Cache-Control "max-age=0, no-store"

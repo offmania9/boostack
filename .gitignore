@@ -2,6 +2,7 @@
 .project
 .settings
 .DS_Store
+.vscode/*
 /config/env/env.php
 logs/*
 !/logs/.htaccess
@@ -9,3 +10,7 @@ logs/*
 !/vendor/.htaccess
 /composer.lock
 /assets/css/style.css.map
+
+/uploads/*
+!uploads/.gitkeep
+!uploads/temp/.gitkeep

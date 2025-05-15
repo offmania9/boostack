@@ -3,7 +3,7 @@
 /**
  * Boostack: env.php
  * ========================================================================
- * Copyright 2014-2024 Spagnolo Stefano
+ * Copyright 2014-2025 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
@@ -79,15 +79,32 @@ $config['password_min_length'] = 6;
 $config['password_max_length'] = 80;
 
 $config['lockStrategy_on'] = [lockStrategy_on];
-$config['login_lockStrategy'] = '[lockStrategy_type]'; // "timer" | "recaptcha" | FALSE (if you set timer remember to set login_secondsFormBlocked)
-$config['login_maxAttempts'] = "[login_max_attempts]";
-$config['login_secondsFormBlocked'] = "[login_seconds_blocked]";
-$config['google_recaptcha-endpoint'] = "https://www.google.com/recaptcha/api/siteverify";        //ReCaptcha Google endpoint
-$config['reCaptcha_public'] = "[recaptcha_public]";       //recaptcha key
-$config['reCaptcha_private'] = "[recaptcha_private]";      //recaptcha key
+$config['login_maxAttempts'] = "5";
+$config['login_secondsFormBlocked'] = "3";
+
+$config['reCaptcha_on'] = FALSE;
+$config['reCaptcha_verify_endpoint'] = "https://www.google.com/recaptcha/api/siteverify";   //ReCaptcha Google endpoint
+$config['reCaptcha_public_clientside_key'] = "";    //recaptcha public key
+$config['reCaptcha_private_serverside_key'] = "";   //recaptcha private key
 
 $config['use_custom_user_class'] = false;
 $config['custom_user_class'] = '';
+
+/**
+ * SSO
+ */
+$config['SSO']["google"]["enabled"] = FALSE;
+$config['SSO']["google"]['ID_client'] = '';
+$config['SSO']["google"]['client_secret_id'] = '';
+$config['SSO']["google"]['ID_directory_tenant'] = 'none';
+$config['SSO']["google"]['client_secret_value'] = '';
+$config['SSO']["google"]['callback_page'] = 'http://localhost:8686/sso/google';
+$config['SSO']["microsoft"]["enabled"] = FALSE;
+$config['SSO']["microsoft"]['ID_client'] = '';
+$config['SSO']["microsoft"]['ID_directory_tenant'] = '';
+$config['SSO']["microsoft"]['client_secret_id'] = '';
+$config['SSO']["microsoft"]['client_secret_value'] = '';
+$config['SSO']["microsoft"]['callback_page'] = 'http://localhost:8686/sso/microsoft';
 
 /**
  * COOKIES
@@ -112,12 +129,6 @@ $config['mail_on'] = FALSE;     // enable or disable send mail
 $config["mail_admin"] = "info@getboostack.com";
 $config["mail_noreply"] = "no-reply@getboostack.com";
 $config["mail_maintenance"] = "mntn@getboostack.com";
-$config['useMailgun'] = FALSE;
-$config['useSendGrid'] = FALSE;
-$config['SendGrid_apikey'] = "";
-$config['useMailJet'] = FALSE;
-$config['MailJet_apiKey'] = "";
-$config['MailJet_secretKey'] = "";
 
 /**
  * FILES AND IMAGES
@@ -126,7 +137,8 @@ $config["max_upload_image_size"] = 16777216; // 16 MB
 $config["max_upload_filename_length"] = 150;
 $config["max_upload_filesize"] = 16777216; // 16 MB
 $config["allowed_file_upload_types"] = "*"; // * = all or array with specific value 
-$config["allowed_file_upload_extensions"] = ["jpg", "png", "jpeg", "gif", "pdf", "doc","docx"];  // * = all or array with specific value 
+$config["allowed_file_upload_extensions"] = ["jpg", "png", "jpeg", "gif", "pdf", "doc", "docx"];  // * = all or array with specific value 
+$config["uploaded_documents_path"] = $_SERVER['DOCUMENT_ROOT'] . "/uploads/temp/";
 
 /**
  * DATES AND TIMES
@@ -139,7 +151,7 @@ date_default_timezone_set('UTC');
 /**
  * SECURITY
  */
-$config["seconds_accepted_between_requests"] = 0; // time accepted between each request
+$config["seconds_accepted_between_requests"] = 0; // seconds accepted between each request (0 = all request will be accepted)
 // Prevents javascript XSS attacks aimed to steal the session ID
 ini_set('session.cookie_httponly', 1);
 // Session ID cannot be passed through URLs
@@ -150,22 +162,25 @@ ini_set('session.use_only_cookies', 1);
 /**
  * CACHING
  */
-$config['cache_enabled'] = TRUE;  // enable or disable Chaching
+$config['cache_enabled'] = FALSE;  // enable or disable Chaching
 
 /**
  * CUSTOM VARIABLES
  */
 $config["notification_email_max_retries"] = -1; // default -1 = no limit
+$config["upload_documents_path"] = $_SERVER['DOCUMENT_ROOT'] . "/uploads/temp/";
+$config["uploaded_images_path"] = $_SERVER['DOCUMENT_ROOT'] . "/uploads/temp/profile_pics/";
+$config["uploaded_profile_pics_path"] = $_SERVER['DOCUMENT_ROOT'] . "/public/assets/img/user/";
 
 /**
  * DO NOT MODIFY
  */
+$default_port = empty($config['port']) ? '' : ':' . $config['port'];
+$defaultDN = $config['DN'] . $default_port;
 if (php_sapi_name() == 'cli' || empty($_SERVER['REQUEST_METHOD'])) {
-    define('ROOTPATH',  __DIR__ . "/../../");
-    $currentDN = "";
+    define('ROOTPATH',  __DIR__ . "/../");
+    $currentDN = $defaultDN . $config['document_root_subdir'];
 } else {
-    $default_port = empty($config['port']) ? '' : ':' . $config['port'];
-    $defaultDN = $config['DN'] . $default_port;
     $currentDN = (in_array($_SERVER['HTTP_HOST'], $config['DN_alternative'])) ? $_SERVER['HTTP_HOST'] . '' : $defaultDN . $config['document_root_subdir'];
 
     # Setup main project folder 
