@@ -94,6 +94,7 @@ if ($env_parameters["database_on"] == "true" && $finalSetupMessageError == "") {
                 $toDelete->delete();
             }
         }
+
         $u = new User();
         $u->username = "boostack";
         $u->name = "Boostack System";
@@ -116,6 +117,7 @@ if ($env_parameters["database_on"] == "true" && $finalSetupMessageError == "") {
         $u->company = "Boostack";
         $u->last_name = "User";
         $u->save(2);
+        $u->createJWTToken();
 
         $u = new User();
         $u->username = "boostackadmin";
@@ -128,6 +130,7 @@ if ($env_parameters["database_on"] == "true" && $finalSetupMessageError == "") {
         $u->company = "Boostack";
         $u->last_name = "Admin";
         $u->save(3);
+        $u->createJWTToken();
 
         $u = new User();
         $u->username = "boostacksuperadmin";
@@ -140,6 +143,8 @@ if ($env_parameters["database_on"] == "true" && $finalSetupMessageError == "") {
         $u->company = "Boostack";
         $u->last_name = "SuperAdmin";
         $u->save(4);
+        $u->createJWTToken();
+
     } catch (\PDOException $e) {
         $finalSetupMessageError = "Database Error. Message: " . $e->getMessage();
         unlink($finalEnvPath);

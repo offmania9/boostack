@@ -1,0 +1,129 @@
+<div class="row">
+    <div class="col-md-9">
+        <h2 class="fw-bold">Routing</h2>
+        <section id="RoutingWithRouter">
+            <h3 class="pt-3">New Routing System (Preferred)</h3>
+            <p>Starting from the latest Boostack version, routing is handled through an internal Router class instead of Apache <code>.htaccess</code> rules. This approach is more flexible, testable, and maintainable. All requests should be directed to the <code>index.php</code> file, and routes should be configured via the <code>initRoutes()</code> function.</p>
+
+            <h4 class="pt-3">Setup</h4>
+            <p>Create the following structure in your <code>initRoutes()</code> function to register your application's routes:</p>
+            <pre>use Boostack\Core\Routing\Router;
+use Boostack\Core\Routing\HttpMethod;
+
+function initRoutes(): Router {
+    $router = new Router();
+
+    //add your Routes here...
+    // e.g:
+    // $router->addRoute('', [My\Controllers\Index::class, 'init']);
+    // $router->addRoute('login', [My\Controllers\Login::class, 'init'], HttpMethod::GET);
+    // $router->addRoute('login', [My\Controllers\Login::class, 'init'], HttpMethod::POST);
+    // $router->addRoute('setup', "setup/index.php");
+    // $router->addRoute('api/([^\\.]+)', [My\Controllers\Api::class, 'init'], HttpMethod::GET, ['request']);
+    // $router->addRoute('docs/(\d{1,3}(?:\.[\\dx]{1,3}){0,2})/([a-zA-Z0-9_-]+)', [My\Controllers\Documentation::class, 'init'], HttpMethod::GET, ['version', 'docpath']);
+    // $router->addRoute('docs/(\d{1,3}(?:\.[\\dx]{1,3}){0,2})', [My\Controllers\Documentation::class, 'init'], HttpMethod::GET, ['version']);
+    // $router->addRoute('registration', [My\Controllers\Registration::class, 'init']);
+    // $router->addRoute('registration', [My\Controllers\Registration::class, 'init'], HttpMethod::POST);
+    // $router->addRoute('logout', [My\Controllers\Logout::class, 'init']);
+
+    return $router;
+}</pre>
+
+            <h4 class="pt-3">Route Syntax</h4>
+            <ul>
+                <li><strong>Path:</strong> The URI pattern to match. Regex is allowed.</li>
+                <li><strong>Target:</strong> Either a controller class and method pair (e.g. <code>[Class::class, 'method']</code>) or a direct file path (e.g. <code>"setup/index.php"</code>).</li>
+                <li><strong>Method (optional):</strong> HTTP method (<code>GET</code>, <code>POST</code>, etc.). Default is <code>GET</code>.</li>
+                <li><strong>Params (optional):</strong> List of parameter names for capturing values from the URI pattern.</li>
+            </ul>
+
+            <h4 class="pt-3">Dispatching Requests</h4>
+            <p>The following block should be included in your <code>index.php</code> file to initialize routing and enable automatic caching:</p>
+            <pre>$r = new Router();
+if (Config::get("cache_enabled") && Config::get("cache_routing_enabled")) {
+    $cache_routing_key = Config::get("cache_routing_key");
+    if (Cache::has($cache_routing_key)) {
+        $json = Cache::get($cache_routing_key);
+        $r = Router::fromArray(json_decode($json, true));
+    } else {
+        $r = initRoutes();
+        Cache::set($cache_routing_key, json_encode($r));
+    }
+} else {
+   <code>$r = initRoutes();</code>
+}
+
+<code>$r->dispatch(Request::getServerParam('REQUEST_URI'));</code></pre>
+
+            <p><strong>Note:</strong> To enable routing cache, set the <code>cache_routing_enabled</code> flag to <code>true</code> in your <code>config/.env.php</code> file.</p>
+
+            <h4 class="pt-3">Accessing Route Parameters via Request</h4>
+            <p>When a route uses regular expressions with named parameters (as configured via the fourth argument of <code>addRoute()</code>), the captured values are automatically injected into the <code>Request</code> object. You can retrieve them using the <code>Request::getQueryParam()</code> method in your controller:</p>
+
+            <pre>namespace My\Controllers;
+
+class Documentation extends \My\Controller
+{
+    public static function init()
+    {
+        $version = Request::getQueryParam('version');
+        $docpath = Request::getQueryParam('docpath');
+        echo "Requested documentation version: $version";
+        echo "Documentation path: $docpath";
+    }
+}</pre>
+
+            <p>This works for any route like:</p>
+            <pre>$router->addRoute(
+    'docs/(\d{1,3}(?:\.[\\dx]{1,3}){0,2})/([a-zA-Z0-9_-]+)',
+    [My\Controllers\Documentation::class, 'init'],
+    HttpMethod::GET,
+    ['version', 'docpath']
+);</pre>
+
+            <p>Note: If a parameter is missing or unmatched, <code>Request::getQueryParam()</code> will return <code>null</code>.</p>
+        </section>
+
+        <hr class="my-5">
+
+        <section id="LegacyRouting">
+            <h3 class="pt-3">Legacy Routing with .htaccess (Backward Compatibility)</h3>
+            <p>This method is still supported for backward compatibility but is no longer the recommended approach.</p>
+
+            <h4 class="">Step 1: Add Rewrite Rule</h4>
+            <p>
+                Open the <code>.htaccess</code> file in the "public" folder, and add the following rule in the Rewrite Rules block:
+            <pre><code>RewriteRule ^course$ course.php [L]</code></pre>
+            Now you can create the <code>course.php</code> page inside the <code>public</code> folder. All requests to <code>urlpath/course</code> will be redirected to the <code>course.php</code> page.
+            </p>
+
+            <h4 class="">Step 2: Page <code>course.php</code></h4>
+            <p>Insert the following code into the <code>course.php</code> page:</p>
+            <pre>&lt;?php
+// load Boostack Environment
+require __DIR__ . '/../vendor/autoload.php';
+Boostack\Environment::init();
+
+// call the custom controller Course stored in the My/Controller folder
+My\Controllers\Course::init();
+?&gt;</pre>
+
+            <h4 class="">Step 3: Controller <code>Course.php</code></h4>
+            <p>Create your custom controller <code>Course.php</code> in the <strong>My/Controllers</strong> folder:</p>
+            <pre>&lt;?php
+namespace My\Controllers;
+
+class Course extends \My\Controller
+{
+    public static function init()
+    {
+        echo "This is the courses page";
+    }
+}?&gt;</pre>
+            <p class="mt-3">If you want to manage the <code>course</code> route using the new Router class instead of .htaccess, you can simply register it like this in <code>initRoutes()</code>:</p>
+            <pre><code>$router->addRoute('course', [My\Controllers\Course::class, 'init']);</code></pre>
+        </section>
+    </div>
+    <div class="col-md-3">
+    </div>
+</div>

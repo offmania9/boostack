@@ -37,13 +37,17 @@ class Rest_AuthApi extends \Boostack\Models\Rest\Rest_Api
         try {
             $input_json = str_replace("'", "&#039;", $this->file);
             $content = json_decode($input_json);
-            Auth::loginByUsernameAndPlainPassword($content->username, $content->password, $content->rememberme);
-            return $res;
+            if (empty($content->username) ||  empty($content->password) || empty($content->rememberme))
+                throw new \Exception("field username,password,rememberme error");
+            $mb = Auth::loginByUsernameAndPlainPassword($content->username, $content->password, $content->rememberme);
+            if ($mb->error !== false)
+                throw new \Exception($mb->error);
+            $user = Auth::getUserLoggedObject();
+            return ["id" => $user->id, "username" => $user->username,];
         } catch (\Exception $e) {
             throw $e;
         }
     }
-
 
     protected function registrationFirstStep()
     {
@@ -129,6 +133,8 @@ class Rest_AuthApi extends \Boostack\Models\Rest\Rest_Api
     protected function logout()
     {
         $this->constraints("GET");
+        if (!Auth::isLoggedIn())
+            return false;
         Auth::logout();
         return true;
     }

@@ -2,25 +2,12 @@
     <div class="col-md-9">
         <h2 class="fw-bold">Course: First Example</h2>
         <section id="FirstExample">
-            <h3 class="pt-3">Routing</h3>
+            <h3 class="pt-3">Add path</h3>
             <p>
-                Open the .htaccess file in the "public" folder, and add the following rule in the Rewrite Rules block:
-            <pre><code>RewriteRule ^course$ course.php [L]</code></pre>
-            Now you can create the course.php page inside the "public" folder. All requests to urlpath/course will be redirected to the course.php page.
+                Open the index.php and add a new route in <code>initRoutes()</code>:</p>
+      <pre><code>$router->addRoute('course', [My\Controllers\Course::class, 'init']);</code></pre>
             </p>
-            <h3 class="">Page: course.php</h3>
-            <p class="">
-                Insert the following code into the course.php page:
-            <pre>&lt;?php
-    // load Boostack Environment
-    require __DIR__ . '/../vendor/autoload.php';
-    Boostack\Environment::init();
-
-    // call the custom controller Course stored in the My/Controller folder
-    My\Controllers\Course::init();
-?&gt;</pre>
-            </p>
-            <h3 class="">Controller: Course.php</h3>
+            <h3 class="">Create controller: Course.php</h3>
             <p class="">
                 Now you need to create your custom controller Course.php in the <b>My/Controllers</b> folder
             <pre>&lt;?php
@@ -34,8 +21,10 @@
         }
 }?&gt;</pre>
             </p>
+            Now you get "your-address/course" or e.g. "http://domain-name/course" and you can see "This is the courses page".
         </section>
     </div>
     <div class="col-md-3">
+        
     </div>
 </div>

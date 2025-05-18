@@ -24,6 +24,11 @@
                                         "partial_filename": "boostack_configs.phtml"
                                 },
                                 {
+                                        "path": "boostack-routing",
+                                        "title": "Routing",
+                                        "partial_filename": "routing.phtml"
+                                },
+                                {
                                         "path": "first-example",
                                         "title": "Course: First Example",
                                         "partial_filename": "first_example.phtml"

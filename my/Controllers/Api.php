@@ -27,7 +27,7 @@ class Api extends \My\Controller
         if (!array_key_exists('HTTP_ORIGIN', Request::getServerArray()))
             $_SERVER['HTTP_ORIGIN'] = Request::getServerParam("SERVER_NAME");
         try {
-            $api = Request::hasRequestParam('request') ? new Rest_Api(Request::getRequestParam('request')) : new Rest_Api("");
+            $api = Request::getQueryParam('request') ? new Rest_Api(Request::getQueryParam('request')) : new Rest_Api("");
             echo $api->processAPI();
         } catch (\Exception $e) {
             echo $e->getMessage();

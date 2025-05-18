@@ -54,7 +54,7 @@ $config['session_lifespan'] = 14400; # 4h    // session max duration (seconds)
  * Rest API
  */
 $config['api_on'] = [api_on];       // enable or disable boostack Rest API (#TRUE need $database_on=TRUE)
-$config['api_expire'] = 60 * 60 * 24 * 10;    // Cookies expire (60*60*24 = 1day)
+$config['api_expire'] = 60 * 60 * 24 * 10;    // JWT expire (10day)
 $config['api_secret_key'] = "[api_secret_key]";    // Cookies expire (60*60*24 = 1day)
 $config['api_my_extended_classes_dir'] = $_SERVER['DOCUMENT_ROOT'] . "/my/controllers/Rest/";
 $config['api_my_extended_namespace'] = '\My\Controllers\Rest\\';
@@ -163,6 +163,8 @@ ini_set('session.use_only_cookies', 1);
  * CACHING
  */
 $config['cache_enabled'] = FALSE;  // enable or disable Chaching
+$config['cache_routing_enabled'] = FALSE;  // enable or disable Routing Chache
+$config['cache_routing_key'] = 'router_routes_list';  // cache key for routing
 
 /**
  * CUSTOM VARIABLES
