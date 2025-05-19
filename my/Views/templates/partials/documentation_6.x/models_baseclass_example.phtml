@@ -12,13 +12,15 @@ use Boostack\Models\Request;
                 Create a table in the database and name it, for example, "boostack_course" with the following SQL structure:
             <pre>
 CREATE TABLE `boostack_course` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT, # default field (always mandatory)
   `name` varchar(255) NOT NULL,
   `description` text,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `last_update` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `last_access` timestamp NOT NULL DEFAULT current_timestamp(),
-  `deleted_at` timestamp NULL DEFAULT NULL,
+  `date_start` timestamp NOT NULL,
+  `date_end` timestamp NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),  # default field (mandatory for BaseClassTraced)
+  `last_update` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(), # default field (mandatory for BaseClassTraced)
+  `last_access` timestamp NOT NULL DEFAULT current_timestamp(), # default field (mandatory for BaseClassTraced)
+  `deleted_at` timestamp NULL DEFAULT NULL, # default field (mandatory for BaseClassTraced)
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 </pre>
@@ -33,6 +35,8 @@ CREATE TABLE `boostack_course` (
  $tableHandler->addColumn('id', 'INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY');
  $tableHandler->addColumn("name", "varchar(255) NOT NULL");
  $tableHandler->addColumn("description", "TEXT");
+ $tableHandler->addColumn('date_start', 'TIMESTAMP NOT NULL');
+ $tableHandler->addColumn('date_end', 'TIMESTAMP NOT NULL');
  $tableHandler->addColumn('created_at', 'TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP()');
  $tableHandler->addColumn('last_update', 'TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE current_timestamp()');
  $tableHandler->addColumn('last_access', 'TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP()');
@@ -42,13 +46,13 @@ CREATE TABLE `boostack_course` (
 
             <p>
                 Create a folder named "Courses" in the my/Models folder.<br />
-                Create a new PHP file named <code>Course.php</code> in the <code>my/Models/Courses folder</code>.
+                Create a new PHP file named <code>Course.php</code> in the <code>my/Models folder</code>.
             </p>
 
             <p>
                 For example, the <code>Course.php</code> file should look like this:
             <pre>&lt;?php
-namespace My\Models\Courses;
+namespace My\Models;
 class Course extends \Boostack\Models\BaseClassTraced {
     //do not set the $id field. It is already set by default
     protected $name;

@@ -108,20 +108,22 @@ Boostack\Environment::init();
 My\Controllers\Course::init();
 ?&gt;</pre>
 
-            <h4 class="">Step 3: Controller <code>Course.php</code></h4>
-            <p>Create your custom controller <code>Course.php</code> in the <strong>My/Controllers</strong> folder:</p>
+            <h4 class="">Step 3: Controller <code>CourseController.php</code></h4>
+            <p>Create your custom controller <code>CourseController.php</code> in the <strong>My/Controllers</strong> folder:</p>
             <pre>&lt;?php
 namespace My\Controllers;
 
-class Course extends \My\Controller
+class CourseController extends \My\Controller
 {
     public static function init()
     {
+        parent::init();
         echo "This is the courses page";
+        // insert here your custom logics
     }
 }?&gt;</pre>
             <p class="mt-3">If you want to manage the <code>course</code> route using the new Router class instead of .htaccess, you can simply register it like this in <code>initRoutes()</code>:</p>
-            <pre><code>$router->addRoute('course', [My\Controllers\Course::class, 'init']);</code></pre>
+            <pre><code>$router->addRoute('course', [My\Controllers\CourseController::class, 'init']);</code></pre>
         </section>
     </div>
     <div class="col-md-3">

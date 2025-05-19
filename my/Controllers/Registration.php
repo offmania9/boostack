@@ -26,9 +26,9 @@ class Registration extends \My\Controller
                 }
                 Auth::registration($email, $email, $psw1, $psw2, $csrfToken);
             }
-        } catch (\Boostack\Exception\Exception_Misconfiguration $em) {
+        } catch (\Boostack\Exceptions\Exception_Misconfiguration $em) {
             dd($em->getMessage());
-        } catch (\Boostack\Exception\Exception_Registration $e) {
+        } catch (\Boostack\Exceptions\Exception_Registration $e) {
             $registrationError = $e->getMessage();
         } catch (\Exception $e) {
             $registrationError = $e->getMessage();

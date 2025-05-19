@@ -2,22 +2,24 @@
     <div class="col-md-9">
         <h2 class="fw-bold">Course: First Example</h2>
         <section id="FirstExample">
-            <h3 class="pt-3">Add path</h3>
+            <h3 class="pt-3">Add route</h3>
             <p>
                 Open the index.php and add a new route in <code>initRoutes()</code>:</p>
-      <pre><code>$router->addRoute('course', [My\Controllers\Course::class, 'init']);</code></pre>
+      <pre><code>$router->addRoute('course', [My\Controllers\CourseController::class, 'init']);</code></pre>
             </p>
             <h3 class="">Create controller: Course.php</h3>
             <p class="">
-                Now you need to create your custom controller Course.php in the <b>My/Controllers</b> folder
+                Now you need to create your custom controller <b>CourseController.php</b> in the <b>My/Controllers</b> folder
             <pre>&lt;?php
     namespace My\Controllers;
 
-    class Course extends \My\Controller
+    class CourseController extends \My\Controller
     {
         public static function init()
         {
+            parent::init();
             echo "This is the courses page";
+            // insert here your custom logics
         }
 }?&gt;</pre>
             </p>

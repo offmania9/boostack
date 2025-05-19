@@ -40,6 +40,7 @@ function initRoutes(): Router
     $router->addRoute('api/([^\.]+)', [My\Controllers\Api::class, 'init'], HttpMethod::POST, ['request']);
     $router->addRoute('api/([^\.]+)', [My\Controllers\Api::class, 'init'], HttpMethod::PUT, ['request']);
     $router->addRoute('api/([^\.]+)', [My\Controllers\Api::class, 'init'], HttpMethod::DELETE, ['request']);
+    #$router->addRoute('course', [My\Controllers\CourseController::class, 'init']);
     return $router;
 }
 

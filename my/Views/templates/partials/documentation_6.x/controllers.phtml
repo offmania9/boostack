@@ -6,15 +6,17 @@ use Boostack\Models\Request;
     <div class="col-md-9">
         <h2 class="fw-bold">Controllers</h2>
         <p>You can organize your controllers inside the <b>My/Controllers</b> folder and call them within the pages located in the project's "public" folder.</p>
-        <p>To create a new controller, you can create a brand new file in the My/Controllers folder of your project and follow the logic above:</p>
+        <p>To create a new controller, you can create a brand new file in the My/Controllers folder of your project (e.g. CourseController.php) and follow the logic above:</p>
         <pre>&lt;?php
     namespace My\Controllers;
 
-    class Course extends \My\Controller
+    class CourseController extends \My\Controller
     {
         public static function init()
         {
+            parent::init();
             echo "This is the courses page";
+            // insert here your custom logics
         }
     }
 ?&gt;</pre>
