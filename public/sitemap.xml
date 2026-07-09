@@ -5,147 +5,147 @@
 
   <url>
     <loc>https://www.getboostack.com/</loc>
-    <lastmod>2024-06-26T10:13:38+00:00</lastmod>
+    <lastmod>2026-06-26T10:13:38+00:00</lastmod>
     <priority>1.00</priority>
   </url>
   <url>
     <loc>https://www.getboostack.com/home</loc>
-    <lastmod>2024-06-26T10:13:38+00:00</lastmod>
+    <lastmod>2026-06-26T10:13:38+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://www.getboostack.com/download</loc>
-    <lastmod>2024-06-26T10:13:38+00:00</lastmod>
+    <lastmod>2026-06-26T10:13:38+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://www.getboostack.com/docs/6.x</loc>
-    <lastmod>2024-06-26T10:13:38+00:00</lastmod>
+    <lastmod>2026-06-26T10:13:38+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://www.getboostack.com/docs/6.x/setup</loc>
-    <lastmod>2024-06-26T10:13:38+00:00</lastmod>
+    <lastmod>2026-06-26T10:13:38+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://www.getboostack.com/docs/6.x/first-configuration</loc>
-    <lastmod>2024-06-26T10:13:38+00:00</lastmod>
+    <lastmod>2026-06-26T10:13:38+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://www.getboostack.com/docs/6.x/directory-structure</loc>
-    <lastmod>2024-06-26T10:13:38+00:00</lastmod>
+    <lastmod>2026-06-26T10:13:38+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://www.getboostack.com/docs/6.x/boostack-configs</loc>
-    <lastmod>2024-06-26T10:13:38+00:00</lastmod>
+    <lastmod>2026-06-26T10:13:38+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://www.getboostack.com/docs/6.x/first-example</loc>
-    <lastmod>2024-06-26T10:13:38+00:00</lastmod>
+    <lastmod>2026-06-26T10:13:38+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://www.getboostack.com/docs/6.x/models-baseclass</loc>
-    <lastmod>2024-06-26T10:13:38+00:00</lastmod>
+    <lastmod>2026-06-26T10:13:38+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://www.getboostack.com/docs/6.x/models-baseclass-example</loc>
-    <lastmod>2024-06-26T10:13:38+00:00</lastmod>
+    <lastmod>2026-06-26T10:13:38+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://www.getboostack.com/docs/6.x/models-baselist</loc>
-    <lastmod>2024-06-26T10:13:38+00:00</lastmod>
+    <lastmod>2026-06-26T10:13:38+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://www.getboostack.com/docs/6.x/models-baselist-example</loc>
-    <lastmod>2024-06-26T10:13:38+00:00</lastmod>
+    <lastmod>2026-06-26T10:13:38+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://www.getboostack.com/docs/6.x/controllers</loc>
-    <lastmod>2024-06-26T10:13:38+00:00</lastmod>
+    <lastmod>2026-06-26T10:13:38+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://www.getboostack.com/docs/6.x/controller-example</loc>
-    <lastmod>2024-06-26T10:13:38+00:00</lastmod>
+    <lastmod>2026-06-26T10:13:38+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://www.getboostack.com/docs/6.x/views</loc>
-    <lastmod>2024-06-26T10:13:38+00:00</lastmod>
+    <lastmod>2026-06-26T10:13:38+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://www.getboostack.com/docs/6.x/view-example</loc>
-    <lastmod>2024-06-26T10:13:38+00:00</lastmod>
+    <lastmod>2026-06-26T10:13:38+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://www.getboostack.com/docs/6.x/first-complete-example</loc>
-    <lastmod>2024-06-26T10:13:38+00:00</lastmod>
+    <lastmod>2026-06-26T10:13:38+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://www.getboostack.com/docs/6.x/login-example</loc>
-    <lastmod>2024-06-26T10:13:38+00:00</lastmod>
+    <lastmod>2026-06-26T10:13:38+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://www.getboostack.com/docs/6.x/api-example</loc>
-    <lastmod>2024-06-26T10:13:38+00:00</lastmod>
+    <lastmod>2026-06-26T10:13:38+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://www.getboostack.com/docs/6.x/language</loc>
-    <lastmod>2024-06-26T10:13:38+00:00</lastmod>
+    <lastmod>2026-06-26T10:13:38+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://www.getboostack.com/docs/6.x/request</loc>
-    <lastmod>2024-06-26T10:13:38+00:00</lastmod>
+    <lastmod>2026-06-26T10:13:38+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://www.getboostack.com/docs/6.x/users</loc>
-    <lastmod>2024-06-26T10:13:38+00:00</lastmod>
+    <lastmod>2026-06-26T10:13:38+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://www.getboostack.com/docs/6.x/auth</loc>
-    <lastmod>2024-06-26T10:13:38+00:00</lastmod>
+    <lastmod>2026-06-26T10:13:38+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://www.getboostack.com/docs/6.x/session</loc>
-    <lastmod>2024-06-26T10:13:38+00:00</lastmod>
+    <lastmod>2026-06-26T10:13:38+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://www.getboostack.com/docs/6.x/curl</loc>
-    <lastmod>2024-06-26T10:13:38+00:00</lastmod>
+    <lastmod>2026-06-26T10:13:38+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://www.getboostack.com/docs/6.x/log</loc>
-    <lastmod>2024-06-26T10:13:38+00:00</lastmod>
+    <lastmod>2026-06-26T10:13:38+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://www.getboostack.com/docs/6.x/validator</loc>
-    <lastmod>2024-06-26T10:13:38+00:00</lastmod>
+    <lastmod>2026-06-26T10:13:38+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://www.getboostack.com/docs/6.x/tablehandler</loc>
-    <lastmod>2024-06-26T10:13:38+00:00</lastmod>
+    <lastmod>2026-06-26T10:13:38+00:00</lastmod>
     <priority>0.80</priority>
   </url>
 </urlset>

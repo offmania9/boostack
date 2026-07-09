@@ -1,19 +1,58 @@
 FROM php:8.2-apache
 
-RUN apt-get update && apt-get install -y libonig-dev libzip-dev libjpeg-dev libpng-dev libxml2-dev libicu-dev libcurl4-openssl-dev python3 python3-pip
-RUN docker-php-ext-install pdo_mysql mysqli mbstring zip gd bcmath opcache exif pcntl intl xml curl
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+ENV DEBIAN_FRONTEND=noninteractive
 
-RUN chown -R www-data:www-data /var/www/html
-RUN find /var/www/html -type d -exec chmod 755 {} \;
-RUN find /var/www/html -type f -exec chmod 644 {} \;
+# System deps
+RUN set -eux; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends \
+      ca-certificates \
+      curl \
+      cron \
+      python3 \
+      python3-pip \
+      zlib1g-dev \
+      libonig-dev \
+      libzip-dev \
+      libwebp-dev \
+      libjpeg62-turbo-dev \
+      libpng-dev \
+      libxml2-dev \
+      libicu-dev \
+      libcurl4-openssl-dev \
+    ; \
+    rm -rf /var/lib/apt/lists/*
 
-COPY ./* /var/www/html
+# PHP extensions
+RUN set -eux; \
+    docker-php-ext-configure gd --with-jpeg --with-webp; \
+    docker-php-ext-install -j"$(nproc)" \
+      gd \
+      pdo_mysql \
+      mysqli \
+      mbstring \
+      zip \
+      bcmath \
+      opcache \
+      exif \
+      pcntl \
+      intl \
+      xml \
+      curl
 
-RUN a2enmod rewrite
-RUN a2enmod deflate
-RUN a2enmod headers
-RUN a2enmod expires
-RUN a2enmod include
+# Apache modules
+RUN set -eux; \
+    a2enmod rewrite deflate headers expires include
 
+# Composer (opzionale ma ok tenerlo)
+ENV COMPOSER_ALLOW_SUPERUSER=1
+RUN set -eux; \
+    php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"; \
+    php composer-setup.php --install-dir=/usr/local/bin --filename=composer; \
+    rm -f composer-setup.php; \
+    composer --version
+
+# App
 WORKDIR /var/www/html
+COPY . /var/www/html

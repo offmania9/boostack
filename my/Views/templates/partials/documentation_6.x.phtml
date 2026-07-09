@@ -18,7 +18,7 @@ use Boostack\Models\Request;
             <div class="col-md-3">
                 <ul class="list-unstyled documentationMenu sticky-top">
                     <?php
-
+                    $mainpath = "documentation";
                     foreach ($all_items['categories'] as $category) {
                         echo '<li class="title fw-bold pt-2">' . htmlspecialchars($category['title']) . '</li>';
                         foreach ($category['items'] as $item) {
@@ -27,20 +27,20 @@ use Boostack\Models\Request;
                                 $classes .= 'text-dark-green fw-bold';
                             }
                             echo '<li class="ps-3">';
-                            echo '<a class="' . $classes . '" href="' . htmlspecialchars(Request::getFriendlyUrl("docs/" . $currentVersion . "/" . $item['path'])) . '">' . htmlspecialchars($item['title']) . '</a>';
+                            echo '<a class="' . $classes . '" href="' . htmlspecialchars(Request::getFriendlyUrl($mainpath . "/" . $currentVersion . "/" . $item['path'])) . '">' . htmlspecialchars($item['title']) . '</a>';
                             echo '</li>';
                         }
                     }
                     ?>
                     <li class="title fw-bold pt-3 d-none">Examples</li>
                     <li class="ps-3 d-none">
-                        <a title="first complete example d-none" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/first-complete-example") ?>">First complete example</a>
+                        <a title="first complete example d-none" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl($mainpath . "/" . $currentVersion . "/first-complete-example") ?>">First complete example</a>
                     </li>
                     <li class="ps-3 d-none">
-                        <a title="login example" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/login-example") ?>">Login example</a>
+                        <a title="login example" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl($mainpath . "/" . $currentVersion . "/login-example") ?>">Login example</a>
                     </li>
                     <li class="ps-3 d-none">
-                        <a title="api example" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl("docs/" . $currentVersion . "/api-example") ?>">API example</a>
+                        <a title="api example" class="link-opacity-75-hover link-underline-light fw-normal" href="<?= Request::getFriendlyUrl($mainpath . "/" . $currentVersion . "/api-example") ?>">API example</a>
                     </li>
             </div>
             <div class="col-md-9 documentationInnerContent">

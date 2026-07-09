@@ -2,7 +2,7 @@
 /**
  * Boostack: global.env.php
  * ========================================================================
- * Copyright 2014-2025 Spagnolo Stefano
+ * Copyright 2014-2026 Spagnolo Stefano
  * Licensed under MIT (https://github.com/offmania9/Boostack/blob/master/LICENSE)
  * ========================================================================
  * @author Spagnolo Stefano <s.spagnolo@hotmail.it>
@@ -21,6 +21,7 @@ $config["mail_template_path"] = "my/Views/templates/mail/";
 $config["language_path"] = "/lang/";
 $config["language_file_extension"] = ".inc.json";
 
+$config["assets_version"] = "2024101101"; //mod to clear cache
 $config["default_js_files"] = array("lib/bootstrap.js","lib/require.js","init.js");
 $config["default_ie_js_files"] = array(); // "lib/html5shiv.js","lib/respond.js"
 $config["default_css_files"] = array();/*,"custom.css"*/

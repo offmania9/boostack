@@ -1,7 +1,4 @@
-version: "3"
-
 services:
-
   php-apache:
     build:
       context: .
@@ -10,23 +7,32 @@ services:
     restart: unless-stopped
     volumes:
       - ./:/var/www/html
+      #- ./run/crontab/cron:/etc/cron.d/cron
+    #command: ["cron", "-f"] 
     environment:
       - PHP_MEMORY_LIMIT=1024M
       - PHP_UPLOAD_MAX_FILESIZE=100M
       - PHP_POST_MAX_SIZE=100M
       - COMPOSER_ALLOW_SUPERUSER=1
+      - TZ=Europe/Rome
     networks:
       - boostack-network
   mariadb:
     image: mariadb:latest
     #container_name: boostack-mariadb
     restart: unless-stopped
+    command: >
+      --max-allowed-packet=256M
+      --tmp-table-size=512M
+      --max-heap-table-size=512M
     environment:
       MYSQL_ROOT_HOST: '%'
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD_ROOT}
       MYSQL_DATABASE: ${DB_DATABASE}
       MYSQL_USER: ${DB_USERNAME}
       MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_TZINFO_TO_SQL: "1"
+      TZ: Europe/Rome
     #ports: 
     #  - "${DB_PORT}:${DB_PORT}"
     volumes:
@@ -42,6 +48,8 @@ services:
       PMA_HOST: mariadb
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD_ROOT}
       UPLOAD_LIMIT: 300M
+      MEMORY_LIMIT: 1024M
+      MAX_EXECUTION_TIME: 600
     depends_on:
       - mariadb
     networks:

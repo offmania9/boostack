@@ -11,6 +11,8 @@ logs/*
 /composer.lock
 /assets/css/style.css.map
 
+docker-compose.override.yaml
+
 /uploads/*
 !uploads/.gitkeep
 !uploads/temp/.gitkeep

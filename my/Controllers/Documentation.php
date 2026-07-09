@@ -11,9 +11,10 @@ class Documentation extends \My\Controller
     public static function init()
     {
         parent::init();
+        $mainpath = "documentation";
         $defaultVersion = "6.x";
         $templatePath = "documentation_" . $defaultVersion . ".phtml";
-        $defaultUrl = Request::getFriendlyUrl("docs/" . $defaultVersion . "");
+        $defaultUrl = Request::getFriendlyUrl($mainpath . "/" . $defaultVersion . "");
         $currentVersion = $defaultVersion;
         if (Request::hasQueryParam("version")) {
             switch (Request::getQueryParam("version")) {
@@ -51,7 +52,7 @@ class Documentation extends \My\Controller
                     Request::goToUrl($defaultUrl . "/setup");
             }
             View::render($templatePath, array(
-                "canonical" =>  Request::getFriendlyUrl("docs/" . $currentVersion . "/" . $docpage_path),
+                "canonical" =>  Request::getFriendlyUrl($mainpath . "/" . $currentVersion . "/" . $docpage_path),
                 "pageTitle" => Language::getLabel("navigation.documentation") . " - " . $docpage_title,
                 "currentVersion" => $currentVersion,
                 "partial_filename" => $partial_filename,

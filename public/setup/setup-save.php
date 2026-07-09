@@ -30,7 +30,7 @@ $env_parameters = [
     "db_username" => $input['db-username'],
     "db_password" => $input['db-password'],
     "session_on" => $input['db-session-active'],
-    'csrf_on' => $input['db-csrf-active'],!empty($input["db-csrf-active"]) && $input["db-session-active"]==true?$input["db-lockStrategy_on"]:FALSE,
+    'csrf_on' => $input['db-csrf-active'],
     "cookie_on" => $input['db-cookie-active'],
     "cookie_expire" => $input['db-cookie-expired'],
     "cookie_name" => $input['db-cookie-name'],
@@ -57,6 +57,9 @@ if ($envContent === FALSE) {
     $finalSetupMessageError = "message: setup/sample.env.php -> failed to open stream: Permission denied. <br/><br/>Solution: add read access to 'setup' folder";
 } else {
     foreach ($env_parameters as $param => $value) {
+        if (!is_string($param)) {
+            continue;
+        }
         if(is_null($value)) {print_r( $param);print_r( $value);}
         $value = ($value == "true" || $value == "false") ? strtoupper($value) : $value;
         $envContent = str_replace("[$param]", $value, $envContent);
@@ -78,72 +81,81 @@ if ($env_parameters["database_on"] == "true" && $finalSetupMessageError == "") {
         $db = \Boostack\Models\Database\Database_PDO::getInstance($env_parameters["db_host"], $env_parameters["db_name"], $env_parameters["db_username"], $env_parameters["db_password"], $env_parameters["db_port"]);
         $db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
-        if ($_POST["db-dump-active"] == "true") {
+        $shouldImportDump = isset($_POST["db-dump-active"]) && $_POST["db-dump-active"] == "true";
+        if ($shouldImportDump) {
+            if (databaseHasTables($db, $env_parameters["db_name"])) {
+                throw new \Exception(
+                    "The selected database is not empty. Auto Import Dump can be used only with an empty database. " .
+                    "Use an empty database or set 'Auto Import Dump' to 'No' to preserve the existing schema and data."
+                );
+            }
+
             $sql = file_get_contents('boostack_db.sql');
             $qr = $db->exec($sql);
-        }
-        $users = array();
-        $users[0] = "user@getboostack.com";
-        $users[1] = "admin@getboostack.com";
-        $users[2] = "superadmin@getboostack.com";
-        foreach ($users as $user) {
-            while (User::existsByEmail($user, false)) {
-                $id = User::getUserIDByEmail($user, false);
-                $toDelete = new User();
-                $toDelete->load($id);
-                $toDelete->delete();
+
+            $users = array();
+            $users[0] = "user@getboostack.com";
+            $users[1] = "admin@getboostack.com";
+            $users[2] = "superadmin@getboostack.com";
+            foreach ($users as $user) {
+                while (User::existsByEmail($user, false)) {
+                    $id = User::getUserIDByEmail($user, false);
+                    $toDelete = new User();
+                    $toDelete->load($id);
+                    $toDelete->delete();
+                }
             }
+
+            $u = new User();
+            $u->username = "boostack";
+            $u->name = "Boostack System";
+            $u->email = "system@getboostack.com";
+            $u->pwd = "testing";
+            $u->privilege = "0";
+            $u->first_name = "Boostack";
+            $u->company = "Boostack";
+            $u->last_name = "System";
+            $u->save(1);
+
+            $u = new User();
+            $u->username = "boostackuser";
+            $u->name = "Boostack User";
+            $u->email = "user@getboostack.com";
+            $u->pwd = "testing";
+            $u->privilege = "3";
+            $u->active = "1";
+            $u->first_name = "Boostack";
+            $u->company = "Boostack";
+            $u->last_name = "User";
+            $u->save(2);
+            $u->createJWTToken();
+
+            $u = new User();
+            $u->username = "boostackadmin";
+            $u->name = "Boostack Admin";
+            $u->email = "admin@getboostack.com";
+            $u->pwd = "testing";
+            $u->privilege = "2";
+            $u->active = "1";
+            $u->first_name = "Boostack";
+            $u->company = "Boostack";
+            $u->last_name = "Admin";
+            $u->save(3);
+            $u->createJWTToken();
+
+            $u = new User();
+            $u->username = "boostacksuperadmin";
+            $u->name = "Boostack SuperAdmin";
+            $u->email = "superadmin@getboostack.com";
+            $u->pwd = "testing";
+            $u->privilege = "1";
+            $u->active = "1";
+            $u->first_name = "Boostack";
+            $u->company = "Boostack";
+            $u->last_name = "SuperAdmin";
+            $u->save(4);
+            $u->createJWTToken();
         }
-
-        $u = new User();
-        $u->username = "boostack";
-        $u->name = "Boostack System";
-        $u->email = "system@getboostack.com";
-        $u->pwd = "testing";
-        $u->privilege = "0";
-        $u->first_name = "Boostack";
-        $u->company = "Boostack";
-        $u->last_name = "System";
-        $u->save(1);
-
-        $u = new User();
-        $u->username = "boostackuser";
-        $u->name = "Boostack User";
-        $u->email = "user@getboostack.com";
-        $u->pwd = "testing";
-        $u->privilege = "3";
-        $u->active = "1";
-        $u->first_name = "Boostack";
-        $u->company = "Boostack";
-        $u->last_name = "User";
-        $u->save(2);
-        $u->createJWTToken();
-
-        $u = new User();
-        $u->username = "boostackadmin";
-        $u->name = "Boostack Admin";
-        $u->email = "admin@getboostack.com";
-        $u->pwd = "testing";
-        $u->privilege = "2";
-        $u->active = "1";
-        $u->first_name = "Boostack";
-        $u->company = "Boostack";
-        $u->last_name = "Admin";
-        $u->save(3);
-        $u->createJWTToken();
-
-        $u = new User();
-        $u->username = "boostacksuperadmin";
-        $u->name = "Boostack SuperAdmin";
-        $u->email = "superadmin@getboostack.com";
-        $u->pwd = "testing";
-        $u->privilege = "1";
-        $u->active = "1";
-        $u->first_name = "Boostack";
-        $u->company = "Boostack";
-        $u->last_name = "SuperAdmin";
-        $u->save(4);
-        $u->createJWTToken();
 
     } catch (\PDOException $e) {
         $finalSetupMessageError = "Database Error. Message: " . $e->getMessage();
@@ -154,22 +166,26 @@ if ($env_parameters["database_on"] == "true" && $finalSetupMessageError == "") {
     }
 }
 
-function generateRandomStringApiKey($length = 20) {
+function generateRandomStringApiKey($length = 32) {
+    $length = max(32, (int) $length);
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $chunks = [4, 5, 5, 5, 6];
-    $chunksCount = count($chunks);
-    $separator = '-';
+    $charactersLength = strlen($characters);
     $randomString = '';
 
-    foreach ($chunks as $chunkLength) {
-        for ($i = 0; $i < $chunkLength; $i++) {
-            $randomString .= $characters[rand(0, strlen($characters) - 1)];
-        }
-        if (--$chunksCount > 0) {
-            $randomString .= $separator;
-        }
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= $characters[random_int(0, $charactersLength - 1)];
     }
 
     return $randomString;
+}
+
+function databaseHasTables(\PDO $db, string $dbName): bool
+{
+    $sql = "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = :db_name";
+    $query = $db->prepare($sql);
+    $query->bindValue(':db_name', $dbName);
+    $query->execute();
+
+    return (int) $query->fetchColumn() > 0;
 }
 ?>
