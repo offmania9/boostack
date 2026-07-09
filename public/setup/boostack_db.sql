@@ -12,7 +12,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `boostack_api_request`
+--  `boostack_api_request`
 --
 
 CREATE TABLE `boostack_api_request` (
@@ -40,7 +40,7 @@ CREATE TABLE `boostack_api_request` (
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `boostack_asset`
+--  `boostack_asset`
 --
 
 CREATE TABLE `boostack_asset` (
@@ -53,6 +53,10 @@ CREATE TABLE `boostack_asset` (
   `type` varchar(255) NOT NULL,
   `size` float NOT NULL,
   `extension` varchar(10) NOT NULL,
+  `file_hash_sha256` char(64) DEFAULT NULL,
+  `upload_source` varchar(64) DEFAULT NULL,
+  `source_context` varchar(128) DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `last_update` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `last_access` timestamp NOT NULL DEFAULT current_timestamp(),
@@ -62,7 +66,124 @@ CREATE TABLE `boostack_asset` (
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `boostack_cache`
+--  `boostack_asset_metadata`
+--
+
+CREATE TABLE `boostack_asset_metadata` (
+  `id` int(11) NOT NULL,
+  `id_asset` int(11) NOT NULL,
+  `source` varchar(64) NOT NULL DEFAULT 'manual_upload',
+  `metadata_type` varchar(64) NOT NULL DEFAULT 'attachment_context',
+  `process_name` varchar(128) DEFAULT NULL,
+  `process_version` varchar(128) DEFAULT NULL,
+  `source_context` varchar(128) DEFAULT NULL,
+  `document_type` varchar(64) DEFAULT NULL,
+  `document_direction` varchar(32) DEFAULT NULL,
+  `status` enum('captured','processed','warning','error','superseded') NOT NULL DEFAULT 'captured',
+  `process_status` enum('queued','processing','uploaded','extracting','text_extracted','ocr_done','llm_done','validated','ready','retry','skipped','error') DEFAULT NULL,
+  `ocr_method` varchar(32) DEFAULT NULL,
+  `ocr_language` varchar(32) DEFAULT NULL,
+  `raw_text` longtext DEFAULT NULL,
+  `extracted_json` longtext DEFAULT NULL,
+  `validated_json` longtext DEFAULT NULL,
+  `prefill_json` longtext DEFAULT NULL,
+  `error_message` text DEFAULT NULL,
+  `process_started_at` timestamp NULL DEFAULT NULL,
+  `process_completed_at` timestamp NULL DEFAULT NULL,
+  `last_access` timestamp NULL DEFAULT NULL,
+  `confidence_score` decimal(5,4) DEFAULT NULL,
+  `summary` text DEFAULT NULL,
+  `metadata_json` longtext DEFAULT NULL,
+  `checks_json` longtext DEFAULT NULL,
+  `import_id` int(11) DEFAULT NULL,
+  `supersedes_metadata_id` int(11) DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `requested_by` int(11) DEFAULT NULL,
+  `processed_by` int(11) DEFAULT NULL,
+  `processing_attempts` int(11) NOT NULL DEFAULT 0,
+  `next_retry_at` timestamp NULL DEFAULT NULL,
+  `claimed_at` timestamp NULL DEFAULT NULL,
+  `claimed_by` varchar(64) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `last_update` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+--  scaricate
+--
+
+--
+--  `boostack_asset`
+--
+ALTER TABLE `boostack_asset`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_boostack_asset_file_hash_sha256` (`file_hash_sha256`),
+  ADD KEY `idx_boostack_asset_upload_source` (`upload_source`),
+  ADD KEY `idx_boostack_asset_source_context` (`source_context`),
+  ADD KEY `idx_boostack_asset_created_by` (`created_by`);
+
+--
+--  `boostack_asset_metadata`
+--
+ALTER TABLE `boostack_asset_metadata`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_boostack_asset_metadata_asset` (`id_asset`),
+  ADD KEY `idx_boostack_asset_metadata_source` (`source`),
+  ADD KEY `idx_boostack_asset_metadata_type` (`metadata_type`),
+  ADD KEY `idx_boostack_asset_metadata_status` (`status`),
+  ADD KEY `idx_boostack_asset_metadata_import_id` (`import_id`),
+  ADD KEY `idx_boostack_asset_metadata_created_by` (`created_by`),
+  ADD KEY `idx_boostack_asset_metadata_process_status` (`process_status`),
+  ADD KEY `idx_boostack_asset_metadata_supersedes` (`supersedes_metadata_id`),
+  ADD KEY `idx_boostack_asset_metadata_requested_by` (`requested_by`),
+  ADD KEY `idx_boostack_asset_metadata_processed_by` (`processed_by`),
+  ADD KEY `idx_boostack_asset_metadata_enrichment_queue` (`process_name`,`process_status`,`next_retry_at`),
+  ADD KEY `idx_boostack_asset_metadata_asset_process` (`id_asset`,`process_name`,`id`);
+
+--
+-- AUTO_INCREMENT 
+--
+
+--
+-- AUTO_INCREMENT  `boostack_asset`
+--
+ALTER TABLE `boostack_asset`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT  `boostack_asset_metadata`
+--
+ALTER TABLE `boostack_asset_metadata`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Limiti 
+--
+
+--
+--  `boostack_asset`
+--
+ALTER TABLE `boostack_asset`
+  ADD CONSTRAINT `fk_boostack_asset_created_by` FOREIGN KEY (`created_by`) REFERENCES `boostack_user` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+--  `boostack_asset_metadata`
+--
+ALTER TABLE `boostack_asset_metadata`
+  ADD CONSTRAINT `fk_boostack_asset_metadata_asset` FOREIGN KEY (`id_asset`) REFERENCES `boostack_asset` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_boostack_asset_metadata_created_by` FOREIGN KEY (`created_by`) REFERENCES `boostack_user` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_boostack_asset_metadata_import` FOREIGN KEY (`import_id`) REFERENCES `gds_document_import` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_boostack_asset_metadata_processed_by` FOREIGN KEY (`processed_by`) REFERENCES `boostack_user` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_boostack_asset_metadata_requested_by` FOREIGN KEY (`requested_by`) REFERENCES `boostack_user` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_boostack_asset_metadata_supersedes` FOREIGN KEY (`supersedes_metadata_id`) REFERENCES `boostack_asset_metadata` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+COMMIT;
+
+
+-- --------------------------------------------------------
+
+--
+--  `boostack_cache`
 --
 
 CREATE TABLE `boostack_cache` (
@@ -76,7 +197,7 @@ CREATE TABLE `boostack_cache` (
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `boostack_event`
+--  `boostack_event`
 --
 
 CREATE TABLE `boostack_event` (
@@ -93,7 +214,7 @@ CREATE TABLE `boostack_event` (
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `boostack_http_session`
+--  `boostack_http_session`
 --
 
 CREATE TABLE `boostack_http_session` (
@@ -109,7 +230,7 @@ CREATE TABLE `boostack_http_session` (
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `boostack_log`
+--  `boostack_log`
 --
 
 CREATE TABLE `boostack_log` (
@@ -129,7 +250,7 @@ CREATE TABLE `boostack_log` (
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `boostack_notification`
+--  `boostack_notification`
 --
 
 CREATE TABLE `boostack_notification` (
@@ -150,7 +271,7 @@ CREATE TABLE `boostack_notification` (
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `boostack_notification_email`
+--  `boostack_notification_email`
 --
 
 CREATE TABLE `boostack_notification_email` (
@@ -173,7 +294,7 @@ CREATE TABLE `boostack_notification_email` (
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `boostack_notification_web`
+--  `boostack_notification_web`
 --
 
 CREATE TABLE `boostack_notification_web` (
@@ -192,7 +313,7 @@ CREATE TABLE `boostack_notification_web` (
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `boostack_role`
+--  `boostack_role`
 --
 
 CREATE TABLE `boostack_role` (
@@ -208,7 +329,7 @@ CREATE TABLE `boostack_role` (
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `boostack_session_variable`
+--  `boostack_session_variable`
 --
 
 CREATE TABLE `boostack_session_variable` (
@@ -221,7 +342,7 @@ CREATE TABLE `boostack_session_variable` (
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `boostack_user`
+--  `boostack_user`
 --
 
 CREATE TABLE `boostack_user` (
@@ -242,7 +363,7 @@ CREATE TABLE `boostack_user` (
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `boostack_user_api`
+--  `boostack_user_api`
 --
 
 CREATE TABLE `boostack_user_api` (
@@ -266,7 +387,7 @@ CREATE TABLE `boostack_user_api` (
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `boostack_user_cache`
+--  `boostack_user_cache`
 --
 
 CREATE TABLE `boostack_user_cache` (
@@ -281,7 +402,7 @@ CREATE TABLE `boostack_user_cache` (
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `boostack_user_info`
+--  `boostack_user_info`
 --
 
 CREATE TABLE `boostack_user_info` (
@@ -312,7 +433,7 @@ CREATE TABLE `boostack_user_info` (
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `boostack_user_passkey`
+--  `boostack_user_passkey`
 --
 
 CREATE TABLE `boostack_user_passkey` (
@@ -330,7 +451,7 @@ CREATE TABLE `boostack_user_passkey` (
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `boostack_user_privilege`
+--  `boostack_user_privilege`
 --
 
 CREATE TABLE `boostack_user_privilege` (
@@ -340,7 +461,7 @@ CREATE TABLE `boostack_user_privilege` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 --
--- Dump dei dati per la tabella `boostack_user_privilege`
+-- Dump dei dati  `boostack_user_privilege`
 --
 
 INSERT INTO `boostack_user_privilege` (`id`, `title`, `description`) VALUES
@@ -352,7 +473,7 @@ INSERT INTO `boostack_user_privilege` (`id`, `title`, `description`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `boostack_user_registration`
+--  `boostack_user_registration`
 --
 
 CREATE TABLE `boostack_user_registration` (
@@ -367,7 +488,7 @@ CREATE TABLE `boostack_user_registration` (
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `boostack_user_role`
+--  `boostack_user_role`
 --
 
 CREATE TABLE `boostack_user_role` (
@@ -383,7 +504,7 @@ CREATE TABLE `boostack_user_role` (
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `boostack_user_social`
+--  `boostack_user_social`
 --
 
 CREATE TABLE `boostack_user_social` (
@@ -400,7 +521,7 @@ CREATE TABLE `boostack_user_social` (
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `boostack_user_sso`
+--  `boostack_user_sso`
 --
 
 CREATE TABLE `boostack_user_sso` (
@@ -418,43 +539,43 @@ CREATE TABLE `boostack_user_sso` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
 --
--- Indici per le tabelle scaricate
+--  scaricate
 --
 
 --
--- Indici per le tabelle `boostack_api_request`
+--  `boostack_api_request`
 --
 ALTER TABLE `boostack_api_request`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indici per le tabelle `boostack_asset`
+--  `boostack_asset`
 --
 ALTER TABLE `boostack_asset`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indici per le tabelle `boostack_cache`
+--  `boostack_cache`
 --
 ALTER TABLE `boostack_cache`
   ADD PRIMARY KEY (`key`);
 
 --
--- Indici per le tabelle `boostack_event`
+--  `boostack_event`
 --
 ALTER TABLE `boostack_event`
   ADD PRIMARY KEY (`id`),
   ADD KEY `boostack_event_ibfk_1` (`id_user`);
 
 --
--- Indici per le tabelle `boostack_http_session`
+--  `boostack_http_session`
 --
 ALTER TABLE `boostack_http_session`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user_id` (`user_id`);
 
 --
--- Indici per le tabelle `boostack_log`
+--  `boostack_log`
 --
 ALTER TABLE `boostack_log`
   ADD PRIMARY KEY (`id`),
@@ -462,7 +583,7 @@ ALTER TABLE `boostack_log`
   ADD KEY `idx_boostack_log_username_datetime` (`username`,`datetime`);
 
 --
--- Indici per le tabelle `boostack_notification`
+--  `boostack_notification`
 --
 ALTER TABLE `boostack_notification`
   ADD PRIMARY KEY (`id`),
@@ -470,7 +591,7 @@ ALTER TABLE `boostack_notification`
   ADD KEY `boostack_notification_ibfk_2` (`id_user_from`);
 
 --
--- Indici per le tabelle `boostack_notification_email`
+--  `boostack_notification_email`
 --
 ALTER TABLE `boostack_notification_email`
   ADD PRIMARY KEY (`id`),
@@ -478,7 +599,7 @@ ALTER TABLE `boostack_notification_email`
   ADD KEY `boostack_notification_email_ibfk_2` (`id_user_to`);
 
 --
--- Indici per le tabelle `boostack_notification_web`
+--  `boostack_notification_web`
 --
 ALTER TABLE `boostack_notification_web`
   ADD PRIMARY KEY (`id`),
@@ -486,21 +607,21 @@ ALTER TABLE `boostack_notification_web`
   ADD KEY `boostack_notification_web_ibfk_2` (`id_user_to`);
 
 --
--- Indici per le tabelle `boostack_role`
+--  `boostack_role`
 --
 ALTER TABLE `boostack_role`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `name` (`name`);
 
 --
--- Indici per le tabelle `boostack_session_variable`
+--  `boostack_session_variable`
 --
 ALTER TABLE `boostack_session_variable`
   ADD PRIMARY KEY (`id`),
   ADD KEY `session_id` (`session_id`);
 
 --
--- Indici per le tabelle `boostack_user`
+--  `boostack_user`
 --
 ALTER TABLE `boostack_user`
   ADD PRIMARY KEY (`id`),
@@ -509,7 +630,7 @@ ALTER TABLE `boostack_user`
   ADD KEY `privilege2` (`privilege`);
 
 --
--- Indici per le tabelle `boostack_user_api`
+--  `boostack_user_api`
 --
 ALTER TABLE `boostack_user_api`
   ADD PRIMARY KEY (`id`),
@@ -520,13 +641,13 @@ ALTER TABLE `boostack_user_cache`
   ADD KEY `id_user` (`id_user`);
 
 --
--- Indici per le tabelle `boostack_user_info`
+--  `boostack_user_info`
 --
 ALTER TABLE `boostack_user_info`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indici per le tabelle `boostack_user_passkey`
+--  `boostack_user_passkey`
 --
 ALTER TABLE `boostack_user_passkey`
   ADD PRIMARY KEY (`id`),
@@ -534,19 +655,19 @@ ALTER TABLE `boostack_user_passkey`
   ADD KEY `idx_user_passkey_user` (`id_user`);
 
 --
--- Indici per le tabelle `boostack_user_privilege`
+--  `boostack_user_privilege`
 --
 ALTER TABLE `boostack_user_privilege`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indici per le tabelle `boostack_user_registration`
+--  `boostack_user_registration`
 --
 ALTER TABLE `boostack_user_registration`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indici per le tabelle `boostack_user_role`
+--  `boostack_user_role`
 --
 ALTER TABLE `boostack_user_role`
   ADD PRIMARY KEY (`id`),
@@ -556,170 +677,170 @@ ALTER TABLE `boostack_user_role`
   ADD KEY `idx_boostack_user_role_id_role` (`id_role`);
 
 --
--- Indici per le tabelle `boostack_user_social`
+--  `boostack_user_social`
 --
 ALTER TABLE `boostack_user_social`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id` (`id`);
 
 --
--- Indici per le tabelle `boostack_user_sso`
+--  `boostack_user_sso`
 --
 ALTER TABLE `boostack_user_sso`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `user_id` (`user_id`,`provider`) USING BTREE;
 
 --
--- AUTO_INCREMENT per le tabelle scaricate
+-- AUTO_INCREMENT 
 --
 
 --
--- AUTO_INCREMENT per la tabella `boostack_api_request`
+-- AUTO_INCREMENT  `boostack_api_request`
 --
 ALTER TABLE `boostack_api_request`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT per la tabella `boostack_asset`
+-- AUTO_INCREMENT  `boostack_asset`
 --
 ALTER TABLE `boostack_asset`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT per la tabella `boostack_event`
+-- AUTO_INCREMENT  `boostack_event`
 --
 ALTER TABLE `boostack_event`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT per la tabella `boostack_http_session`
+-- AUTO_INCREMENT  `boostack_http_session`
 --
 ALTER TABLE `boostack_http_session`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT per la tabella `boostack_log`
+-- AUTO_INCREMENT  `boostack_log`
 --
 ALTER TABLE `boostack_log`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT per la tabella `boostack_notification`
+-- AUTO_INCREMENT  `boostack_notification`
 --
 ALTER TABLE `boostack_notification`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT per la tabella `boostack_notification_email`
+-- AUTO_INCREMENT  `boostack_notification_email`
 --
 ALTER TABLE `boostack_notification_email`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT per la tabella `boostack_notification_web`
+-- AUTO_INCREMENT  `boostack_notification_web`
 --
 ALTER TABLE `boostack_notification_web`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT per la tabella `boostack_role`
+-- AUTO_INCREMENT  `boostack_role`
 --
 ALTER TABLE `boostack_role`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT per la tabella `boostack_session_variable`
+-- AUTO_INCREMENT  `boostack_session_variable`
 --
 ALTER TABLE `boostack_session_variable`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT per la tabella `boostack_user`
+-- AUTO_INCREMENT  `boostack_user`
 --
 ALTER TABLE `boostack_user`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT per la tabella `boostack_user_api`
+-- AUTO_INCREMENT  `boostack_user_api`
 --
 ALTER TABLE `boostack_user_api`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT per la tabella `boostack_user_passkey`
+-- AUTO_INCREMENT  `boostack_user_passkey`
 --
 ALTER TABLE `boostack_user_passkey`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT per la tabella `boostack_user_privilege`
+-- AUTO_INCREMENT  `boostack_user_privilege`
 --
 ALTER TABLE `boostack_user_privilege`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT per la tabella `boostack_user_role`
+-- AUTO_INCREMENT  `boostack_user_role`
 --
 ALTER TABLE `boostack_user_role`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT per la tabella `boostack_user_sso`
+-- AUTO_INCREMENT  `boostack_user_sso`
 --
 ALTER TABLE `boostack_user_sso`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Limiti per le tabelle scaricate
+-- Limiti 
 --
 
 --
--- Limiti per la tabella `boostack_event`
+--  `boostack_event`
 --
 ALTER TABLE `boostack_event`
   ADD CONSTRAINT `boostack_event_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `boostack_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Limiti per la tabella `boostack_http_session`
+--  `boostack_http_session`
 --
 ALTER TABLE `boostack_http_session`
   ADD CONSTRAINT `http_session_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `boostack_user` (`id`) ON DELETE CASCADE;
 
 --
--- Limiti per la tabella `boostack_notification`
+--  `boostack_notification`
 --
 ALTER TABLE `boostack_notification`
   ADD CONSTRAINT `boostack_notification_ibfk_1` FOREIGN KEY (`id_event`) REFERENCES `boostack_event` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `boostack_notification_ibfk_2` FOREIGN KEY (`id_user_from`) REFERENCES `boostack_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Limiti per la tabella `boostack_notification_email`
+--  `boostack_notification_email`
 --
 ALTER TABLE `boostack_notification_email`
   ADD CONSTRAINT `boostack_notification_email_ibfk_1` FOREIGN KEY (`id_notification`) REFERENCES `boostack_notification` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `boostack_notification_email_ibfk_2` FOREIGN KEY (`id_user_to`) REFERENCES `boostack_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Limiti per la tabella `boostack_notification_web`
+--  `boostack_notification_web`
 --
 ALTER TABLE `boostack_notification_web`
   ADD CONSTRAINT `boostack_notification_web_ibfk_1` FOREIGN KEY (`id_notification`) REFERENCES `boostack_notification` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `boostack_notification_web_ibfk_2` FOREIGN KEY (`id_user_to`) REFERENCES `boostack_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Limiti per la tabella `boostack_session_variable`
+--  `boostack_session_variable`
 --
 ALTER TABLE `boostack_session_variable`
   ADD CONSTRAINT `session_variable_ibfk_1` FOREIGN KEY (`session_id`) REFERENCES `boostack_http_session` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Limiti per la tabella `boostack_user`
+--  `boostack_user`
 --
 ALTER TABLE `boostack_user`
   ADD CONSTRAINT `boostack_user_ibfk_1` FOREIGN KEY (`privilege`) REFERENCES `boostack_user_privilege` (`id`);
 
 --
--- Limiti per la tabella `boostack_user_api`
+--  `boostack_user_api`
 --
 ALTER TABLE `boostack_user_api`
   ADD CONSTRAINT `boostack_user_api_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `boostack_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
@@ -728,38 +849,38 @@ ALTER TABLE `boostack_user_cache`
   ADD CONSTRAINT `boostack_user_cache_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `boostack_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Limiti per la tabella `boostack_user_info`
+--  `boostack_user_info`
 --
 ALTER TABLE `boostack_user_info`
   ADD CONSTRAINT `user_info_ibfk_1` FOREIGN KEY (`id`) REFERENCES `boostack_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Limiti per la tabella `boostack_user_passkey`
+--  `boostack_user_passkey`
 --
 ALTER TABLE `boostack_user_passkey`
   ADD CONSTRAINT `fk_user_passkey_user` FOREIGN KEY (`id_user`) REFERENCES `boostack_user` (`id`) ON DELETE CASCADE;
 
 --
--- Limiti per la tabella `boostack_user_registration`
+--  `boostack_user_registration`
 --
 ALTER TABLE `boostack_user_registration`
   ADD CONSTRAINT `user_registration_ibfk_1` FOREIGN KEY (`id`) REFERENCES `boostack_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Limiti per la tabella `boostack_user_role`
+--  `boostack_user_role`
 --
 ALTER TABLE `boostack_user_role`
   ADD CONSTRAINT `boostack_user_role_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `boostack_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `boostack_user_role_ibfk_2` FOREIGN KEY (`id_role`) REFERENCES `boostack_role` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Limiti per la tabella `boostack_user_social`
+--  `boostack_user_social`
 --
 ALTER TABLE `boostack_user_social`
   ADD CONSTRAINT `user_social_ibfk_1` FOREIGN KEY (`id`) REFERENCES `boostack_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Limiti per la tabella `boostack_user_sso`
+--  `boostack_user_sso`
 --
 ALTER TABLE `boostack_user_sso`
   ADD CONSTRAINT `boostack_user_sso_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `boostack_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
