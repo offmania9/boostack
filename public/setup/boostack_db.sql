@@ -40,6 +40,23 @@ CREATE TABLE `boostack_api_request` (
 -- --------------------------------------------------------
 
 --
+--  `boostack_auth_rate_limit`
+--
+
+CREATE TABLE `boostack_auth_rate_limit` (
+  `scope_type` varchar(16) NOT NULL,
+  `scope_hash` char(64) NOT NULL,
+  `attempts` int unsigned NOT NULL DEFAULT 0,
+  `window_started_at` int unsigned NOT NULL,
+  `blocked_until` int unsigned NOT NULL DEFAULT 0,
+  `updated_at` int unsigned NOT NULL,
+  PRIMARY KEY (`scope_type`, `scope_hash`),
+  KEY `idx_boostack_auth_rate_limit_updated_at` (`updated_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 --  `boostack_asset`
 --
 

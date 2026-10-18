@@ -96,6 +96,13 @@ $config['login_lockStrategy'] = '[lockStrategy_type]'; // "timer" | "recaptcha" 
 $config['login_maxAttempts'] = "[login_max_attempts]";
 $config['login_secondsFormBlocked'] = "[login_seconds_blocked]";
 
+$config['auth_rate_limit_on'] = TRUE;
+$config['auth_rate_limit_table'] = 'boostack_auth_rate_limit';
+$config['auth_rate_limit_account_attempts'] = 5;
+$config['auth_rate_limit_network_attempts'] = 25;
+$config['auth_rate_limit_window_seconds'] = 300;
+$config['auth_rate_limit_block_seconds'] = 600;
+
 $config['reCaptcha_on'] = FALSE;
 $config['reCaptcha_verify_endpoint'] = "https://www.google.com/recaptcha/api/siteverify";   //ReCaptcha Google endpoint
 $config['reCaptcha_public_clientside_key'] = "";    //recaptcha public key
